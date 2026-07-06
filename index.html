@@ -2573,6 +2573,9 @@
         .pukka-ai-widget {
             inline-size: min(25rem, calc(100dvw - 2rem));
             max-inline-size: calc(100dvw - 2rem);
+            --ai-ease: cubic-bezier(0.22, 1, 0.36, 1);
+            --ai-fast: 180ms;
+            --ai-panel: 280ms;
         }
 
         .pukka-ai-panel {
@@ -2584,6 +2587,22 @@
             min-inline-size: 0;
             grid-template-rows: auto minmax(0, 1fr) auto;
             contain: layout;
+            backface-visibility: hidden;
+            transform: translate3d(0, 0, 0) scale(1);
+            transition:
+                opacity var(--ai-fast) ease,
+                visibility var(--ai-fast) ease,
+                transform var(--ai-panel) var(--ai-ease),
+                box-shadow var(--ai-panel) ease;
+            will-change: transform, opacity;
+        }
+
+        .pukka-ai-panel[aria-hidden="true"] {
+            transform: translate3d(0, 0.9rem, 0) scale(0.975);
+        }
+
+        .pukka-ai-panel[aria-hidden="false"] {
+            transform: translate3d(0, 0, 0) scale(1);
         }
 
         .pukka-ai-header,
@@ -2620,6 +2639,8 @@
             max-block-size: clamp(11rem, 38dvh, 22rem);
             overflow-x: hidden;
             overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            scroll-padding-block: 0.75rem;
             scrollbar-gutter: stable;
         }
 
@@ -2627,6 +2648,7 @@
             inline-size: 100%;
             max-inline-size: 100%;
             min-inline-size: 0;
+            will-change: transform, opacity;
         }
 
         .pukka-ai-message-avatar {
@@ -2655,21 +2677,66 @@
             min-inline-size: 0;
             max-inline-size: 100%;
             white-space: nowrap;
+            touch-action: manipulation;
+            transition:
+                transform var(--ai-fast) var(--ai-ease),
+                background-color var(--ai-fast) ease,
+                border-color var(--ai-fast) ease,
+                color var(--ai-fast) ease;
         }
 
         .pukka-ai-quick-prompts {
+            display: block;
             max-inline-size: 100%;
             min-inline-size: 0;
-            overflow-x: auto;
+            overflow-x: hidden;
             overflow-y: hidden;
             -webkit-overflow-scrolling: touch;
+            mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+            -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+        }
+
+        .pukka-ai-quick-track {
+            display: flex;
+            inline-size: max-content;
+            animation: pukka-ai-quick-marquee 24s linear infinite;
+            will-change: transform;
+        }
+
+        .pukka-ai-quick-prompts:hover .pukka-ai-quick-track,
+        .pukka-ai-quick-prompts:focus-within .pukka-ai-quick-track {
+            animation-play-state: paused;
+        }
+
+        .pukka-ai-quick-group {
+            display: flex;
+            flex: 0 0 auto;
+            gap: 0.45rem;
+            padding-inline-end: 0.45rem;
+        }
+
+        @keyframes pukka-ai-quick-marquee {
+            from {
+                transform: translate3d(0, 0, 0);
+            }
+            to {
+                transform: translate3d(-50%, 0, 0);
+            }
         }
 
         .pukka-ai-chip {
+            flex: 0 0 auto;
             max-inline-size: min(12rem, 72vw);
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
+            touch-action: manipulation;
+            transition:
+                transform var(--ai-fast) var(--ai-ease),
+                background-color var(--ai-fast) ease,
+                border-color var(--ai-fast) ease,
+                color var(--ai-fast) ease,
+                box-shadow var(--ai-fast) ease;
         }
 
         .pukka-ai-input-row {
@@ -2682,10 +2749,21 @@
             max-inline-size: 100%;
             overflow-x: hidden;
             overflow-y: auto;
+            transition:
+                border-color var(--ai-fast) ease,
+                background-color var(--ai-fast) ease,
+                box-shadow var(--ai-fast) ease,
+                height var(--ai-fast) var(--ai-ease);
         }
 
         .pukka-ai-send {
             flex: 0 0 auto;
+            touch-action: manipulation;
+            transition:
+                transform var(--ai-fast) var(--ai-ease),
+                background-color var(--ai-fast) ease,
+                box-shadow var(--ai-fast) ease,
+                opacity var(--ai-fast) ease;
         }
 
         .pukka-ai-nudge {
@@ -2707,6 +2785,11 @@
                 min-block-size: 0;
                 border-radius: clamp(1rem, 5vw, 1.25rem);
                 transform-origin: bottom left;
+                backdrop-filter: blur(18px);
+            }
+
+            .pukka-ai-panel[aria-hidden="true"] {
+                transform: translate3d(0, 0.7rem, 0) scale(0.985);
             }
 
             .pukka-ai-toggle {
@@ -2744,6 +2827,7 @@
             .pukka-ai-messages {
                 padding: 0.78rem;
                 gap: 0.7rem;
+                max-block-size: clamp(10.5rem, 36dvh, 18rem);
             }
 
             .pukka-ai-message {
@@ -2798,25 +2882,27 @@
 
         @media (max-width: 640px) and (orientation: portrait) {
             .pukka-ai-quick-prompts {
-                display: grid;
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-                gap: 0.45rem;
-                overflow: visible;
-                padding-bottom: 0.55rem;
-                scroll-snap-type: none;
+                overflow: hidden;
+                padding-block: 0.05rem 0.5rem;
+            }
+
+            .pukka-ai-quick-track {
+                animation-duration: 20s;
+            }
+
+            .pukka-ai-quick-group {
+                gap: 0.38rem;
+                padding-inline-end: 0.38rem;
             }
 
             .pukka-ai-chip {
                 display: inline-flex;
                 justify-content: center;
-                inline-size: 100%;
-                max-inline-size: none;
-                min-inline-size: 0;
+                inline-size: auto;
+                min-inline-size: max-content;
+                max-inline-size: 9.75rem;
+                min-block-size: 2.05rem;
                 text-align: center;
-            }
-
-            .pukka-ai-chip:last-child:nth-child(odd) {
-                grid-column: 1 / -1;
             }
         }
 
@@ -2921,6 +3007,10 @@
                 padding-bottom: 0.4rem;
             }
 
+            .pukka-ai-quick-track {
+                animation-duration: 18s;
+            }
+
             .pukka-ai-input {
                 min-block-size: 2.45rem;
                 max-block-size: 5.2rem;
@@ -2944,12 +3034,52 @@
             }
         }
 
+        @media (max-width: 640px), (pointer: coarse) {
+            .bg-gradient-orb {
+                opacity: 0.16;
+                filter: blur(72px) saturate(115%);
+            }
+
+            #hero-slideshow > div {
+                transition-duration: 1200ms, 6000ms;
+            }
+
+            .animate-item {
+                transition-duration: 620ms;
+                transform: translateY(0.85rem) scale(0.992);
+                filter: none;
+            }
+
+            .spotlight-card,
+            .portfolio-card,
+            .tech-marquee-item,
+            .magnetic-btn {
+                transition-duration: 260ms !important;
+            }
+
+            #comet {
+                display: none;
+            }
+        }
+
         @media (prefers-reduced-motion: reduce) {
             html { scroll-behavior: auto; }
             *, *::before, *::after {
                 animation-duration: 0.001ms !important;
                 animation-iteration-count: 1 !important;
                 transition-duration: 0.001ms !important;
+            }
+            .pukka-ai-quick-prompts {
+                overflow-x: auto;
+                mask-image: none;
+                -webkit-mask-image: none;
+            }
+            .pukka-ai-quick-track {
+                animation: none !important;
+                transform: none !important;
+            }
+            .pukka-ai-quick-group-clone {
+                display: none !important;
             }
             #particleCanvas,
             #rocket,
@@ -3044,12 +3174,24 @@
 
             <div class="pukka-ai-composer">
                 <div class="pukka-ai-quick-prompts" aria-label="Quick chat prompts">
-                    <button type="button" class="pukka-ai-chip" data-ai-prompt="What services do you offer?">Services</button>
-                    <button type="button" class="pukka-ai-chip" data-ai-prompt="How does pricing work?">Pricing</button>
-                    <button type="button" class="pukka-ai-chip" data-ai-prompt="I want to start a project">Start project</button>
-                    <button type="button" class="pukka-ai-chip" data-ai-prompt="Show me your AI work">AI builds</button>
-                    <button type="button" class="pukka-ai-chip" data-ai-prompt="Give me the no-duff checklist">Checklist</button>
-                    <button type="button" class="pukka-ai-chip" data-ai-prompt="I want to talk to a human">Human help</button>
+                    <div class="pukka-ai-quick-track">
+                        <div class="pukka-ai-quick-group">
+                            <button type="button" class="pukka-ai-chip" data-ai-prompt="What services do you offer?">Services</button>
+                            <button type="button" class="pukka-ai-chip" data-ai-prompt="How does pricing work?">Pricing</button>
+                            <button type="button" class="pukka-ai-chip" data-ai-prompt="I want to start a project">Start project</button>
+                            <button type="button" class="pukka-ai-chip" data-ai-prompt="Show me your AI work">AI builds</button>
+                            <button type="button" class="pukka-ai-chip" data-ai-prompt="Give me the no-duff checklist">Checklist</button>
+                            <button type="button" class="pukka-ai-chip" data-ai-prompt="I want to talk to a human">Human help</button>
+                        </div>
+                        <div class="pukka-ai-quick-group pukka-ai-quick-group-clone" aria-hidden="true">
+                            <button type="button" class="pukka-ai-chip" data-ai-prompt="What services do you offer?" tabindex="-1">Services</button>
+                            <button type="button" class="pukka-ai-chip" data-ai-prompt="How does pricing work?" tabindex="-1">Pricing</button>
+                            <button type="button" class="pukka-ai-chip" data-ai-prompt="I want to start a project" tabindex="-1">Start project</button>
+                            <button type="button" class="pukka-ai-chip" data-ai-prompt="Show me your AI work" tabindex="-1">AI builds</button>
+                            <button type="button" class="pukka-ai-chip" data-ai-prompt="Give me the no-duff checklist" tabindex="-1">Checklist</button>
+                            <button type="button" class="pukka-ai-chip" data-ai-prompt="I want to talk to a human" tabindex="-1">Human help</button>
+                        </div>
+                    </div>
                 </div>
                 <label for="pukkaAiInput" class="sr-only">Message Pukka AI</label>
                 <div class="pukka-ai-input-row">
@@ -3120,7 +3262,7 @@
             <div class="absolute inset-0 bg-cover bg-center transition-opacity duration-[2500ms] ease-in-out opacity-100" style="background-image: url('https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1920&q=80');"></div>
             
             <!-- 2. Infrastructure (Server Room) - Represents "Solid/Reliable" -->
-            <div class="absolute inset-0 bg-cover bg-center transition-opacity duration-[2500ms] ease-in-out opacity-0" style="background-image: url('https://images.unsplash.com/photo-1558494949-ef526b0042a0?auto=format&fit=crop&w=1920&q=80');"></div>
+            <div class="absolute inset-0 bg-cover bg-center transition-opacity duration-[2500ms] ease-in-out opacity-0" style="background-image: url('https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1920&q=80');"></div>
             
             <!-- 3. Modern Workspace (Architecture) - Represents "Next-Gen" -->
             <div class="absolute inset-0 bg-cover bg-center transition-opacity duration-[2500ms] ease-in-out opacity-0" style="background-image: url('https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1920&q=80');"></div>
@@ -3755,7 +3897,7 @@
                 </button>
 
                 <button type="button" class="portfolio-project-btn portfolio-card animate-item delay-400 spotlight-card text-left rounded-lg border border-white/10 bg-[#080808]/50 overflow-hidden group hover:border-blue-500/40" data-project="cloudops" data-category="cloud security" aria-label="Open Cloud Migration Map case study">
-                    <span class="block portfolio-card-visual relative" style="background-image: url('https://images.unsplash.com/photo-1558494949-ef526b0042a0?auto=format&fit=crop&w=1200&q=80');">
+                    <span class="block portfolio-card-visual relative" style="background-image: url('https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80');">
                         <span class="absolute inset-0 bg-gradient-to-t from-[#080808] via-[#080808]/15 to-transparent"></span>
                         <span class="absolute top-4 left-4 px-3 py-1 rounded-full bg-blue-500/15 border border-blue-400/20 text-blue-300 text-[10px] uppercase tracking-wider font-bold">Cloud</span>
                     </span>
@@ -5967,6 +6109,7 @@
 
         let particlesArray;
         let mouse = { x: null, y: null, radius: 100 };
+        const fullMotionViewport = () => window.matchMedia('(min-width: 768px) and (pointer: fine)').matches;
         // Track positions of CSS-animated elements
         let rocketRect = { x: -1000, y: -1000 };
         let cometRect = { x: -1000, y: -1000 };
@@ -6060,7 +6203,9 @@
         function initParticles() {
             if (!canvas) return;
             particlesArray = [];
-            let numberOfParticles = (canvas.height * canvas.width) / 10000;
+            const density = fullMotionViewport() ? 10000 : 28000;
+            const cap = fullMotionViewport() ? 140 : 42;
+            let numberOfParticles = Math.min(cap, Math.max(18, Math.floor((canvas.height * canvas.width) / density)));
             for (let i = 0; i < numberOfParticles; i++) {
                 particlesArray.push(new Particle());
             }
@@ -6068,6 +6213,10 @@
 
         function animateParticles() {
             if (!ctx || !particlesArray) return;
+            if (document.hidden) {
+                requestAnimationFrame(animateParticles);
+                return;
+            }
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             
             // --- Update Rocket Position Tracking ---
@@ -6104,11 +6253,15 @@
             animateParticles();
         }
 
+        let particleResizeFrame = 0;
         window.addEventListener('resize', () => {
             if (!canvas || prefersReducedMotion) return;
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            initParticles();
+            cancelAnimationFrame(particleResizeFrame);
+            particleResizeFrame = requestAnimationFrame(() => {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                initParticles();
+            });
         });
 
         // --- 3. Navbar & Scroll ---
@@ -6577,7 +6730,7 @@
             }
 
             function shouldAutoFocusInput() {
-                return window.innerWidth >= 768 && window.innerHeight >= 600;
+                return window.matchMedia('(min-width: 768px) and (min-height: 600px) and (pointer: fine)').matches;
             }
 
             function focusChatInput() {
@@ -6595,6 +6748,10 @@
 
             function scrollMessages() {
                 requestAnimationFrame(() => {
+                    if (messages.scrollHeight <= messages.clientHeight + 2) {
+                        messages.scrollTop = 0;
+                        return;
+                    }
                     messages.scrollTop = messages.scrollHeight;
                 });
             }
@@ -6841,7 +6998,7 @@
                     const reply = getBotReply(message);
                     appendMessage('bot', reply.text, reply.actions);
                     setAiBusy(false);
-                    if (aiState.open) input.focus({ preventScroll: true });
+                    if (aiState.open && shouldAutoFocusInput()) input.focus({ preventScroll: true });
                 }, delay);
             }
 
@@ -6959,10 +7116,14 @@
                 }
             });
 
+            let viewportFrame = 0;
             const handleViewportChange = () => {
                 if (!aiState.open) return;
-                resizeInput();
-                scrollMessages();
+                cancelAnimationFrame(viewportFrame);
+                viewportFrame = requestAnimationFrame(() => {
+                    resizeInput();
+                    scrollMessages();
+                });
             };
             window.addEventListener('resize', handleViewportChange);
             window.visualViewport?.addEventListener('resize', handleViewportChange);
@@ -7703,7 +7864,7 @@
                 title: "Cloud Migration Map",
                 eyebrow: "Cloud + Security",
                 theme: "blue",
-                image: "https://images.unsplash.com/photo-1558494949-ef526b0042a0?auto=format&fit=crop&w=1400&q=80",
+                image: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1400&q=80",
                 description: "A phased migration program with release gates, observability, failover planning, cost visibility, and clear cutover discipline.",
                 metrics: [
                     { value: "58%", label: "lower deploy risk" },
@@ -8404,8 +8565,8 @@
             setTimeout(launchComet, Math.random() * 6000 + 4000);
         }
 
-        // Start comet loop
-        if (!prefersReducedMotion) {
+        // Start comet loop only where the large decorative motion is useful.
+        if (!prefersReducedMotion && window.matchMedia('(min-width: 641px) and (pointer: fine)').matches) {
             setTimeout(launchComet, 2000);
         }
 
