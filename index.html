@@ -1095,6 +1095,13 @@
         }
 
         @media (max-width: 640px) {
+            html,
+            body {
+                width: 100%;
+                max-width: 100%;
+                overflow-x: clip;
+            }
+
             .pukka-ai-widget {
                 left: 0.75rem;
                 right: 0.75rem;
@@ -1357,6 +1364,9 @@
 
         @media (max-width: 640px) {
             .hero-copy {
+                width: 100%;
+                max-width: calc(100vw - 2rem);
+                min-width: 0;
                 transform: translateY(-2.5rem);
             }
 
@@ -1366,16 +1376,45 @@
             }
 
             .hero-brand-lockup {
+                display: flex;
+                justify-content: center;
                 margin-bottom: 1.25rem;
+                margin-left: auto;
+                margin-right: auto;
+                max-width: 100%;
+                width: fit-content;
+            }
+
+            .hero-typewriter-badge {
+                display: flex !important;
+                align-items: center;
+                justify-content: center;
+                width: fit-content;
+                max-width: 100%;
+                margin-left: auto;
+                margin-right: auto;
+                padding-inline: 1rem !important;
+            }
+
+            .hero-typewriter-badge #typewriter-text {
+                letter-spacing: 0.12em !important;
+                white-space: normal;
+                overflow-wrap: anywhere;
+            }
+
+            .hero-title-word {
+                display: block;
+                max-width: 100%;
             }
 
             .hero-wordmark {
-                width: min(17.75rem, 76vw);
+                width: min(15.75rem, 72vw);
+                max-width: 100%;
             }
 
             .hero-brand-watermark {
                 top: 46%;
-                width: min(30rem, 100vw);
+                width: min(24rem, 96vw);
                 opacity: 0.14;
             }
 
@@ -1711,8 +1750,10 @@
             padding: 1.25rem; /* Reduced for mobile */
             max-width: 800px;
             width: 100%;
-            max-height: 90vh;
+            max-height: min(90vh, calc(100dvh - 2rem));
             overflow-y: auto;
+            overscroll-behavior: contain;
+            scrollbar-gutter: stable;
             position: relative;
             transform: translateY(20px) scale(0.95);
             transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
@@ -2278,6 +2319,20 @@
             box-shadow: 0 14px 34px rgba(6, 182, 212, 0.24);
         }
 
+        .portfolio-filter-bar {
+            scrollbar-width: thin;
+            scrollbar-color: rgba(103, 232, 249, 0.55) transparent;
+        }
+
+        .portfolio-filter-bar::-webkit-scrollbar {
+            height: 0.35rem;
+        }
+
+        .portfolio-filter-bar::-webkit-scrollbar-thumb {
+            background: rgba(103, 232, 249, 0.45);
+            border-radius: 9999px;
+        }
+
         .portfolio-card {
             border-radius: 1.1rem !important;
             min-height: 27rem;
@@ -2452,6 +2507,8 @@
             }
 
             nav > .max-w-7xl {
+                width: 100%;
+                max-width: calc(100vw - 1.5rem);
                 min-height: 3.85rem;
                 padding: 0.65rem 0.8rem;
                 border-radius: 1rem;
@@ -2485,10 +2542,11 @@
             body .hero-copy h1 {
                 width: 100%;
                 max-width: 100%;
-                font-size: clamp(2.05rem, 9.2vw, 2.45rem) !important;
-                line-height: 1.08 !important;
+                font-size: clamp(1.78rem, 7.6vw, 2.08rem) !important;
+                line-height: 1.12 !important;
                 white-space: normal !important;
-                overflow-wrap: normal;
+                overflow-wrap: anywhere;
+                word-break: normal;
             }
 
             body .hero-title-gradient,
@@ -2498,10 +2556,11 @@
                 max-width: 100%;
                 white-space: normal !important;
                 overflow-wrap: break-word !important;
+                word-break: normal;
             }
 
             .hero-wordmark {
-                width: min(16.5rem, 76vw);
+                width: min(15.75rem, 72vw);
             }
 
             .hero-brand-watermark {
@@ -2510,8 +2569,11 @@
             }
 
             .hero-copy p {
-                max-width: 100%;
-                font-size: 1rem;
+                width: 100%;
+                max-width: min(100%, 20rem);
+                font-size: 0.95rem;
+                line-height: 1.62;
+                overflow-wrap: break-word;
             }
 
             body .hero-copy .magnetic-btn {
@@ -2533,6 +2595,19 @@
 
             .portfolio-filter {
                 flex: 0 0 auto;
+            }
+
+            .portfolio-filter-bar {
+                flex-wrap: nowrap !important;
+                overflow-x: auto;
+                margin-inline: -1rem;
+                padding: 0 1rem 0.45rem;
+                scroll-snap-type: x proximity;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .portfolio-filter-bar .portfolio-filter {
+                scroll-snap-align: start;
             }
 
             .portfolio-card {
@@ -2559,6 +2634,33 @@
                 right: 0.75rem;
                 bottom: 0.75rem;
                 width: auto;
+            }
+
+            .service-modal {
+                align-items: flex-end;
+                padding: 0.75rem;
+            }
+
+            .modal-content {
+                max-height: calc(100dvh - 1.5rem);
+                border-radius: 1.1rem;
+            }
+
+            .contact-card-grid,
+            .business-hours-grid {
+                grid-template-columns: 1fr !important;
+            }
+
+            .business-hours-grid > * {
+                border-left: 0 !important;
+                border-top: 1px solid rgba(255, 255, 255, 0.1);
+                padding-left: 0 !important;
+                padding-top: 0.65rem;
+            }
+
+            .business-hours-grid > *:first-child {
+                border-top: 0;
+                padding-top: 0;
             }
         }
 
@@ -3295,14 +3397,14 @@
             <div class="animate-item hero-brand-lockup">
                 <img src="pukka-gen-wordmark.png" alt="Pukka Gen No Duff" class="brand-logo-image hero-wordmark" decoding="async">
             </div>
-            <div class="animate-item inline-block px-5 py-2 mb-8 rounded-full border border-cyan-500/30 bg-cyan-950/30 backdrop-blur-md hover:border-cyan-400/60 transition-colors cursor-default hover:shadow-[0_0_25px_rgba(0,242,255,0.15)] duration-500 transform hover:scale-105 hover-trigger">
+            <div class="hero-typewriter-badge animate-item inline-block px-5 py-2 mb-8 rounded-full border border-cyan-500/30 bg-cyan-950/30 backdrop-blur-md hover:border-cyan-400/60 transition-colors cursor-default hover:shadow-[0_0_25px_rgba(0,242,255,0.15)] duration-500 transform hover:scale-105 hover-trigger">
                 <span id="typewriter-text" class="text-cyan-400 text-xs font-bold tracking-[0.2em] uppercase glow-text"></span><span class="typewriter-cursor"></span>
             </div>
             
             <div class="mb-8">
                 <h1 class="text-4xl md:text-6xl lg:text-7xl font-extrabold leading-[1.08] reveal-text drop-shadow-2xl">
-                    <span class="hero-title-gradient block">Authentic Engineering.</span>
-                    <span class="hero-subtitle-gradient drop-shadow-lg block mt-1">Next-Gen Solutions.</span>
+                    <span class="hero-title-gradient block"><span class="hero-title-word">Authentic</span> <span class="hero-title-word">Engineering.</span></span>
+                    <span class="hero-subtitle-gradient drop-shadow-lg block mt-1"><span class="hero-title-word">Next-Gen</span> <span class="hero-title-word">Solutions.</span></span>
                 </h1>
             </div>
 
@@ -3789,7 +3891,7 @@
                     <h3 class="text-2xl md:text-3xl font-bold text-white">Work Showcase</h3>
                     <p id="portfolioResultCount" class="text-sm text-gray-500 mt-1" aria-live="polite">Showing all 6 builds</p>
                 </div>
-                <div class="flex flex-wrap gap-2" aria-label="Filter portfolio projects">
+                <div class="portfolio-filter-bar flex flex-wrap gap-2" aria-label="Filter portfolio projects">
                     <button type="button" class="portfolio-filter px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider" data-filter="all" aria-pressed="true">All</button>
                     <button type="button" class="portfolio-filter px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider" data-filter="ai" aria-pressed="false">AI</button>
                     <button type="button" class="portfolio-filter px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider" data-filter="saas" aria-pressed="false">SaaS</button>
@@ -5570,7 +5672,7 @@
                         
                         <div class="mt-auto space-y-3">
                             <!-- Compact Grid for Contact Info -->
-                            <div class="grid sm:grid-cols-2 gap-3">
+                            <div class="contact-card-grid grid sm:grid-cols-2 gap-3">
                                 <!-- Email -->
                                 <a href="mailto:mail@pukkagennoduff.com" class="flex items-center gap-3 group/item p-3 rounded-xl bg-white/[0.02] border border-white/5 hover:border-cyan-500/30 hover:bg-white/[0.05] transition-all duration-300 hover:-translate-y-1">
                                     <div class="w-10 h-10 rounded-full flex items-center justify-center text-cyan-400 bg-cyan-500/10 group-hover/item:scale-110 transition-transform duration-300 animate-float shrink-0">
@@ -5583,7 +5685,7 @@
                                 </a>
 
                                 <!-- Phone -->
-                                <button type="button" onclick="openContactModal()" class="w-full flex items-center gap-3 group/item p-3 rounded-xl bg-white/[0.02] border border-white/5 hover:border-green-500/30 hover:bg-white/[0.05] transition-all duration-300 hover:-translate-y-1 text-left">
+                                <button type="button" data-open-modal="contact" class="w-full flex items-center gap-3 group/item p-3 rounded-xl bg-white/[0.02] border border-white/5 hover:border-green-500/30 hover:bg-white/[0.05] transition-all duration-300 hover:-translate-y-1 text-left">
                                     <div class="w-10 h-10 rounded-full flex items-center justify-center text-green-400 bg-green-500/10 group-hover/item:scale-110 transition-transform duration-300 animate-float animate-float-delay-1 shrink-0">
                                         <i class="fab fa-whatsapp text-base"></i>
                                     </div>
@@ -5605,7 +5707,7 @@
                                 </div>
 
                                 <!-- Location -->
-                                <button type="button" onclick="openMapModal()" class="w-full flex items-center gap-3 group/item p-3 rounded-xl bg-white/[0.02] border border-white/5 hover:border-purple-500/30 hover:bg-white/[0.05] transition-all duration-300 hover:-translate-y-1 text-left">
+                                <button type="button" data-open-modal="map" class="w-full flex items-center gap-3 group/item p-3 rounded-xl bg-white/[0.02] border border-white/5 hover:border-purple-500/30 hover:bg-white/[0.05] transition-all duration-300 hover:-translate-y-1 text-left">
                                      <div class="w-10 h-10 rounded-full flex items-center justify-center text-purple-400 bg-purple-500/10 group-hover/item:scale-110 transition-transform duration-300 animate-float animate-float-delay-3 shrink-0">
                                         <i class="fas fa-map-marker-alt text-sm"></i>
                                     </div>
@@ -5626,7 +5728,7 @@
                                     <div class="flex justify-between items-center mb-2">
                                          <p class="text-[9px] uppercase font-bold tracking-widest text-gray-500 group-hover/item:text-orange-400 transition-colors">Business Hours</p>
                                     </div>
-                                    <div class="grid grid-cols-3 gap-2 text-xs text-gray-300">
+                                    <div class="business-hours-grid grid grid-cols-3 gap-2 text-xs text-gray-300">
                                         <div class="flex flex-col">
                                             <span class="text-gray-500 text-[10px]">Mon - Fri</span>
                                             <span class="font-medium">09:00 - 18:00</span>
@@ -6006,6 +6108,9 @@
 
         function openModal(modal, focusTarget) {
             if (!modal) return;
+            document.querySelectorAll('.service-modal.active').forEach(activeModal => {
+                if (activeModal !== modal) closeModal(activeModal, false);
+            });
             modal._returnFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
             modal.classList.add('active');
             modal.setAttribute('aria-hidden', 'false');
@@ -6079,6 +6184,7 @@
 
         // --- 1.5 Hero Slideshow Logic ---
         function initHeroSlideshow() {
+            if (prefersReducedMotion) return;
             const slides = document.querySelectorAll('#hero-slideshow > div');
             if(slides.length === 0) return;
             
@@ -6394,10 +6500,11 @@
         // --- 6. Mobile Menu ---
         const mobileBtn = document.getElementById('mobileMenuBtn');
         const mobileMenu = document.getElementById('mobile-menu');
-        const mobileIcon = mobileBtn.querySelector('i');
-        const mobileLinks = mobileMenu.querySelectorAll('a');
+        const mobileIcon = mobileBtn?.querySelector('i');
+        const mobileLinks = mobileMenu ? mobileMenu.querySelectorAll('a') : [];
 
         function toggleMobileMenu() {
+            if (!mobileBtn || !mobileMenu || !mobileIcon) return;
             const isHidden = mobileMenu.classList.contains('hidden');
             
             if (isHidden) {
@@ -6417,7 +6524,7 @@
             }
         }
 
-        mobileBtn.addEventListener('click', toggleMobileMenu);
+        mobileBtn?.addEventListener('click', toggleMobileMenu);
 
         mobileLinks.forEach(link => {
             link.addEventListener('click', () => {
@@ -6605,7 +6712,7 @@
 
         commandPaletteBtn?.addEventListener('click', openCommandPalette);
         mobileCommandPaletteBtn?.addEventListener('click', () => {
-            if (!mobileMenu.classList.contains('hidden')) toggleMobileMenu();
+            if (mobileMenu && !mobileMenu.classList.contains('hidden')) toggleMobileMenu();
             requestAnimationFrame(openCommandPalette);
         });
         commandPaletteClose?.addEventListener('click', () => closeCommandPalette());
@@ -6656,7 +6763,7 @@
                 commandPalette?.classList.contains('active') ? closeCommandPalette() : openCommandPalette();
             } else if (e.key === 'Escape' && commandPalette?.classList.contains('active')) {
                 closeCommandPalette();
-            } else if (e.key === 'Escape' && !mobileMenu.classList.contains('hidden')) {
+            } else if (e.key === 'Escape' && mobileMenu && !mobileMenu.classList.contains('hidden')) {
                 toggleMobileMenu();
             }
         });
@@ -7107,7 +7214,7 @@
                 });
             });
             messages.addEventListener('click', (event) => {
-                const actionButton = event.target.closest('[data-ai-action]');
+                const actionButton = event.target instanceof Element ? event.target.closest('[data-ai-action]') : null;
                 if (actionButton) runAiAction(actionButton.dataset.aiAction, actionButton);
             });
             document.addEventListener('keydown', (event) => {
@@ -7637,7 +7744,7 @@
                             <p class="text-xs md:text-base mb-6 md:mb-8 text-gray-300 max-w-lg mx-auto relative z-10 leading-relaxed">
                                 That is okay. It just means you are in the <strong>Discovery Phase</strong>, not the Build Phase. Don't burn your budget on code yet. Book a "No Duff" Consultation with Pukka Gen. We will help you answer these questions, build a roadmap, and ensure that when we <em>do</em> start coding, it’s built to last.
                             </p>
-                            <a href="#contact" onclick="closeServiceModal()" class="inline-flex items-center px-6 py-3 md:px-8 md:py-4 bg-cyan-500 text-black font-bold rounded-full hover:bg-cyan-400 transition-all shadow-[0_0_20px_rgba(6,182,212,0.3)] hover:shadow-[0_0_30px_rgba(6,182,212,0.5)] hover:scale-105 relative z-10 text-xs md:text-base">
+                            <a href="#contact" data-modal-close class="inline-flex items-center px-6 py-3 md:px-8 md:py-4 bg-cyan-500 text-black font-bold rounded-full hover:bg-cyan-400 transition-all shadow-[0_0_20px_rgba(6,182,212,0.3)] hover:shadow-[0_0_30px_rgba(6,182,212,0.5)] hover:scale-105 relative z-10 text-xs md:text-base">
                                 Book Your Consultation Now <i class="fas fa-arrow-right ml-2"></i>
                             </a>
                             <div class="mt-6 md:mt-8 border-t border-white/10 pt-4 md:pt-6">
@@ -7919,7 +8026,7 @@
                 e.preventDefault(); // Stop anchor jump
                 const key = btn.getAttribute('data-service');
                 const data = serviceDetails[key];
-                if(!data) return;
+                if(!data || !serviceModal || !modalContent) return;
 
                 const theme = getServiceTheme(key);
                 
@@ -7978,7 +8085,7 @@
 
                         <!-- Footer -->
                         <div class="p-6 border-t border-white/5 text-center bg-white/[0.02]">
-                            <a href="#contact" class="magnetic-btn inline-flex items-center px-6 py-3 md:px-8 md:py-3 rounded-full bg-white text-black font-bold hover:bg-${theme}-400 hover:text-white transition-all shadow-lg hover:shadow-${theme}-500/50 text-sm" onclick="closeServiceModal()">
+                            <a href="#contact" data-modal-close class="magnetic-btn inline-flex items-center px-6 py-3 md:px-8 md:py-3 rounded-full bg-white text-black font-bold hover:bg-cyan-400 hover:text-black transition-all shadow-lg hover:shadow-[0_0_25px_rgba(6,182,212,0.4)] text-sm">
                                 Start This Project <i class="fas fa-arrow-right ml-2"></i>
                             </a>
                         </div>
@@ -8078,7 +8185,7 @@
 
                             <div class="pt-5 border-t border-white/10 flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
                                 <p class="text-xs text-gray-500 leading-relaxed max-w-sm">Need a similar product system? Start with a focused brief and we will shape the delivery path.</p>
-                                <a href="#contact" class="magnetic-btn inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full ${c.button} text-sm font-bold transition-colors" onclick="closeServiceModal()">
+                                <a href="#contact" data-modal-close class="magnetic-btn inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full ${c.button} text-sm font-bold transition-colors">
                                     Discuss a Build <i class="fas fa-arrow-right"></i>
                                 </a>
                             </div>
@@ -8122,7 +8229,7 @@
             card.addEventListener('click', (e) => {
                 const key = card.getAttribute('data-tech');
                 const data = techDetails[key];
-                if(!data) return;
+                if(!data || !serviceModal || !modalContent) return;
 
                 // Clean icon class for background (remove 'colored' to allow CSS coloring)
                 const bgIconClass = data.icon.replace('colored', '').trim();
@@ -8168,7 +8275,7 @@
 
                         <!-- Footer -->
                         <div class="p-6 border-t border-white/5 text-center bg-white/[0.02] relative z-10">
-                            <button type="button" class="magnetic-btn inline-flex items-center px-6 py-3 md:px-8 md:py-3 rounded-full bg-white text-black font-bold hover:bg-cyan-400 hover:text-black transition-all shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_25px_rgba(6,182,212,0.4)] text-xs md:text-sm uppercase tracking-wide" onclick="closeServiceModal()">
+                            <button type="button" data-modal-close class="magnetic-btn inline-flex items-center px-6 py-3 md:px-8 md:py-3 rounded-full bg-white text-black font-bold hover:bg-cyan-400 hover:text-black transition-all shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_25px_rgba(6,182,212,0.4)] text-xs md:text-sm uppercase tracking-wide">
                                 Close Overview
                             </button>
                         </div>
@@ -8206,7 +8313,7 @@
         function openBlogModal(cardElement) {
             const key = cardElement.getAttribute('data-insight');
             const data = blogDetails[key];
-            if(!data) return;
+            if(!data || !serviceModal || !modalContent) return;
 
             // Define Theme Colors (Default to Cyan)
             const theme = data.theme || 'cyan'; 
@@ -8258,7 +8365,7 @@
                                 Download Checklist <i class="fas fa-download ml-2"></i>
                             </button>
                         ` : ''}
-                        <button type="button" class="magnetic-btn inline-flex items-center px-6 py-3 md:px-8 md:py-3 rounded-full bg-white text-black font-bold hover:bg-${theme}-400 hover:text-black transition-all shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_25px_rgba(6,182,212,0.4)] text-xs md:text-sm uppercase tracking-wide" onclick="closeServiceModal()">
+                        <button type="button" data-modal-close class="magnetic-btn inline-flex items-center px-6 py-3 md:px-8 md:py-3 rounded-full bg-white text-black font-bold hover:bg-cyan-400 hover:text-black transition-all shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_25px_rgba(6,182,212,0.4)] text-xs md:text-sm uppercase tracking-wide">
                             Close Resource
                         </button>
                     </div>
@@ -8269,11 +8376,26 @@
             document.getElementById('downloadChecklistBtn')?.addEventListener('click', downloadNoDuffChecklist);
         }
 
-        modalClose.addEventListener('click', () => {
+        modalContent?.addEventListener('click', (event) => {
+            const closeTrigger = event.target instanceof Element ? event.target.closest('[data-modal-close]') : null;
+            if (!closeTrigger) return;
+
+            const target = closeTrigger.getAttribute('href');
+            if (target && target.startsWith('#')) {
+                event.preventDefault();
+                closeServiceModal();
+                setTimeout(() => scrollToSection(target), prefersReducedMotion ? 0 : 120);
+                return;
+            }
+
             closeServiceModal();
         });
 
-        serviceModal.addEventListener('click', (e) => {
+        modalClose?.addEventListener('click', () => {
+            closeServiceModal();
+        });
+
+        serviceModal?.addEventListener('click', (e) => {
             if(e.target === serviceModal) {
                 closeServiceModal();
             }
@@ -8310,8 +8432,9 @@
         const typeWriterElement = document.getElementById('typewriter-text');
         let i = 0;
         function typeWriter() {
+            if (!typeWriterElement) return;
             if (i < text.length) {
-                typeWriterElement.innerHTML += text.charAt(i);
+                typeWriterElement.textContent += text.charAt(i);
                 i++;
                 setTimeout(typeWriter, 100);
             }
@@ -8730,16 +8853,17 @@
         const faqModalCloseBtn = document.getElementById('faqModalCloseBtn');
         const faqModalContent = document.getElementById('faqModalContent');
 
-        viewAllFaqsBtn.addEventListener('click', () => {
+        viewAllFaqsBtn?.addEventListener('click', () => {
+            if (!faqModal || !faqModalContent) return;
             // Render all FAQs
             faqModalContent.innerHTML = allFaqs.map(faq => `
-                <div class="faq-item spotlight-card rounded-2xl overflow-hidden group hover:border-${faq.color.replace('text-', '')}/30 transition-all duration-300 border border-white/5 bg-white/5" data-color="${faq.color}" data-border="${faq.border}">
+                <div class="faq-item spotlight-card rounded-2xl overflow-hidden group hover:border-white/20 transition-all duration-300 border border-white/5 bg-white/5" data-color="${faq.color}" data-border="${faq.border}">
                     <button type="button" class="faq-question w-full px-5 py-4 text-left flex justify-between items-center text-gray-200 focus:outline-none">
                         <div class="flex items-center gap-3">
                             <div class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center border border-white/10 shrink-0">
                                 <i class="fas ${faq.icon} text-xs ${faq.color} group-hover:scale-110 transition-transform duration-300"></i>
                             </div>
-                            <span class="font-bold text-sm md:text-base group-hover:${faq.color} transition-colors">${faq.question}</span>
+                            <span class="font-bold text-sm md:text-base group-hover:text-white transition-colors">${faq.question}</span>
                         </div>
                         <i class="fas fa-plus text-xs text-gray-500 transition-transform duration-300 ml-2"></i>
                     </button>
@@ -8760,11 +8884,11 @@
             closeModal(faqModal);
         }
 
-        faqModalClose.addEventListener('click', closeFaqModal);
-        faqModalCloseBtn.addEventListener('click', closeFaqModal);
+        faqModalClose?.addEventListener('click', closeFaqModal);
+        faqModalCloseBtn?.addEventListener('click', closeFaqModal);
         
         // Close on outside click
-        faqModal.addEventListener('click', (e) => {
+        faqModal?.addEventListener('click', (e) => {
              if(e.target === faqModal) closeFaqModal();
         });
 
@@ -8778,11 +8902,11 @@
             openModal(contactModal, contactModalClose);
         }
 
-        contactModalClose.addEventListener('click', () => {
+        contactModalClose?.addEventListener('click', () => {
             closeModal(contactModal);
         });
 
-        contactModal.addEventListener('click', (e) => {
+        contactModal?.addEventListener('click', (e) => {
             if (e.target === contactModal) {
                 closeModal(contactModal);
             }
@@ -8798,13 +8922,25 @@
             openModal(mapModal, mapModalClose);
         }
 
-        mapModalClose.addEventListener('click', () => {
+        mapModalClose?.addEventListener('click', () => {
             closeModal(mapModal);
         });
 
-        mapModal.addEventListener('click', (e) => {
+        mapModal?.addEventListener('click', (e) => {
             if (e.target === mapModal) {
                 closeModal(mapModal);
+            }
+        });
+
+        document.addEventListener('click', (event) => {
+            const trigger = event.target instanceof Element ? event.target.closest('[data-open-modal]') : null;
+            if (!trigger) return;
+
+            const modalName = trigger.dataset.openModal;
+            if (modalName === 'contact') {
+                window.openContactModal?.();
+            } else if (modalName === 'map') {
+                window.openMapModal?.();
             }
         });
 
