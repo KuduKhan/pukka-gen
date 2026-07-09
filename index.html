@@ -1750,7 +1750,7 @@
             opacity: 0;
             visibility: hidden;
             pointer-events: none;
-            transition: all 0.3s ease;
+            transition: opacity 0.28s ease, visibility 0.28s ease;
             padding: 1rem;
         }
         .service-modal.active { opacity: 1; visibility: visible; pointer-events: auto; }
@@ -1767,12 +1767,7 @@
             scrollbar-gutter: stable;
             position: relative;
             transform: translateY(20px) scale(0.95);
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        @media (min-width: 768px) {
-            .modal-content {
-                padding: 2.5rem; /* Restored for desktop */
-            }
+            transition: transform 0.38s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.28s ease;
         }
         .service-modal.active .modal-content { transform: translateY(0) scale(1); }
         .modal-close {
@@ -1910,47 +1905,8 @@
         .icon-lock { color: #F59E0B; }
         .icon-compliance { color: #8B5CF6; }
 
-        .portfolio-filter {
-            min-height: 2.75rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            background: rgba(255, 255, 255, 0.035);
-            color: #a1a1aa;
-            transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease, color 0.25s ease;
-        }
-        .portfolio-filter:hover,
-        .portfolio-filter[aria-pressed="true"] {
-            color: #fff;
-            border-color: rgba(0, 242, 255, 0.38);
-            background: rgba(0, 242, 255, 0.1);
-            box-shadow: 0 0 28px rgba(0, 242, 255, 0.12);
-            transform: translateY(-1px);
-        }
-        .portfolio-card {
-            min-height: 26rem;
-            transition: transform 0.35s ease, border-color 0.35s ease, opacity 0.25s ease;
-        }
-        .portfolio-card:hover {
-            transform: translateY(-6px);
-        }
         .portfolio-card.is-hidden {
             display: none;
-        }
-        .portfolio-card-visual {
-            min-height: 11.5rem;
-            background-size: cover;
-            background-position: center;
-            transition: transform 0.5s ease;
-        }
-        .portfolio-card:hover .portfolio-card-visual {
-            transform: scale(1.04);
-        }
-        @media (max-width: 640px) {
-            .portfolio-card {
-                min-height: auto;
-            }
-            .portfolio-card-visual {
-                min-height: 10rem;
-            }
         }
 
         .command-palette-content {
@@ -2315,9 +2271,11 @@
         }
 
         .portfolio-filter {
+            min-height: 2.75rem;
             border: 1px solid rgba(255, 255, 255, 0.1);
             background: rgba(255, 255, 255, 0.045);
             color: #cbd5e1;
+            transition: transform 0.24s var(--ease-out), border-color 0.24s ease, background 0.24s ease, color 0.24s ease, box-shadow 0.24s ease;
         }
 
         .portfolio-filter:hover {
@@ -2348,10 +2306,13 @@
         .portfolio-card {
             border-radius: 1.1rem !important;
             min-height: 27rem;
+            transition: transform 0.35s var(--ease-out), border-color 0.35s ease, opacity 0.25s ease, box-shadow 0.35s ease;
         }
 
         .portfolio-card-visual {
             min-height: 13rem;
+            background-size: cover;
+            background-position: center;
             position: relative;
             transition: transform 0.7s var(--ease-out), filter 0.7s ease;
         }
@@ -6162,6 +6123,12 @@
             modal.classList.remove('active');
             modal.setAttribute('aria-hidden', 'true');
 
+            if (modal.id === 'commandPalette') {
+                document.getElementById('commandPaletteBtn')?.setAttribute('aria-expanded', 'false');
+                document.getElementById('mobileCommandPaletteBtn')?.setAttribute('aria-expanded', 'false');
+                document.getElementById('commandPaletteInput')?.removeAttribute('aria-activedescendant');
+            }
+
             if (!document.querySelector('.service-modal.active')) {
                 document.body.classList.remove('modal-open');
             }
@@ -8983,8 +8950,6 @@
 
         // Map Modal Theme Toggle
         if (mapThemeToggle && mapIframe) {
-            const mapToggleText = document.getElementById('mapToggleText');
-            
             mapThemeToggle.addEventListener('click', () => {
                 // Toggle classes
                 if (mapIframe.classList.contains('map-tactical')) {
