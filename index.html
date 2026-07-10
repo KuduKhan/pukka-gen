@@ -2109,7 +2109,7 @@
                 rgba(5, 8, 14, 0.94);
             border-color: rgba(255, 255, 255, 0.13);
             box-shadow: 0 24px 80px rgba(0, 0, 0, 0.48);
-            will-change: opacity, transform, filter;
+            will-change: opacity, transform;
         }
 
         #mobile-menu:not(.hidden) {
@@ -2120,13 +2120,11 @@
         @keyframes refined-menu-in {
             from {
                 opacity: 0;
-                transform: translateY(-0.75rem) scale(0.98);
-                filter: blur(8px);
+                transform: translate3d(0, -0.75rem, 0) scale(0.98);
             }
             to {
                 opacity: 1;
-                transform: translateY(0) scale(1);
-                filter: blur(0);
+                transform: translate3d(0, 0, 0) scale(1);
             }
         }
 
@@ -2471,6 +2469,25 @@
 
             .spotlight-card:hover {
                 --lift: -4px;
+            }
+        }
+
+        @media (max-width: 900px) and (orientation: landscape) {
+            #mobile-menu {
+                top: 4.75rem;
+                left: max(0.75rem, env(safe-area-inset-left));
+                right: max(0.75rem, env(safe-area-inset-right));
+                max-height: calc(100dvh - 5.25rem);
+                overflow-y: auto;
+                overscroll-behavior: contain;
+                gap: 0.55rem;
+                padding: 0.75rem;
+            }
+
+            #mobile-menu a,
+            #mobile-menu button {
+                min-height: 2.45rem;
+                padding-block: 0.55rem;
             }
         }
 
@@ -3130,6 +3147,10 @@
                 block-size: auto;
                 max-block-size: calc(100dvh - max(1rem, env(safe-area-inset-top) + env(safe-area-inset-bottom) + 0.75rem));
             }
+
+            .pukka-ai-panel[aria-hidden="true"] {
+                transform: translate3d(0, 0, 0) scale(0.985);
+            }
         }
 
         @media (max-width: 640px), (pointer: coarse) {
@@ -3157,6 +3178,63 @@
 
             #comet {
                 display: none;
+            }
+        }
+
+        /* Mobile motion stability: keep interaction smooth without bulky overrides. */
+        .transition-all {
+            transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform !important;
+        }
+
+        .animate-item {
+            filter: none !important;
+            transform: translate3d(0, 1rem, 0) scale(0.992);
+            transition-property: opacity, transform !important;
+        }
+
+        .animate-item.visible {
+            filter: none !important;
+            transform: translate3d(0, 0, 0) scale(1);
+        }
+
+        nav,
+        #mobile-menu,
+        .glass-card,
+        .spotlight-card,
+        .portfolio-card,
+        .pukka-ai-panel,
+        .pukka-ai-toggle,
+        #backToTop {
+            backface-visibility: hidden;
+        }
+
+        #particleCanvas,
+        #rocket,
+        #comet {
+            contain: layout paint size;
+        }
+
+        body.motion-paused .pukka-ai-toggle,
+        body.motion-paused .pukka-ai-quick-track,
+        body.motion-paused .marquee-track,
+        body.motion-paused .animate-float,
+        body.motion-paused .animate-scroll-wheel {
+            animation-play-state: paused !important;
+        }
+
+        @media (hover: none), (pointer: coarse), (max-width: 1023px) {
+            .spotlight-card,
+            .portfolio-card,
+            .tech-marquee-item,
+            .magnetic-btn {
+                will-change: auto !important;
+            }
+
+            .ux-ripple,
+            #particleCanvas,
+            #rocket,
+            #comet {
+                display: none !important;
             }
         }
 
@@ -6092,6 +6170,8 @@
 
     <script>
         const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const finePointerQuery = window.matchMedia('(hover: hover) and (pointer: fine)');
+        const fullMotionQuery = window.matchMedia('(min-width: 1024px) and (pointer: fine)');
         const currentYear = document.getElementById('currentYear');
         if (currentYear) currentYear.textContent = String(new Date().getFullYear());
 
@@ -6210,24 +6290,31 @@
         // --- 2. Interactive Particles ---
         const canvas = document.getElementById('particleCanvas');
         const ctx = canvas ? canvas.getContext('2d') : null;
-        if (canvas) {
+
+        let particlesArray = [];
+        let mouse = { x: null, y: null, radius: 100 };
+        const fullMotionViewport = () => fullMotionQuery.matches;
+        const canRunParticleEffects = () => !prefersReducedMotion && finePointerQuery.matches && fullMotionViewport();
+
+        function resizeParticleCanvas() {
+            if (!canvas) return;
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
         }
 
-        let particlesArray;
-        let mouse = { x: null, y: null, radius: 100 };
-        const fullMotionViewport = () => window.matchMedia('(min-width: 768px) and (pointer: fine)').matches;
+        if (canvas && canRunParticleEffects()) resizeParticleCanvas();
         // Track positions of CSS-animated elements
         let rocketRect = { x: -1000, y: -1000 };
         let cometRect = { x: -1000, y: -1000 };
         // Flag to track comet status correctly since opacity style is set immediately
         let cometActive = false;
+        let particleAnimationFrame = 0;
 
-        window.addEventListener('mousemove', function(e) {
-            mouse.x = e.x;
-            mouse.y = e.y;
-        });
+        window.addEventListener('pointermove', (event) => {
+            if (event.pointerType !== 'mouse' || !canRunParticleEffects()) return;
+            mouse.x = event.clientX;
+            mouse.y = event.clientY;
+        }, { passive: true });
 
         class Particle {
             constructor() {
@@ -6309,7 +6396,11 @@
         }
 
         function initParticles() {
-            if (!canvas) return;
+            if (!canvas || !canRunParticleEffects()) {
+                particlesArray = [];
+                return;
+            }
+            resizeParticleCanvas();
             particlesArray = [];
             const density = fullMotionViewport() ? 10000 : 28000;
             const cap = fullMotionViewport() ? 140 : 42;
@@ -6321,8 +6412,8 @@
 
         function animateParticles() {
             if (!ctx || !particlesArray) return;
-            if (document.hidden) {
-                requestAnimationFrame(animateParticles);
+            if (document.hidden || !canRunParticleEffects()) {
+                particleAnimationFrame = 0;
                 return;
             }
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -6354,23 +6445,60 @@
                 particlesArray[i].draw();
                 particlesArray[i].update();
             }
-            requestAnimationFrame(animateParticles);
+            particleAnimationFrame = requestAnimationFrame(animateParticles);
         }
-        if (!prefersReducedMotion) {
+
+        function startParticles() {
+            if (!ctx || !particlesArray.length || !canRunParticleEffects() || document.hidden || particleAnimationFrame) return;
+            particleAnimationFrame = requestAnimationFrame(animateParticles);
+        }
+
+        function stopParticles() {
+            if (!particleAnimationFrame) return;
+            cancelAnimationFrame(particleAnimationFrame);
+            particleAnimationFrame = 0;
+        }
+
+        if (canRunParticleEffects()) {
             initParticles();
-            animateParticles();
+            startParticles();
         }
+
+        document.addEventListener('visibilitychange', () => {
+            document.body.classList.toggle('motion-paused', document.hidden);
+            if (document.hidden) {
+                stopParticles();
+            } else if (canRunParticleEffects()) {
+                if (!particlesArray.length) initParticles();
+                startParticles();
+            }
+        });
 
         let particleResizeFrame = 0;
         window.addEventListener('resize', () => {
-            if (!canvas || prefersReducedMotion) return;
+            if (!canvas || !canRunParticleEffects()) {
+                stopParticles();
+                particlesArray = [];
+                return;
+            }
             cancelAnimationFrame(particleResizeFrame);
             particleResizeFrame = requestAnimationFrame(() => {
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
                 initParticles();
+                startParticles();
             });
-        });
+        }, { passive: true });
+
+        const syncParticleEffects = () => {
+            if (!canRunParticleEffects() || document.hidden) {
+                stopParticles();
+                particlesArray = [];
+                return;
+            }
+            initParticles();
+            startParticles();
+        };
+        finePointerQuery.addEventListener?.('change', syncParticleEffects);
+        fullMotionQuery.addEventListener?.('change', syncParticleEffects);
 
         // --- 3. Navbar & Scroll ---
         const nav = document.querySelector('nav');
@@ -6381,8 +6509,12 @@
             window.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
         });
 
-        window.addEventListener('scroll', () => {
-            const scrollTop = window.scrollY;
+        let scrollFrame = 0;
+        let latestScrollTop = window.scrollY;
+
+        function updateScrollDrivenUi() {
+            scrollFrame = 0;
+            const scrollTop = latestScrollTop;
             const docHeight = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
             
             // Progress Bar
@@ -6398,7 +6530,12 @@
                 backToTopBtn?.classList.remove('visible');
             }
             updateActiveNavFromPosition(scrollTop);
-        });
+        }
+
+        window.addEventListener('scroll', () => {
+            latestScrollTop = window.scrollY;
+            if (!scrollFrame) scrollFrame = requestAnimationFrame(updateScrollDrivenUi);
+        }, { passive: true });
 
         const sectionNavLinks = Array.from(document.querySelectorAll('.nav-link[href^="#"]'));
         const navSections = sectionNavLinks
@@ -7230,14 +7367,15 @@
             let viewportFrame = 0;
             const handleViewportChange = () => {
                 if (!aiState.open) return;
-                cancelAnimationFrame(viewportFrame);
+                if (viewportFrame) return;
                 viewportFrame = requestAnimationFrame(() => {
+                    viewportFrame = 0;
                     resizeInput();
                     scrollMessages();
                 });
             };
-            window.addEventListener('resize', handleViewportChange);
-            window.visualViewport?.addEventListener('resize', handleViewportChange);
+            window.addEventListener('resize', handleViewportChange, { passive: true });
+            window.visualViewport?.addEventListener('resize', handleViewportChange, { passive: true });
 
             resizeInput();
             updateSendState();
@@ -9101,8 +9239,17 @@
                 });
             }
 
+            let dotsFrame = 0;
+            function scheduleDotsUpdate() {
+                if (dotsFrame) return;
+                dotsFrame = requestAnimationFrame(() => {
+                    dotsFrame = 0;
+                    updateDots();
+                });
+            }
+
             // Bind scroll event for real-time updates
-            container.addEventListener('scroll', updateDots, { passive: true, signal });
+            container.addEventListener('scroll', scheduleDotsUpdate, { passive: true, signal });
 
             
             function startAutoScroll() {
@@ -9176,6 +9323,11 @@
                 scheduleAutoScroll(); 
             }, { passive: true, signal });
 
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) stopAutoScroll();
+                else scheduleAutoScroll();
+            }, { signal });
+
             startAutoScroll();
         }
         
@@ -9187,7 +9339,7 @@
         window.addEventListener('resize', () => {
             clearTimeout(resizeTimer);
             resizeTimer = setTimeout(initMobileAutoScroll, 200);
-        });
+        }, { passive: true });
 
         // --- 17. UI Refinement Micro-Interactions ---
         (() => {
@@ -9268,6 +9420,35 @@
             let cursorX = window.innerWidth / 2;
             let cursorY = window.innerHeight / 2;
             let cursorFrame = 0;
+            const tiltSelector = '.spotlight-card, .portfolio-card';
+            let activeTiltCard = null;
+            let tiltPointerX = cursorX;
+            let tiltPointerY = cursorY;
+            let tiltFrame = 0;
+
+            const resetTilt = (card) => {
+                if (!card) return;
+                card.style.setProperty('--tilt-x', '0deg');
+                card.style.setProperty('--tilt-y', '0deg');
+            };
+
+            function paintTilt() {
+                tiltFrame = 0;
+                if (!activeTiltCard || activeTiltCard.closest('.service-modal.active')) return;
+
+                const rect = activeTiltCard.getBoundingClientRect();
+                if (!rect.width || !rect.height) return;
+
+                const x = tiltPointerX - rect.left;
+                const y = tiltPointerY - rect.top;
+                const tiltX = ((0.5 - y / rect.height) * 5.5).toFixed(2);
+                const tiltY = ((x / rect.width - 0.5) * 5.5).toFixed(2);
+
+                activeTiltCard.style.setProperty('--mouse-x', `${x}px`);
+                activeTiltCard.style.setProperty('--mouse-y', `${y}px`);
+                activeTiltCard.style.setProperty('--tilt-x', `${tiltX}deg`);
+                activeTiltCard.style.setProperty('--tilt-y', `${tiltY}deg`);
+            }
 
             function paintCursorSpotlight() {
                 cursorSpotlight.style.setProperty('--cursor-x', `${cursorX}px`);
@@ -9281,6 +9462,15 @@
                 cursorY = event.clientY;
                 document.body.classList.add('cursor-active');
                 if (!cursorFrame) cursorFrame = requestAnimationFrame(paintCursorSpotlight);
+
+                const target = event.target instanceof Element ? event.target : null;
+                const card = target?.closest(tiltSelector);
+                if (!card || card.closest('.service-modal.active')) return;
+
+                activeTiltCard = card;
+                tiltPointerX = event.clientX;
+                tiltPointerY = event.clientY;
+                if (!tiltFrame) tiltFrame = requestAnimationFrame(paintTilt);
             }, { passive: true });
 
             document.addEventListener('mouseleave', () => {
@@ -9291,33 +9481,16 @@
                 document.body.classList.remove('cursor-active');
             });
 
-            const tiltSelector = '.spotlight-card, .portfolio-card';
-            const resetTilt = (card) => {
-                card.style.setProperty('--tilt-x', '0deg');
-                card.style.setProperty('--tilt-y', '0deg');
-            };
-
-            document.addEventListener('pointermove', (event) => {
-                if (event.pointerType !== 'mouse') return;
-                const card = event.target.closest(tiltSelector);
-                if (!card || card.closest('.service-modal.active')) return;
-
-                const rect = card.getBoundingClientRect();
-                const x = event.clientX - rect.left;
-                const y = event.clientY - rect.top;
-                const tiltX = ((0.5 - y / rect.height) * 5.5).toFixed(2);
-                const tiltY = ((x / rect.width - 0.5) * 5.5).toFixed(2);
-
-                card.style.setProperty('--mouse-x', `${x}px`);
-                card.style.setProperty('--mouse-y', `${y}px`);
-                card.style.setProperty('--tilt-x', `${tiltX}deg`);
-                card.style.setProperty('--tilt-y', `${tiltY}deg`);
-            }, { passive: true });
-
             document.addEventListener('pointerout', (event) => {
-                const card = event.target.closest(tiltSelector);
+                const target = event.target instanceof Element ? event.target : null;
+                const card = target?.closest(tiltSelector);
                 const relatedTarget = event.relatedTarget;
                 if (!card || (relatedTarget instanceof Node && card.contains(relatedTarget))) return;
+                if (activeTiltCard === card) activeTiltCard = null;
+                if (tiltFrame) {
+                    cancelAnimationFrame(tiltFrame);
+                    tiltFrame = 0;
+                }
                 resetTilt(card);
             });
         })();
