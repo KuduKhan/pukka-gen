@@ -1104,8 +1104,19 @@
 
             .pukka-ai-panel {
                 width: 100%;
+                height: min(40rem, calc(100dvh - 1.5rem));
                 max-height: calc(100dvh - 1.5rem);
+                padding: 0 !important;
+                grid-template-rows: auto minmax(0, 1fr) auto;
                 border-radius: 1.25rem;
+            }
+
+            .pukka-ai-messages {
+                min-height: 0;
+            }
+
+            .pukka-ai-composer {
+                overflow: hidden;
             }
 
             .pukka-ai-toggle {
@@ -1191,7 +1202,9 @@
 
         @media (max-height: 640px) {
             .pukka-ai-panel {
+                height: calc(100dvh - 1rem);
                 max-height: calc(100dvh - 1rem);
+                padding: 0 !important;
                 border-radius: 1.1rem;
             }
 
@@ -2084,15 +2097,24 @@
         }
 
         body #mobileMenuBtn {
-            width: 2.75rem !important;
-            height: 2.75rem !important;
+            width: 2.65rem !important;
+            height: 2.65rem !important;
             display: inline-flex !important;
             align-items: center !important;
             justify-content: center !important;
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 0.95rem;
+            border-radius: 9999px;
             background: rgba(255, 255, 255, 0.055);
             box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+            color: #d4d4d8;
+            transition: color 0.25s ease, background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+        }
+
+        body #mobileMenuBtn:hover {
+            color: #050505;
+            background: var(--neon-accent);
+            border-color: rgba(0, 242, 255, 0.7);
+            box-shadow: 0 0 24px rgba(0, 242, 255, 0.28);
         }
 
         #mobile-menu {
@@ -2454,7 +2476,7 @@
             nav > .max-w-7xl {
                 min-height: 3.85rem;
                 padding: 0.65rem 0.8rem;
-                border-radius: 1rem;
+                border-radius: 9999px;
             }
 
             .nav-wordmark {
@@ -2572,15 +2594,18 @@
 
             #hero-slideshow::after {
                 background:
-                    linear-gradient(180deg, rgba(5, 5, 5, 0.82) 0%, rgba(5, 5, 5, 0.5) 40%, rgba(5, 5, 5, 0.9) 100%),
-                    radial-gradient(circle at 50% 34%, rgba(0, 242, 255, 0.12), transparent 42%);
+                    radial-gradient(circle at 50% 42%, rgba(0, 0, 0, 0.12), rgba(0, 0, 0, 0.76) 70%),
+                    linear-gradient(90deg, rgba(3, 7, 18, 0.6), transparent 32%, transparent 68%, rgba(3, 7, 18, 0.6));
             }
 
-            #hero-slideshow > div,
-            #hero-slideshow > div.opacity-100 {
+            #hero-slideshow > div {
                 background-position: center center;
                 filter: saturate(0.88) contrast(1.08);
-                transform: scale(1.025);
+                transform: scale(1.03);
+            }
+
+            #hero-slideshow > div.opacity-100 {
+                transform: scale(1.075);
             }
 
             .hero-copy {
@@ -2604,7 +2629,12 @@
             }
 
             .hero-brand-watermark {
-                display: none;
+                display: block;
+                top: 52%;
+                width: min(29rem, 112vw);
+                opacity: 0.085;
+                z-index: 1;
+                mix-blend-mode: screen;
             }
 
             .hero-kicker {
@@ -2655,6 +2685,7 @@
                 min-height: 3.2rem;
                 padding: 0.9rem 1.25rem !important;
                 align-items: center;
+                border-radius: 9999px !important;
             }
 
             .scroll-explore-indicator {
@@ -2662,15 +2693,38 @@
                 gap: 0.35rem;
             }
 
-            #mobile-menu .magnetic-btn::before,
-            #mobile-menu .magnetic-btn::after {
-                display: none;
+            #mobile-menu .mobile-link {
+                display: inline-flex !important;
+                align-items: center;
+                width: fit-content;
+                min-height: 2.35rem;
+                padding: 0.45rem 0.15rem !important;
+                border-left: 0 !important;
             }
 
-            #mobile-menu .magnetic-btn {
-                border-color: rgba(103, 232, 249, 0.16);
-                background: rgba(8, 18, 28, 0.72);
-                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+            #mobile-menu .mobile-link::after {
+                bottom: 0.28rem;
+            }
+
+            #mobile-menu .mobile-command-btn,
+            #mobile-menu .mobile-nav-cta {
+                border-radius: 9999px !important;
+                min-height: 2.9rem;
+            }
+
+            #mobile-menu .mobile-command-btn {
+                background: rgba(255, 255, 255, 0.05);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+            #mobile-menu .mobile-nav-cta {
+                display: inline-flex !important;
+                align-items: center;
+                justify-content: center;
+                width: 100%;
+                background: rgba(6, 182, 212, 0.1);
+                border: 1px solid rgba(6, 182, 212, 0.5);
+                color: #22d3ee;
             }
         }
 
@@ -2729,9 +2783,10 @@
             }
 
             .pukka-ai-widget {
-                width: calc((100vw - 1.5rem) / 0.88);
-                transform: scale(0.88);
-                transform-origin: bottom left;
+                left: 0.5rem;
+                right: 0.5rem;
+                width: auto;
+                transform: none;
             }
 
             #backToTop {
@@ -2743,23 +2798,6 @@
         }
 
         @media (hover: none), (pointer: coarse) {
-            .magnetic-btn:hover {
-                transform: none;
-            }
-
-            .magnetic-btn::after,
-            .magnetic-btn:hover::after,
-            .magnetic-btn::before,
-            .magnetic-btn:hover::before {
-                display: none;
-            }
-
-            #mobile-menu .magnetic-btn {
-                border-color: rgba(103, 232, 249, 0.16);
-                background: rgba(8, 18, 28, 0.72);
-                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
-            }
-
             #mobile-menu .magnetic-btn:active {
                 transform: scale(0.985);
                 background: rgba(0, 242, 255, 0.14);
@@ -2922,16 +2960,16 @@
 
         <!-- Mobile Menu Dropdown -->
         <div id="mobile-menu" class="hidden absolute top-24 left-4 right-4 glass-card rounded-2xl p-6 flex flex-col gap-4 z-50 transform origin-top" aria-hidden="true">
-            <a href="#about" class="block text-lg font-medium text-gray-200 hover:text-cyan-400 pl-2 border-l-2 border-transparent hover:border-cyan-400 transition-all active:scale-[0.98] mobile-link">About</a>
-            <a href="#values" class="block text-lg font-medium text-gray-200 hover:text-cyan-400 pl-2 border-l-2 border-transparent hover:border-cyan-400 transition-all active:scale-[0.98] mobile-link">Values</a>
-            <a href="#services" class="block text-lg font-medium text-gray-200 hover:text-cyan-400 pl-2 border-l-2 border-transparent hover:border-cyan-400 transition-all active:scale-[0.98] mobile-link">Services</a>
-            <a href="#portfolio" class="block text-lg font-medium text-gray-200 hover:text-cyan-400 pl-2 border-l-2 border-transparent hover:border-cyan-400 transition-all active:scale-[0.98] mobile-link">Portfolio</a>
-            <a href="#insights" class="block text-lg font-medium text-gray-200 hover:text-cyan-400 pl-2 border-l-2 border-transparent hover:border-cyan-400 transition-all active:scale-[0.98] mobile-link">Insights</a>
-            <a href="#team" class="block text-lg font-medium text-gray-200 hover:text-cyan-400 pl-2 border-l-2 border-transparent hover:border-cyan-400 transition-all active:scale-[0.98] mobile-link">Team</a>
-            <button type="button" id="mobileCommandPaletteBtn" class="w-full flex items-center justify-center gap-2 text-lg font-bold text-white bg-white/5 border border-white/10 p-3 rounded-lg magnetic-btn" aria-controls="commandPalette" aria-expanded="false">
+            <a href="#about" class="nav-link mobile-link text-base font-medium text-gray-300 hover:text-white transition-all active:scale-[0.98] hover-trigger">About</a>
+            <a href="#values" class="nav-link mobile-link text-base font-medium text-gray-300 hover:text-white transition-all active:scale-[0.98] hover-trigger">Values</a>
+            <a href="#services" class="nav-link mobile-link text-base font-medium text-gray-300 hover:text-white transition-all active:scale-[0.98] hover-trigger">Services</a>
+            <a href="#portfolio" class="nav-link mobile-link text-base font-medium text-gray-300 hover:text-white transition-all active:scale-[0.98] hover-trigger">Portfolio</a>
+            <a href="#insights" class="nav-link mobile-link text-base font-medium text-gray-300 hover:text-white transition-all active:scale-[0.98] hover-trigger">Insights</a>
+            <a href="#team" class="nav-link mobile-link text-base font-medium text-gray-300 hover:text-white transition-all active:scale-[0.98] hover-trigger">Team</a>
+            <button type="button" id="mobileCommandPaletteBtn" class="mobile-command-btn w-full flex items-center justify-center gap-2 text-base font-bold text-white p-3 magnetic-btn hover-trigger" aria-controls="commandPalette" aria-expanded="false">
                 <i class="fas fa-search text-cyan-400"></i> Quick Actions
             </button>
-            <a href="#contact" class="block text-lg font-bold text-cyan-400 bg-cyan-900/20 p-3 rounded-lg text-center mt-2 magnetic-btn mobile-link">Contact Us</a>
+            <a href="#contact" class="mobile-nav-cta text-base font-bold p-3 mt-2 magnetic-btn mobile-link hover-trigger">Contact Us</a>
         </div>
     </nav>
 
