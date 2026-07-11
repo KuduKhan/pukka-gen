@@ -2562,6 +2562,211 @@
             }
         }
 
+        @media (max-width: 640px) {
+            header {
+                min-height: auto;
+                padding: clamp(6.35rem, 18svh, 7.25rem) 1rem 5.25rem !important;
+                align-items: flex-start !important;
+                justify-content: center !important;
+            }
+
+            #hero-slideshow::after {
+                background:
+                    linear-gradient(180deg, rgba(5, 5, 5, 0.82) 0%, rgba(5, 5, 5, 0.5) 40%, rgba(5, 5, 5, 0.9) 100%),
+                    radial-gradient(circle at 50% 34%, rgba(0, 242, 255, 0.12), transparent 42%);
+            }
+
+            #hero-slideshow > div,
+            #hero-slideshow > div.opacity-100 {
+                background-position: center center;
+                filter: saturate(0.88) contrast(1.08);
+                transform: scale(1.025);
+            }
+
+            .hero-copy {
+                width: min(100%, 28rem);
+                min-height: calc(100svh - 11.6rem);
+                margin-inline: auto;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                transform: none !important;
+            }
+
+            .hero-brand-lockup {
+                margin-bottom: clamp(0.7rem, 2.5svh, 1rem);
+            }
+
+            .hero-wordmark {
+                width: min(14.5rem, 70vw);
+                max-height: 5.35rem;
+            }
+
+            .hero-brand-watermark {
+                display: none;
+            }
+
+            .hero-kicker {
+                max-width: min(100%, 18rem);
+                margin-bottom: 1.2rem !important;
+                padding: 0.65rem 1rem !important;
+                white-space: normal;
+            }
+
+            .hero-kicker #typewriter-text {
+                font-size: clamp(0.62rem, 2.7vw, 0.74rem);
+                letter-spacing: 0.16em;
+                overflow-wrap: anywhere;
+                white-space: normal;
+            }
+
+            .hero-headline-wrap {
+                margin-bottom: 1.15rem !important;
+            }
+
+            body .hero-copy h1 {
+                font-size: clamp(1.95rem, 10.2vw, 2.65rem) !important;
+                line-height: 1.04 !important;
+                letter-spacing: 0 !important;
+            }
+
+            body .hero-title-gradient,
+            body .hero-subtitle-gradient {
+                overflow-wrap: normal !important;
+                text-wrap: balance;
+            }
+
+            .hero-lede {
+                max-width: 21rem !important;
+                margin-bottom: 1.65rem !important;
+                color: rgba(229, 231, 235, 0.9);
+                font-size: clamp(0.92rem, 3.7vw, 1rem) !important;
+                line-height: 1.62;
+            }
+
+            .hero-cta-row {
+                width: 100%;
+                gap: 0.8rem !important;
+            }
+
+            body .hero-copy .hero-cta {
+                width: min(100%, 17.25rem) !important;
+                min-height: 3.2rem;
+                padding: 0.9rem 1.25rem !important;
+                align-items: center;
+            }
+
+            .scroll-explore-indicator {
+                bottom: 0.55rem !important;
+                gap: 0.35rem;
+            }
+
+            #mobile-menu .magnetic-btn::before,
+            #mobile-menu .magnetic-btn::after {
+                display: none;
+            }
+
+            #mobile-menu .magnetic-btn {
+                border-color: rgba(103, 232, 249, 0.16);
+                background: rgba(8, 18, 28, 0.72);
+                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+            }
+        }
+
+        @media (max-width: 360px) {
+            header {
+                padding-top: 6.05rem !important;
+                padding-bottom: 4.75rem !important;
+            }
+
+            .hero-copy {
+                min-height: calc(100svh - 10.8rem);
+            }
+
+            .hero-wordmark {
+                width: min(12.25rem, 68vw);
+                max-height: 4.65rem;
+            }
+
+            .hero-brand-lockup {
+                margin-bottom: 0.55rem;
+            }
+
+            .hero-kicker {
+                max-width: min(100%, 16.4rem);
+                margin-bottom: 0.95rem !important;
+                padding: 0.55rem 0.8rem !important;
+            }
+
+            .hero-kicker #typewriter-text {
+                font-size: 0.62rem;
+                letter-spacing: 0.13em;
+            }
+
+            body .hero-copy h1 {
+                font-size: clamp(1.78rem, 10vw, 2.12rem) !important;
+            }
+
+            .hero-headline-wrap {
+                margin-bottom: 0.95rem !important;
+            }
+
+            .hero-lede {
+                margin-bottom: 1.2rem !important;
+                font-size: 0.9rem !important;
+                line-height: 1.55;
+            }
+
+            .hero-cta-row {
+                gap: 0.65rem !important;
+            }
+
+            body .hero-copy .hero-cta {
+                width: min(100%, 15.75rem) !important;
+                min-height: 3rem;
+                padding: 0.8rem 1rem !important;
+            }
+
+            .pukka-ai-widget {
+                width: calc((100vw - 1.5rem) / 0.88);
+                transform: scale(0.88);
+                transform-origin: bottom left;
+            }
+
+            #backToTop {
+                width: 2.65rem;
+                height: 2.65rem;
+                right: 0.75rem;
+                bottom: 4.9rem;
+            }
+        }
+
+        @media (hover: none), (pointer: coarse) {
+            .magnetic-btn:hover {
+                transform: none;
+            }
+
+            .magnetic-btn::after,
+            .magnetic-btn:hover::after,
+            .magnetic-btn::before,
+            .magnetic-btn:hover::before {
+                display: none;
+            }
+
+            #mobile-menu .magnetic-btn {
+                border-color: rgba(103, 232, 249, 0.16);
+                background: rgba(8, 18, 28, 0.72);
+                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+            }
+
+            #mobile-menu .magnetic-btn:active {
+                transform: scale(0.985);
+                background: rgba(0, 242, 255, 0.14);
+                border-color: rgba(103, 232, 249, 0.34);
+            }
+        }
+
         @media (prefers-reduced-motion: reduce) {
             html { scroll-behavior: auto; }
             *, *::before, *::after {
@@ -2716,7 +2921,7 @@
         </div>
 
         <!-- Mobile Menu Dropdown -->
-        <div id="mobile-menu" class="hidden absolute top-24 left-4 right-4 glass-card rounded-2xl p-6 flex flex-col gap-4 z-50 transform origin-top">
+        <div id="mobile-menu" class="hidden absolute top-24 left-4 right-4 glass-card rounded-2xl p-6 flex flex-col gap-4 z-50 transform origin-top" aria-hidden="true">
             <a href="#about" class="block text-lg font-medium text-gray-200 hover:text-cyan-400 pl-2 border-l-2 border-transparent hover:border-cyan-400 transition-all active:scale-[0.98] mobile-link">About</a>
             <a href="#values" class="block text-lg font-medium text-gray-200 hover:text-cyan-400 pl-2 border-l-2 border-transparent hover:border-cyan-400 transition-all active:scale-[0.98] mobile-link">Values</a>
             <a href="#services" class="block text-lg font-medium text-gray-200 hover:text-cyan-400 pl-2 border-l-2 border-transparent hover:border-cyan-400 transition-all active:scale-[0.98] mobile-link">Services</a>
@@ -2771,25 +2976,25 @@
             <div class="animate-item hero-brand-lockup">
                 <img src="pukka-gen-wordmark.png" alt="Pukka Gen No Duff" class="brand-logo-image hero-wordmark" decoding="async">
             </div>
-            <div class="animate-item inline-block px-5 py-2 mb-8 rounded-full border border-cyan-500/30 bg-cyan-950/30 backdrop-blur-md hover:border-cyan-400/60 transition-colors cursor-default hover:shadow-[0_0_25px_rgba(0,242,255,0.15)] duration-500 transform hover:scale-105 hover-trigger">
+            <div class="animate-item hero-kicker inline-block px-5 py-2 mb-8 rounded-full border border-cyan-500/30 bg-cyan-950/30 backdrop-blur-md hover:border-cyan-400/60 transition-colors cursor-default hover:shadow-[0_0_25px_rgba(0,242,255,0.15)] duration-500 transform hover:scale-105 hover-trigger">
                 <span id="typewriter-text" class="text-cyan-400 text-xs font-bold tracking-[0.2em] uppercase glow-text"></span><span class="typewriter-cursor"></span>
             </div>
             
-            <div class="mb-8">
+            <div class="hero-headline-wrap mb-8">
                 <h1 class="text-4xl md:text-6xl lg:text-7xl font-extrabold leading-[1.08] reveal-text drop-shadow-2xl">
                     <span class="hero-title-gradient block">Authentic Engineering.</span>
                     <span class="hero-subtitle-gradient drop-shadow-lg block mt-1">Next-Gen Solutions.</span>
                 </h1>
             </div>
 
-            <p class="animate-item delay-200 text-base md:text-xl text-gray-300 max-w-2xl mx-auto mb-12 leading-relaxed font-light drop-shadow-md">
+            <p class="animate-item hero-lede delay-200 text-base md:text-xl text-gray-300 max-w-2xl mx-auto mb-12 leading-relaxed font-light drop-shadow-md">
                 We exist to build software that is <span class="text-white font-medium border-b border-cyan-500/50 pb-0.5">solid enough</span> to rely on today, yet <span class="text-white font-medium border-b border-purple-500/50 pb-0.5">advanced enough</span> to lead you into tomorrow. 
             </p>
-            <div class="animate-item delay-300 flex flex-col sm:flex-row gap-5 justify-center items-center">
-                <a href="#contact" class="magnetic-btn px-8 py-4 rounded-full bg-white text-black font-bold hover:bg-gray-200 shadow-[0_0_20px_rgba(255,255,255,0.3)] hover-trigger">
+            <div class="animate-item hero-cta-row delay-300 flex flex-col sm:flex-row gap-5 justify-center items-center">
+                <a href="#contact" class="magnetic-btn hero-cta px-8 py-4 rounded-full bg-white text-black font-bold hover:bg-gray-200 shadow-[0_0_20px_rgba(255,255,255,0.3)] hover-trigger">
                     Start Your Project
                 </a>
-                <a href="#services" class="magnetic-btn px-8 py-4 rounded-full glass-card text-white font-bold hover:bg-white/10 border border-white/20 hover:border-cyan-400/50 hover-trigger">
+                <a href="#services" class="magnetic-btn hero-cta px-8 py-4 rounded-full glass-card text-white font-bold hover:bg-white/10 border border-white/20 hover:border-cyan-400/50 hover-trigger">
                     Explore Services
                 </a>
             </div>
@@ -5872,6 +6077,8 @@
                 mobileIcon.classList.add('fa-times');
                 mobileBtn.setAttribute('aria-expanded', 'true');
                 mobileBtn.setAttribute('aria-label', 'Close navigation menu');
+                mobileMenu.setAttribute('aria-hidden', 'false');
+                document.body.classList.add('mobile-menu-open');
             } else {
                 mobileMenu.classList.add('hidden');
                 mobileMenu.classList.remove('mobile-menu-animate');
@@ -5879,10 +6086,24 @@
                 mobileIcon.classList.add('fa-bars');
                 mobileBtn.setAttribute('aria-expanded', 'false');
                 mobileBtn.setAttribute('aria-label', 'Open navigation menu');
+                mobileMenu.setAttribute('aria-hidden', 'true');
+                document.body.classList.remove('mobile-menu-open');
             }
         }
 
         mobileBtn.addEventListener('click', toggleMobileMenu);
+
+        const desktopNavQuery = window.matchMedia('(min-width: 1024px)');
+        const closeMobileMenuForDesktop = () => {
+            if (desktopNavQuery.matches && !mobileMenu.classList.contains('hidden')) {
+                toggleMobileMenu();
+            }
+        };
+        if (desktopNavQuery.addEventListener) {
+            desktopNavQuery.addEventListener('change', closeMobileMenuForDesktop);
+        } else if (desktopNavQuery.addListener) {
+            desktopNavQuery.addListener(closeMobileMenuForDesktop);
+        }
 
         mobileLinks.forEach(link => {
             link.addEventListener('click', () => {
