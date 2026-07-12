@@ -2422,6 +2422,58 @@
             }
         }
 
+        /* Pukka AI brand system */
+        .pukka-ai-header-wordmark {
+            width: min(9rem, 44vw);
+            height: 2.1rem;
+            object-fit: cover;
+            object-position: center;
+            mix-blend-mode: screen;
+            filter: drop-shadow(0 0 12px rgba(45, 125, 255, 0.25));
+        }
+
+        .pukka-ai-panel {
+            border-color: rgba(57, 132, 255, 0.32);
+            background:
+                radial-gradient(circle at 15% 0%, rgba(5, 217, 255, 0.16), transparent 34%),
+                radial-gradient(circle at 100% 15%, rgba(113, 39, 255, 0.2), transparent 38%),
+                rgba(3, 5, 14, 0.97);
+        }
+
+        .pukka-ai-avatar,
+        .pukka-ai-message-avatar {
+            background: #02030a;
+            border-color: rgba(60, 151, 255, 0.45);
+        }
+
+        .pukka-ai-toggle {
+            background: #02030a;
+            border-color: rgba(5, 217, 255, 0.55);
+            box-shadow: 0 0 38px rgba(17, 139, 255, 0.3), 0 18px 55px rgba(0, 0, 0, 0.55);
+        }
+
+        .pukka-ai-toggle .pukka-ai-mark,
+        .pukka-ai-avatar .pukka-ai-mark,
+        .pukka-ai-message-avatar .pukka-ai-mark {
+            transform: scale(1.04);
+            border-radius: 999px;
+        }
+
+        .pukka-ai-bubble {
+            border-color: rgba(80, 143, 255, 0.15);
+            background: linear-gradient(145deg, rgba(20, 28, 49, 0.94), rgba(12, 10, 34, 0.94));
+        }
+
+        .pukka-ai-chip:hover,
+        .pukka-ai-action:hover {
+            border-color: rgba(5, 217, 255, 0.42);
+            background: linear-gradient(110deg, rgba(5, 217, 255, 0.12), rgba(113, 39, 255, 0.12));
+        }
+
+        @media (max-width: 767px) {
+            .pukka-ai-header-wordmark { width: min(7.5rem, 39vw); height: 1.8rem; }
+        }
+
         @media (min-width: 1024px) {
             body #mobileMenuBtn {
                 display: none !important;
@@ -2962,7 +3014,7 @@
     </style>
 </head>
 <body id="top" class="antialiased selection:bg-cyan-500 selection:text-white relative">
-    <a href="#about" class="skip-link">Skip to content</a>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
 
     <!-- Scroll Progress -->
     <div class="scroll-progress" id="scrollProgress"></div>
@@ -3024,17 +3076,17 @@
         <section id="pukkaAiPanel" class="pukka-ai-panel" role="region" aria-label="Pukka AI chat assistant" aria-hidden="true" aria-busy="false">
             <div class="pukka-ai-header">
                 <div class="pukka-ai-avatar" aria-hidden="true">
-                    <img src="pukka-gen-favicon.png" alt="" class="pukka-ai-mark" loading="lazy" decoding="async">
+                    <img src="pukka-ai-logo.jpeg" width="699" height="699" alt="" class="pukka-ai-mark" loading="lazy" decoding="async">
                 </div>
                 <div class="pukka-ai-header-copy">
                     <div class="pukka-ai-title-row">
-                        <h2 class="text-sm font-extrabold text-white">Pukka AI</h2>
+                        <img src="pukka-ai-name.jpeg" width="1600" height="533" alt="Pukka AI" class="pukka-ai-header-wordmark" loading="lazy" decoding="async">
                         <span class="pukka-ai-status-label text-[10px] text-emerald-300 font-bold uppercase tracking-wide">
                             <span class="pukka-ai-status-dot" aria-hidden="true"></span>
                             <span id="pukkaAiStatusText">Ready</span>
                         </span>
                     </div>
-                    <p class="text-[11px] text-gray-400 truncate">Project scope, pricing, AI builds, and contact routing</p>
+                    <p class="text-[11px] text-gray-400 truncate">Intelligence. Innovation. Impact.</p>
                 </div>
                 <button type="button" id="pukkaAiClose" class="pukka-ai-close" aria-label="Close Pukka AI chat">
                     <i class="fas fa-times"></i>
@@ -3063,17 +3115,17 @@
         </section>
 
         <button type="button" id="pukkaAiToggle" class="pukka-ai-toggle hover-trigger" aria-label="Open Pukka AI chat" aria-controls="pukkaAiPanel" aria-expanded="false">
-            <img src="pukka-gen-favicon.png" alt="" class="pukka-ai-mark" loading="lazy" decoding="async">
+            <img src="pukka-ai-logo.jpeg" width="699" height="699" alt="" class="pukka-ai-mark" loading="lazy" decoding="async">
         </button>
         <div class="pukka-ai-nudge" aria-hidden="true">
-            <strong>Need direction?</strong> Ask Pukka AI.
+            <strong>Build smarter.</strong> Ask Pukka AI.
         </div>
     </div>
     <!-- Navigation -->
     <nav class="fixed w-full z-50 top-0 left-0 px-4 md:px-6 py-4">
         <div class="max-w-7xl mx-auto flex justify-between items-center glass-pill px-6 py-3 shadow-lg shadow-black/20">
             <a href="#top" class="site-logo-link hover-trigger" aria-label="Pukka Gen home">
-                <img src="pukka-gen-wordmark.png" alt="Pukka Gen No Duff" class="brand-logo-image nav-wordmark" decoding="async">
+                <img src="pukka-gen-wordmark.png" width="980" height="359" alt="Pukka Gen No Duff" class="brand-logo-image nav-wordmark" decoding="async">
             </a>
             
             <!-- Desktop Links -->
@@ -3114,6 +3166,7 @@
     </nav>
 
     <!-- Hero Section -->
+    <main id="main-content" tabindex="-1">
     <header class="min-h-screen flex items-center justify-center relative pt-20 px-6 overflow-hidden">
         <!-- Background Slideshow -->
         <div id="hero-slideshow" class="absolute inset-0 z-0">
@@ -3148,11 +3201,11 @@
         <div class="absolute inset-0 bg-gradient-to-b from-[#050505]/40 via-transparent to-[#050505] z-0"></div>
         <!-- Center Spotlight Gradient to make text pop -->
         <div class="absolute inset-0 bg-radial-gradient from-black/60 to-transparent opacity-80 z-0"></div>
-        <img src="pukka-gen-mark.png" alt="" class="hero-brand-watermark" aria-hidden="true" decoding="async">
+        <img src="pukka-gen-mark.png" width="720" height="727" alt="" class="hero-brand-watermark" aria-hidden="true" decoding="async">
 
         <div class="max-w-5xl mx-auto text-center z-10 relative stagger-container hero-copy">
             <div class="animate-item hero-brand-lockup">
-                <img src="pukka-gen-wordmark.png" alt="Pukka Gen No Duff" class="brand-logo-image hero-wordmark" decoding="async">
+                <img src="pukka-gen-wordmark.png" width="980" height="359" alt="Pukka Gen No Duff" class="brand-logo-image hero-wordmark" decoding="async" fetchpriority="high">
             </div>
             <div class="animate-item hero-kicker inline-block px-5 py-2 mb-8 rounded-full border border-cyan-500/30 bg-cyan-950/30 backdrop-blur-md hover:border-cyan-400/60 transition-colors cursor-default hover:shadow-[0_0_25px_rgba(0,242,255,0.15)] duration-500 transform hover:scale-105 hover-trigger">
                 <span id="typewriter-text" class="text-cyan-400 text-xs font-bold tracking-[0.2em] uppercase glow-text"></span><span class="typewriter-cursor"></span>
@@ -4692,7 +4745,7 @@
                          <div class="absolute inset-0 rounded-full border border-cyan-500/20 animate-[ping_3s_cubic-bezier(0,0,0.2,1)_infinite] opacity-30 pointer-events-none"></div>
                          
                          <!-- Logo -->
-                         <img src="pukka-gen-favicon.png" alt="Pukka Gen" class="nexus-brand-mark relative z-10" loading="lazy" decoding="async">
+                         <img src="pukka-gen-favicon.png" width="256" height="256" alt="Pukka Gen" class="nexus-brand-mark relative z-10" loading="lazy" decoding="async">
                         <div class="text-[6px] md:text-[8px] text-gray-500 uppercase tracking-widest mt-1 font-medium">Nexus Core</div>
                     </div>
 
@@ -4777,7 +4830,7 @@
                         <div class="spotlight-card rounded-3xl group hover-trigger border border-white/10 bg-[#080808] overflow-hidden relative aspect-square blog-card transition-all duration-500 hover:border-cyan-500/50 hover:shadow-[0_0_40px_rgba(6,182,212,0.15)] hover:-translate-y-1" data-insight="mvp_trap">
                             <!-- Image Background -->
                             <div class="absolute inset-0 z-0">
-                                <img src="https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-70 group-hover:opacity-50" alt="Construction Blueprint">
+                                <img src="https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=800&q=80" width="800" height="600" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-70 group-hover:opacity-50" alt="Construction Blueprint">
                                 <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-90 group-hover:opacity-80 transition-opacity duration-500"></div>
                             </div>
 
@@ -4811,7 +4864,7 @@
                         <!-- Blog Card 2 -->
                         <div class="spotlight-card rounded-3xl group hover-trigger border border-white/10 bg-[#080808] overflow-hidden relative aspect-square blog-card transition-all duration-500 hover:border-cyan-500/50 hover:shadow-[0_0_40px_rgba(6,182,212,0.15)] hover:-translate-y-1" data-insight="scope">
                             <div class="absolute inset-0 z-0">
-                                <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-70 group-hover:opacity-50" alt="Budgeting">
+                                <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=800&q=80" width="800" height="600" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-70 group-hover:opacity-50" alt="Budgeting">
                                 <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-90 group-hover:opacity-80 transition-opacity duration-500"></div>
                             </div>
                             
@@ -4842,7 +4895,7 @@
                         <!-- Blog Card 3 -->
                         <div class="spotlight-card rounded-3xl group hover-trigger border border-white/10 bg-[#080808] overflow-hidden relative aspect-square blog-card transition-all duration-500 hover:border-cyan-500/50 hover:shadow-[0_0_40px_rgba(6,182,212,0.15)] hover:-translate-y-1" data-insight="cheap_code">
                             <div class="absolute inset-0 z-0">
-                                <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-70 group-hover:opacity-50" alt="Code Matrix">
+                                <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=800&q=80" width="800" height="600" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-70 group-hover:opacity-50" alt="Code Matrix">
                                 <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-90 group-hover:opacity-80 transition-opacity duration-500"></div>
                             </div>
 
@@ -4873,7 +4926,7 @@
                         <!-- Blog Card 4 -->
                         <div class="spotlight-card rounded-3xl group hover-trigger border border-white/10 bg-[#080808] overflow-hidden relative aspect-square blog-card transition-all duration-500 hover:border-cyan-500/50 hover:shadow-[0_0_40px_rgba(6,182,212,0.15)] hover:-translate-y-1" data-insight="bluffing">
                             <div class="absolute inset-0 z-0">
-                                <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-70 group-hover:opacity-50" alt="Interview">
+                                <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=800&q=80" width="800" height="600" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-70 group-hover:opacity-50" alt="Interview">
                                 <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-90 group-hover:opacity-80 transition-opacity duration-500"></div>
                             </div>
 
@@ -4920,7 +4973,7 @@
                         <!-- Blog Card 5 -->
                         <div class="spotlight-card rounded-3xl group hover-trigger border border-white/10 bg-[#080808] overflow-hidden relative aspect-square blog-card transition-all duration-500 hover:border-purple-500/50 hover:shadow-[0_0_40px_rgba(168,85,247,0.15)] hover:-translate-y-1" data-insight="ai_business">
                             <div class="absolute inset-0 z-0">
-                                <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-70 group-hover:opacity-50" alt="AI Brain">
+                                <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=800&q=80" width="800" height="600" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-70 group-hover:opacity-50" alt="AI Brain">
                                 <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-90 group-hover:opacity-80 transition-opacity duration-500"></div>
                             </div>
 
@@ -4951,7 +5004,7 @@
                         <!-- Blog Card 6 -->
                         <div class="spotlight-card rounded-3xl group hover-trigger border border-white/10 bg-[#080808] overflow-hidden relative aspect-square blog-card transition-all duration-500 hover:border-purple-500/50 hover:shadow-[0_0_40px_rgba(168,85,247,0.15)] hover:-translate-y-1" data-insight="pwa">
                             <div class="absolute inset-0 z-0">
-                                <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-70 group-hover:opacity-50" alt="Mobile App">
+                                <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=800&q=80" width="800" height="600" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-70 group-hover:opacity-50" alt="Mobile App">
                                 <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-90 group-hover:opacity-80 transition-opacity duration-500"></div>
                             </div>
 
@@ -4982,7 +5035,7 @@
                         <!-- Blog Card 7 -->
                         <div class="spotlight-card rounded-3xl group hover-trigger border border-white/10 bg-[#080808] overflow-hidden relative aspect-square blog-card transition-all duration-500 hover:border-purple-500/50 hover:shadow-[0_0_40px_rgba(168,85,247,0.15)] hover:-translate-y-1" data-insight="cloud_security">
                             <div class="absolute inset-0 z-0">
-                                <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-70 group-hover:opacity-50" alt="Cybersecurity">
+                                <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=800&q=80" width="800" height="600" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-70 group-hover:opacity-50" alt="Cybersecurity">
                                 <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-90 group-hover:opacity-80 transition-opacity duration-500"></div>
                             </div>
 
@@ -5013,7 +5066,7 @@
                         <!-- Blog Card 8 -->
                         <div class="spotlight-card rounded-3xl group hover-trigger border border-white/10 bg-[#080808] overflow-hidden relative aspect-square blog-card transition-all duration-500 hover:border-purple-500/50 hover:shadow-[0_0_40px_rgba(168,85,247,0.15)] hover:-translate-y-1" data-insight="serverless">
                             <div class="absolute inset-0 z-0">
-                                <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-70 group-hover:opacity-50" alt="Serverless">
+                                <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80" width="800" height="600" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-70 group-hover:opacity-50" alt="Serverless">
                                 <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-90 group-hover:opacity-80 transition-opacity duration-500"></div>
                             </div>
 
@@ -5401,6 +5454,8 @@
     </section>
 
     <!-- Contact Section -->
+    </main>
+
     <footer id="contact" class="pt-32 pb-12 px-4 md:px-6 bg-[#020202] relative border-t border-white/5 overflow-hidden">
         <!-- Background Glow -->
         <div class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-cyan-500/5 rounded-full blur-[120px] pointer-events-none"></div>
@@ -5416,7 +5471,7 @@
 
                     <div class="relative z-10 flex-1 flex flex-col">
                         <a href="#top" class="site-logo-link mb-6 group" aria-label="Pukka Gen home">
-                            <img src="pukka-gen-wordmark.png" alt="Pukka Gen No Duff" class="brand-logo-image footer-wordmark" loading="lazy" decoding="async">
+                            <img src="pukka-gen-wordmark.png" width="980" height="359" alt="Pukka Gen No Duff" class="brand-logo-image footer-wordmark" loading="lazy" decoding="async">
                         </a>
                         
                         <h2 class="text-3xl md:text-4xl font-bold text-white mb-4 leading-tight">
@@ -6067,8 +6122,13 @@
             }
         }
 
+        let particleAnimationFrame = 0;
         function animateParticles() {
             if (!ctx || !particlesArray) return;
+            if (document.hidden || prefersReducedMotion) {
+                particleAnimationFrame = 0;
+                return;
+            }
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             
             // --- Update Rocket Position Tracking ---
@@ -6098,12 +6158,22 @@
                 particlesArray[i].draw();
                 particlesArray[i].update();
             }
-            requestAnimationFrame(animateParticles);
+            particleAnimationFrame = requestAnimationFrame(animateParticles);
         }
         if (!prefersReducedMotion) {
             initParticles();
             animateParticles();
         }
+
+        document.addEventListener('visibilitychange', () => {
+            if (prefersReducedMotion) return;
+            if (document.hidden) {
+                if (particleAnimationFrame) cancelAnimationFrame(particleAnimationFrame);
+                particleAnimationFrame = 0;
+            } else if (!particleAnimationFrame) {
+                particleAnimationFrame = requestAnimationFrame(animateParticles);
+            }
+        });
 
         window.addEventListener('resize', () => {
             if (!canvas || prefersReducedMotion) return;
@@ -6121,7 +6191,8 @@
             window.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
         });
 
-        window.addEventListener('scroll', () => {
+        let scrollFrame = 0;
+        function syncScrollUi() {
             const scrollTop = window.scrollY;
             const docHeight = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
             
@@ -6138,7 +6209,12 @@
                 backToTopBtn?.classList.remove('visible');
             }
             updateActiveNavFromPosition(scrollTop);
-        });
+            scrollFrame = 0;
+        }
+
+        window.addEventListener('scroll', () => {
+            if (!scrollFrame) scrollFrame = requestAnimationFrame(syncScrollUi);
+        }, { passive: true });
 
         const sectionNavLinks = Array.from(document.querySelectorAll('.nav-link[href^="#"]'));
         const navSections = sectionNavLinks
@@ -6655,7 +6731,7 @@
                     avatar.appendChild(avatarIcon);
                 } else {
                     const avatarImage = document.createElement('img');
-                    avatarImage.src = 'pukka-gen-favicon.png';
+                    avatarImage.src = 'pukka-ai-logo.jpeg';
                     avatarImage.alt = '';
                     avatarImage.className = 'pukka-ai-mark';
                     avatarImage.loading = 'lazy';
@@ -6712,7 +6788,7 @@
                 avatar.className = 'pukka-ai-message-avatar';
                 avatar.setAttribute('aria-hidden', 'true');
                 const icon = document.createElement('img');
-                icon.src = 'pukka-gen-favicon.png';
+                icon.src = 'pukka-ai-logo.jpeg';
                 icon.alt = '';
                 icon.className = 'pukka-ai-mark';
                 icon.loading = 'lazy';
@@ -8166,8 +8242,13 @@
         const typeWriterElement = document.getElementById('typewriter-text');
         let i = 0;
         function typeWriter() {
+            if (!typeWriterElement) return;
+            if (prefersReducedMotion) {
+                typeWriterElement.textContent = text;
+                return;
+            }
             if (i < text.length) {
-                typeWriterElement.innerHTML += text.charAt(i);
+                typeWriterElement.textContent += text.charAt(i);
                 i++;
                 setTimeout(typeWriter, 100);
             }
