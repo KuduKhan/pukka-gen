@@ -2998,6 +2998,80 @@
             }
         }
 
+        /* Reliability layer: predictable sizing, resilient copy, and lighter mobile rendering. */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        img,
+        video,
+        canvas,
+        iframe {
+            max-width: 100%;
+        }
+
+        :where(p, li, a, button, label, span) {
+            overflow-wrap: break-word;
+        }
+
+        body.mobile-menu-open {
+            overflow: hidden;
+            touch-action: none;
+        }
+
+        #mobile-menu {
+            overscroll-behavior: contain;
+        }
+
+        .service-modal.active .modal-content {
+            overscroll-behavior: contain;
+        }
+
+        #projectMessageCount {
+            font-variant-numeric: tabular-nums;
+        }
+
+        @media (max-width: 767px), (hover: none), (pointer: coarse) {
+            #particleCanvas,
+            #rocket,
+            #comet,
+            .ux-cursor-spotlight {
+                display: none !important;
+            }
+
+            .glass-card,
+            .spotlight-card,
+            .portfolio-card,
+            nav > .max-w-7xl {
+                backdrop-filter: blur(12px);
+                -webkit-backdrop-filter: blur(12px);
+            }
+
+            input,
+            select,
+            textarea {
+                font-size: 16px !important;
+            }
+        }
+
+        @media (max-width: 359px) {
+            nav > .max-w-7xl {
+                padding-inline: 0.55rem;
+            }
+
+            .nav-wordmark {
+                max-width: 68vw;
+            }
+
+            .hero-copy h1 {
+                font-size: 1.85rem;
+            }
+
+            .business-hours-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
     </style>
 </head>
 <body id="top" class="antialiased selection:bg-cyan-500 selection:text-white relative">
@@ -5527,7 +5601,7 @@
                                     <div class="flex justify-between items-center mb-2">
                                          <p class="text-[9px] uppercase font-bold tracking-widest text-gray-500 group-hover/item:text-orange-400 transition-colors">Business Hours</p>
                                     </div>
-                                    <div class="grid grid-cols-3 gap-2 text-xs text-gray-300">
+                                    <div class="business-hours-grid grid grid-cols-3 gap-2 text-xs text-gray-300">
                                         <div class="flex flex-col">
                                             <span class="text-gray-500 text-[10px]">Mon - Fri</span>
                                             <span class="font-medium">09:00 - 18:00</span>
@@ -5614,7 +5688,10 @@
                         
                         <!-- Row 3: Message -->
                         <div class="group/input animate-item delay-500">
-                            <label for="projectMessage" class="block text-[10px] uppercase tracking-wider text-gray-500 font-bold mb-1.5 ml-1 group-focus-within/input:text-cyan-400 transition-colors transform group-focus-within/input:translate-x-1 duration-300">Project Details</label>
+                            <div class="flex items-center justify-between gap-3 mb-1.5 ml-1">
+                                <label for="projectMessage" class="block text-[10px] uppercase tracking-wider text-gray-500 font-bold group-focus-within/input:text-cyan-400 transition-colors transform group-focus-within/input:translate-x-1 duration-300">Project Details</label>
+                                <span id="projectMessageCount" class="text-[10px] text-gray-600" aria-live="polite">0 / 700</span>
+                            </div>
                             <div class="relative overflow-hidden rounded-xl">
                                 <div class="absolute left-3 top-3 text-gray-600 group-focus-within/input:text-cyan-400 transition-all duration-300 pointer-events-none z-10 group-focus-within/input:-rotate-12"><i class="fas fa-pen text-xs"></i></div>
                                 <textarea id="projectMessage" name="message" rows="3" required minlength="12" maxlength="700" class="w-full bg-[#050505]/50 border border-white/10 rounded-xl pl-9 pr-4 py-3 focus:outline-none focus:border-cyan-500/50 focus:bg-cyan-500/[0.05] text-white placeholder-gray-700 transition-all duration-300 resize-none text-sm hover:border-white/20 focus:scale-[1.02] focus:shadow-[0_0_20px_rgba(6,182,212,0.1)] relative z-0" placeholder="Tell us about your vision..."></textarea>
@@ -5895,6 +5972,7 @@
 
     <script>
         const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const enableAmbientMotion = !prefersReducedMotion && window.matchMedia('(min-width: 768px) and (hover: hover) and (pointer: fine)').matches;
         const currentYear = document.getElementById('currentYear');
         if (currentYear) currentYear.textContent = String(new Date().getFullYear());
 
@@ -5911,6 +5989,9 @@
             modal.classList.add('active');
             modal.setAttribute('aria-hidden', 'false');
             document.body.classList.add('modal-open');
+            document.querySelectorAll('body > nav, body > main, body > footer, #pukkaAiWidget, #backToTop').forEach(element => {
+                if (!modal.contains(element)) element.inert = true;
+            });
 
             requestAnimationFrame(() => {
                 const target = focusTarget || getFocusableElements(modal)[0];
@@ -5925,6 +6006,9 @@
 
             if (!document.querySelector('.service-modal.active')) {
                 document.body.classList.remove('modal-open');
+                document.querySelectorAll('body > nav, body > main, body > footer, #pukkaAiWidget, #backToTop').forEach(element => {
+                    element.inert = false;
+                });
             }
 
             if (restoreFocus && modal._returnFocus instanceof HTMLElement) {
@@ -5981,12 +6065,14 @@
         // --- 1.5 Hero Slideshow Logic ---
         function initHeroSlideshow() {
             const slides = document.querySelectorAll('#hero-slideshow > div');
-            if(slides.length === 0) return;
+            if (slides.length < 2 || prefersReducedMotion) return;
             
             let currentSlide = 0;
             const intervalTime = 8000; // 8 seconds
+            let slideTimer = 0;
 
-            setInterval(() => {
+            const showNextSlide = () => {
+                if (document.hidden) return;
                 // Fade out current
                 slides[currentSlide].classList.remove('opacity-100');
                 slides[currentSlide].classList.add('opacity-0');
@@ -5997,7 +6083,15 @@
                 // Fade in next
                 slides[currentSlide].classList.remove('opacity-0');
                 slides[currentSlide].classList.add('opacity-100');
-            }, intervalTime);
+            };
+
+            const scheduleSlide = () => {
+                window.clearInterval(slideTimer);
+                if (!document.hidden) slideTimer = window.setInterval(showNextSlide, intervalTime);
+            };
+
+            document.addEventListener('visibilitychange', scheduleSlide);
+            scheduleSlide();
         }
 
         // --- 2. Interactive Particles ---
@@ -6147,13 +6241,13 @@
             }
             particleAnimationFrame = requestAnimationFrame(animateParticles);
         }
-        if (!prefersReducedMotion) {
+        if (enableAmbientMotion) {
             initParticles();
             animateParticles();
         }
 
         document.addEventListener('visibilitychange', () => {
-            if (prefersReducedMotion) return;
+            if (!enableAmbientMotion) return;
             if (document.hidden) {
                 if (particleAnimationFrame) cancelAnimationFrame(particleAnimationFrame);
                 particleAnimationFrame = 0;
@@ -6163,7 +6257,7 @@
         });
 
         window.addEventListener('resize', () => {
-            if (!canvas || prefersReducedMotion) return;
+            if (!canvas || !enableAmbientMotion) return;
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
             initParticles();
@@ -6334,7 +6428,7 @@
 
         mobileBtn.addEventListener('click', toggleMobileMenu);
 
-        const desktopNavQuery = window.matchMedia('(min-width: 1024px)');
+        const desktopNavQuery = window.matchMedia('(min-width: 1180px)');
         const closeMobileMenuForDesktop = () => {
             if (desktopNavQuery.matches && !mobileMenu.classList.contains('hidden')) {
                 toggleMobileMenu();
@@ -8261,6 +8355,8 @@
         function initProjectBriefForm() {
             const form = document.getElementById('projectBriefForm');
             const status = document.getElementById('projectFormStatus');
+            const messageField = document.getElementById('projectMessage');
+            const messageCount = document.getElementById('projectMessageCount');
             if (!form) return;
 
             const fields = Array.from(form.querySelectorAll('input, select, textarea'));
@@ -8286,6 +8382,16 @@
                     updateFieldState(field);
                 });
             });
+
+            const updateMessageCount = () => {
+                if (!messageField || !messageCount) return;
+                const length = messageField.value.length;
+                messageCount.textContent = `${length} / ${messageField.maxLength || 700}`;
+                messageCount.classList.toggle('text-yellow-400', length >= 630);
+                messageCount.classList.toggle('text-gray-600', length < 630);
+            };
+            messageField?.addEventListener('input', updateMessageCount);
+            updateMessageCount();
 
             function handleProjectBriefSubmit(event) {
                 event.preventDefault();
@@ -8324,6 +8430,9 @@
                     status.textContent = 'Your project brief is ready. Review and send it from the email app that opens.';
                     status.className = 'min-h-[1.25rem] text-xs text-green-400';
                 }
+                navigator.clipboard?.writeText(body).then(() => {
+                    if (status) status.textContent = 'Your brief was copied and is ready to send from the email app that opens.';
+                }).catch(() => {});
                 showToast(`Thanks, ${firstName}. Opening your email app with the brief prepared.`);
                 window.location.href = `mailto:mail@pukkagennoduff.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
             }
@@ -8414,7 +8523,7 @@
         }
 
         // Start rocket sequence after page load
-        if (!prefersReducedMotion) {
+        if (enableAmbientMotion) {
             setTimeout(launchRocket, 3000);
         }
 
@@ -8490,7 +8599,7 @@
         }
 
         // Start comet loop
-        if (!prefersReducedMotion) {
+        if (enableAmbientMotion) {
             setTimeout(launchComet, 2000);
         }
 
@@ -8812,7 +8921,7 @@
             // Check if mobile
             const isMobile = window.matchMedia('(max-width: 768px)').matches;
             
-            if (!isMobile) {
+            if (!isMobile || prefersReducedMotion) {
                 if (dotsContainer) dotsContainer.innerHTML = '';
                 return;
             }
