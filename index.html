@@ -2805,6 +2805,250 @@
             }
         }
 
+        /* --- Phone UI and motion polish --- */
+        @media (max-width: 640px) {
+            html {
+                scroll-padding-top: 5.25rem;
+                overscroll-behavior-x: none;
+            }
+
+            body {
+                min-width: 0;
+                -webkit-tap-highlight-color: transparent;
+            }
+
+            body.mobile-menu-open {
+                overflow: hidden;
+                overscroll-behavior: none;
+            }
+
+            nav {
+                transition: background-color 220ms ease, border-color 220ms ease, padding 220ms var(--ease-out);
+            }
+
+            nav.scrolled {
+                padding-top: 0.75rem;
+                padding-bottom: 0.75rem;
+                backdrop-filter: blur(14px);
+                -webkit-backdrop-filter: blur(14px);
+            }
+
+            body #mobileMenuBtn {
+                width: 2.75rem !important;
+                height: 2.75rem !important;
+                flex: 0 0 2.75rem;
+                transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease, transform 180ms var(--ease-out) !important;
+            }
+
+            body #mobileMenuBtn:active {
+                transform: scale(0.94) !important;
+            }
+
+            #mobile-menu,
+            #mobile-menu.hidden {
+                position: fixed;
+                display: flex !important;
+                top: 5.25rem;
+                left: 0.75rem;
+                right: 0.75rem;
+                width: auto;
+                max-height: calc(100dvh - 6rem);
+                overflow-y: auto;
+                overscroll-behavior: contain;
+                gap: 0.25rem;
+                padding: 0.65rem;
+                border-radius: 1.15rem;
+                background: rgba(7, 10, 17, 0.96);
+                backdrop-filter: blur(14px);
+                -webkit-backdrop-filter: blur(14px);
+                box-shadow: 0 22px 70px rgba(0, 0, 0, 0.58), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+                opacity: 0;
+                visibility: hidden;
+                pointer-events: none;
+                transform: translate3d(0, -0.6rem, 0) scale(0.985);
+                transform-origin: top center;
+                animation: none !important;
+                transition:
+                    opacity 200ms ease,
+                    transform 240ms var(--ease-out),
+                    visibility 0s linear 240ms;
+            }
+
+            #mobile-menu:not(.hidden) {
+                opacity: 1;
+                visibility: visible;
+                pointer-events: auto;
+                transform: translate3d(0, 0, 0) scale(1);
+                transition-delay: 0s;
+            }
+
+            #mobile-menu .mobile-link {
+                width: 100% !important;
+                min-height: 2.75rem;
+                padding: 0.72rem 0.85rem !important;
+                border-radius: 0.8rem;
+                color: #d4d4d8;
+                transition: color 160ms ease, background-color 160ms ease, transform 160ms var(--ease-out) !important;
+            }
+
+            #mobile-menu .mobile-link::after {
+                display: none;
+            }
+
+            #mobile-menu .mobile-link.active {
+                color: #fff;
+                background: rgba(0, 242, 255, 0.1);
+            }
+
+            #mobile-menu .mobile-link:active {
+                transform: scale(0.985);
+                background: rgba(255, 255, 255, 0.07);
+            }
+
+            #mobile-menu .mobile-command-btn,
+            #mobile-menu .mobile-nav-cta {
+                min-height: 2.9rem;
+                margin-top: 0.25rem;
+                transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease, transform 180ms var(--ease-out) !important;
+            }
+
+            header {
+                min-height: 100svh;
+            }
+
+            #hero-slideshow > div,
+            #hero-slideshow > div.opacity-100 {
+                transform: none;
+                transition: opacity 900ms ease;
+                will-change: opacity;
+            }
+
+            #particleCanvas,
+            #rocket,
+            #comet {
+                display: none !important;
+            }
+
+            .bg-gradient-orb,
+            .tech-icon,
+            .pukka-ai-toggle,
+            .liquid-bubble {
+                animation: none !important;
+            }
+
+            .animate-item {
+                transform: translate3d(0, 0.85rem, 0) !important;
+                filter: none !important;
+                transition-property: opacity, transform !important;
+                transition-duration: 480ms !important;
+                transition-timing-function: var(--ease-out) !important;
+                transition-delay: 0ms !important;
+                will-change: auto;
+            }
+
+            .animate-item.visible {
+                transform: translate3d(0, 0, 0) !important;
+            }
+
+            .spotlight-card,
+            .spotlight-card:hover,
+            .glass-card,
+            .glass-card:hover,
+            .portfolio-card,
+            .portfolio-card:hover {
+                --tilt-x: 0deg !important;
+                --tilt-y: 0deg !important;
+                --lift: 0px !important;
+                transform: none !important;
+                backdrop-filter: none;
+                -webkit-backdrop-filter: none;
+                will-change: auto;
+            }
+
+            .spotlight-card::before,
+            .spotlight-card::after {
+                display: none;
+            }
+
+            section .spotlight-card,
+            section .glass-card {
+                box-shadow: 0 14px 42px rgba(0, 0, 0, 0.28);
+            }
+
+            section > [class*="max-w-"] {
+                padding-left: 1rem !important;
+                padding-right: 1rem !important;
+            }
+
+            section .spotlight-card[class*="p-8"],
+            section .glass-card[class*="p-8"] {
+                padding: 1.25rem !important;
+            }
+
+            button,
+            a,
+            input,
+            select,
+            textarea {
+                touch-action: manipulation;
+            }
+
+            input,
+            select,
+            textarea {
+                font-size: 16px !important;
+            }
+
+            .service-modal {
+                align-items: flex-end;
+                padding: 0;
+                background: rgba(2, 4, 8, 0.84);
+                backdrop-filter: blur(5px);
+                -webkit-backdrop-filter: blur(5px);
+                transition: opacity 220ms ease, visibility 0s linear 220ms;
+            }
+
+            .service-modal.active {
+                transition-delay: 0s;
+            }
+
+            .modal-content,
+            .command-palette-content {
+                max-height: min(88dvh, 52rem);
+                border-radius: 1.25rem 1.25rem 0 0 !important;
+                padding-bottom: max(1rem, env(safe-area-inset-bottom));
+                transform: translate3d(0, 1.5rem, 0) scale(0.985);
+                transition: transform 280ms var(--ease-out), opacity 220ms ease;
+            }
+
+            .service-modal.active .modal-content {
+                transform: translate3d(0, 0, 0) scale(1);
+            }
+
+            .modal-close {
+                min-width: 2.75rem;
+                min-height: 2.75rem;
+                transition: color 180ms ease, background-color 180ms ease, transform 180ms var(--ease-out);
+            }
+
+            .testimonial-marquee {
+                scroll-behavior: smooth;
+                overscroll-behavior-x: contain;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .testimonial-marquee .marquee-track {
+                padding-inline: 1rem;
+            }
+
+            #backToTop,
+            .pukka-ai-send,
+            .pukka-ai-close {
+                min-width: 2.75rem;
+                min-height: 2.75rem;
+            }
+        }
+
         @media (prefers-reduced-motion: reduce) {
             html { scroll-behavior: auto; }
             *, *::before, *::after {
@@ -5713,6 +5957,7 @@
 
     <script>
         const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const isCompactViewport = window.matchMedia('(max-width: 768px), (pointer: coarse)').matches;
         const currentYear = document.getElementById('currentYear');
         if (currentYear) currentYear.textContent = String(new Date().getFullYear());
 
@@ -5960,13 +6205,13 @@
             }
             requestAnimationFrame(animateParticles);
         }
-        if (!prefersReducedMotion) {
+        if (!prefersReducedMotion && !isCompactViewport) {
             initParticles();
             animateParticles();
         }
 
         window.addEventListener('resize', () => {
-            if (!canvas || prefersReducedMotion) return;
+            if (!canvas || prefersReducedMotion || isCompactViewport) return;
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
             initParticles();
@@ -5981,7 +6226,8 @@
             window.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
         });
 
-        window.addEventListener('scroll', () => {
+        let scrollFramePending = false;
+        function updateScrollUi() {
             const scrollTop = window.scrollY;
             const docHeight = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
             
@@ -5998,7 +6244,14 @@
                 backToTopBtn?.classList.remove('visible');
             }
             updateActiveNavFromPosition(scrollTop);
-        });
+            scrollFramePending = false;
+        }
+
+        window.addEventListener('scroll', () => {
+            if (scrollFramePending) return;
+            scrollFramePending = true;
+            requestAnimationFrame(updateScrollUi);
+        }, { passive: true });
 
         const sectionNavLinks = Array.from(document.querySelectorAll('.nav-link[href^="#"]'));
         const navSections = sectionNavLinks
@@ -8191,7 +8444,7 @@
         }
 
         // Start rocket sequence after page load
-        if (!prefersReducedMotion) {
+        if (!prefersReducedMotion && !isCompactViewport) {
             setTimeout(launchRocket, 3000);
         }
 
@@ -8267,7 +8520,7 @@
         }
 
         // Start comet loop
-        if (!prefersReducedMotion) {
+        if (!prefersReducedMotion && !isCompactViewport) {
             setTimeout(launchComet, 2000);
         }
 
@@ -8635,9 +8888,6 @@
                         if (!stride) return;
                         
                         container.scrollTo({ left: stride * i, behavior: 'smooth' });
-                        // Pause auto-scroll briefly after manual interaction
-                        stopAutoScroll();
-                        scheduleAutoScroll();
                     }, { signal });
                     dotsContainer.appendChild(dot);
                 }
@@ -8729,28 +8979,17 @@
                 container.dataset.scrollRestartTimeout = timer.toString();
             }
 
-            // Interaction Handlers
-            // Pause on touch
-            container.addEventListener('touchstart', stopAutoScroll, { passive: true, signal });
-            
-            // Resume on touch end
-            container.addEventListener('touchend', () => {
-                // Determine restart delay based on scroll velocity (simplified to fixed delay)
-                scheduleAutoScroll(); 
-            }, { passive: true, signal });
-
-            startAutoScroll();
+            // Manual swipe is intentionally used on phones so automated movement
+            // never fights the user's gesture or causes a visible loop jump.
+            updateDots();
         }
         
         // Initialize on load
         window.addEventListener('load', initMobileAutoScroll);
         
-        // Handle Resize (Debounced)
-        let resizeTimer;
-        window.addEventListener('resize', () => {
-            clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(initMobileAutoScroll, 200);
-        });
+        const testimonialMobileQuery = window.matchMedia('(max-width: 768px)');
+        testimonialMobileQuery.addEventListener?.('change', initMobileAutoScroll);
+        window.addEventListener('orientationchange', initMobileAutoScroll, { passive: true });
 
         // --- 17. UI Refinement Micro-Interactions ---
         (() => {
