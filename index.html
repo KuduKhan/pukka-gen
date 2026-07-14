@@ -2931,30 +2931,51 @@
             }
 
             .animate-item {
-                transform: translateY(1.35rem) scale(0.985) !important;
-                filter: blur(8px) !important;
-                transition-property: opacity, transform, filter !important;
-                transition-duration: 900ms !important;
+                --reveal-y: 1.35rem;
+                --reveal-scale: 0.985;
+                filter: none !important;
+                transition-property: opacity, transform !important;
+                transition-duration: 720ms !important;
                 transition-timing-function: var(--ease-out) !important;
-                will-change: opacity, transform, filter;
+                will-change: opacity, transform;
             }
 
             .animate-item.visible {
-                transform: translateY(0) scale(1) !important;
-                filter: blur(0) !important;
+                --reveal-y: 0px;
+                --reveal-scale: 1;
+            }
+
+            .animate-item:not(.spotlight-card):not(.portfolio-card):not(.glass-card) {
+                transform: translate3d(0, var(--reveal-y), 0) scale(var(--reveal-scale)) !important;
             }
 
             .spotlight-card,
-            .glass-card,
+            .glass-card:not(#mobile-menu),
             .portfolio-card {
                 --tilt-x: 0deg !important;
                 --tilt-y: 0deg !important;
                 --lift: 0px !important;
-                transform: perspective(1100px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) translate3d(0, var(--lift), 0) !important;
+                --reveal-y: 0px;
+                --reveal-scale: 1;
+                transform: perspective(1100px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) translate3d(0, calc(var(--lift) + var(--reveal-y)), 0) scale(var(--reveal-scale)) !important;
                 backdrop-filter: blur(12px);
                 -webkit-backdrop-filter: blur(12px);
                 transition: transform 0.38s var(--ease-out), border-color 0.28s ease, box-shadow 0.28s ease, background 0.28s ease, opacity 0.25s ease !important;
                 will-change: transform;
+            }
+
+            .spotlight-card.animate-item,
+            .glass-card.animate-item:not(#mobile-menu),
+            .portfolio-card.animate-item {
+                --reveal-y: 1.35rem;
+                --reveal-scale: 0.985;
+            }
+
+            .spotlight-card.animate-item.visible,
+            .glass-card.animate-item.visible:not(#mobile-menu),
+            .portfolio-card.animate-item.visible {
+                --reveal-y: 0px;
+                --reveal-scale: 1;
             }
 
             .spotlight-card::before,
@@ -2963,6 +2984,20 @@
                 --mouse-x: 50%;
                 --mouse-y: 50%;
                 transition: opacity 0.32s ease;
+            }
+
+            .spotlight-card:hover:not(.touch-active):not(:active) {
+                --lift: 0px !important;
+                border-color: rgba(255, 255, 255, 0.1);
+                background:
+                    linear-gradient(145deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.018)),
+                    var(--surface-raised);
+                box-shadow: var(--shadow-soft);
+            }
+
+            .spotlight-card:hover:not(.touch-active):not(:active)::before,
+            .spotlight-card:hover:not(.touch-active):not(:active)::after {
+                opacity: 0;
             }
 
             .spotlight-card:active,
@@ -2988,12 +3023,16 @@
                 opacity: 1;
             }
 
-            .glass-card:active,
-            .glass-card.touch-active,
-            .glass-card:focus-visible {
-                transform: translate3d(0, -5px, 0) !important;
+            .glass-card:active:not(#mobile-menu),
+            .glass-card.touch-active:not(#mobile-menu),
+            .glass-card:focus-visible:not(#mobile-menu) {
+                --lift: -5px !important;
                 border-color: var(--surface-border-strong);
                 box-shadow: 0 20px 58px rgba(0, 0, 0, 0.44), var(--shadow-glow);
+            }
+
+            .glass-card:hover:not(#mobile-menu):not(.touch-active):not(:active) {
+                --lift: 0px !important;
             }
 
             .group:active .liquid-bubble,
@@ -3007,6 +3046,12 @@
                 transform: scale(1.2) translateY(-8px) !important;
                 filter: grayscale(0) opacity(1) drop-shadow(0 0 10px currentColor);
                 animation-play-state: paused;
+            }
+
+            .tech-icon:hover:not(:active) {
+                transform: translateY(0) !important;
+                filter: grayscale(0.8) opacity(0.7) drop-shadow(0 0 0 transparent);
+                animation-play-state: running;
             }
 
             section .spotlight-card,
@@ -6224,8 +6269,14 @@
             }
         }
 
-        function animateParticles() {
+        let lastParticleFrame = 0;
+        function animateParticles(timestamp = 0) {
             if (!ctx || !particlesArray) return;
+            if (isCompactViewport && timestamp - lastParticleFrame < 32) {
+                requestAnimationFrame(animateParticles);
+                return;
+            }
+            lastParticleFrame = timestamp;
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             
             // --- Update Rocket Position Tracking ---
@@ -9072,20 +9123,48 @@
                 '.pukka-ai-action'
             ].join(',');
 
-            // Translate desktop hover surfaces into deliberate touch feedback.
-            document.addEventListener('pointerdown', (event) => {
-                if (event.pointerType === 'mouse') return;
-                const surface = event.target.closest('.spotlight-card, .portfolio-card, .glass-card, .group');
-                if (!surface || surface.closest('.service-modal:not(.active)')) return;
+            // One touch surface owns feedback at a time. This prevents nested
+            // cards, navigation glass, and pointer events from fighting.
+            let activeTouchSurface = null;
+            let lingeringTouchSurface = null;
+            let touchReleaseTimer = 0;
 
+            const releaseTouchSurface = (immediate = false) => {
+                clearTimeout(touchReleaseTimer);
+                if (lingeringTouchSurface) {
+                    lingeringTouchSurface.classList.remove('touch-active');
+                    lingeringTouchSurface = null;
+                }
+                if (!activeTouchSurface) return;
+                const surface = activeTouchSurface;
+                activeTouchSurface = null;
+                if (immediate || reduceMotion) {
+                    surface.classList.remove('touch-active');
+                    return;
+                }
+                lingeringTouchSurface = surface;
+                touchReleaseTimer = window.setTimeout(
+                    () => {
+                        surface.classList.remove('touch-active');
+                        if (lingeringTouchSurface === surface) lingeringTouchSurface = null;
+                    },
+                    140
+                );
+            };
+
+            document.addEventListener('pointerdown', (event) => {
+                if (event.pointerType === 'mouse' || !(event.target instanceof Element)) return;
+                const surface = event.target.closest('.spotlight-card, .portfolio-card, .glass-card, .group');
+                if (!surface || surface.id === 'mobile-menu' || surface.closest('nav, .pukka-ai-widget, .service-modal')) return;
+
+                releaseTouchSurface(true);
+                activeTouchSurface = surface;
                 surface.classList.add('touch-active');
-                const release = () => {
-                    setTimeout(() => surface.classList.remove('touch-active'), reduceMotion ? 0 : 180);
-                };
-                surface.addEventListener('pointerup', release, { once: true });
-                surface.addEventListener('pointercancel', release, { once: true });
-                surface.addEventListener('pointerleave', release, { once: true });
             }, { passive: true });
+
+            document.addEventListener('pointerup', () => releaseTouchSurface(false), { passive: true });
+            document.addEventListener('pointercancel', () => releaseTouchSurface(true), { passive: true });
+            window.addEventListener('scroll', () => releaseTouchSurface(true), { passive: true });
 
             document.addEventListener('pointerdown', (event) => {
                 const target = event.target.closest(rippleSelector);
