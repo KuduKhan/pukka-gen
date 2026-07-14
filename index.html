@@ -2918,56 +2918,95 @@
 
             #hero-slideshow > div,
             #hero-slideshow > div.opacity-100 {
-                transform: none;
-                transition: opacity 900ms ease;
-                will-change: opacity;
+                transition: opacity 1800ms ease, transform 9000ms ease;
+                will-change: opacity, transform;
             }
 
-            #particleCanvas,
-            #rocket,
-            #comet {
-                display: none !important;
+            #hero-slideshow > div {
+                transform: scale(1.03);
             }
 
-            .bg-gradient-orb,
-            .tech-icon,
-            .pukka-ai-toggle,
-            .liquid-bubble {
-                animation: none !important;
+            #hero-slideshow > div.opacity-100 {
+                transform: scale(1.075);
             }
 
             .animate-item {
-                transform: translate3d(0, 0.85rem, 0) !important;
-                filter: none !important;
-                transition-property: opacity, transform !important;
-                transition-duration: 480ms !important;
+                transform: translateY(1.35rem) scale(0.985) !important;
+                filter: blur(8px) !important;
+                transition-property: opacity, transform, filter !important;
+                transition-duration: 900ms !important;
                 transition-timing-function: var(--ease-out) !important;
-                transition-delay: 0ms !important;
-                will-change: auto;
+                will-change: opacity, transform, filter;
             }
 
             .animate-item.visible {
-                transform: translate3d(0, 0, 0) !important;
+                transform: translateY(0) scale(1) !important;
+                filter: blur(0) !important;
             }
 
             .spotlight-card,
-            .spotlight-card:hover,
             .glass-card,
-            .glass-card:hover,
-            .portfolio-card,
-            .portfolio-card:hover {
+            .portfolio-card {
                 --tilt-x: 0deg !important;
                 --tilt-y: 0deg !important;
                 --lift: 0px !important;
-                transform: none !important;
-                backdrop-filter: none;
-                -webkit-backdrop-filter: none;
-                will-change: auto;
+                transform: perspective(1100px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) translate3d(0, var(--lift), 0) !important;
+                backdrop-filter: blur(12px);
+                -webkit-backdrop-filter: blur(12px);
+                transition: transform 0.38s var(--ease-out), border-color 0.28s ease, box-shadow 0.28s ease, background 0.28s ease, opacity 0.25s ease !important;
+                will-change: transform;
             }
 
             .spotlight-card::before,
             .spotlight-card::after {
-                display: none;
+                display: block;
+                --mouse-x: 50%;
+                --mouse-y: 50%;
+                transition: opacity 0.32s ease;
+            }
+
+            .spotlight-card:active,
+            .spotlight-card.touch-active,
+            .spotlight-card:focus-visible,
+            .portfolio-card:active,
+            .portfolio-card.touch-active,
+            .portfolio-card:focus-visible {
+                --lift: -5px !important;
+                border-color: var(--surface-border-strong) !important;
+                background:
+                    linear-gradient(145deg, rgba(255, 255, 255, 0.095), rgba(255, 255, 255, 0.025)),
+                    var(--surface-raised-strong);
+                box-shadow: 0 20px 58px rgba(0, 0, 0, 0.44), var(--shadow-glow) !important;
+            }
+
+            .spotlight-card:active::before,
+            .spotlight-card:active::after,
+            .spotlight-card.touch-active::before,
+            .spotlight-card.touch-active::after,
+            .spotlight-card:focus-visible::before,
+            .spotlight-card:focus-visible::after {
+                opacity: 1;
+            }
+
+            .glass-card:active,
+            .glass-card.touch-active,
+            .glass-card:focus-visible {
+                transform: translate3d(0, -5px, 0) !important;
+                border-color: var(--surface-border-strong);
+                box-shadow: 0 20px 58px rgba(0, 0, 0, 0.44), var(--shadow-glow);
+            }
+
+            .group:active .liquid-bubble,
+            .group.touch-active .liquid-bubble {
+                animation-duration: 1.5s;
+                box-shadow: inset 0 0 30px rgba(255, 255, 255, 0.25), 0 0 25px rgba(0, 242, 255, 0.3);
+                transform: scale(1.1) rotate(10deg);
+            }
+
+            .tech-icon:active {
+                transform: scale(1.2) translateY(-8px) !important;
+                filter: grayscale(0) opacity(1) drop-shadow(0 0 10px currentColor);
+                animation-play-state: paused;
             }
 
             section .spotlight-card,
@@ -2991,6 +3030,17 @@
             select,
             textarea {
                 touch-action: manipulation;
+            }
+
+            .magnetic-btn:active,
+            .portfolio-filter:active,
+            .service-detail-btn:active,
+            .faq-question:active,
+            .command-k-btn:active,
+            .pukka-ai-chip:active,
+            .pukka-ai-send:active {
+                transform: translate3d(0, -2px, 0) scale(0.975) !important;
+                filter: brightness(1.12);
             }
 
             input,
@@ -6166,7 +6216,9 @@
         function initParticles() {
             if (!canvas) return;
             particlesArray = [];
-            let numberOfParticles = (canvas.height * canvas.width) / 10000;
+            // Keep the same particle system on phones with an adaptive density
+            // so the desktop look is preserved without overloading smaller GPUs.
+            let numberOfParticles = (canvas.height * canvas.width) / (isCompactViewport ? 24000 : 10000);
             for (let i = 0; i < numberOfParticles; i++) {
                 particlesArray.push(new Particle());
             }
@@ -6205,13 +6257,13 @@
             }
             requestAnimationFrame(animateParticles);
         }
-        if (!prefersReducedMotion && !isCompactViewport) {
+        if (!prefersReducedMotion) {
             initParticles();
             animateParticles();
         }
 
         window.addEventListener('resize', () => {
-            if (!canvas || prefersReducedMotion || isCompactViewport) return;
+            if (!canvas || prefersReducedMotion) return;
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
             initParticles();
@@ -8444,7 +8496,7 @@
         }
 
         // Start rocket sequence after page load
-        if (!prefersReducedMotion && !isCompactViewport) {
+        if (!prefersReducedMotion) {
             setTimeout(launchRocket, 3000);
         }
 
@@ -8520,7 +8572,7 @@
         }
 
         // Start comet loop
-        if (!prefersReducedMotion && !isCompactViewport) {
+        if (!prefersReducedMotion) {
             setTimeout(launchComet, 2000);
         }
 
@@ -9019,6 +9071,21 @@
                 '.pukka-ai-send',
                 '.pukka-ai-action'
             ].join(',');
+
+            // Translate desktop hover surfaces into deliberate touch feedback.
+            document.addEventListener('pointerdown', (event) => {
+                if (event.pointerType === 'mouse') return;
+                const surface = event.target.closest('.spotlight-card, .portfolio-card, .glass-card, .group');
+                if (!surface || surface.closest('.service-modal:not(.active)')) return;
+
+                surface.classList.add('touch-active');
+                const release = () => {
+                    setTimeout(() => surface.classList.remove('touch-active'), reduceMotion ? 0 : 180);
+                };
+                surface.addEventListener('pointerup', release, { once: true });
+                surface.addEventListener('pointercancel', release, { once: true });
+                surface.addEventListener('pointerleave', release, { once: true });
+            }, { passive: true });
 
             document.addEventListener('pointerdown', (event) => {
                 const target = event.target.closest(rippleSelector);
