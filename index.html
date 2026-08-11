@@ -958,13 +958,65 @@
 
         @media (max-width: 768px) {
             #testimonialMarquee .spotlight-card {
-                min-height: 20.5rem;
-                padding: 1.35rem;
+                min-height: 18rem;
+                padding: 1rem;
             }
 
             #testimonialMarquee blockquote {
-                font-size: 0.84rem;
-                line-height: 1.65;
+                font-size: 0.8rem;
+                line-height: 1.55;
+                margin-bottom: 1rem;
+            }
+
+            #testimonialMarquee .spotlight-card > .relative.z-10.mb-5 {
+                margin-bottom: 0.75rem;
+            }
+
+            #testimonialMarquee .spotlight-card > .flex.items-center {
+                gap: 0.65rem;
+                padding-top: 0.85rem;
+            }
+
+            #testimonialMarquee .spotlight-card > .flex.items-center > div:first-child {
+                width: 2.25rem;
+                height: 2.25rem;
+            }
+
+            #testimonialMarquee .spotlight-card > .absolute.top-5.right-5 {
+                top: 0.75rem;
+                right: 0.75rem;
+                transform: scale(0.8);
+                transform-origin: top right;
+            }
+        }
+
+        /* Use the phone canvas efficiently while retaining a comfortable, safe touch gutter. */
+        @media (max-width: 768px) {
+            section,
+            footer#contact {
+                padding-left: max(0.875rem, env(safe-area-inset-left)) !important;
+                padding-right: max(0.875rem, env(safe-area-inset-right)) !important;
+            }
+
+            section > .max-w-7xl,
+            section > .max-w-6xl,
+            section > .max-w-5xl,
+            section > .max-w-4xl,
+            section > .max-w-3xl,
+            section > .max-w-2xl,
+            footer#contact > .max-w-7xl {
+                width: 100%;
+                max-width: none;
+            }
+
+            #testimonials > .relative.z-10 {
+                padding-left: 0 !important;
+                padding-right: 0 !important;
+            }
+
+            #testimonialMarquee .spotlight-card {
+                width: 100% !important;
+                max-width: none;
             }
         }
 
@@ -2506,8 +2558,8 @@
             }
 
             section > [class*="max-w-"] {
-                padding-left: 1rem !important;
-                padding-right: 1rem !important;
+                padding-left: 0 !important;
+                padding-right: 0 !important;
             }
 
             section .spotlight-card[class*="p-8"],
@@ -2665,6 +2717,56 @@
                     color: white;
                     text-shadow: 0 0 10px rgba(255,255,255,0.3);
                 }
+
+        /* Final phone fit-and-finish pass: protect every content group from horizontal overflow. */
+        @media (max-width: 640px) {
+            html,
+            body {
+                width: 100%;
+                overflow-x: clip;
+            }
+
+            :is(section, footer#contact) :is(h1, h2, h3, h4, p, blockquote, li, a, button) {
+                max-width: 100%;
+            }
+
+            :is(section, footer#contact) :is(h1, h2, h3, h4, p, blockquote, li) {
+                overflow-wrap: anywhere;
+            }
+
+            :is(section, footer#contact) .grid,
+            :is(section, footer#contact) .grid > * {
+                min-width: 0;
+            }
+
+            #team .flex.items-start > div:last-child,
+            #contact .flex > .overflow-hidden,
+            .command-result-copy {
+                min-width: 0;
+            }
+
+            .tech-marquee-item {
+                min-width: 7.75rem;
+                padding: 0.75rem 1rem;
+            }
+
+            .tech-marquee-item i {
+                font-size: 1.45rem;
+            }
+
+            .tech-marquee-item span {
+                font-size: 0.78rem;
+            }
+
+            #contact .footer-legal {
+                padding-inline: 1rem;
+            }
+
+            .service-modal .modal-content,
+            .service-modal .command-palette-content {
+                width: 100%;
+            }
+        }
 
     </style>
 </head>
