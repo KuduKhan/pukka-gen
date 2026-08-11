@@ -1,7 +1,7 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pukka Gen | AI, Cloud & Secure Software Engineering Kenya</title>
     <meta name="description" content="Pukka Gen builds secure web, mobile, AI automation, cloud DevOps, UX and cybersecurity solutions for businesses in Kenya and beyond.">
@@ -224,9 +224,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;500;700;800&display=swap" rel="stylesheet">
-    
     <style>
-        /* --- RESET & VARIABLES --- */
+/* --- RESET & VARIABLES --- */
         :root {
             --glass-bg: rgba(255, 255, 255, 0.03);
             --glass-border: rgba(255, 255, 255, 0.08);
@@ -279,8 +278,8 @@
         }
 
         .nav-wordmark {
-            height: 2.45rem;
-            max-width: min(14rem, 48vw);
+            height: 3.1rem;
+            max-width: min(18rem, 52vw);
         }
 
         .footer-wordmark {
@@ -325,6 +324,28 @@
                 width: 4.75rem;
                 height: 4.75rem;
             }
+
+            .nexus-core-label {
+                max-width: calc(100% - 1rem);
+                font-size: 0.58rem;
+            }
+        }
+
+        .nexus-core-label {
+            display: block;
+            width: 100%;
+            max-width: calc(100% - 0.5rem);
+            margin-top: 0.2rem;
+            overflow: hidden;
+            color: #9ca3af;
+            font-size: clamp(0.34rem, 1.4vw, 0.5rem);
+            font-weight: 600;
+            letter-spacing: 0.075em;
+            line-height: 1.1;
+            text-align: center;
+            text-overflow: ellipsis;
+            text-transform: uppercase;
+            white-space: nowrap;
         }
 
         :focus-visible {
@@ -561,708 +582,6 @@
             box-shadow: 0 0 24px rgba(0, 242, 255, 0.28);
         }
 
-        /* Pukka AI Chat Assistant */
-        .pukka-ai-widget {
-            position: fixed;
-            left: max(1rem, env(safe-area-inset-left));
-            bottom: max(1rem, env(safe-area-inset-bottom));
-            z-index: 1200;
-            width: min(25rem, calc(100vw - 2rem));
-            pointer-events: none;
-        }
-
-        .pukka-ai-toggle,
-        .pukka-ai-panel {
-            pointer-events: auto;
-        }
-
-        .pukka-ai-toggle {
-            width: 4.35rem;
-            height: 4.35rem;
-            border-radius: 9999px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0.18rem;
-            color: #050505;
-            background:
-                radial-gradient(circle at 35% 20%, rgba(0, 242, 255, 0.32), transparent 45%),
-                linear-gradient(145deg, rgba(2, 6, 23, 0.98), rgba(13, 8, 30, 0.98));
-            border: 1px solid rgba(0, 242, 255, 0.44);
-            box-shadow: 0 0 36px rgba(0, 242, 255, 0.34), 0 18px 55px rgba(0, 0, 0, 0.5);
-            position: relative;
-            isolation: isolate;
-            touch-action: manipulation;
-            transition: transform 0.25s ease, box-shadow 0.25s ease, opacity 0.25s ease;
-        }
-
-        .pukka-ai-toggle::before {
-            content: '';
-            position: absolute;
-            inset: -0.45rem;
-            border-radius: inherit;
-            border: 1px solid rgba(0, 242, 255, 0.28);
-            animation: ai-pulse 2.4s ease-out infinite;
-            z-index: -1;
-        }
-
-        .pukka-ai-toggle::after {
-            content: 'AI';
-            position: absolute;
-            right: -0.22rem;
-            bottom: -0.14rem;
-            min-width: 1.7rem;
-            height: 1.28rem;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 9999px;
-            color: #fff;
-            background: rgba(5, 5, 5, 0.92);
-            border: 1px solid rgba(0, 242, 255, 0.5);
-            box-shadow: 0 0 18px rgba(0, 242, 255, 0.35);
-            font-size: 0.68rem;
-            font-weight: 900;
-            letter-spacing: 0;
-            z-index: 2;
-        }
-
-        .pukka-ai-toggle:hover {
-            transform: translateY(-3px) scale(1.04);
-            box-shadow: 0 0 45px rgba(168, 85, 247, 0.35), 0 20px 55px rgba(0, 0, 0, 0.5);
-        }
-
-        .pukka-ai-toggle:focus-visible,
-        .pukka-ai-close:focus-visible,
-        .pukka-ai-chip:focus-visible,
-        .pukka-ai-action:focus-visible,
-        .pukka-ai-send:focus-visible {
-            outline: 2px solid var(--neon-accent);
-            outline-offset: 3px;
-        }
-
-        .pukka-ai-mark {
-            width: 100%;
-            height: 100%;
-            display: block;
-            object-fit: contain;
-            position: relative;
-            z-index: 1;
-            filter: drop-shadow(0 0 12px rgba(0, 242, 255, 0.28));
-        }
-
-        .pukka-ai-toggle .pukka-ai-mark {
-            border-radius: 9999px;
-            transform: scale(1.12);
-        }
-
-        .pukka-ai-widget[data-state="open"] .pukka-ai-toggle {
-            opacity: 0;
-            transform: translateY(20px) scale(0.85);
-            pointer-events: none;
-        }
-
-        .pukka-ai-nudge {
-            position: absolute;
-            left: 4.9rem;
-            bottom: 0.6rem;
-            min-width: 11rem;
-            padding: 0.75rem 0.9rem;
-            border-radius: 1.15rem 1.15rem 1.15rem 0.25rem;
-            background: rgba(5, 5, 5, 0.88);
-            border: 1px solid rgba(0, 242, 255, 0.22);
-            color: #e5e7eb;
-            box-shadow: 0 16px 45px rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(18px);
-            font-size: 0.75rem;
-            line-height: 1.3;
-            transition: opacity 0.25s ease, transform 0.25s ease;
-        }
-
-        .pukka-ai-nudge strong {
-            color: #ffffff;
-            font-weight: 800;
-        }
-
-        .pukka-ai-widget[data-state="open"] .pukka-ai-nudge {
-            opacity: 0;
-            transform: translateX(-8px);
-            pointer-events: none;
-        }
-
-        .pukka-ai-panel {
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            width: 100%;
-            max-height: min(43rem, calc(100dvh - 2rem));
-            display: grid;
-            grid-template-rows: auto minmax(0, 1fr) auto;
-            overflow: hidden;
-            border-radius: 1.5rem;
-            background:
-                radial-gradient(circle at 18% 0%, rgba(0, 242, 255, 0.16), transparent 34%),
-                radial-gradient(circle at 100% 18%, rgba(112, 0, 255, 0.18), transparent 34%),
-                rgba(7, 7, 12, 0.96);
-            border: 1px solid rgba(0, 242, 255, 0.17);
-            box-shadow: 0 28px 85px rgba(0, 0, 0, 0.62), 0 0 58px rgba(0, 242, 255, 0.14);
-            backdrop-filter: blur(24px);
-            transform-origin: bottom left;
-            transition: opacity 0.25s ease, visibility 0.25s ease, transform 0.25s ease;
-        }
-
-        .pukka-ai-panel[aria-hidden="true"] {
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-            transform: translateY(18px) scale(0.94);
-        }
-
-        .pukka-ai-panel[aria-hidden="false"] {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0) scale(1);
-        }
-
-        .pukka-ai-header {
-            padding: 1rem 1rem 0.95rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-            background:
-                radial-gradient(circle at top left, rgba(0, 242, 255, 0.16), transparent 35%),
-                linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
-            display: flex;
-            align-items: center;
-            gap: 0.85rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .pukka-ai-header-copy {
-            min-width: 0;
-            flex: 1;
-        }
-
-        .pukka-ai-title-row {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            min-width: 0;
-        }
-
-        .pukka-ai-title-row h2 {
-            min-width: 0;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-        .pukka-ai-header::after {
-            content: '';
-            position: absolute;
-            left: 1rem;
-            right: 1rem;
-            bottom: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(0, 242, 255, 0.48), transparent);
-        }
-
-        .pukka-ai-header > * {
-            position: relative;
-            z-index: 1;
-        }
-
-        .pukka-ai-avatar {
-            width: 3rem;
-            height: 3rem;
-            border-radius: 9999px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0.1rem;
-            background: rgba(3, 7, 18, 0.82);
-            border: 1px solid rgba(0, 242, 255, 0.38);
-            color: #67e8f9;
-            box-shadow: inset 0 0 22px rgba(0, 242, 255, 0.14), 0 0 18px rgba(0, 242, 255, 0.12);
-            flex-shrink: 0;
-            overflow: hidden;
-        }
-
-        .pukka-ai-avatar .pukka-ai-mark {
-            transform: scale(1.14);
-        }
-
-        .pukka-ai-status-dot {
-            width: 0.55rem;
-            height: 0.55rem;
-            border-radius: 9999px;
-            display: inline-block;
-            background: var(--success-accent);
-            box-shadow: 0 0 14px rgba(34, 197, 94, 0.8);
-        }
-
-        .pukka-ai-status-label {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.35rem;
-            min-width: 0;
-            white-space: nowrap;
-        }
-
-        .pukka-ai-close {
-            width: 2.25rem;
-            height: 2.25rem;
-            border-radius: 9999px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            color: #a1a1aa;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            transition: all 0.2s ease;
-            flex-shrink: 0;
-        }
-
-        .pukka-ai-close:hover {
-            color: #fff;
-            background: rgba(239, 68, 68, 0.16);
-            border-color: rgba(239, 68, 68, 0.35);
-        }
-
-        .pukka-ai-messages {
-            padding: 1rem;
-            overflow-y: auto;
-            overscroll-behavior: contain;
-            scroll-behavior: smooth;
-            display: flex;
-            flex-direction: column;
-            gap: 0.85rem;
-            background:
-                linear-gradient(rgba(255, 255, 255, 0.018) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.018) 1px, transparent 1px);
-            background-size: 28px 28px;
-        }
-
-        .pukka-ai-message {
-            display: flex;
-            gap: 0.65rem;
-            align-items: flex-end;
-            animation: ai-message-in 0.25s ease both;
-            min-width: 0;
-        }
-
-        .pukka-ai-message-user {
-            justify-content: flex-end;
-        }
-
-        .pukka-ai-message-user .pukka-ai-message-avatar {
-            order: 2;
-            background: rgba(255, 255, 255, 0.08);
-            color: #fff;
-        }
-
-        .pukka-ai-message-avatar {
-            width: 1.9rem;
-            height: 1.9rem;
-            border-radius: 9999px;
-            flex-shrink: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(3, 7, 18, 0.78);
-            color: #67e8f9;
-            border: 1px solid rgba(0, 242, 255, 0.16);
-            font-size: 0.75rem;
-            overflow: hidden;
-        }
-
-        .pukka-ai-message-avatar .pukka-ai-mark {
-            transform: scale(1.18);
-        }
-
-        .pukka-ai-bubble {
-            max-width: 18.5rem;
-            min-width: 0;
-            padding: 0.78rem 0.9rem;
-            border-radius: 1.1rem 1.1rem 1.1rem 0.25rem;
-            background: rgba(255, 255, 255, 0.055);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            color: #e5e7eb;
-            font-size: 0.82rem;
-            line-height: 1.55;
-            white-space: pre-wrap;
-            overflow-wrap: anywhere;
-        }
-
-        .pukka-ai-message-time {
-            display: block;
-            margin-top: 0.45rem;
-            color: #71717a;
-            font-size: 0.66rem;
-            line-height: 1;
-        }
-
-        .pukka-ai-message-user .pukka-ai-bubble {
-            border-radius: 1.1rem 1.1rem 0.25rem 1.1rem;
-            background: linear-gradient(135deg, rgba(0, 242, 255, 0.22), rgba(59, 130, 246, 0.2));
-            border-color: rgba(0, 242, 255, 0.22);
-            color: #fff;
-        }
-
-        .pukka-ai-actions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.45rem;
-            margin-top: 0.7rem;
-            min-width: 0;
-        }
-
-        .pukka-ai-action {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.35rem;
-            max-width: 100%;
-            border-radius: 9999px;
-            border: 1px solid rgba(0, 242, 255, 0.24);
-            background: rgba(0, 242, 255, 0.08);
-            color: #a5f3fc;
-            padding: 0.45rem 0.62rem;
-            font-size: 0.68rem;
-            font-weight: 800;
-            transition: all 0.2s ease;
-        }
-
-        .pukka-ai-action span {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-        .pukka-ai-action:hover {
-            transform: translateY(-1px);
-            background: rgba(0, 242, 255, 0.16);
-            color: #fff;
-        }
-
-        .pukka-ai-action:active,
-        .pukka-ai-chip:active,
-        .pukka-ai-send:active {
-            transform: translateY(0) scale(0.98);
-        }
-
-        .pukka-ai-typing {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.28rem;
-            padding: 0.65rem 0.8rem;
-            width: fit-content;
-            border-radius: 9999px;
-            background: rgba(255, 255, 255, 0.055);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-        }
-
-        .pukka-ai-typing span {
-            width: 0.36rem;
-            height: 0.36rem;
-            border-radius: 9999px;
-            background: #67e8f9;
-            animation: ai-typing 0.9s ease-in-out infinite;
-        }
-
-        .pukka-ai-typing span:nth-child(2) { animation-delay: 0.12s; }
-        .pukka-ai-typing span:nth-child(3) { animation-delay: 0.24s; }
-
-        .pukka-ai-composer {
-            padding: 0.85rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
-            background: rgba(0, 0, 0, 0.22);
-            min-width: 0;
-        }
-
-        .pukka-ai-quick-prompts {
-            display: flex;
-            gap: 0.45rem;
-            overflow-x: auto;
-            padding-bottom: 0.6rem;
-            scroll-snap-type: x proximity;
-            scrollbar-width: none;
-        }
-
-        .pukka-ai-quick-prompts::-webkit-scrollbar {
-            display: none;
-        }
-
-        .pukka-ai-chip {
-            flex: 0 0 auto;
-            scroll-snap-align: start;
-            border-radius: 9999px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            background: rgba(255, 255, 255, 0.045);
-            color: #d4d4d8;
-            padding: 0.48rem 0.7rem;
-            font-size: 0.72rem;
-            font-weight: 700;
-            transition: all 0.2s ease;
-        }
-
-        .pukka-ai-chip:hover {
-            color: #050505;
-            background: var(--neon-accent);
-            border-color: var(--neon-accent);
-        }
-
-        .pukka-ai-chip.is-active {
-            color: #050505;
-            background: linear-gradient(135deg, #00f2ff, #a5f3fc);
-            border-color: rgba(0, 242, 255, 0.85);
-            box-shadow: 0 0 20px rgba(0, 242, 255, 0.22);
-        }
-
-        .pukka-ai-chip:disabled,
-        .pukka-ai-action:disabled {
-            opacity: 0.5;
-            cursor: wait;
-            transform: none;
-        }
-
-        .pukka-ai-input-row {
-            display: flex;
-            gap: 0.55rem;
-            align-items: flex-end;
-            min-width: 0;
-        }
-
-        .pukka-ai-input {
-            min-height: 3rem;
-            max-height: 8rem;
-            min-width: 0;
-            flex: 1;
-            resize: none;
-            border-radius: 1rem;
-            background: rgba(255, 255, 255, 0.055);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #fff;
-            padding: 0.8rem 0.9rem;
-            font-size: 0.85rem;
-            line-height: 1.4;
-            scrollbar-width: thin;
-            scrollbar-color: rgba(0, 242, 255, 0.35) transparent;
-        }
-
-        .pukka-ai-input:focus {
-            outline: none;
-            border-color: rgba(0, 242, 255, 0.5);
-            background: rgba(0, 242, 255, 0.065);
-        }
-
-        .pukka-ai-send {
-            width: 3rem;
-            height: 3rem;
-            border-radius: 1rem;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            color: #050505;
-            background: var(--neon-accent);
-            transition: all 0.2s ease;
-            flex-shrink: 0;
-        }
-
-        .pukka-ai-send:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 0 22px rgba(0, 242, 255, 0.3);
-        }
-
-        .pukka-ai-send:disabled {
-            opacity: 0.45;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-
-        @keyframes ai-pulse {
-            0% { opacity: 0.75; transform: scale(0.82); }
-            80%, 100% { opacity: 0; transform: scale(1.2); }
-        }
-
-        @keyframes ai-message-in {
-            from { opacity: 0; transform: translateY(8px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes ai-typing {
-            0%, 80%, 100% { opacity: 0.35; transform: translateY(0); }
-            40% { opacity: 1; transform: translateY(-3px); }
-        }
-
-        @media (max-width: 640px) {
-            .pukka-ai-widget {
-                left: 0.75rem;
-                right: 0.75rem;
-                width: auto;
-                bottom: max(0.75rem, env(safe-area-inset-bottom));
-            }
-
-            .pukka-ai-panel {
-                width: 100%;
-                height: min(40rem, calc(100dvh - 1.5rem));
-                max-height: calc(100dvh - 1.5rem);
-                padding: 0 !important;
-                grid-template-rows: auto minmax(0, 1fr) auto;
-                border-radius: 1.25rem;
-            }
-
-            .pukka-ai-messages {
-                min-height: 0;
-            }
-
-            .pukka-ai-composer {
-                overflow: hidden;
-            }
-
-            .pukka-ai-toggle {
-                width: 3.65rem;
-                height: 3.65rem;
-            }
-
-            .pukka-ai-nudge {
-                display: none;
-            }
-
-            .pukka-ai-bubble {
-                max-width: min(18rem, calc(100vw - 6.4rem));
-            }
-        }
-
-        @media (max-width: 420px) {
-            .pukka-ai-header {
-                gap: 0.65rem;
-                padding: 0.85rem;
-            }
-
-            .pukka-ai-avatar {
-                width: 2.55rem;
-                height: 2.55rem;
-            }
-
-            .pukka-ai-title-row {
-                gap: 0.4rem;
-                flex-wrap: wrap;
-            }
-
-            .pukka-ai-status-label {
-                font-size: 0.58rem;
-            }
-
-            .pukka-ai-close {
-                width: 2rem;
-                height: 2rem;
-            }
-
-            .pukka-ai-messages {
-                padding: 0.75rem;
-                gap: 0.7rem;
-            }
-
-            .pukka-ai-message {
-                gap: 0.48rem;
-            }
-
-            .pukka-ai-message-avatar {
-                width: 1.65rem;
-                height: 1.65rem;
-            }
-
-            .pukka-ai-bubble {
-                max-width: calc(100vw - 6rem);
-                padding: 0.7rem 0.78rem;
-                font-size: 0.78rem;
-            }
-
-            .pukka-ai-action {
-                padding: 0.42rem 0.55rem;
-                font-size: 0.64rem;
-            }
-
-            .pukka-ai-composer {
-                padding: 0.7rem;
-            }
-
-            .pukka-ai-input {
-                min-height: 2.75rem;
-                padding: 0.72rem 0.8rem;
-                font-size: 0.8rem;
-            }
-
-            .pukka-ai-send {
-                width: 2.75rem;
-                height: 2.75rem;
-                border-radius: 0.9rem;
-            }
-        }
-
-        @media (max-height: 640px) {
-            .pukka-ai-panel {
-                height: calc(100dvh - 1rem);
-                max-height: calc(100dvh - 1rem);
-                padding: 0 !important;
-                border-radius: 1.1rem;
-            }
-
-            .pukka-ai-header {
-                padding: 0.7rem 0.8rem;
-            }
-
-            .pukka-ai-avatar {
-                width: 2.35rem;
-                height: 2.35rem;
-            }
-
-            .pukka-ai-header-copy p {
-                display: none;
-            }
-
-            .pukka-ai-messages {
-                padding: 0.65rem;
-                gap: 0.6rem;
-            }
-
-            .pukka-ai-composer {
-                padding: 0.6rem;
-            }
-
-            .pukka-ai-quick-prompts {
-                padding-bottom: 0.45rem;
-            }
-
-            .pukka-ai-chip {
-                padding: 0.4rem 0.58rem;
-                font-size: 0.67rem;
-            }
-
-            .pukka-ai-input {
-                min-height: 2.55rem;
-                max-height: 5.4rem;
-            }
-
-            .pukka-ai-send {
-                width: 2.55rem;
-                height: 2.55rem;
-                border-radius: 0.85rem;
-            }
-        }
-
-        @media (max-width: 900px) and (orientation: landscape) {
-            .pukka-ai-widget {
-                left: 0.75rem;
-                bottom: 0.75rem;
-                width: min(25rem, calc(100vw - 1.5rem));
-            }
-
-            .pukka-ai-panel {
-                max-height: calc(100dvh - 1.5rem);
-            }
-        }
-
         /* Mobile Menu */
         @keyframes menuSlide {
             from { opacity: 0; transform: translateY(-10px) scale(0.95); }
@@ -1374,8 +693,8 @@
             }
 
             .nav-wordmark {
-                height: 2rem;
-                max-width: 11.25rem;
+                height: 2.45rem;
+                max-width: 13.5rem;
             }
 
             .hero-brand-lockup {
@@ -2224,9 +1543,7 @@
         #mobileMenuBtn,
         #backToTop,
         .service-detail-btn,
-        .faq-question,
-        .pukka-ai-chip,
-        .pukka-ai-send {
+        .faq-question {
             touch-action: manipulation;
             transition: transform 0.24s var(--ease-out), border-color 0.24s ease, background 0.24s ease, color 0.24s ease, box-shadow 0.24s ease, opacity 0.24s ease;
         }
@@ -2257,8 +1574,7 @@
         .portfolio-filter:active,
         .command-k-btn:active,
         #mobileMenuBtn:active,
-        .service-detail-btn:active,
-        .pukka-ai-chip:active {
+        .service-detail-btn:active {
             transform: scale(0.98);
         }
 
@@ -2388,42 +1704,12 @@
         }
 
         #toast,
-        .command-palette-content,
-        .pukka-ai-panel {
+        .command-palette-content {
             box-shadow: 0 28px 90px rgba(0, 0, 0, 0.58), 0 0 44px rgba(0, 242, 255, 0.11);
         }
 
         #backToTop {
             backdrop-filter: blur(18px);
-        }
-
-        .pukka-ai-toggle {
-            animation: ai-float 5s ease-in-out infinite;
-        }
-
-        @keyframes ai-float {
-            0%, 100% { translate: 0 0; }
-            50% { translate: 0 -0.35rem; }
-        }
-
-        .ux-cursor-spotlight {
-            position: fixed;
-            left: 0;
-            top: 0;
-            z-index: 70;
-            width: 18rem;
-            height: 18rem;
-            border-radius: 9999px;
-            pointer-events: none;
-            opacity: 0;
-            background: radial-gradient(circle, rgba(0, 242, 255, 0.13), rgba(56, 189, 248, 0.05) 38%, transparent 68%);
-            mix-blend-mode: screen;
-            transform: translate3d(var(--cursor-x, -50vw), var(--cursor-y, -50vh), 0) translate(-50%, -50%);
-            transition: opacity 0.24s ease;
-        }
-
-        body.cursor-active .ux-cursor-spotlight {
-            opacity: 1;
         }
 
         .animate-item {
@@ -2445,11 +1731,7 @@
                 --tilt-y: 0deg !important;
                 --lift: 0px !important;
             }
-
-            .ux-cursor-spotlight {
-                display: none;
-            }
-        }
+}
 
         @media (min-width: 1024px) {
             body #mobileMenuBtn {
@@ -2480,8 +1762,8 @@
             }
 
             .nav-wordmark {
-                height: 2rem;
-                max-width: min(11.5rem, 62vw);
+                height: 2.35rem;
+                max-width: min(13.5rem, 66vw);
             }
 
             #mobile-menu {
@@ -2564,14 +1846,7 @@
             .portfolio-card-visual {
                 min-height: 10.75rem;
             }
-
-            .pukka-ai-widget {
-                left: 0.75rem;
-                bottom: 0.75rem;
-                width: calc(100vw - 1.5rem);
-            }
-
-            #backToTop {
+#backToTop {
                 right: 0.85rem;
                 bottom: 5.75rem;
             }
@@ -2781,15 +2056,7 @@
                 min-height: 3rem;
                 padding: 0.8rem 1rem !important;
             }
-
-            .pukka-ai-widget {
-                left: 0.5rem;
-                right: 0.5rem;
-                width: auto;
-                transform: none;
-            }
-
-            #backToTop {
+#backToTop {
                 width: 2.65rem;
                 height: 2.65rem;
                 right: 0.75rem;
@@ -3081,9 +2348,7 @@
             .portfolio-filter:active,
             .service-detail-btn:active,
             .faq-question:active,
-            .command-k-btn:active,
-            .pukka-ai-chip:active,
-            .pukka-ai-send:active {
+            .command-k-btn:active {
                 transform: translate3d(0, -2px, 0) scale(0.975) !important;
                 filter: brightness(1.12);
             }
@@ -3136,9 +2401,7 @@
                 padding-inline: 1rem;
             }
 
-            #backToTop,
-            .pukka-ai-send,
-            .pukka-ai-close {
+            #backToTop {
                 min-width: 2.75rem;
                 min-height: 2.75rem;
             }
@@ -3158,10 +2421,76 @@
             }
         }
 
+/* Marquee Styles */
+                .marquee-container {
+                    width: 100%;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    position: relative;
+                    /* CSS Mask for perfect symmetric fade */
+                    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+                    -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+                }
+                .marquee-track {
+                    display: flex;
+                    gap: 1rem;
+                    width: max-content;
+                    animation: scroll 40s linear infinite;
+                }
+                .marquee-reverse {
+                    animation-direction: reverse;
+                }
+                /* Pause on hover to allow clicking */
+                .marquee-track:hover {
+                    animation-play-state: paused;
+                }
+                @keyframes scroll {
+                    0% { transform: translateX(0); }
+                    100% { transform: translateX(-50%); }
+                }
+                .tech-marquee-item {
+                    background: rgba(255, 255, 255, 0.03);
+                    border: 1px solid rgba(255, 255, 255, 0.08);
+                    border-radius: 12px;
+                    padding: 1rem 1.5rem;
+                    display: flex;
+                    align-items: center;
+                    gap: 0.75rem;
+                    min-width: 140px;
+                    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+                    cursor: pointer;
+                    user-select: none;
+                }
+                .tech-marquee-item i {
+                    font-size: 1.75rem;
+                    transition: transform 0.3s ease;
+                }
+                .tech-marquee-item span {
+                    font-size: 0.875rem;
+                    font-weight: 500;
+                    color: #9ca3af;
+                    transition: color 0.3s ease;
+                }
+                /* Hover Effects */
+                .tech-marquee-item:hover {
+                    background: rgba(255, 255, 255, 0.08);
+                    border-color: rgba(0, 242, 255, 0.4);
+                    box-shadow: 0 0 20px rgba(0, 242, 255, 0.15);
+                    transform: translateY(-3px) scale(1.02);
+                    z-index: 10;
+                }
+                .tech-marquee-item:hover i {
+                    transform: scale(1.2);
+                }
+                .tech-marquee-item:hover span {
+                    color: white;
+                    text-shadow: 0 0 10px rgba(255,255,255,0.3);
+                }
+
     </style>
 </head>
 <body id="top" class="antialiased selection:bg-cyan-500 selection:text-white relative">
-    <a href="#about" class="skip-link">Skip to content</a>
+<a href="#about" class="skip-link">Skip to content</a>
 
     <!-- Scroll Progress -->
     <div class="scroll-progress" id="scrollProgress"></div>
@@ -3218,56 +2547,6 @@
         <i class="fas fa-arrow-up"></i>
     </button>
 
-    <!-- Pukka AI Chat Assistant -->
-    <div id="pukkaAiWidget" class="pukka-ai-widget" data-state="closed">
-        <section id="pukkaAiPanel" class="pukka-ai-panel" role="region" aria-label="Pukka AI chat assistant" aria-hidden="true" aria-busy="false">
-            <div class="pukka-ai-header">
-                <div class="pukka-ai-avatar" aria-hidden="true">
-                    <img src="pukka-gen-favicon.png" alt="" class="pukka-ai-mark" loading="lazy" decoding="async">
-                </div>
-                <div class="pukka-ai-header-copy">
-                    <div class="pukka-ai-title-row">
-                        <h2 class="text-sm font-extrabold text-white">Pukka AI</h2>
-                        <span class="pukka-ai-status-label text-[10px] text-emerald-300 font-bold uppercase tracking-wide">
-                            <span class="pukka-ai-status-dot" aria-hidden="true"></span>
-                            <span id="pukkaAiStatusText">Ready</span>
-                        </span>
-                    </div>
-                    <p class="text-[11px] text-gray-400 truncate">Project scope, pricing, AI builds, and contact routing</p>
-                </div>
-                <button type="button" id="pukkaAiClose" class="pukka-ai-close" aria-label="Close Pukka AI chat">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-
-            <div id="pukkaAiMessages" class="pukka-ai-messages" role="log" aria-live="polite" aria-relevant="additions" tabindex="0"></div>
-
-            <div class="pukka-ai-composer">
-                <div class="pukka-ai-quick-prompts" aria-label="Quick chat prompts">
-                    <button type="button" class="pukka-ai-chip" data-ai-prompt="What services do you offer?">Services</button>
-                    <button type="button" class="pukka-ai-chip" data-ai-prompt="How does pricing work?">Pricing</button>
-                    <button type="button" class="pukka-ai-chip" data-ai-prompt="I want to start a project">Start project</button>
-                    <button type="button" class="pukka-ai-chip" data-ai-prompt="Show me your AI work">AI builds</button>
-                    <button type="button" class="pukka-ai-chip" data-ai-prompt="Give me the no-duff checklist">Checklist</button>
-                    <button type="button" class="pukka-ai-chip" data-ai-prompt="I want to talk to a human">Human help</button>
-                </div>
-                <label for="pukkaAiInput" class="sr-only">Message Pukka AI</label>
-                <div class="pukka-ai-input-row">
-                    <textarea id="pukkaAiInput" class="pukka-ai-input" rows="1" autocomplete="off" enterkeyhint="send" maxlength="700" spellcheck="true" placeholder="Ask about services, pricing, or AI builds..."></textarea>
-                    <button type="button" id="pukkaAiSend" class="pukka-ai-send" aria-label="Send message to Pukka AI" disabled>
-                        <i class="fas fa-paper-plane"></i>
-                    </button>
-                </div>
-            </div>
-        </section>
-
-        <button type="button" id="pukkaAiToggle" class="pukka-ai-toggle hover-trigger" aria-label="Open Pukka AI chat" aria-controls="pukkaAiPanel" aria-expanded="false">
-            <img src="pukka-gen-favicon.png" alt="" class="pukka-ai-mark" loading="lazy" decoding="async">
-        </button>
-        <div class="pukka-ai-nudge" aria-hidden="true">
-            <strong>Need direction?</strong> Ask Pukka AI.
-        </div>
-    </div>
     <!-- Navigation -->
     <nav class="fixed w-full z-50 top-0 left-0 px-4 md:px-6 py-4">
         <div class="max-w-7xl mx-auto flex justify-between items-center glass-pill px-6 py-3 shadow-lg shadow-black/20">
@@ -4892,7 +4171,7 @@
                          
                          <!-- Logo -->
                          <img src="pukka-gen-favicon.png" alt="Pukka Gen" class="nexus-brand-mark relative z-10" loading="lazy" decoding="async">
-                        <div class="text-[6px] md:text-[8px] text-gray-500 uppercase tracking-widest mt-1 font-medium">Nexus Core</div>
+                        <div class="nexus-core-label">Nexus Core</div>
                     </div>
 
                 </div>
@@ -5367,73 +4646,7 @@
                 </div>
             </div>
             
-            <style>
-                /* Marquee Styles */
-                .marquee-container {
-                    width: 100%;
-                    overflow: hidden;
-                    white-space: nowrap;
-                    position: relative;
-                    /* CSS Mask for perfect symmetric fade */
-                    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
-                    -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
-                }
-                .marquee-track {
-                    display: flex;
-                    gap: 1rem;
-                    width: max-content;
-                    animation: scroll 40s linear infinite;
-                }
-                .marquee-reverse {
-                    animation-direction: reverse;
-                }
-                /* Pause on hover to allow clicking */
-                .marquee-track:hover {
-                    animation-play-state: paused;
-                }
-                @keyframes scroll {
-                    0% { transform: translateX(0); }
-                    100% { transform: translateX(-50%); }
-                }
-                .tech-marquee-item {
-                    background: rgba(255, 255, 255, 0.03);
-                    border: 1px solid rgba(255, 255, 255, 0.08);
-                    border-radius: 12px;
-                    padding: 1rem 1.5rem;
-                    display: flex;
-                    align-items: center;
-                    gap: 0.75rem;
-                    min-width: 140px;
-                    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-                    cursor: pointer;
-                    user-select: none;
-                }
-                .tech-marquee-item i {
-                    font-size: 1.75rem;
-                    transition: transform 0.3s ease;
-                }
-                .tech-marquee-item span {
-                    font-size: 0.875rem;
-                    font-weight: 500;
-                    color: #9ca3af;
-                    transition: color 0.3s ease;
-                }
-                /* Hover Effects */
-                .tech-marquee-item:hover {
-                    background: rgba(255, 255, 255, 0.08);
-                    border-color: rgba(0, 242, 255, 0.4);
-                    box-shadow: 0 0 20px rgba(0, 242, 255, 0.15);
-                    transform: translateY(-3px) scale(1.02);
-                    z-index: 10;
-                }
-                .tech-marquee-item:hover i {
-                    transform: scale(1.2);
-                }
-                .tech-marquee-item:hover span {
-                    color: white;
-                    text-shadow: 0 0 10px rgba(255,255,255,0.3);
-                }
-            </style>
+            
         </div>
     </section>
 
@@ -6051,8 +5264,9 @@
     </div>
 
     <script>
-        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        const isCompactViewport = window.matchMedia('(max-width: 768px), (pointer: coarse)').matches;
+
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        let isCompactViewport = window.matchMedia('(max-width: 768px), (pointer: coarse)').matches;
         const currentYear = document.getElementById('currentYear');
         if (currentYear) currentYear.textContent = String(new Date().getFullYear());
 
@@ -6127,14 +5341,17 @@
         }
 
         // --- 1. Init Animations ---
-        window.addEventListener('DOMContentLoaded', () => {
-            // Start reveal animations
+        function initializePukkaPage() {
             document.querySelectorAll('.reveal-text').forEach(el => el.classList.add('visible'));
-            // Trigger typewriter
             typeWriter();
-            // Start Slideshow
             initHeroSlideshow();
-        });
+        }
+
+        if (document.readyState === 'loading') {
+            window.addEventListener('DOMContentLoaded', initializePukkaPage, { once: true });
+        } else {
+            initializePukkaPage();
+        }
 
         // --- 1.5 Hero Slideshow Logic ---
         function initHeroSlideshow() {
@@ -6175,8 +5392,8 @@
         let cometActive = false;
 
         window.addEventListener('mousemove', function(e) {
-            mouse.x = e.x;
-            mouse.y = e.y;
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
         });
 
         class Particle {
@@ -6395,7 +5612,7 @@
             rootMargin: "0px 0px -50px 0px"
         };
 
-        const observer = new IntersectionObserver((entries) => {
+        const observer = 'IntersectionObserver' in window ? new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
@@ -6411,11 +5628,17 @@
                     observer.unobserve(entry.target);
                 }
             });
-        }, observerOptions);
+        }, observerOptions) : null;
 
-        document.querySelectorAll('.animate-item').forEach(el => observer.observe(el));
-        // Add stats-specific observation
-        document.querySelectorAll('.stat-number').forEach(el => observer.observe(el));
+        const revealItems = document.querySelectorAll('.animate-item');
+        const statNumbers = document.querySelectorAll('.stat-number');
+        if (observer) {
+            revealItems.forEach(el => observer.observe(el));
+            statNumbers.forEach(el => observer.observe(el));
+        } else {
+            revealItems.forEach(el => el.classList.add('visible'));
+            statNumbers.forEach(el => animateCounter(el));
+        }
 
         function animateCounter(el) {
             // Prevent running multiple times
@@ -6532,7 +5755,6 @@
         }
 
         const commandActions = [
-            { label: 'Talk to Pukka AI', meta: 'Open the branded project assistant', icon: 'fa-robot', keywords: 'pukka ai bot chatbot assistant chat help ask question', shortcut: 'AI', run: () => window.openPukkaAiChat?.() },
             { label: 'Explore services', meta: 'Jump to web, AI, cloud, design, security, strategy', icon: 'fa-layer-group', keywords: 'services software ai cloud design security strategy capabilities', shortcut: 'Go', run: () => scrollToSection('#services') },
             { label: 'Start a project', meta: 'Open the brief area and focus the first field', icon: 'fa-paper-plane', keywords: 'contact project form quote brief hire consultation estimate start', shortcut: 'Brief', run: () => { scrollToSection('#contact'); focusAfterScroll('#projectName'); } },
             { label: 'Open AI service', meta: 'View AI automation and chatbot details', icon: 'fa-robot', keywords: 'ai automation machine learning llm chatbot openai service', shortcut: 'AI', run: () => openServiceDetail('ai') },
@@ -6728,468 +5950,6 @@
                 setMobileMenuOpen(false);
             }
         });
-
-        // --- 6.75 Pukka AI Chat Assistant ---
-        function initPukkaAiChat() {
-            const widget = document.getElementById('pukkaAiWidget');
-            const panel = document.getElementById('pukkaAiPanel');
-            const toggle = document.getElementById('pukkaAiToggle');
-            const close = document.getElementById('pukkaAiClose');
-            const messages = document.getElementById('pukkaAiMessages');
-            const input = document.getElementById('pukkaAiInput');
-            const send = document.getElementById('pukkaAiSend');
-            const statusText = document.getElementById('pukkaAiStatusText');
-            const quickPrompts = document.querySelectorAll('[data-ai-prompt]');
-            if (!widget || !panel || !toggle || !messages || !input || !send) return;
-
-            const aiState = {
-                open: false,
-                greeted: false,
-                typing: false,
-                messageCount: 0
-            };
-
-            const aiActions = {
-                services: { label: 'Explore services', icon: 'fa-layer-group', action: 'services' },
-                aiService: { label: 'AI service', icon: 'fa-robot', action: 'aiService' },
-                portfolio: { label: 'View portfolio', icon: 'fa-briefcase', action: 'portfolio' },
-                portfolioAi: { label: 'AI builds', icon: 'fa-brain', action: 'portfolioAi' },
-                form: { label: 'Start brief', icon: 'fa-paper-plane', action: 'form' },
-                contact: { label: 'Talk to team', icon: 'fa-comments', action: 'contact' },
-                whatsapp: { label: 'WhatsApp', icon: 'fa-brands fa-whatsapp', action: 'whatsapp' },
-                call: { label: 'Call', icon: 'fa-phone', action: 'call' },
-                checklist: { label: 'Checklist', icon: 'fa-list-check', action: 'checklist' },
-                map: { label: 'Open map', icon: 'fa-map-marker-alt', action: 'map' },
-                faq: { label: 'FAQs', icon: 'fa-question-circle', action: 'faq' }
-            };
-
-            function setChatOpen(isOpen, focusInput = true) {
-                if (isOpen && commandPalette?.classList.contains('active')) {
-                    closeCommandPalette(false);
-                }
-                if (isOpen) setMobileMenuOpen(false);
-                aiState.open = isOpen;
-                widget.dataset.state = isOpen ? 'open' : 'closed';
-                panel.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
-                toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-                toggle.setAttribute('aria-label', isOpen ? 'Close Pukka AI chat' : 'Open Pukka AI chat');
-
-                if (isOpen) {
-                    if (!aiState.greeted) {
-                        aiState.greeted = true;
-                        appendMessage('bot', 'Salaam - I am Pukka AI. Tell me what you want to build, or pick a quick prompt and I will route you to the cleanest next step.', [
-                            aiActions.services,
-                            aiActions.aiService,
-                            aiActions.form,
-                            aiActions.contact
-                        ]);
-                    }
-                    requestAnimationFrame(() => {
-                        scrollMessages();
-                        if (focusInput) focusChatInput();
-                    });
-                    if (focusInput) setTimeout(focusChatInput, prefersReducedMotion ? 0 : 180);
-                } else if (focusInput) {
-                    toggle.focus({ preventScroll: true });
-                }
-            }
-
-            function shouldAutoFocusInput() {
-                return window.innerWidth >= 768 && window.innerHeight >= 600;
-            }
-
-            function focusChatInput() {
-                if (!aiState.open || !shouldAutoFocusInput()) return;
-                toggle.blur();
-                try {
-                    input.focus({ preventScroll: true });
-                } catch (error) {
-                    input.focus();
-                }
-                if (document.activeElement !== input) {
-                    setTimeout(() => input.focus(), 0);
-                }
-            }
-
-            function scrollMessages() {
-                requestAnimationFrame(() => {
-                    messages.scrollTop = messages.scrollHeight;
-                });
-            }
-
-            function updateSendState() {
-                send.disabled = !input.value.trim() || aiState.typing;
-            }
-
-            function setAiBusy(isBusy) {
-                aiState.typing = isBusy;
-                widget.dataset.busy = String(isBusy);
-                panel.setAttribute('aria-busy', String(isBusy));
-                if (statusText) statusText.textContent = isBusy ? 'Thinking' : 'Ready';
-                quickPrompts.forEach(button => {
-                    button.disabled = isBusy;
-                });
-                updateSendState();
-            }
-
-            function resizeInput() {
-                const maxHeight = window.matchMedia('(max-height: 640px)').matches ? 86 : 128;
-                input.style.height = 'auto';
-                input.style.height = `${Math.min(input.scrollHeight, maxHeight)}px`;
-            }
-
-            function getMessageTime() {
-                return new Intl.DateTimeFormat([], { hour: '2-digit', minute: '2-digit' }).format(new Date());
-            }
-
-            function appendMessage(author, text, actions = []) {
-                const item = document.createElement('div');
-                item.className = `pukka-ai-message pukka-ai-message-${author}`;
-                item.dataset.messageIndex = String(++aiState.messageCount);
-
-                const avatar = document.createElement('div');
-                avatar.className = 'pukka-ai-message-avatar';
-                avatar.setAttribute('aria-hidden', 'true');
-                if (author === 'user') {
-                    const avatarIcon = document.createElement('i');
-                    avatarIcon.className = 'fas fa-user';
-                    avatar.appendChild(avatarIcon);
-                } else {
-                    const avatarImage = document.createElement('img');
-                    avatarImage.src = 'pukka-gen-favicon.png';
-                    avatarImage.alt = '';
-                    avatarImage.className = 'pukka-ai-mark';
-                    avatarImage.loading = 'lazy';
-                    avatarImage.decoding = 'async';
-                    avatar.appendChild(avatarImage);
-                }
-
-                const bubble = document.createElement('div');
-                bubble.className = 'pukka-ai-bubble';
-                const messageText = document.createElement('div');
-                messageText.textContent = text;
-                bubble.appendChild(messageText);
-
-                const timestamp = document.createElement('span');
-                timestamp.className = 'pukka-ai-message-time';
-                timestamp.textContent = getMessageTime();
-                bubble.appendChild(timestamp);
-
-                if (actions.length) {
-                    const actionsWrap = document.createElement('div');
-                    actionsWrap.className = 'pukka-ai-actions';
-                    actions.forEach(action => {
-                        const button = document.createElement('button');
-                        button.type = 'button';
-                        button.className = 'pukka-ai-action';
-                        button.dataset.aiAction = action.action;
-                        button.setAttribute('aria-label', action.label);
-
-                        const icon = document.createElement('i');
-                        icon.className = action.icon.startsWith('fa-brands') ? action.icon : `fas ${action.icon}`;
-                        icon.setAttribute('aria-hidden', 'true');
-
-                        const label = document.createElement('span');
-                        label.textContent = action.label;
-
-                        button.append(icon, label);
-                        actionsWrap.appendChild(button);
-                    });
-                    bubble.appendChild(actionsWrap);
-                }
-
-                item.append(avatar, bubble);
-                messages.appendChild(item);
-                scrollMessages();
-                return item;
-            }
-
-            function showTyping() {
-                const item = document.createElement('div');
-                item.className = 'pukka-ai-message pukka-ai-message-bot';
-                item.dataset.typing = 'true';
-
-                const avatar = document.createElement('div');
-                avatar.className = 'pukka-ai-message-avatar';
-                avatar.setAttribute('aria-hidden', 'true');
-                const icon = document.createElement('img');
-                icon.src = 'pukka-gen-favicon.png';
-                icon.alt = '';
-                icon.className = 'pukka-ai-mark';
-                icon.loading = 'lazy';
-                icon.decoding = 'async';
-                avatar.appendChild(icon);
-
-                const typing = document.createElement('div');
-                typing.className = 'pukka-ai-typing';
-                typing.setAttribute('aria-label', 'Pukka AI is typing');
-                typing.innerHTML = '<span></span><span></span><span></span>';
-
-                item.append(avatar, typing);
-                messages.appendChild(item);
-                scrollMessages();
-                return item;
-            }
-
-            function hasAny(text, words) {
-                return words.some(word => text.includes(word));
-            }
-
-            function getBotReply(rawMessage) {
-                const text = rawMessage.toLowerCase();
-
-                if (/^(hi|hello|hey|jambo|salaam|salam|yo|sup)\b/.test(text)) {
-                    return {
-                        text: 'Hey — good to see you. I can help you pick the right service, estimate the first step, or route you straight to the team.',
-                        actions: [aiActions.services, aiActions.form, aiActions.contact]
-                    };
-                }
-
-                if (hasAny(text, ['human', 'person', 'call', 'phone', 'whatsapp', 'talk', 'contact', 'reach you', 'email'])) {
-                    return {
-                        text: 'No duff - fastest route is WhatsApp or a direct call. If you prefer structure, the project brief form prepares an email with the right details.',
-                        actions: [aiActions.contact, aiActions.whatsapp, aiActions.call, aiActions.form]
-                    };
-                }
-
-                if (hasAny(text, ['start', 'brief', 'quote', 'proposal', 'hire', 'consultation', 'estimate', 'book', 'meeting'])) {
-                    return {
-                        text: 'To start well, share the problem, target users, must-have features, timeline, and budget range. The form on this page turns that into a clean email brief.',
-                        actions: [aiActions.form, aiActions.checklist, aiActions.contact]
-                    };
-                }
-
-                if (hasAny(text, ['price', 'pricing', 'cost', 'budget', 'rate', 'fee', 'fees', 'expensive', 'cheap'])) {
-                    return {
-                        text: 'Pricing depends on scope and risk. Clear, fixed scopes can be quoted as fixed-price work; evolving builds usually fit a time-and-materials model. The no-duff move: start with discovery if the scope is still blurry.',
-                        actions: [aiActions.form, aiActions.checklist, aiActions.faq]
-                    };
-                }
-
-                if (hasAny(text, ['ai', 'automation', 'chatbot', 'bot', 'openai', 'llm', 'machine learning', 'predictive', 'nlp'])) {
-                    return {
-                        text: 'Pukka Gen can build practical AI: chat assistants, internal copilots, workflow automation, RAG/search tools, triage systems, and analytics. Best first step is choosing one high-value workflow with measurable quality checks.',
-                        actions: [aiActions.aiService, aiActions.portfolioAi, aiActions.form]
-                    };
-                }
-
-                if (hasAny(text, ['service', 'services', 'offer', 'offers', 'capability', 'capabilities', 'do you do', 'what do you do'])) {
-                    return {
-                        text: 'Core services: web and mobile apps, AI automation, cloud/DevOps, product design, cybersecurity, and strategy. The site cards explain each path in more detail.',
-                        actions: [aiActions.services, aiActions.aiService, aiActions.form]
-                    };
-                }
-
-                if (hasAny(text, ['web', 'website', 'mobile', 'app', 'pwa', 'responsive', 'ios', 'android'])) {
-                    return {
-                        text: 'For most launches, a fast responsive web app or PWA is the lean first move. Native iOS/Android makes sense when you need device-heavy features, app-store distribution, or deep offline behavior.',
-                        actions: [aiActions.services, aiActions.form, aiActions.checklist]
-                    };
-                }
-
-                if (hasAny(text, ['portfolio', 'case study', 'case studies', 'projects', 'work', 'builds', 'examples', 'show me'])) {
-                    return {
-                        text: 'You can review selected builds in the portfolio section. I can also filter straight to the AI-heavy examples.',
-                        actions: [aiActions.portfolio, aiActions.portfolioAi]
-                    };
-                }
-
-                if (hasAny(text, ['cloud', 'devops', 'security', 'secure', 'cyber', 'audit', 'compliance', 'infrastructure'])) {
-                    return {
-                        text: 'For high-stakes systems, Pukka Gen looks at architecture, CI/CD, hosting, observability, security posture, and recovery plans — not just the pretty UI.',
-                        actions: [aiActions.services, aiActions.form, aiActions.faq]
-                    };
-                }
-
-                if (hasAny(text, ['timeline', 'how long', 'duration', 'deadline', 'schedule', 'launch'])) {
-                    return {
-                        text: 'A focused landing page can be quick; a serious app needs discovery, design, build, testing, and launch hardening. Share the must-have first release and deadline so the team can size it honestly.',
-                        actions: [aiActions.form, aiActions.checklist]
-                    };
-                }
-
-                if (hasAny(text, ['checklist', 'download', 'requirements', 'scope', 'mvp'])) {
-                    return {
-                        text: 'The no-duff checklist helps you pressure-test scope before spending serious money. If more than three answers are unclear, discovery should come before build.',
-                        actions: [aiActions.checklist, aiActions.form]
-                    };
-                }
-
-                if (hasAny(text, ['location', 'map', 'office', 'hq', 'mombasa', 'where'])) {
-                    return {
-                        text: 'Pukka Gen is listed with a Mombasa, Kenya HQ. You can open the embedded map or launch Google Maps directly.',
-                        actions: [aiActions.map, aiActions.contact]
-                    };
-                }
-
-                if (hasAny(text, ['faq', 'question', 'support', 'maintenance', 'ownership', 'ip', 'source code', 'after launch'])) {
-                    return {
-                        text: 'The FAQs cover pricing, ownership, support, and launch expectations. Short answer: clarify IP, maintenance, hosting, and acceptance criteria before build begins.',
-                        actions: [aiActions.faq, aiActions.form]
-                    };
-                }
-
-                if (hasAny(text, ['thanks', 'thank you', 'asante', 'nice', 'cool'])) {
-                    return {
-                        text: 'Anytime. I am here in the corner if another project question pops up.',
-                        actions: [aiActions.form, aiActions.contact]
-                    };
-                }
-
-                return {
-                    text: 'I can help with services, AI automation, pricing, timelines, portfolio examples, scope checklists, and contacting the team. Give me a little context about what you want to build and I’ll point you to the cleanest next step.',
-                    actions: [aiActions.services, aiActions.form, aiActions.contact]
-                };
-            }
-
-            function handleOutgoingMessage(value) {
-                const message = String(value || input.value || '').trim();
-                if (!message || aiState.typing) return;
-
-                appendMessage('user', message);
-                input.value = '';
-                resizeInput();
-                setAiBusy(true);
-
-                const typing = showTyping();
-                const delay = prefersReducedMotion ? 0 : Math.min(900, 360 + message.length * 12);
-
-                setTimeout(() => {
-                    if (typing.isConnected) typing.remove();
-                    const reply = getBotReply(message);
-                    appendMessage('bot', reply.text, reply.actions);
-                    setAiBusy(false);
-                    if (aiState.open) input.focus({ preventScroll: true });
-                }, delay);
-            }
-
-            function runAiAction(action, trigger) {
-                if (!action) return;
-                if (trigger) {
-                    trigger.disabled = true;
-                    trigger.setAttribute('aria-busy', 'true');
-                }
-
-                const closeAndRun = (callback) => {
-                    setChatOpen(false, false);
-                    setTimeout(callback, prefersReducedMotion ? 0 : 120);
-                };
-
-                switch (action) {
-                    case 'services':
-                        closeAndRun(() => scrollToSection('#services'));
-                        break;
-                    case 'aiService':
-                        closeAndRun(() => document.querySelector('.service-detail-btn[data-service="ai"]')?.click());
-                        break;
-                    case 'portfolio':
-                        closeAndRun(() => scrollToSection('#portfolio'));
-                        break;
-                    case 'portfolioAi':
-                        closeAndRun(() => {
-                            scrollToSection('#portfolio');
-                            setTimeout(() => document.querySelector('.portfolio-filter[data-filter="ai"]')?.click(), prefersReducedMotion ? 0 : 450);
-                        });
-                        break;
-                    case 'form':
-                        closeAndRun(() => {
-                            scrollToSection('#contact');
-                            setTimeout(() => document.getElementById('projectName')?.focus({ preventScroll: true }), prefersReducedMotion ? 0 : 700);
-                        });
-                        break;
-                    case 'contact':
-                        closeAndRun(() => {
-                            if (typeof window.openContactModal === 'function') {
-                                window.openContactModal();
-                            } else {
-                                scrollToSection('#contact');
-                            }
-                        });
-                        break;
-                    case 'whatsapp':
-                        window.open('https://wa.me/254757885101', '_blank', 'noopener,noreferrer');
-                        break;
-                    case 'call':
-                        window.location.href = 'tel:+254757885101';
-                        break;
-                    case 'checklist':
-                        downloadNoDuffChecklist();
-                        appendMessage('bot', 'Checklist fired up. If your browser asks, allow the download - it is a plain text planning checklist.', [aiActions.form]);
-                        break;
-                    case 'map':
-                        closeAndRun(() => {
-                            if (typeof window.openMapModal === 'function') window.openMapModal();
-                        });
-                        break;
-                    case 'faq':
-                        closeAndRun(() => document.getElementById('viewAllFaqsBtn')?.click());
-                        break;
-                }
-
-                if (trigger) {
-                    setTimeout(() => {
-                        trigger.disabled = false;
-                        trigger.removeAttribute('aria-busy');
-                    }, prefersReducedMotion ? 0 : 450);
-                }
-            }
-
-            window.openPukkaAiChat = function(initialPrompt) {
-                setChatOpen(true);
-                if (initialPrompt) {
-                    setTimeout(() => handleOutgoingMessage(initialPrompt), prefersReducedMotion ? 0 : 180);
-                }
-            };
-            window.closePukkaAiChat = () => setChatOpen(false);
-
-            toggle.addEventListener('click', () => setChatOpen(!aiState.open));
-            close?.addEventListener('click', () => setChatOpen(false));
-            send.addEventListener('click', () => handleOutgoingMessage());
-            input.addEventListener('input', () => {
-                resizeInput();
-                updateSendState();
-            });
-            input.addEventListener('keydown', (event) => {
-                if (event.key === 'Enter' && !event.shiftKey) {
-                    event.preventDefault();
-                    handleOutgoingMessage();
-                }
-                if (event.key === 'Escape') {
-                    event.preventDefault();
-                    setChatOpen(false);
-                }
-            });
-            quickPrompts.forEach(button => {
-                button.addEventListener('click', () => {
-                    quickPrompts.forEach(prompt => prompt.classList.remove('is-active'));
-                    button.classList.add('is-active');
-                    handleOutgoingMessage(button.dataset.aiPrompt);
-                    setTimeout(() => button.classList.remove('is-active'), prefersReducedMotion ? 0 : 700);
-                });
-            });
-            messages.addEventListener('click', (event) => {
-                const actionButton = event.target.closest('[data-ai-action]');
-                if (actionButton) runAiAction(actionButton.dataset.aiAction, actionButton);
-            });
-            document.addEventListener('keydown', (event) => {
-                if (event.key === 'Escape' && aiState.open && !document.querySelector('.service-modal.active')) {
-                    setChatOpen(false);
-                }
-            });
-
-            const handleViewportChange = () => {
-                if (!aiState.open) return;
-                resizeInput();
-                scrollMessages();
-            };
-            window.addEventListener('resize', handleViewportChange);
-            window.visualViewport?.addEventListener('resize', handleViewportChange);
-
-            resizeInput();
-            updateSendState();
-        }
-
-        initPukkaAiChat();
 
         // --- 7. Modal System ---
         const serviceDetails = {
@@ -8367,8 +7127,9 @@
         const typeWriterElement = document.getElementById('typewriter-text');
         let i = 0;
         function typeWriter() {
+            if (!typeWriterElement || i >= text.length) return;
             if (i < text.length) {
-                typeWriterElement.innerHTML += text.charAt(i);
+                typeWriterElement.textContent += text.charAt(i);
                 i++;
                 setTimeout(typeWriter, 100);
             }
@@ -9118,9 +7879,6 @@
                 '.faq-question',
                 '.command-k-btn',
                 '#backToTop',
-                '.pukka-ai-chip',
-                '.pukka-ai-send',
-                '.pukka-ai-action'
             ].join(',');
 
             // One touch surface owns feedback at a time. This prevents nested
@@ -9155,7 +7913,7 @@
             document.addEventListener('pointerdown', (event) => {
                 if (event.pointerType === 'mouse' || !(event.target instanceof Element)) return;
                 const surface = event.target.closest('.spotlight-card, .portfolio-card, .glass-card, .group');
-                if (!surface || surface.id === 'mobile-menu' || surface.closest('nav, .pukka-ai-widget, .service-modal')) return;
+                if (!surface || surface.id === 'mobile-menu' || surface.closest('nav, .service-modal')) return;
 
                 releaseTouchSurface(true);
                 activeTouchSurface = surface;
@@ -9189,37 +7947,6 @@
 
             if (!canUseFinePointer || reduceMotion) return;
 
-            const cursorSpotlight = document.createElement('div');
-            cursorSpotlight.className = 'ux-cursor-spotlight';
-            cursorSpotlight.setAttribute('aria-hidden', 'true');
-            document.body.appendChild(cursorSpotlight);
-
-            let cursorX = window.innerWidth / 2;
-            let cursorY = window.innerHeight / 2;
-            let cursorFrame = 0;
-
-            function paintCursorSpotlight() {
-                cursorSpotlight.style.setProperty('--cursor-x', `${cursorX}px`);
-                cursorSpotlight.style.setProperty('--cursor-y', `${cursorY}px`);
-                cursorFrame = 0;
-            }
-
-            document.addEventListener('pointermove', (event) => {
-                if (event.pointerType !== 'mouse') return;
-                cursorX = event.clientX;
-                cursorY = event.clientY;
-                document.body.classList.add('cursor-active');
-                if (!cursorFrame) cursorFrame = requestAnimationFrame(paintCursorSpotlight);
-            }, { passive: true });
-
-            document.addEventListener('mouseleave', () => {
-                document.body.classList.remove('cursor-active');
-            });
-
-            window.addEventListener('blur', () => {
-                document.body.classList.remove('cursor-active');
-            });
-
             const tiltSelector = '.spotlight-card, .portfolio-card';
             const resetTilt = (card) => {
                 card.style.setProperty('--tilt-x', '0deg');
@@ -9251,6 +7978,7 @@
             });
         })();
 
+    
     </script>
 </body>
 </html>
