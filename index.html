@@ -893,29 +893,24 @@
         /* --- MOBILE REFINEMENTS FOR TESTIMONIALS --- */
         @media (max-width: 768px) {
             .testimonial-marquee {
-                overflow-x: auto;
-                scroll-snap-type: x mandatory;
-                /* Remove mask to allow full visibility during swipe */
-                mask-image: none; 
-                -webkit-mask-image: none;
-                /* Hide scrollbar */
-                scrollbar-width: none; 
-                -ms-overflow-style: none;
-                /* Ensure smooth scrolling for JS auto-scroll */
-                scroll-behavior: smooth;
-            }
-            .testimonial-marquee::-webkit-scrollbar {
-                display: none;
+                overflow: hidden;
+                /* Keep the same softened edges and uninterrupted loop as desktop. */
+                mask-image: linear-gradient(to right, transparent, black 7%, black 93%, transparent);
+                -webkit-mask-image: linear-gradient(to right, transparent, black 7%, black 93%, transparent);
             }
             
             .testimonial-marquee .marquee-track {
-                animation: none; /* Stop auto-scroll */
+                animation: scroll 50s linear infinite;
                 width: max-content;
                 gap: 1rem;
-                padding: 0 1.5rem; /* Center alignment padding */
+                padding: 0;
             }
 
-            /* Clones are allowed here to enable infinite loop via JS */
+            /* A press pauses the loop so a card can be read comfortably. */
+            .testimonial-marquee:active .marquee-track,
+            .testimonial-marquee:focus-within .marquee-track {
+                animation-play-state: paused;
+            }
         }
 
         .tech-marquee-item {
@@ -4023,8 +4018,6 @@
                 </div>
             </div>
 
-            <!-- Mobile Pagination Dots -->
-            <div class="flex justify-center gap-2 mt-6 md:hidden" id="testimonialDots"></div>
         </div>
     </section>
 
@@ -4755,8 +4748,8 @@
                     </div>
                 </div>
             </div>
-            
-            
+
+
         </div>
     </section>
 
@@ -7794,178 +7787,7 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
             }
         });
 
-        // --- 16. Mobile Auto-Scroll for Testimonials (Refined) ---
-        function initMobileAutoScroll() {
-            const container = document.getElementById('testimonialMarquee');
-            const dotsContainer = document.getElementById('testimonialDots');
-            if (!container) return;
-
-            if (container._testimonialAbortController) {
-                container._testimonialAbortController.abort();
-                delete container._testimonialAbortController;
-            }
-            if (container.dataset.scrollInterval) {
-                clearInterval(Number(container.dataset.scrollInterval));
-                delete container.dataset.scrollInterval;
-            }
-            if (container.dataset.scrollRestartTimeout) {
-                clearTimeout(Number(container.dataset.scrollRestartTimeout));
-                delete container.dataset.scrollRestartTimeout;
-            }
-            
-            // Check if mobile
-            const isMobile = window.matchMedia('(max-width: 768px)').matches;
-            
-            if (!isMobile) {
-                if (dotsContainer) dotsContainer.innerHTML = '';
-                return;
-            }
-
-            const intervalTime = 3500; // Time to read card
-            
-            // --- NEW: Dots Setup ---
-            const cards = container.querySelectorAll('.spotlight-card:not([aria-hidden="true"])');
-            const originalCount = cards.length;
-            if (!originalCount) {
-                if (dotsContainer) dotsContainer.innerHTML = '';
-                return;
-            }
-
-            const controller = new AbortController();
-            const { signal } = controller;
-            container._testimonialAbortController = controller;
-
-            function clearRestartTimer() {
-                if (container.dataset.scrollRestartTimeout) {
-                    clearTimeout(Number(container.dataset.scrollRestartTimeout));
-                    delete container.dataset.scrollRestartTimeout;
-                }
-            }
-
-            function getItemStride() {
-                const track = container.querySelector('.marquee-track');
-                if (!track || !cards[0]) return 0;
-                const gap = parseFloat(window.getComputedStyle(track).gap) || 20;
-                return cards[0].offsetWidth + gap;
-            }
-            
-            // Clear existing dots
-            if (dotsContainer) {
-                dotsContainer.innerHTML = '';
-                // Create dots
-                for (let i = 0; i < originalCount; i++) {
-                    const dot = document.createElement('div');
-                    dot.className = `h-1.5 rounded-full transition-all duration-300 cursor-pointer ${i === 0 ? 'w-6 bg-cyan-400' : 'w-1.5 bg-white/20'}`;
-                    // Click to scroll logic
-                    dot.addEventListener('click', () => {
-                        const stride = getItemStride();
-                        if (!stride) return;
-                        
-                        container.scrollTo({ left: stride * i, behavior: 'smooth' });
-                    }, { signal });
-                    dotsContainer.appendChild(dot);
-                }
-            }
-
-            function updateDots() {
-                if (!dotsContainer || !cards.length) return;
-                
-                const stride = getItemStride();
-                if (!stride) return;
-                
-                const scrollLeft = container.scrollLeft;
-                // Calculate active index (wrapping around total width logic used in infinite scroll)
-                const rawIndex = Math.round(scrollLeft / stride);
-                const activeIndex = ((rawIndex % originalCount) + originalCount) % originalCount;
-
-                const dots = dotsContainer.children;
-                Array.from(dots).forEach((dot, idx) => {
-                    if (idx === activeIndex) {
-                        dot.className = 'h-1.5 rounded-full transition-all duration-300 cursor-pointer w-6 bg-cyan-400';
-                    } else {
-                        dot.className = 'h-1.5 rounded-full transition-all duration-300 cursor-pointer w-1.5 bg-white/20';
-                    }
-                });
-            }
-
-            // Bind scroll event for real-time updates
-            container.addEventListener('scroll', updateDots, { passive: true, signal });
-
-            
-            function startAutoScroll() {
-                if (container.dataset.scrollInterval) clearInterval(Number(container.dataset.scrollInterval));
-                clearRestartTimer();
-                
-                const id = setInterval(() => {
-                    const track = container.querySelector('.marquee-track');
-                    const allCards = container.querySelectorAll('.spotlight-card');
-                    // We need allCards to measure total width properly for loop logic
-                    
-                    if (!track || allCards.length === 0) return;
-
-                    const cardWidth = allCards[0].offsetWidth;
-                    const gap = parseFloat(window.getComputedStyle(track).gap) || 16; 
-                    const itemStride = cardWidth + gap;
-                    
-                    // The point where clones begin
-                    const resetPoint = itemStride * originalCount; 
-                    
-                    // Current position
-                    let currentScroll = container.scrollLeft;
-                    
-                    // Infinite Loop Logic:
-                    // If current scroll is beyond the reset point (showing clones)
-                    if (resetPoint > 0 && currentScroll >= resetPoint) {
-                        // Jump back instantly to the equivalent original card
-                        container.scrollTo({
-                            left: currentScroll - resetPoint,
-                            behavior: 'auto' 
-                        });
-                        // Update currentScroll var to new position
-                        currentScroll = currentScroll - resetPoint;
-                    }
-                    
-                    // Now scroll forward to the next item
-                    // We calculate the nearest snap point to ensure alignment
-                    const nextSnap = Math.round((currentScroll + itemStride) / itemStride) * itemStride;
-                    
-                    container.scrollTo({
-                        left: nextSnap,
-                        behavior: 'smooth'
-                    });
-                    
-                }, intervalTime);
-                
-                container.dataset.scrollInterval = id.toString();
-            }
-
-            function stopAutoScroll() {
-                if (container.dataset.scrollInterval) {
-                    clearInterval(Number(container.dataset.scrollInterval));
-                    delete container.dataset.scrollInterval;
-                }
-                clearRestartTimer();
-            }
-
-            function scheduleAutoScroll() {
-                clearRestartTimer();
-                const timer = setTimeout(startAutoScroll, 4000);
-                container.dataset.scrollRestartTimeout = timer.toString();
-            }
-
-            // Manual swipe is intentionally used on phones so automated movement
-            // never fights the user's gesture or causes a visible loop jump.
-            updateDots();
-        }
-        
-        // Initialize on load
-        window.addEventListener('load', initMobileAutoScroll);
-        
-        const testimonialMobileQuery = window.matchMedia('(max-width: 768px)');
-        testimonialMobileQuery.addEventListener?.('change', initMobileAutoScroll);
-        window.addEventListener('orientationchange', initMobileAutoScroll, { passive: true });
-
-        // --- 17. UI Refinement Micro-Interactions ---
+        // --- 16. UI Refinement Micro-Interactions ---
         (() => {
             const canUseFinePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
             const reduceMotion = prefersReducedMotion;
@@ -8088,7 +7910,7 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
             });
         })();
 
-    
+
     </script>
 </body>
 </html>
