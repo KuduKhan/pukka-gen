@@ -837,7 +837,7 @@
             transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
         }
         .animate-item.visible { opacity: 1; transform: translateY(0); }
-        
+
         .delay-100 { transition-delay: 100ms; }
         .delay-200 { transition-delay: 200ms; }
         .delay-300 { transition-delay: 300ms; }
@@ -2774,6 +2774,86 @@
             .service-modal .modal-content,
             .service-modal .command-palette-content {
                 width: 100%;
+            }
+        }
+
+        /* Touch motion stability: keep one short transition per interaction surface. */
+        @media (max-width: 768px), (hover: none) and (pointer: coarse) {
+            .animate-item {
+                filter: none !important;
+                transition-duration: 360ms !important;
+                will-change: auto;
+            }
+
+            .spotlight-card,
+            .glass-card,
+            .portfolio-card {
+                will-change: auto !important;
+            }
+
+            .service-modal {
+                transition: opacity 180ms ease, visibility 0s linear 180ms !important;
+                will-change: opacity;
+            }
+
+            .service-modal.active {
+                transition-delay: 0s !important;
+            }
+
+            .service-modal .modal-content,
+            .service-modal .command-palette-content {
+                animation: none !important;
+                opacity: 0;
+                transform: translate3d(0, 0.75rem, 0) scale(0.99) !important;
+                transition: transform 220ms var(--ease-out), opacity 180ms ease !important;
+                will-change: transform, opacity;
+            }
+
+            .service-modal.active .modal-content,
+            .service-modal.active .command-palette-content {
+                opacity: 1;
+                transform: translate3d(0, 0, 0) scale(1) !important;
+            }
+
+            .service-modal .animate-item {
+                animation: none !important;
+                filter: none !important;
+                transform: none !important;
+                transition: none !important;
+            }
+
+            .faq-item {
+                transition: border-color 180ms ease, background-color 180ms ease, box-shadow 180ms ease !important;
+            }
+
+            .faq-answer {
+                transition: max-height 220ms var(--ease-out) !important;
+                will-change: max-height;
+            }
+
+            .faq-question,
+            .faq-question .fa-plus {
+                transition: color 180ms ease, background-color 180ms ease, transform 180ms var(--ease-out) !important;
+            }
+
+            body.modal-open .marquee-track,
+            body.modal-open .hero-title-gradient,
+            body.modal-open .hero-subtitle-gradient {
+                animation-play-state: paused !important;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .service-modal,
+            .service-modal .modal-content,
+            .service-modal .command-palette-content,
+            .faq-item,
+            .faq-answer,
+            .faq-question,
+            .faq-question .fa-plus,
+            .animate-item {
+                animation: none !important;
+                transition: none !important;
             }
         }
 
@@ -7815,6 +7895,19 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
 
         // Init main page accordion
         initAccordion(document);
+
+        let accordionResizeFrame = 0;
+        const syncOpenAccordionHeights = () => {
+            cancelAnimationFrame(accordionResizeFrame);
+            accordionResizeFrame = requestAnimationFrame(() => {
+                document.querySelectorAll('.faq-item.active .faq-answer').forEach(answer => {
+                    answer.style.maxHeight = `${answer.scrollHeight}px`;
+                });
+            });
+        };
+
+        window.addEventListener('resize', syncOpenAccordionHeights, { passive: true });
+        window.addEventListener('orientationchange', syncOpenAccordionHeights, { passive: true });
 
         // --- FAQ Modal Logic ---
         const faqModal = document.getElementById('faqModal');
