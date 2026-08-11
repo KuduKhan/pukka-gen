@@ -898,7 +898,7 @@
                 mask-image: linear-gradient(to right, transparent, black 7%, black 93%, transparent);
                 -webkit-mask-image: linear-gradient(to right, transparent, black 7%, black 93%, transparent);
             }
-            
+
             .testimonial-marquee .marquee-track {
                 animation: scroll 50s linear infinite;
                 width: max-content;
@@ -910,6 +910,80 @@
             .testimonial-marquee:active .marquee-track,
             .testimonial-marquee:focus-within .marquee-track {
                 animation-play-state: paused;
+            }
+        }
+
+        /* Preserve a steady card height without changing the shared Spotlight Card surface. */
+        #testimonialMarquee .spotlight-card {
+            min-height: 21.25rem;
+        }
+
+        #testimonialMarquee .spotlight-card > .absolute.top-5.right-5 {
+            opacity: 0.5;
+        }
+
+        #testimonialMarquee .spotlight-card .fa-quote-right {
+            opacity: 0.72;
+            filter: drop-shadow(0 0 0.9rem currentColor);
+        }
+
+        #testimonialMarquee .spotlight-card > .relative.z-10.mb-5 > span {
+            border-color: currentColor;
+            background: rgba(3, 8, 18, 0.62);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 0.45rem 1.35rem rgba(0, 0, 0, 0.24);
+            letter-spacing: 0.055em;
+        }
+
+        #testimonialMarquee blockquote {
+            color: #e5e7eb;
+            font-size: 0.9rem;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 1.7;
+            text-shadow: 0 1px 0 rgba(0, 0, 0, 0.38);
+        }
+
+        #testimonialMarquee .spotlight-card > .flex.items-center {
+            border-top-color: rgba(255, 255, 255, 0.12);
+        }
+
+        #testimonialMarquee .spotlight-card > .flex.items-center .text-gray-500 {
+            color: #aab5c7;
+            letter-spacing: 0.095em;
+        }
+
+        #testimonialMarquee .spotlight-card > .flex.items-center .text-white {
+            letter-spacing: 0.01em;
+        }
+
+        @media (max-width: 768px) {
+            #testimonialMarquee .spotlight-card {
+                min-height: 20.5rem;
+                padding: 1.35rem;
+            }
+
+            #testimonialMarquee blockquote {
+                font-size: 0.84rem;
+                line-height: 1.65;
+            }
+        }
+
+        /* Let the moving testimonial rail use the desktop canvas, while the heading stays aligned to the site grid. */
+        @media (min-width: 1024px) {
+            #testimonialMarquee {
+                width: min(calc(100vw - 3rem), 110rem);
+                margin-left: 50%;
+                transform: translateX(-50%);
+            }
+
+            #portfolio .portfolio-shell {
+                width: min(calc(100vw - 3rem), 110rem);
+                max-width: none;
+            }
+
+            .technology-showcase .tech-showcase-shell {
+                width: min(calc(100vw - 3rem), 110rem);
+                max-width: none;
             }
         }
 
@@ -3178,7 +3252,7 @@
         <div class="absolute inset-0 grid-overlay opacity-[0.08] pointer-events-none"></div>
         <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[42rem] h-[20rem] bg-cyan-500/10 blur-[120px] rounded-full pointer-events-none"></div>
 
-        <div class="max-w-7xl mx-auto relative z-10">
+        <div class="portfolio-shell max-w-7xl mx-auto relative z-10">
             <div class="grid lg:grid-cols-[0.88fr_1.12fr] gap-8 lg:gap-12 items-stretch mb-12">
                 <div class="animate-item flex flex-col justify-center">
                     <span class="text-green-400 font-bold tracking-wider text-sm uppercase px-3 py-1 bg-green-900/25 rounded-full border border-green-500/20 w-max">Portfolio</span>
@@ -4635,8 +4709,8 @@
     </section>
 
     <!-- Technology Showcase (New - Infinite Marquee) -->
-    <section class="py-32 px-6 bg-black/30 overflow-hidden">
-        <div class="max-w-7xl mx-auto">
+    <section class="technology-showcase py-32 px-6 bg-black/30 overflow-hidden">
+        <div class="tech-showcase-shell max-w-7xl mx-auto">
             <div class="text-center mb-16 animate-item">
                 <span class="pill-badge text-cyan-400 border border-cyan-500/20 px-3 py-1 rounded-full bg-cyan-900/20 uppercase text-xs tracking-wider">Technology Stack</span>
                 <h2 class="text-3xl md:text-5xl font-bold mt-6 mb-4">Modern Tools & Technologies</h2>
@@ -4797,6 +4871,7 @@
                         </div>
                         <div class="flex gap-3 text-lg">
                             <a href="mailto:karim@pukkagennoduff.com" aria-label="Email Karim Nyambok Omar" title="Email Karim Nyambok Omar" class="text-gray-500 hover:text-cyan-400 transition-colors hover:scale-110 duration-200"><i class="fas fa-envelope"></i></a>
+                            <a href="https://www.linkedin.com/company/pukkagennoduff/" target="_blank" rel="noopener noreferrer" aria-label="Connect with Pukka Gen on LinkedIn" title="Pukka Gen on LinkedIn" class="text-gray-500 hover:text-cyan-400 transition-colors hover:scale-110 duration-200"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a>
                         </div>
                     </div>
                 </div>
@@ -4834,6 +4909,7 @@
                         </div>
                         <div class="flex gap-3 text-lg">
                             <a href="mailto:mufasa@pukkagennoduff.com" aria-label="Email Mufasa Khan" title="Email Mufasa Khan" class="text-gray-500 hover:text-red-400 transition-colors hover:scale-110 duration-200"><i class="fas fa-envelope"></i></a>
+                            <a href="https://www.linkedin.com/company/pukkagennoduff/" target="_blank" rel="noopener noreferrer" aria-label="Connect with Pukka Gen on LinkedIn" title="Pukka Gen on LinkedIn" class="text-gray-500 hover:text-red-400 transition-colors hover:scale-110 duration-200"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a>
                         </div>
                     </div>
                 </div>
@@ -5235,11 +5311,6 @@
             </div>
             <div id="faqModalContent" class="space-y-4">
                 <!-- Content injected via JS -->
-            </div>
-            <div class="mt-8 text-center pt-6 border-t border-white/10">
-                <button type="button" class="magnetic-btn inline-block px-8 py-3 rounded-full bg-white/10 border border-white/20 text-white font-bold hover:bg-white/20 transition-colors" id="faqModalCloseBtn">
-                    Close
-                </button>
             </div>
         </div>
     </div>
@@ -7086,12 +7157,6 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
                             </div>
                         </div>
 
-                        <!-- Footer -->
-                        <div class="p-6 border-t border-white/5 text-center bg-white/[0.02] relative z-10">
-                            <button type="button" class="magnetic-btn inline-flex items-center px-6 py-3 md:px-8 md:py-3 rounded-full bg-white text-black font-bold hover:bg-cyan-400 hover:text-black transition-all shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_25px_rgba(6,182,212,0.4)] text-xs md:text-sm uppercase tracking-wide" onclick="closeServiceModal()">
-                                Close Overview
-                            </button>
-                        </div>
                     </div>
                 `;
                 serviceModal.setAttribute('aria-label', `${data.title} technology overview`);
@@ -7171,17 +7236,13 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
                             ${data.content}
                     </div>
 
-                    <!-- Footer -->
-                    <div class="p-6 border-t border-white/5 bg-white/[0.02] relative z-10 flex flex-wrap justify-center gap-3">
-                        ${key === 'checklist' ? `
+                    ${key === 'checklist' ? `
+                        <div class="p-6 border-t border-white/5 bg-white/[0.02] relative z-10 flex justify-center">
                             <button type="button" id="downloadChecklistBtn" class="magnetic-btn inline-flex items-center px-6 py-3 md:px-8 md:py-3 rounded-full bg-cyan-500 text-black font-bold hover:bg-cyan-400 transition-all shadow-[0_0_20px_rgba(6,182,212,0.25)] text-xs md:text-sm uppercase tracking-wide">
                                 Download Checklist <i class="fas fa-download ml-2"></i>
                             </button>
-                        ` : ''}
-                        <button type="button" class="magnetic-btn inline-flex items-center px-6 py-3 md:px-8 md:py-3 rounded-full bg-white text-black font-bold hover:bg-${theme}-400 hover:text-black transition-all shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_25px_rgba(6,182,212,0.4)] text-xs md:text-sm uppercase tracking-wide" onclick="closeServiceModal()">
-                            Close Resource
-                        </button>
-                    </div>
+                        </div>
+                    ` : ''}
                 </div>
             `;
             serviceModal.setAttribute('aria-label', data.title);
@@ -7648,7 +7709,6 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
         const faqModal = document.getElementById('faqModal');
         const viewAllFaqsBtn = document.getElementById('viewAllFaqsBtn');
         const faqModalClose = document.getElementById('faqModalClose');
-        const faqModalCloseBtn = document.getElementById('faqModalCloseBtn');
         const faqModalContent = document.getElementById('faqModalContent');
 
         viewAllFaqsBtn.addEventListener('click', () => {
@@ -7682,7 +7742,6 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
         }
 
         faqModalClose.addEventListener('click', closeFaqModal);
-        faqModalCloseBtn.addEventListener('click', closeFaqModal);
         
         // Close on outside click
         faqModal.addEventListener('click', (e) => {
