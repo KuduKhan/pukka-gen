@@ -2822,18 +2822,24 @@
                 transition: none !important;
             }
 
-            /* FAQs use one self-contained motion path: no touch-card lift,
-               only the answer panel's height and the icon rotation. */
+            /* Keep phone FAQs still. The answer panel is the only animated part. */
             .faq-item,
             .faq-item.active,
             .faq-item:active,
             .faq-item.touch-active {
                 --lift: 0 !important;
                 transform: none !important;
-                transition: border-color 180ms ease, background-color 180ms ease, box-shadow 180ms ease !important;
+                animation: none !important;
+                transition: none !important;
             }
 
-            .faq-answer {
+            .faq-item .faq-question,
+            .faq-item .faq-question * {
+                animation: none !important;
+                transition: none !important;
+            }
+
+            .faq-item .faq-answer {
                 overflow: hidden;
                 transition: max-height 200ms cubic-bezier(0.2, 0.8, 0.2, 1) !important;
                 will-change: max-height;
@@ -2842,12 +2848,6 @@
             .faq-question,
             .faq-question:active {
                 transform: none !important;
-                transition: color 180ms ease, background-color 180ms ease !important;
-            }
-
-            .faq-question .fa-plus {
-                transition: color 180ms ease, transform 180ms cubic-bezier(0.2, 0.8, 0.2, 1) !important;
-                will-change: transform;
             }
 
             body.modal-open .marquee-track,
@@ -8088,7 +8088,6 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
                 '.portfolio-filter',
                 '.portfolio-project-btn',
                 '.service-detail-btn',
-                '.faq-question',
                 '.command-k-btn',
                 '#backToTop',
             ].join(',');
