@@ -2822,18 +2822,32 @@
                 transition: none !important;
             }
 
-            .faq-item {
+            /* FAQs use one self-contained motion path: no touch-card lift,
+               only the answer panel's height and the icon rotation. */
+            .faq-item,
+            .faq-item.active,
+            .faq-item:active,
+            .faq-item.touch-active {
+                --lift: 0 !important;
+                transform: none !important;
                 transition: border-color 180ms ease, background-color 180ms ease, box-shadow 180ms ease !important;
             }
 
             .faq-answer {
-                transition: max-height 220ms var(--ease-out) !important;
+                overflow: hidden;
+                transition: max-height 200ms cubic-bezier(0.2, 0.8, 0.2, 1) !important;
                 will-change: max-height;
             }
 
             .faq-question,
+            .faq-question:active {
+                transform: none !important;
+                transition: color 180ms ease, background-color 180ms ease !important;
+            }
+
             .faq-question .fa-plus {
-                transition: color 180ms ease, background-color 180ms ease, transform 180ms var(--ease-out) !important;
+                transition: color 180ms ease, transform 180ms cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+                will-change: transform;
             }
 
             body.modal-open .marquee-track,
@@ -7833,6 +7847,9 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
                 answer.setAttribute('aria-labelledby', buttonId);
                 
                 newButton.addEventListener('click', () => {
+                    // An FAQ is not a touch-lift card. Clear any feedback left
+                    // by a preceding tap before its height transition begins.
+                    item.classList.remove('touch-active');
                     const isOpen = item.classList.contains('active');
 
                     // Close all others in the same container
@@ -7848,7 +7865,7 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
                             
                             otherItem.classList.remove('active', otherBorder);
                             
-                            otherAnswer.style.maxHeight = '0';
+                            otherAnswer.style.maxHeight = '0px';
                             otherIcon.style.transform = 'rotate(0deg)';
                             otherIcon.classList.remove(otherColor);
                             otherIcon.classList.add('text-gray-400');
@@ -7881,7 +7898,7 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
                         const currentIcon = item.querySelector('.fa-plus');
                         const currentTitle = item.querySelector('span');
 
-                        currentAnswer.style.maxHeight = '0';
+                        currentAnswer.style.maxHeight = '0px';
                         currentIcon.style.transform = 'rotate(0deg)';
                         currentIcon.classList.add('text-gray-400');
                         currentIcon.classList.remove(activeColorClass);
@@ -8108,7 +8125,7 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
             document.addEventListener('pointerdown', (event) => {
                 if (event.pointerType === 'mouse' || !(event.target instanceof Element)) return;
                 const surface = event.target.closest('.spotlight-card, .portfolio-card, .glass-card, .group');
-                if (!surface || surface.id === 'mobile-menu' || surface.closest('nav, .service-modal')) return;
+                if (!surface || surface.id === 'mobile-menu' || surface.closest('nav, .service-modal, .faq-item')) return;
 
                 releaseTouchSurface(true);
                 activeTouchSurface = surface;
