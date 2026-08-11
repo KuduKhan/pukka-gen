@@ -1838,9 +1838,258 @@
                     text-shadow: 0 0 10px rgba(255,255,255,0.3);
                 }
 
-        /* Final phone fit-and-finish pass: protect every content group from horizontal overflow. */
+        /* Phone layout: one contained responsive layer with no competing effects. */
+        @media (max-width: 1023px) {
+            nav {
+                padding: 0.75rem;
+            }
 
-        /* Touch motion stability: keep one short transition per interaction surface. */
+            nav > .max-w-7xl {
+                min-height: 3.8rem;
+                padding: 0.65rem 0.9rem;
+                border-radius: 1.15rem;
+            }
+
+            .nav-wordmark {
+                height: 2.35rem;
+                max-width: min(13.5rem, 62vw);
+            }
+
+            #mobileMenuBtn {
+                display: inline-grid;
+                width: 2.7rem;
+                height: 2.7rem;
+                flex: 0 0 2.7rem;
+                place-items: center;
+                border: 1px solid rgba(255, 255, 255, 0.12);
+                border-radius: 0.85rem;
+                background: rgba(255, 255, 255, 0.06);
+                color: #f8fafc;
+                font-size: 1.05rem;
+            }
+
+            #mobile-menu,
+            #mobile-menu.hidden {
+                position: fixed;
+                top: 5.2rem;
+                right: 0.75rem;
+                left: 0.75rem;
+                z-index: 60;
+                display: grid;
+                gap: 0.2rem;
+                max-height: calc(100dvh - 6rem);
+                padding: 0.65rem;
+                overflow-y: auto;
+                border: 1px solid rgba(255, 255, 255, 0.12);
+                border-radius: 1.15rem;
+                background: rgba(7, 10, 17, 0.98);
+                box-shadow: 0 1.5rem 4.5rem rgba(0, 0, 0, 0.48);
+                opacity: 0;
+                visibility: hidden;
+                pointer-events: none;
+                transform: translateY(-0.45rem);
+                transition: opacity 180ms ease, transform 180ms ease, visibility 0s linear 180ms;
+            }
+
+            #mobile-menu:not(.hidden) {
+                opacity: 1;
+                visibility: visible;
+                pointer-events: auto;
+                transform: translateY(0);
+                transition-delay: 0s;
+            }
+
+            #mobile-menu .mobile-link,
+            #mobile-menu .mobile-nav-cta {
+                display: flex;
+                align-items: center;
+                min-height: 2.8rem;
+                padding: 0.65rem 0.8rem;
+                border-radius: 0.75rem;
+                color: #d1d5db;
+                font-size: 0.95rem;
+                font-weight: 650;
+            }
+
+            #mobile-menu .mobile-link:active {
+                background: rgba(255, 255, 255, 0.08);
+            }
+
+            #mobile-menu .mobile-nav-cta {
+                justify-content: center;
+                margin-top: 0.25rem;
+                border: 1px solid rgba(34, 211, 238, 0.52);
+                background: rgba(6, 182, 212, 0.12);
+                color: #67e8f9;
+            }
+
+            body.mobile-menu-open {
+                overflow: hidden;
+            }
+        }
+
+        @media (max-width: 767px) {
+            html {
+                scroll-padding-top: 5.25rem;
+            }
+
+            html,
+            body {
+                width: 100%;
+                overflow-x: clip;
+            }
+
+            body {
+                -webkit-tap-highlight-color: transparent;
+            }
+
+            header {
+                min-height: 100svh;
+                padding: 6.75rem 1rem 5.25rem;
+            }
+
+            .hero-copy {
+                width: 100%;
+                max-width: 100%;
+                transform: none;
+            }
+
+            .hero-brand-lockup {
+                margin-bottom: 1rem;
+            }
+
+            .hero-wordmark {
+                width: min(16.5rem, 78vw);
+            }
+
+            .hero-brand-watermark {
+                width: min(26rem, 94vw);
+                opacity: 0.1;
+            }
+
+            body .hero-copy h1 {
+                font-size: clamp(2.15rem, 10vw, 2.8rem) !important;
+                line-height: 1.06 !important;
+                letter-spacing: -0.03em;
+            }
+
+            .hero-lede {
+                max-width: 34rem;
+                margin-bottom: 1.75rem !important;
+                font-size: 0.98rem !important;
+                line-height: 1.65;
+            }
+
+            .hero-cta-row {
+                width: 100%;
+                gap: 0.75rem !important;
+            }
+
+            .hero-cta-row .hero-cta {
+                width: min(100%, 19rem);
+                min-height: 3.15rem;
+            }
+
+            section,
+            footer#contact {
+                padding-right: 1rem !important;
+                padding-left: 1rem !important;
+            }
+
+            section > [class*="max-w-"],
+            footer#contact > [class*="max-w-"] {
+                width: 100%;
+                max-width: none;
+                min-width: 0;
+            }
+
+            :is(section, footer#contact) :is(h1, h2, h3, h4, p, blockquote, li, a, button) {
+                max-width: 100%;
+                min-width: 0;
+            }
+
+            :is(section, footer#contact) :is(h1, h2, h3, h4, p, blockquote, li) {
+                overflow-wrap: anywhere;
+            }
+
+            .grid > *,
+            .flex > * {
+                min-width: 0;
+            }
+
+            .spotlight-card,
+            .glass-card,
+            .portfolio-card {
+                --tilt-x: 0deg !important;
+                --tilt-y: 0deg !important;
+                --lift: 0px !important;
+                will-change: auto;
+            }
+
+            .spotlight-card:active,
+            .spotlight-card.touch-active,
+            .glass-card:active,
+            .glass-card.touch-active,
+            .portfolio-card:active,
+            .portfolio-card.touch-active {
+                --lift: 0px !important;
+                transform: none !important;
+            }
+
+            .animate-item {
+                filter: none !important;
+                transition-duration: 280ms !important;
+                will-change: auto;
+            }
+
+            .faq-item,
+            .faq-item.active,
+            .faq-item.touch-active,
+            .faq-question,
+            .faq-question * {
+                animation: none !important;
+                transition: none !important;
+                transform: none !important;
+            }
+
+            .faq-item .faq-answer {
+                overflow: hidden;
+                transition: max-height 200ms cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+                will-change: max-height;
+            }
+
+            #testimonialMarquee .spotlight-card {
+                flex: 0 0 calc(100vw - 2rem);
+                width: calc(100vw - 2rem) !important;
+                min-height: 0;
+                padding: 1rem;
+            }
+
+            #testimonialMarquee blockquote {
+                font-size: 0.8rem;
+                line-height: 1.55;
+            }
+
+            .testimonial-marquee .marquee-track {
+                gap: 0.75rem;
+                animation-duration: 50s;
+            }
+
+            .tech-marquee-item {
+                min-width: 7.5rem;
+                padding: 0.75rem 0.9rem;
+            }
+
+            .service-modal .modal-content,
+            .service-modal .command-palette-content {
+                width: calc(100% - 1.25rem);
+                max-height: calc(100dvh - 1.25rem);
+            }
+
+            .scroll-explore-indicator > span {
+                display: none;
+            }
+        }
 
         @media (prefers-reduced-motion: reduce) {
             .service-modal,
@@ -1924,7 +2173,7 @@
             </a>
             
             <!-- Desktop Links -->
-            <div class="flex gap-4 xl:gap-8 items-center" id="nav-links">
+            <div class="hidden lg:flex gap-4 xl:gap-8 items-center" id="nav-links">
                 <a href="#about" class="nav-link text-sm font-medium text-gray-300 hover:text-white transition-all hover-trigger">About</a>
                 <a href="#values" class="nav-link text-sm font-medium text-gray-300 hover:text-white transition-all hover-trigger">Values</a>
                 <a href="#services" class="nav-link text-sm font-medium text-gray-300 hover:text-white transition-all hover-trigger">Services</a>
@@ -1939,6 +2188,19 @@
                 </button>
             </div>
 
+            <button type="button" id="mobileMenuBtn" class="lg:hidden" aria-label="Open navigation menu" aria-controls="mobile-menu" aria-expanded="false">
+                <i class="fas fa-bars" aria-hidden="true"></i>
+            </button>
+        </div>
+
+        <div id="mobile-menu" class="hidden" aria-hidden="true">
+            <a href="#about" class="mobile-link">About</a>
+            <a href="#values" class="mobile-link">Values</a>
+            <a href="#services" class="mobile-link">Services</a>
+            <a href="#portfolio" class="mobile-link">Portfolio</a>
+            <a href="#insights" class="mobile-link">Insights</a>
+            <a href="#team" class="mobile-link">Team</a>
+            <a href="#contact" class="mobile-nav-cta">Start a Project</a>
         </div>
     </nav>
 
@@ -5022,6 +5284,47 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
                 card.style.setProperty('--mouse-x', `${x}px`);
                 card.style.setProperty('--mouse-y', `${y}px`);
             });
+        });
+
+        // --- 6. Mobile navigation ---
+        const mobileMenuButton = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileMenuIcon = mobileMenuButton?.querySelector('i');
+
+        function setMobileMenuOpen(isOpen) {
+            if (!mobileMenuButton || !mobileMenu || !mobileMenuIcon) return;
+            mobileMenu.classList.toggle('hidden', !isOpen);
+            mobileMenu.setAttribute('aria-hidden', String(!isOpen));
+            mobileMenuButton.setAttribute('aria-expanded', String(isOpen));
+            mobileMenuButton.setAttribute('aria-label', isOpen ? 'Close navigation menu' : 'Open navigation menu');
+            mobileMenuIcon.classList.toggle('fa-bars', !isOpen);
+            mobileMenuIcon.classList.toggle('fa-times', isOpen);
+            document.body.classList.toggle('mobile-menu-open', isOpen);
+        }
+
+        mobileMenuButton?.addEventListener('click', () => {
+            setMobileMenuOpen(mobileMenu?.classList.contains('hidden'));
+        });
+
+        mobileMenu?.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => setMobileMenuOpen(false));
+        });
+
+        document.addEventListener('pointerdown', event => {
+            if (!mobileMenu || mobileMenu.classList.contains('hidden')) return;
+            if (!mobileMenu.contains(event.target) && !mobileMenuButton?.contains(event.target)) {
+                setMobileMenuOpen(false);
+            }
+        }, { passive: true });
+
+        window.matchMedia('(min-width: 1024px)').addEventListener?.('change', event => {
+            if (event.matches) setMobileMenuOpen(false);
+        });
+
+        document.addEventListener('keydown', event => {
+            if (event.key === 'Escape' && mobileMenu && !mobileMenu.classList.contains('hidden')) {
+                setMobileMenuOpen(false);
+            }
         });
 
         // --- 6.5 Command Palette ---
