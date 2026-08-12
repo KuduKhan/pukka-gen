@@ -2099,6 +2099,13 @@
                 animation-duration: 50s;
             }
 
+            /* Let the testimonial rail use the phone canvas, while its heading stays aligned. */
+            #testimonials .testimonial-marquee {
+                width: calc(100% + 1.75rem);
+                margin-right: -0.875rem;
+                margin-left: -0.875rem;
+            }
+
             .tech-marquee-item {
                 min-width: 7.5rem;
                 padding: 0.75rem 0.9rem;
@@ -7064,6 +7071,25 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
 
         let faqControlId = 0;
 
+        function setAccordionState(item, isOpen) {
+            const button = item.querySelector('.faq-question');
+            const answer = item.querySelector('.faq-answer');
+            const icon = item.querySelector('.fa-plus');
+            const title = item.querySelector('.faq-question span');
+            if (!button || !answer || !icon || !title) return;
+
+            const activeColorClass = item.dataset.color || 'text-cyan-400';
+            const activeBorderClass = item.dataset.border || 'border-cyan-500/30';
+            item.classList.toggle('active', isOpen);
+            item.classList.toggle(activeBorderClass, isOpen);
+            answer.style.maxHeight = isOpen ? `${answer.scrollHeight}px` : '0px';
+            icon.style.transform = isOpen ? 'rotate(45deg)' : 'rotate(0deg)';
+            icon.classList.toggle(activeColorClass, isOpen);
+            icon.classList.toggle('text-gray-400', !isOpen);
+            title.classList.toggle(activeColorClass, isOpen);
+            button.setAttribute('aria-expanded', String(isOpen));
+        }
+
         function initAccordion(container = document) {
             const faqItems = container.querySelectorAll('.faq-item');
 
@@ -7071,86 +7097,26 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
                 const button = item.querySelector('.faq-question');
                 const answer = item.querySelector('.faq-answer');
                 const icon = item.querySelector('.fa-plus');
-                const title = item.querySelector('span');
-                
-                if (!button || !answer || !icon || !title) return;
+                const title = item.querySelector('.faq-question span');
+                if (!button || !answer || !icon || !title || button.dataset.accordionReady === 'true') return;
 
-                // Get colors from data attributes
-                const activeColorClass = item.dataset.color || 'text-cyan-400';
-                const activeBorderClass = item.dataset.border || 'border-cyan-500/30';
-
-                // Remove old listener to prevent duplicates if re-initialized (naive approach, but functional for this scope)
-                const newButton = button.cloneNode(true);
-                button.parentNode.replaceChild(newButton, button);
                 const answerId = answer.id || `faq-answer-${++faqControlId}`;
-                const buttonId = newButton.id || `faq-question-${faqControlId}`;
+                const buttonId = button.id || `faq-question-${faqControlId}`;
                 answer.id = answerId;
-                newButton.id = buttonId;
-                newButton.setAttribute('aria-controls', answerId);
-                newButton.setAttribute('aria-expanded', String(item.classList.contains('active')));
+                button.id = buttonId;
+                button.dataset.accordionReady = 'true';
+                button.setAttribute('aria-controls', answerId);
                 answer.setAttribute('role', 'region');
                 answer.setAttribute('aria-labelledby', buttonId);
-                
-                newButton.addEventListener('click', () => {
-                    // An FAQ is not a touch-lift card. Clear any feedback left
-                    // by a preceding tap before its height transition begins.
+
+                setAccordionState(item, item.classList.contains('active'));
+                button.addEventListener('click', () => {
                     item.classList.remove('touch-active');
                     const isOpen = item.classList.contains('active');
-
-                    // Close all others in the same container
                     faqItems.forEach(otherItem => {
-                        if (otherItem !== item) {
-                            const otherAnswer = otherItem.querySelector('.faq-answer');
-                            const otherIcon = otherItem.querySelector('.fa-plus');
-                            const otherTitle = otherItem.querySelector('span');
-                            const otherButton = otherItem.querySelector('.faq-question');
-                            const otherColor = otherItem.dataset.color || 'text-cyan-400';
-                            const otherBorder = otherItem.dataset.border || 'border-cyan-500/30';
-                            if (!otherAnswer || !otherIcon || !otherTitle) return;
-                            
-                            otherItem.classList.remove('active', otherBorder);
-                            
-                            otherAnswer.style.maxHeight = '0px';
-                            otherIcon.style.transform = 'rotate(0deg)';
-                            otherIcon.classList.remove(otherColor);
-                            otherIcon.classList.add('text-gray-400');
-                            
-                            otherTitle.classList.remove(otherColor);
-                            otherButton?.setAttribute('aria-expanded', 'false');
-                        }
+                        if (otherItem !== item) setAccordionState(otherItem, false);
                     });
-
-                    // Toggle current
-                    if (!isOpen) {
-                        item.classList.add('active', activeBorderClass);
-                        
-                        // Select element inside item because we cloned the button
-                        const currentAnswer = item.querySelector('.faq-answer');
-                        const currentIcon = item.querySelector('.fa-plus');
-                        const currentTitle = item.querySelector('span');
-
-                        currentAnswer.style.maxHeight = currentAnswer.scrollHeight + 'px';
-                        currentIcon.style.transform = 'rotate(45deg)'; // Rotate to X
-                        currentIcon.classList.remove('text-gray-400');
-                        currentIcon.classList.add(activeColorClass);
-                        
-                        currentTitle.classList.add(activeColorClass);
-                        newButton.setAttribute('aria-expanded', 'true');
-                    } else {
-                        item.classList.remove('active', activeBorderClass);
-                        
-                        const currentAnswer = item.querySelector('.faq-answer');
-                        const currentIcon = item.querySelector('.fa-plus');
-                        const currentTitle = item.querySelector('span');
-
-                        currentAnswer.style.maxHeight = '0px';
-                        currentIcon.style.transform = 'rotate(0deg)';
-                        currentIcon.classList.add('text-gray-400');
-                        currentIcon.classList.remove(activeColorClass);
-                        
-                        currentTitle.classList.remove(activeColorClass);
-                        newButton.setAttribute('aria-expanded', 'false');
-                    }
+                    setAccordionState(item, !isOpen);
                 });
             });
         }
