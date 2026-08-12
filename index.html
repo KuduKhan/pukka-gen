@@ -1746,15 +1746,36 @@
         }
 
         .animate-item {
-            transition-duration: 0.9s;
+            transition-duration: 0.55s;
             transition-timing-function: var(--ease-out);
-            transform: translateY(1.35rem) scale(0.985);
-            filter: blur(8px);
+            transform: translateY(1rem) scale(0.99);
+            filter: none;
         }
 
         .animate-item.visible {
             transform: translateY(0) scale(1);
-            filter: blur(0);
+        }
+
+        /* Keep continuous motion inexpensive and pause it when the page is not visible. */
+        .marquee-track {
+            will-change: transform;
+        }
+
+        .page-paused .marquee-track,
+        .page-paused .hero-title-gradient,
+        .page-paused .hero-subtitle-gradient,
+        .page-paused .tech-icon,
+        .page-paused .liquid-bubble,
+        .page-paused .animate-astro-bounce,
+        .page-paused .animate-scroll-wheel {
+            animation-play-state: paused !important;
+        }
+
+        @media (hover: none), (pointer: coarse) {
+            .tech-icon,
+            .liquid-bubble {
+                animation: none;
+            }
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -4934,6 +4955,7 @@
 
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         let isCompactViewport = window.matchMedia('(max-width: 768px), (pointer: coarse)').matches;
+        const supportsFinePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
         const currentYear = document.getElementById('currentYear');
         if (currentYear) currentYear.textContent = String(new Date().getFullYear());
 
@@ -5029,6 +5051,7 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
             const intervalTime = 8000; // 8 seconds
 
             setInterval(() => {
+                if (document.hidden) return;
                 // Fade out current
                 slides[currentSlide].classList.remove('opacity-100');
                 slides[currentSlide].classList.add('opacity-0');
@@ -5051,17 +5074,23 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
         }
 
         let particlesArray;
-        let mouse = { x: null, y: null, radius: 100 };
+        let mouse = { x: -10000, y: -10000, radius: 100 };
         // Track positions of CSS-animated elements
         let rocketRect = { x: -1000, y: -1000 };
         let cometRect = { x: -1000, y: -1000 };
         // Flag to track comet status correctly since opacity style is set immediately
         let cometActive = false;
 
-        window.addEventListener('mousemove', function(e) {
-            mouse.x = e.clientX;
-            mouse.y = e.clientY;
-        });
+        if (supportsFinePointer) {
+            window.addEventListener('pointermove', event => {
+                mouse.x = event.clientX;
+                mouse.y = event.clientY;
+            }, { passive: true });
+            window.addEventListener('pointerleave', () => {
+                mouse.x = -10000;
+                mouse.y = -10000;
+            }, { passive: true });
+        }
 
         class Particle {
             constructor() {
@@ -5145,19 +5174,22 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
         function initParticles() {
             if (!canvas) return;
             particlesArray = [];
-            // Keep the same particle system on phones with an adaptive density
-            // so the desktop look is preserved without overloading smaller GPUs.
-            let numberOfParticles = (canvas.height * canvas.width) / (isCompactViewport ? 24000 : 10000);
+            // Decorative particles stay intentionally sparse to protect interaction latency.
+            const density = isCompactViewport ? 48000 : 18000;
+            const numberOfParticles = Math.max(24, Math.floor((canvas.height * canvas.width) / density));
             for (let i = 0; i < numberOfParticles; i++) {
                 particlesArray.push(new Particle());
             }
         }
 
         let lastParticleFrame = 0;
+        let particleAnimationId = 0;
         function animateParticles(timestamp = 0) {
-            if (!ctx || !particlesArray) return;
-            if (isCompactViewport && timestamp - lastParticleFrame < 32) {
-                requestAnimationFrame(animateParticles);
+            particleAnimationId = 0;
+            if (!ctx || !particlesArray || document.hidden) return;
+            const frameInterval = isCompactViewport ? 50 : 33;
+            if (timestamp - lastParticleFrame < frameInterval) {
+                particleAnimationId = requestAnimationFrame(animateParticles);
                 return;
             }
             lastParticleFrame = timestamp;
@@ -5190,18 +5222,43 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
                 particlesArray[i].draw();
                 particlesArray[i].update();
             }
-            requestAnimationFrame(animateParticles);
-        }
-        if (!prefersReducedMotion) {
-            initParticles();
-            animateParticles();
+            particleAnimationId = requestAnimationFrame(animateParticles);
         }
 
-        window.addEventListener('resize', () => {
-            if (!canvas || prefersReducedMotion) return;
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+        function startParticles() {
+            if (!ctx || !particlesArray || particleAnimationId || document.hidden) return;
+            lastParticleFrame = 0;
+            particleAnimationId = requestAnimationFrame(animateParticles);
+        }
+
+        function stopParticles() {
+            if (!particleAnimationId) return;
+            cancelAnimationFrame(particleAnimationId);
+            particleAnimationId = 0;
+        }
+
+        if (!prefersReducedMotion) {
             initParticles();
+            startParticles();
+        }
+
+        let particleResizeFrame = 0;
+        window.addEventListener('resize', () => {
+            if (!canvas || prefersReducedMotion || particleResizeFrame) return;
+            particleResizeFrame = requestAnimationFrame(() => {
+                particleResizeFrame = 0;
+                isCompactViewport = window.matchMedia('(max-width: 768px), (pointer: coarse)').matches;
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                initParticles();
+                startParticles();
+            });
+        }, { passive: true });
+
+        document.addEventListener('visibilitychange', () => {
+            document.documentElement.classList.toggle('page-paused', document.hidden);
+            if (document.hidden) stopParticles();
+            else startParticles();
         });
 
         // --- 3. Navbar & Scroll ---
@@ -5333,17 +5390,6 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
                 el.innerText = current + suffix;
             }, 16);
         }
-
-        // --- 5. Spotlight Card Effect ---
-        document.querySelectorAll('.spotlight-card').forEach(card => {
-            card.addEventListener('mousemove', e => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                card.style.setProperty('--mouse-x', `${x}px`);
-                card.style.setProperty('--mouse-y', `${y}px`);
-            });
-        });
 
         // --- 6. Mobile navigation ---
         const mobileMenuButton = document.getElementById('mobileMenuBtn');
@@ -6746,30 +6792,51 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
         });
 
         // --- 8. Magnetic Buttons ---
-        document.querySelectorAll('.magnetic-btn').forEach(btn => {
-            btn.addEventListener('mousemove', (e) => {
-                const rect = btn.getBoundingClientRect();
-                const x = e.clientX - rect.left - rect.width / 2;
-                const y = e.clientY - rect.top - rect.height / 2;
-                btn.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px)`;
-            });
-            btn.addEventListener('mouseleave', () => {
-                btn.style.transform = 'translate(0px, 0px)';
-            });
-        });
+        if (supportsFinePointer && !prefersReducedMotion) {
+            document.querySelectorAll('.magnetic-btn').forEach(button => {
+                let magneticFrame = 0;
+                let lastPointerEvent = null;
 
-        // --- 9. Parallax ---
-        document.addEventListener('mousemove', (e) => {
-            const orbs = document.querySelectorAll('.bg-gradient-orb');
-            const x = e.clientX / window.innerWidth;
-            const y = e.clientY / window.innerHeight;
-            orbs.forEach(orb => {
-                const speed = orb.getAttribute('data-speed');
-                const moveX = (window.innerWidth * speed) * (0.5 - x);
-                const moveY = (window.innerHeight * speed) * (0.5 - y);
-                orb.style.transform = `translate(${moveX}px, ${moveY}px)`;
+                button.addEventListener('pointermove', event => {
+                    lastPointerEvent = event;
+                    if (magneticFrame) return;
+                    magneticFrame = requestAnimationFrame(() => {
+                        magneticFrame = 0;
+                        const rect = button.getBoundingClientRect();
+                        const x = lastPointerEvent.clientX - rect.left - rect.width / 2;
+                        const y = lastPointerEvent.clientY - rect.top - rect.height / 2;
+                        button.style.transform = `translate(${x * 0.16}px, ${y * 0.16}px)`;
+                    });
+                }, { passive: true });
+
+                button.addEventListener('pointerleave', () => {
+                    cancelAnimationFrame(magneticFrame);
+                    magneticFrame = 0;
+                    button.style.transform = 'translate3d(0, 0, 0)';
+                });
             });
-        });
+
+            // --- 9. Parallax ---
+            const parallaxOrbs = Array.from(document.querySelectorAll('.bg-gradient-orb'));
+            let parallaxFrame = 0;
+            let parallaxX = 0.5;
+            let parallaxY = 0.5;
+            document.addEventListener('pointermove', event => {
+                if (event.pointerType !== 'mouse' || !parallaxOrbs.length) return;
+                parallaxX = event.clientX / window.innerWidth;
+                parallaxY = event.clientY / window.innerHeight;
+                if (parallaxFrame) return;
+                parallaxFrame = requestAnimationFrame(() => {
+                    parallaxFrame = 0;
+                    parallaxOrbs.forEach(orb => {
+                        const speed = Number(orb.dataset.speed || 0);
+                        const moveX = window.innerWidth * speed * (0.5 - parallaxX);
+                        const moveY = window.innerHeight * speed * (0.5 - parallaxY);
+                        orb.style.transform = `translate3d(${moveX}px, ${moveY}px, 0)`;
+                    });
+                });
+            }, { passive: true });
+        }
 
         // --- 10. Typewriter ---
         const text = "No Duff. Just Quality.";
@@ -6886,6 +6953,10 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
         
         function launchRocket() {
             if (!rocket) return;
+            if (document.hidden) {
+                setTimeout(launchRocket, 5000);
+                return;
+            }
             
             const w = window.innerWidth;
             const h = window.innerHeight;
@@ -6949,7 +7020,7 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
                 // Fade out before it abruptly stops at the end coordinate
                 setTimeout(() => {
                     rocket.style.opacity = '0';
-                }, durationMs - 1500);
+                }, Math.max(durationMs - 1500, 0));
 
                 // Schedule next launch
                 setTimeout(launchRocket, durationMs + 3000); 
@@ -6966,6 +7037,10 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
 
         function launchComet() {
             if (!comet) return;
+            if (document.hidden) {
+                setTimeout(launchComet, 5000);
+                return;
+            }
 
             const w = window.innerWidth;
             const h = window.innerHeight;
@@ -7403,27 +7478,38 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
                 card.style.setProperty('--tilt-y', '0deg');
             };
 
+            let tiltFrame = 0;
+            let pendingTilt = null;
             document.addEventListener('pointermove', (event) => {
-                if (event.pointerType !== 'mouse') return;
+                if (event.pointerType !== 'mouse' || !(event.target instanceof Element)) return;
                 const card = event.target.closest(tiltSelector);
                 if (!card || card.closest('.service-modal.active')) return;
 
-                const rect = card.getBoundingClientRect();
-                const x = event.clientX - rect.left;
-                const y = event.clientY - rect.top;
-                const tiltX = ((0.5 - y / rect.height) * 5.5).toFixed(2);
-                const tiltY = ((x / rect.width - 0.5) * 5.5).toFixed(2);
-
-                card.style.setProperty('--mouse-x', `${x}px`);
-                card.style.setProperty('--mouse-y', `${y}px`);
-                card.style.setProperty('--tilt-x', `${tiltX}deg`);
-                card.style.setProperty('--tilt-y', `${tiltY}deg`);
+                pendingTilt = { card, x: event.clientX, y: event.clientY };
+                if (tiltFrame) return;
+                tiltFrame = requestAnimationFrame(() => {
+                    tiltFrame = 0;
+                    if (!pendingTilt) return;
+                    const { card: activeCard, x: pointerX, y: pointerY } = pendingTilt;
+                    pendingTilt = null;
+                    const rect = activeCard.getBoundingClientRect();
+                    const x = pointerX - rect.left;
+                    const y = pointerY - rect.top;
+                    const tiltX = ((0.5 - y / rect.height) * 5.5).toFixed(2);
+                    const tiltY = ((x / rect.width - 0.5) * 5.5).toFixed(2);
+                    activeCard.style.setProperty('--mouse-x', `${x}px`);
+                    activeCard.style.setProperty('--mouse-y', `${y}px`);
+                    activeCard.style.setProperty('--tilt-x', `${tiltX}deg`);
+                    activeCard.style.setProperty('--tilt-y', `${tiltY}deg`);
+                });
             }, { passive: true });
 
             document.addEventListener('pointerout', (event) => {
+                if (!(event.target instanceof Element)) return;
                 const card = event.target.closest(tiltSelector);
                 const relatedTarget = event.relatedTarget;
                 if (!card || (relatedTarget instanceof Node && card.contains(relatedTarget))) return;
+                if (pendingTilt?.card === card) pendingTilt = null;
                 resetTilt(card);
             });
         })();
