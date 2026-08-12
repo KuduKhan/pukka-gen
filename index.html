@@ -1992,8 +1992,8 @@
 
             section,
             footer#contact {
-                padding-right: max(0.75rem, env(safe-area-inset-right)) !important;
-                padding-left: max(0.75rem, env(safe-area-inset-left)) !important;
+                padding-right: max(0.875rem, env(safe-area-inset-right)) !important;
+                padding-left: max(0.875rem, env(safe-area-inset-left)) !important;
             }
 
             section > [class*="max-w-"],
@@ -2001,35 +2001,6 @@
                 width: 100%;
                 max-width: none;
                 min-width: 0;
-            }
-
-            /* Keep the wide desktop showcase treatment on the phone canvas. */
-            #portfolio .portfolio-shell,
-            .technology-showcase .tech-showcase-shell,
-            #testimonials > .relative.z-10 {
-                width: 100%;
-                max-width: none;
-                margin-right: 0;
-                margin-left: 0;
-            }
-
-            #portfolio .portfolio-card {
-                min-height: 0;
-            }
-
-            #portfolio .portfolio-card-visual {
-                min-height: 11.5rem;
-            }
-
-            .technology-showcase {
-                padding-top: 5rem !important;
-                padding-bottom: 5rem !important;
-            }
-
-            .technology-showcase .marquee-container {
-                margin-right: -0.75rem;
-                margin-left: -0.75rem;
-                width: calc(100% + 1.5rem);
             }
 
             :is(section, footer#contact) :is(h1, h2, h3, h4, p, blockquote, li, a, button) {
@@ -2088,8 +2059,8 @@
             }
 
             #testimonialMarquee .spotlight-card {
-                flex: 0 0 calc(100vw - 1.5rem);
-                width: calc(100vw - 1.5rem) !important;
+                flex: 0 0 calc(100vw - 1.75rem);
+                width: calc(100vw - 1.75rem) !important;
                 min-height: 0;
                 padding: 1rem;
             }
@@ -2097,28 +2068,35 @@
             #testimonialMarquee blockquote {
                 font-size: 0.8rem;
                 line-height: 1.55;
+                margin-bottom: 1rem;
+            }
+
+            #testimonialMarquee .spotlight-card > .relative.z-10.mb-5 {
+                margin-bottom: 0.75rem;
+            }
+
+            #testimonialMarquee .spotlight-card > .flex.items-center {
+                gap: 0.65rem;
+                padding-top: 0.85rem;
+            }
+
+            #testimonialMarquee .spotlight-card > .flex.items-center > div:first-child {
+                width: 2.25rem;
+                height: 2.25rem;
+            }
+
+            #testimonialMarquee .spotlight-card > .absolute.top-5.right-5 {
+                top: 0.75rem;
+                right: 0.75rem;
+                transform: scale(0.8);
+                transform-origin: top right;
             }
 
             .testimonial-marquee .marquee-track {
+                align-items: stretch;
                 gap: 0.75rem;
+                padding-inline: 0 !important;
                 animation-duration: 50s;
-            }
-
-            #testimonials .testimonial-marquee {
-                margin-right: -0.75rem;
-                margin-left: -0.75rem;
-                width: calc(100% + 1.5rem);
-            }
-
-            footer#contact .footer-legal,
-            footer#contact .footer-social {
-                width: 100%;
-                justify-content: center;
-            }
-
-            footer#contact .footer-social-link {
-                width: 2.65rem;
-                height: 2.65rem;
             }
 
             .tech-marquee-item {
