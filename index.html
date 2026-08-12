@@ -350,9 +350,10 @@
 
         .footer-legal {
             display: flex;
-            flex-direction: column;
+            flex-wrap: wrap;
             align-items: center;
-            gap: 0.9rem;
+            justify-content: center;
+            gap: 0.65rem 1rem;
             width: 100%;
             max-width: 52rem;
             padding: 1.1rem 1.25rem;
@@ -372,6 +373,34 @@
         .footer-legal-tag {
             color: #e5e7eb;
             font-weight: 700;
+        }
+
+        .footer-legal-links {
+            display: inline-flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 0.65rem;
+        }
+
+        .footer-legal-link {
+            color: #d1d5db;
+            font-weight: 700;
+            text-decoration: none;
+            text-underline-offset: 0.28rem;
+        }
+
+        .footer-legal-link:hover,
+        .footer-legal-link:focus-visible {
+            color: #67e8f9;
+            text-decoration: underline;
+        }
+
+        .footer-legal-divider {
+            width: 0.22rem;
+            height: 0.22rem;
+            border-radius: 9999px;
+            background: rgba(103, 232, 249, 0.65);
         }
 
         .footer-social {
@@ -418,7 +447,6 @@
 
         @media (min-width: 768px) {
             .footer-legal {
-                flex-direction: row;
                 justify-content: space-between;
                 gap: 1.5rem;
                 padding-inline: 1.5rem;
@@ -1902,7 +1930,7 @@
 
         @media (max-width: 767px) {
             html {
-                scroll-padding-top: 5.25rem;
+                scroll-padding-top: 4.9rem;
             }
 
             html,
@@ -1915,9 +1943,37 @@
                 -webkit-tap-highlight-color: transparent;
             }
 
+            nav {
+                padding: 0.5rem max(0.625rem, env(safe-area-inset-right)) !important 0.5rem max(0.625rem, env(safe-area-inset-left)) !important;
+            }
+
+            nav > .max-w-7xl {
+                padding: 0.5rem 0.75rem;
+                width: 100%;
+            }
+
+            .nav-wordmark {
+                height: 2.2rem;
+                max-width: min(15rem, 70vw);
+            }
+
+            #mobileMenuBtn {
+                width: 2.35rem;
+                height: 2.35rem;
+                flex-basis: 2.35rem;
+                font-size: 0.95rem;
+            }
+
+            #mobile-menu,
+            #mobile-menu.hidden {
+                top: 4.7rem;
+                right: max(0.625rem, env(safe-area-inset-right));
+                left: max(0.625rem, env(safe-area-inset-left));
+            }
+
             header {
                 min-height: 100svh;
-                padding: 6.75rem max(0.875rem, env(safe-area-inset-right)) 5.25rem max(0.875rem, env(safe-area-inset-left));
+                padding: 5.85rem max(0.875rem, env(safe-area-inset-right)) 4.75rem max(0.875rem, env(safe-area-inset-left));
             }
 
             .hero-copy {
@@ -4715,6 +4771,11 @@
         <div class="border-t border-white/10 pt-8 pb-8 text-center flex flex-col items-center">
             <div class="footer-legal">
                 <p class="footer-legal-copy">&copy; <span id="currentYear">2026</span> Pukka Gen. <span class="footer-legal-tag">No Duff.</span> All rights reserved.</p>
+                <nav class="footer-legal-links" aria-label="Legal information">
+                    <a href="mailto:mail@pukkagennoduff.com?subject=Privacy%20Policy%20Request" class="footer-legal-link">Privacy Policy</a>
+                    <span class="footer-legal-divider" aria-hidden="true"></span>
+                    <a href="mailto:mail@pukkagennoduff.com?subject=Terms%20of%20Service%20Request" class="footer-legal-link">Terms of Service</a>
+                </nav>
             </div>
             <nav class="footer-social" aria-label="Follow Pukka Gen">
                 <a href="https://www.facebook.com/share/1LfH2hrHnj/" target="_blank" rel="noopener noreferrer" class="footer-social-link" aria-label="Follow Pukka Gen on Facebook" title="Facebook"><i class="fab fa-facebook-f" aria-hidden="true"></i></a>
