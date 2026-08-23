@@ -2287,15 +2287,10 @@
         }
 
         @media (hover: none), (pointer: coarse) {
-            .tech-icon,
-            .liquid-bubble {
-                animation: none;
-            }
-
             .glass-card,
             .spotlight-card {
-                backdrop-filter: blur(18px) saturate(125%);
-                -webkit-backdrop-filter: blur(18px) saturate(125%);
+                backdrop-filter: blur(24px) saturate(135%);
+                -webkit-backdrop-filter: blur(24px) saturate(135%);
             }
 
             .spotlight-card:hover::before,
@@ -2305,7 +2300,7 @@
 
             .spotlight-card.touch-active::before,
             .spotlight-card.touch-active::after {
-                opacity: 0.65;
+                opacity: 1;
             }
         }
 
@@ -2612,29 +2607,23 @@
             .glass-card.touch-active,
             .portfolio-card:active,
             .portfolio-card.touch-active {
-                --lift: 0px !important;
-                transform: none !important;
+                --lift: -4px !important;
+                border-color: rgba(var(--glass-accent, 0, 242, 255), 0.38);
+                box-shadow:
+                    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+                    0 20px 55px rgba(0, 0, 0, 0.4),
+                    0 0 32px rgba(var(--glass-accent, 0, 242, 255), 0.1);
             }
 
             .animate-item {
                 filter: none !important;
-                transition-duration: 280ms !important;
+                transition-duration: 0.55s !important;
                 will-change: auto;
-            }
-
-            .faq-item,
-            .faq-item.active,
-            .faq-item.touch-active,
-            .faq-question,
-            .faq-question * {
-                animation: none !important;
-                transition: none !important;
-                transform: none !important;
             }
 
             .faq-item .faq-answer {
                 overflow: hidden;
-                transition: max-height 200ms cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+                transition: max-height 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
                 will-change: max-height;
             }
 
@@ -2643,23 +2632,23 @@
                 flex: 0 0 var(--mobile-testimonial-width);
                 width: var(--mobile-testimonial-width) !important;
                 min-height: 20.5rem;
-                padding: 1.25rem;
+                padding: 1.5rem;
                 border-radius: 1.5rem;
             }
 
             #testimonialMarquee blockquote {
-                font-size: 0.85rem;
-                line-height: 1.65;
-                margin-bottom: 1.25rem;
+                font-size: 0.9rem;
+                line-height: 1.7;
+                margin-bottom: 1.5rem;
             }
 
             #testimonialMarquee .spotlight-card > .relative.z-10.mb-5 {
-                margin-bottom: 1rem;
+                margin-bottom: 1.25rem;
             }
 
             #testimonialMarquee .spotlight-card > .flex.items-center {
                 gap: 0.75rem;
-                padding-top: 1rem;
+                padding-top: 1.25rem;
             }
 
             #testimonialMarquee .spotlight-card > .flex.items-center > div:first-child {
@@ -2668,9 +2657,9 @@
             }
 
             #testimonialMarquee .spotlight-card > .absolute.top-5.right-5 {
-                top: 1rem;
-                right: 1rem;
-                transform: scale(0.9);
+                top: 1.25rem;
+                right: 1.25rem;
+                transform: none;
                 transform-origin: top right;
             }
 
@@ -2689,8 +2678,8 @@
             }
 
             .tech-marquee-item {
-                min-width: 7.5rem;
-                padding: 0.75rem 0.9rem;
+                min-width: 8.75rem;
+                padding: 1rem 1.5rem;
             }
 
             .service-modal .modal-content,
@@ -2699,8 +2688,81 @@
                 max-height: calc(100dvh - 1.25rem);
             }
 
-            .scroll-explore-indicator > span {
-                display: none;
+            #values .spotlight-card {
+                padding: 2rem;
+            }
+
+            #values .spotlight-card .liquid-bubble {
+                width: 3rem;
+                height: 3rem;
+            }
+
+            #values .spotlight-card .liquid-bubble > i {
+                font-size: 1.125rem;
+            }
+
+            #values .spotlight-card h3 {
+                font-size: 1.125rem;
+            }
+
+            #values .spotlight-card > p {
+                font-size: 0.875rem;
+            }
+
+            #team .spotlight-card {
+                padding: 2rem;
+                border-radius: 1.5rem;
+            }
+
+            #team .spotlight-card .liquid-bubble {
+                width: 3.5rem;
+                height: 3.5rem;
+            }
+
+            #team .spotlight-card .liquid-bubble > i {
+                font-size: 1.5rem;
+            }
+
+            #team .spotlight-card h3 {
+                font-size: 1.25rem;
+            }
+
+            #team .spotlight-card p.text-gray-400 {
+                font-size: 0.875rem;
+            }
+
+            #industries .animate-astro-bounce svg {
+                width: 3rem;
+                height: 3rem;
+            }
+
+            #industries [class~="group/node"] > div:first-of-type {
+                width: 4rem;
+                height: 4rem;
+            }
+
+            #industries [class~="group/node"] > div:first-of-type > i {
+                font-size: 1.25rem;
+            }
+
+            #industries [class~="group/node"] > span {
+                padding: 0.25rem 0.75rem;
+                font-size: 0.625rem;
+            }
+
+            #industries :has(> .nexus-brand-mark) {
+                width: 8rem;
+                height: 8rem;
+            }
+
+            #industries .nexus-brand-mark {
+                width: 4.75rem;
+                height: 4.75rem;
+            }
+
+            #industries .nexus-core-label {
+                max-width: calc(100% - 1rem);
+                font-size: 0.58rem;
             }
         }
 
@@ -4110,7 +4172,7 @@
     </section>
 
     <!-- Who We Serve & Industries Section -->
-    <section class="py-24 px-4 md:px-6 relative overflow-hidden flex flex-col justify-center min-h-screen">
+    <section id="industries" class="py-24 px-4 md:px-6 relative overflow-hidden flex flex-col justify-center min-h-screen">
         <!-- Refined Background Layers -->
         
         <!-- 1. Technical Grid Overlay -->
@@ -7054,8 +7116,8 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
                             <div class="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-32 ${c.bg} blur-[60px] rounded-full pointer-events-none"></div>
                             
                             <div class="relative z-10">
-                                <div class="w-12 h-12 md:w-16 md:h-16 mx-auto mb-4 rounded-full flex items-center justify-center ${c.bg} border ${c.border} ${c.glow}">
-                                    <i class="${data.icon} text-2xl md:text-3xl ${c.text} animate-float"></i>
+                                <div class="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center ${c.bg} border ${c.border} ${c.glow}">
+                                    <i class="${data.icon} text-3xl ${c.text} animate-float"></i>
                                 </div>
                                 <h2 class="text-2xl md:text-3xl font-bold text-white mb-3">${data.title}</h2>
                                 <p class="text-gray-300 text-sm md:text-base max-w-lg mx-auto leading-relaxed">${data.description}</p>
@@ -7082,7 +7144,7 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
                                 <div class="flex flex-wrap justify-center gap-2 md:gap-3">
                                     ${data.technologies.map(t => `
                                         <div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 hover:${c.border} transition-all group">
-                                            <i class="${t.icon} text-sm md:text-base ${t.icon.includes('colored') ? '' : c.text} group-hover:scale-110 transition-transform duration-300"></i>
+                                            <i class="${t.icon} text-base ${t.icon.includes('colored') ? '' : c.text} group-hover:scale-110 transition-transform duration-300"></i>
                                             <span class="text-[10px] md:text-xs text-gray-300">${t.name}</span>
                                         </div>
                                     `).join('')}
@@ -7276,9 +7338,9 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
                             <!-- Glow Behind Icon -->
                             <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 bg-cyan-500/20 blur-[80px] rounded-full pointer-events-none"></div>
                             
-                            <div class="w-16 h-16 md:w-24 md:h-24 mx-auto mb-6 rounded-2xl bg-[#0A0A0A] border border-white/10 flex items-center justify-center shadow-2xl relative group">
+                            <div class="w-24 h-24 mx-auto mb-6 rounded-2xl bg-[#0A0A0A] border border-white/10 flex items-center justify-center shadow-2xl relative group">
                                 <div class="absolute inset-0 bg-cyan-500/10 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl"></div>
-                                <i class="${data.icon} text-3xl md:text-5xl relative z-10 animate-float"></i>
+                                <i class="${data.icon} text-5xl relative z-10 animate-float"></i>
                             </div>
                             
                             <h2 class="text-2xl md:text-4xl font-bold text-white mb-4 tracking-tight">${data.title}</h2>
@@ -7364,9 +7426,9 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
                         <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-32 ${c.bg} blur-[60px] rounded-full pointer-events-none"></div>
                         
                         <div class="relative z-10">
-                            <div class="w-16 h-16 md:w-20 md:h-20 mx-auto mb-6 rounded-2xl bg-[#0A0A0A] border border-white/10 flex items-center justify-center shadow-2xl relative group">
+                            <div class="w-20 h-20 mx-auto mb-6 rounded-2xl bg-[#0A0A0A] border border-white/10 flex items-center justify-center shadow-2xl relative group">
                                 <div class="absolute inset-0 ${c.bg} blur-md opacity-50 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl"></div>
-                                <i class="${data.icon} text-3xl md:text-4xl ${c.text} relative z-10 animate-float"></i>
+                                <i class="${data.icon} text-4xl ${c.text} relative z-10 animate-float"></i>
                             </div>
                             
                             <h2 class="text-2xl md:text-5xl font-bold text-white mb-4 tracking-tight">${data.title}</h2>
