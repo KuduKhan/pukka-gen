@@ -1765,6 +1765,436 @@
             opacity: 1;
         }
 
+        /* Portfolio / work showcase */
+        #portfolio {
+            --portfolio-line: rgba(255, 255, 255, 0.11);
+            --portfolio-muted: #94a3b8;
+        }
+
+        .portfolio-intro {
+            display: grid;
+            gap: 2rem;
+            align-items: end;
+            margin-bottom: 4.5rem;
+        }
+
+        .portfolio-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.65rem;
+            color: #67e8f9;
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+        }
+
+        .portfolio-eyebrow::before {
+            width: 2.25rem;
+            height: 1px;
+            background: linear-gradient(90deg, #22d3ee, transparent);
+            content: '';
+        }
+
+        .portfolio-title {
+            max-width: 14ch;
+            margin-top: 1.25rem;
+            color: #f8fafc;
+            font-size: clamp(2.7rem, 6.8vw, 6.6rem);
+            font-weight: 800;
+            letter-spacing: -0.055em;
+            line-height: 0.93;
+        }
+
+        .portfolio-title em {
+            color: #64748b;
+            font-style: normal;
+        }
+
+        .portfolio-intro-copy {
+            max-width: 39rem;
+            color: #a8b0be;
+            font-size: clamp(1rem, 1.7vw, 1.2rem);
+            font-weight: 400;
+            line-height: 1.75;
+        }
+
+        .portfolio-proof-strip {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 0;
+            margin-top: 2rem;
+            border-top: 1px solid var(--portfolio-line);
+            border-bottom: 1px solid var(--portfolio-line);
+        }
+
+        .portfolio-proof {
+            padding: 1.15rem 1rem 1.15rem 0;
+        }
+
+        .portfolio-proof + .portfolio-proof {
+            padding-left: 1rem;
+            border-left: 1px solid var(--portfolio-line);
+        }
+
+        .portfolio-proof strong {
+            display: block;
+            color: #f8fafc;
+            font-family: 'Outfit', sans-serif;
+            font-size: clamp(1.35rem, 3vw, 2rem);
+            line-height: 1;
+        }
+
+        .portfolio-proof span {
+            display: block;
+            margin-top: 0.45rem;
+            color: #64748b;
+            font-size: 0.62rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            line-height: 1.4;
+            text-transform: uppercase;
+        }
+
+        .portfolio-showcase-head {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.25rem;
+            border-bottom: 1px solid var(--portfolio-line);
+        }
+
+        .portfolio-filter-row {
+            display: flex;
+            gap: 0.45rem;
+            overflow-x: auto;
+            padding: 0.2rem 0.1rem 0.5rem;
+            scrollbar-width: none;
+        }
+
+        .portfolio-filter-row::-webkit-scrollbar {
+            display: none;
+        }
+
+        .portfolio-filter {
+            flex: 0 0 auto;
+            min-height: 2.4rem;
+            padding: 0.55rem 0.9rem;
+            border-radius: 9999px;
+            font-size: 0.65rem;
+            letter-spacing: 0.1em;
+        }
+
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            grid-auto-flow: dense;
+            gap: 1rem;
+        }
+
+        .portfolio-card {
+            display: grid;
+            min-height: 0;
+            overflow: hidden;
+            border-color: var(--portfolio-line) !important;
+            border-radius: 1.35rem !important;
+            background: linear-gradient(145deg, rgba(17, 24, 39, 0.72), rgba(5, 7, 12, 0.96));
+            box-shadow: 0 18px 50px rgba(0, 0, 0, 0.18);
+            isolation: isolate;
+        }
+
+        .portfolio-card:hover,
+        .portfolio-card:focus-visible {
+            border-color: rgba(103, 232, 249, 0.42) !important;
+            box-shadow: 0 26px 70px rgba(0, 0, 0, 0.34), 0 0 0 1px rgba(103, 232, 249, 0.08);
+        }
+
+        .portfolio-card-visual {
+            min-height: 14rem;
+            overflow: hidden;
+            background-position: center;
+            background-size: cover;
+        }
+
+        .portfolio-card-visual::before {
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            background: linear-gradient(180deg, rgba(4, 7, 12, 0.02) 28%, rgba(4, 7, 12, 0.84) 100%);
+            content: '';
+        }
+
+        .portfolio-card-visual::after {
+            z-index: 2;
+        }
+
+        .portfolio-card-visual > span {
+            z-index: 3;
+        }
+
+        .portfolio-card-index {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.16em;
+        }
+
+        .portfolio-card-tag {
+            position: absolute;
+            bottom: 1rem;
+            left: 1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            padding: 0.5rem 0.7rem;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 9999px;
+            background: rgba(3, 7, 12, 0.74);
+            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(12px);
+            color: #e2e8f0;
+            font-size: 0.62rem;
+            font-weight: 800;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        .portfolio-card-tag::before {
+            width: 0.38rem;
+            height: 0.38rem;
+            border-radius: 9999px;
+            background: var(--card-accent, #67e8f9);
+            box-shadow: 0 0 0.8rem var(--card-accent, #67e8f9);
+            content: '';
+        }
+
+        .portfolio-card-body {
+            display: flex;
+            flex-direction: column;
+            padding: 1.4rem;
+        }
+
+        .portfolio-card-kicker {
+            display: block;
+            margin-bottom: 0.75rem;
+            color: var(--card-accent, #67e8f9);
+            font-size: 0.62rem;
+            font-weight: 800;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+        }
+
+        .portfolio-card-title {
+            display: block;
+            color: #f8fafc;
+            font-family: 'Outfit', sans-serif;
+            font-size: clamp(1.35rem, 2.2vw, 1.8rem);
+            font-weight: 700;
+            letter-spacing: -0.025em;
+            line-height: 1.08;
+        }
+
+        .portfolio-card-description {
+            display: block;
+            margin-top: 0.8rem;
+            color: #94a3b8;
+            font-size: 0.86rem;
+            line-height: 1.65;
+        }
+
+        .portfolio-card-metrics {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.65rem;
+            margin: 1.25rem 0;
+        }
+
+        .portfolio-card-metric {
+            display: block;
+            padding: 0.8rem;
+            border: 1px solid rgba(255, 255, 255, 0.075);
+            border-radius: 0.8rem;
+            background: rgba(255, 255, 255, 0.028);
+        }
+
+        .portfolio-card-metric strong {
+            display: block;
+            color: #f8fafc;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.12rem;
+            line-height: 1;
+        }
+
+        .portfolio-card-metric small {
+            display: block;
+            margin-top: 0.35rem;
+            color: #64748b;
+            font-size: 0.57rem;
+            font-weight: 700;
+            letter-spacing: 0.09em;
+            line-height: 1.3;
+            text-transform: uppercase;
+        }
+
+        .portfolio-card-link {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: auto;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.075);
+            color: #e2e8f0;
+            font-size: 0.66rem;
+            font-weight: 800;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        .portfolio-card-link i {
+            color: var(--card-accent, #67e8f9);
+            transition: transform 0.3s var(--ease-out);
+        }
+
+        .portfolio-card:hover .portfolio-card-link i,
+        .portfolio-card:focus-visible .portfolio-card-link i {
+            transform: translateX(0.3rem);
+        }
+
+        .portfolio-card--cyan { --card-accent: #67e8f9; }
+        .portfolio-card--green { --card-accent: #4ade80; }
+        .portfolio-card--pink { --card-accent: #f472b6; }
+        .portfolio-card--purple { --card-accent: #c084fc; }
+        .portfolio-card--blue { --card-accent: #60a5fa; }
+        .portfolio-card--yellow { --card-accent: #facc15; }
+        .portfolio-card--teal { --card-accent: #2dd4bf; }
+        .portfolio-card--orange { --card-accent: #fb923c; }
+
+        .portfolio-modal-kicker {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: #cbd5e1;
+            font-size: 0.65rem;
+            font-weight: 800;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+        }
+
+        .portfolio-modal-kicker::after {
+            flex: 1;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.16);
+            content: '';
+        }
+
+        .service-modal[aria-label$="case study"] .modal-content {
+            width: min(100%, 68rem);
+            max-width: 68rem;
+            padding: 0.65rem;
+            border-radius: 1.35rem;
+            background: rgba(5, 8, 14, 0.96);
+        }
+
+        @media (min-width: 768px) {
+            .portfolio-showcase-head {
+                flex-direction: row;
+                align-items: flex-end;
+                justify-content: space-between;
+            }
+
+            .portfolio-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 1.15rem;
+            }
+
+            .portfolio-grid.is-filtered.has-odd-count.has-featured .portfolio-card--featured {
+                grid-column: 1 / -1;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .portfolio-intro {
+                grid-template-columns: minmax(0, 1.2fr) minmax(22rem, 0.8fr);
+                gap: 5rem;
+            }
+
+            .portfolio-grid {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+
+            .portfolio-grid.is-filtered {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .portfolio-card--featured {
+                grid-column: span 2;
+                grid-template-columns: minmax(0, 1.15fr) minmax(19rem, 0.85fr);
+            }
+
+            .portfolio-card--featured .portfolio-card-visual {
+                min-height: 100%;
+            }
+
+            .portfolio-card--featured .portfolio-card-body {
+                min-height: 28rem;
+                padding: 2rem;
+            }
+
+            .portfolio-card--featured .portfolio-card-title {
+                font-size: clamp(2rem, 3.5vw, 3.15rem);
+            }
+
+            .portfolio-card--featured .portfolio-card-description {
+                font-size: 0.96rem;
+            }
+
+            .portfolio-grid.is-filtered .portfolio-card--featured {
+                grid-column: auto;
+                grid-template-columns: minmax(0, 1fr);
+            }
+
+            .portfolio-grid.is-filtered .portfolio-card--featured .portfolio-card-visual {
+                min-height: 14rem;
+            }
+
+            .portfolio-grid.is-filtered .portfolio-card--featured .portfolio-card-body {
+                min-height: 0;
+                padding: 1.4rem;
+            }
+
+            .portfolio-grid.is-filtered .portfolio-card--featured .portfolio-card-title {
+                font-size: clamp(1.35rem, 2.2vw, 1.8rem);
+            }
+
+            .portfolio-grid.is-filtered .portfolio-card--featured .portfolio-card-description {
+                font-size: 0.86rem;
+            }
+
+            .portfolio-grid.is-filtered.has-odd-count.has-featured .portfolio-card--featured {
+                grid-column: 1 / -1;
+                grid-template-columns: minmax(0, 1.15fr) minmax(19rem, 0.85fr);
+            }
+
+            .portfolio-grid.is-filtered.has-odd-count.has-featured .portfolio-card--featured .portfolio-card-visual {
+                min-height: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .portfolio-proof span {
+                letter-spacing: 0.06em;
+            }
+
+            .portfolio-card-body {
+                padding: 1.15rem;
+            }
+        }
+
         .service-detail-btn {
             align-self: flex-start;
             padding: 0.55rem 0.8rem;
@@ -2863,217 +3293,184 @@
     </section>
 
     <!-- Portfolio Section -->
-    <section id="portfolio" class="py-28 px-4 md:px-6 relative overflow-hidden bg-white/[0.015] border-y border-white/5">
-        <div class="absolute inset-0 grid-overlay opacity-[0.08] pointer-events-none"></div>
-        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[42rem] h-[20rem] bg-cyan-500/10 blur-[120px] rounded-full pointer-events-none"></div>
+    <section id="portfolio" class="py-28 md:py-36 px-4 md:px-6 relative overflow-hidden bg-white/[0.015] border-y border-white/5">
+        <div class="absolute inset-0 grid-overlay opacity-[0.06] pointer-events-none"></div>
+        <div class="absolute -top-24 left-1/3 w-[44rem] h-[28rem] bg-cyan-500/[0.07] blur-[150px] rounded-full pointer-events-none"></div>
 
         <div class="portfolio-shell max-w-7xl mx-auto relative z-10">
-            <div class="grid lg:grid-cols-[0.88fr_1.12fr] gap-8 lg:gap-12 items-stretch mb-12">
-                <div class="animate-item flex flex-col justify-center">
-                    <span class="text-green-400 font-bold tracking-wider text-sm uppercase px-3 py-1 bg-green-900/25 rounded-full border border-green-500/20 w-max">Portfolio</span>
-                    <h2 class="text-4xl md:text-6xl font-bold mt-6 mb-5 leading-tight">Selected builds with real product pressure.</h2>
-                    <p class="text-gray-400 text-base md:text-xl leading-relaxed max-w-2xl font-light">
-                        A modern portfolio should prove range, reliability, and taste at a glance. These featured builds show how Pukka Gen turns unclear operational friction into responsive products, measurable systems, and launch-ready platforms.
-                    </p>
-
-                    <div class="grid grid-cols-3 gap-3 sm:gap-4 mt-8 max-w-xl">
-                        <div class="border border-white/10 bg-white/[0.035] rounded-lg p-4">
-                            <div class="text-2xl md:text-3xl font-black text-white">6</div>
-                            <div class="text-[10px] md:text-xs uppercase tracking-wider text-gray-500 mt-1">Case tracks</div>
-                        </div>
-                        <div class="border border-white/10 bg-white/[0.035] rounded-lg p-4">
-                            <div class="text-2xl md:text-3xl font-black text-cyan-400">5</div>
-                            <div class="text-[10px] md:text-xs uppercase tracking-wider text-gray-500 mt-1">Disciplines</div>
-                        </div>
-                        <div class="border border-white/10 bg-white/[0.035] rounded-lg p-4">
-                            <div class="text-2xl md:text-3xl font-black text-green-400">24/7</div>
-                            <div class="text-[10px] md:text-xs uppercase tracking-wider text-gray-500 mt-1">Ops mindset</div>
-                        </div>
-                    </div>
+            <div class="portfolio-intro">
+                <div class="animate-item">
+                    <span class="portfolio-eyebrow">Selected work</span>
+                    <h2 class="portfolio-title">Built to perform. <em>Made to last.</em></h2>
                 </div>
 
-                <div class="animate-item delay-100 relative min-h-[22rem] rounded-lg overflow-hidden border border-white/10 bg-[#080808] shadow-2xl">
-                    <div class="absolute inset-0 bg-cover bg-center opacity-70" style="background-image: url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1400&q=80');"></div>
-                    <div class="absolute inset-0 bg-gradient-to-br from-black via-black/50 to-cyan-950/30"></div>
-                    <div class="relative z-10 h-full p-6 md:p-8 flex flex-col justify-between">
-                        <div class="flex items-center justify-between gap-4">
-                            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/50 border border-white/10 text-cyan-300 text-[10px] uppercase tracking-widest font-bold">
-                                <i class="fas fa-signal"></i> Live System Thinking
-                            </div>
-                            <div class="text-right text-xs text-gray-400">
-                                Responsive by default
-                            </div>
-                        </div>
-                        <div class="max-w-xl">
-                            <h3 class="text-2xl md:text-4xl font-black text-white mb-4">From prototype to production without losing the plot.</h3>
-                            <p class="text-sm md:text-base text-gray-300 leading-relaxed mb-6">Every case study below is structured around the same delivery promise: clear scope, beautiful interfaces, reliable infrastructure, and maintainable engineering.</p>
-                            <a href="#contact" class="magnetic-btn inline-flex items-center gap-2 px-5 py-3 rounded-full bg-white text-black text-sm font-bold hover:bg-cyan-300 transition-colors">
-                                Build With Pukka Gen <i class="fas fa-arrow-right"></i>
-                            </a>
-                        </div>
+                <div class="animate-item delay-100">
+                    <p class="portfolio-intro-copy">We turn high-stakes workflows into clear, resilient digital products—from the first product decision to the systems that keep everything running.</p>
+                    <div class="portfolio-proof-strip" aria-label="Portfolio summary">
+                        <div class="portfolio-proof"><strong>08</strong><span>Selected systems</span></div>
+                        <div class="portfolio-proof"><strong>05</strong><span>Core disciplines</span></div>
+                        <div class="portfolio-proof"><strong>360°</strong><span>Delivery ownership</span></div>
                     </div>
                 </div>
             </div>
 
-            <div class="animate-item delay-200 flex flex-col lg:flex-row lg:items-center justify-between gap-5 mb-8">
+            <div class="portfolio-showcase-head animate-item delay-200">
                 <div>
-                    <h3 class="text-2xl md:text-3xl font-bold text-white">Work Showcase</h3>
-                    <p id="portfolioResultCount" class="text-sm text-gray-500 mt-1" aria-live="polite">Showing all 6 builds</p>
+                    <p class="text-[11px] uppercase tracking-[0.18em] text-cyan-300 font-bold mb-2">Work showcase</p>
+                    <h3 class="text-2xl md:text-3xl font-bold text-white">Explore the systems behind the outcomes.</h3>
+                    <p id="portfolioResultCount" class="text-sm text-slate-500 mt-2" aria-live="polite">Showing all 8 projects</p>
                 </div>
-                <div class="flex flex-wrap gap-2" aria-label="Filter portfolio projects">
-                    <button type="button" class="portfolio-filter px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider" data-filter="all" aria-pressed="true">All</button>
-                    <button type="button" class="portfolio-filter px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider" data-filter="ai" aria-pressed="false">AI</button>
-                    <button type="button" class="portfolio-filter px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider" data-filter="saas" aria-pressed="false">SaaS</button>
-                    <button type="button" class="portfolio-filter px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider" data-filter="cloud" aria-pressed="false">Cloud</button>
-                    <button type="button" class="portfolio-filter px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider" data-filter="security" aria-pressed="false">Security</button>
-                    <button type="button" class="portfolio-filter px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider" data-filter="design" aria-pressed="false">Design</button>
+                <div class="portfolio-filter-row" role="group" aria-label="Filter portfolio projects">
+                    <button type="button" class="portfolio-filter" data-filter="all" aria-pressed="true">All work</button>
+                    <button type="button" class="portfolio-filter" data-filter="ai" aria-pressed="false">AI</button>
+                    <button type="button" class="portfolio-filter" data-filter="saas" aria-pressed="false">SaaS</button>
+                    <button type="button" class="portfolio-filter" data-filter="cloud" aria-pressed="false">Cloud</button>
+                    <button type="button" class="portfolio-filter" data-filter="security" aria-pressed="false">Security</button>
+                    <button type="button" class="portfolio-filter" data-filter="design" aria-pressed="false">Product design</button>
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 md:gap-6 stagger-container">
-                <button type="button" class="portfolio-project-btn portfolio-card animate-item spotlight-card text-left rounded-lg border border-white/10 bg-[#080808]/50 overflow-hidden group hover:border-cyan-500/40" data-project="ops" data-category="saas ai cloud" aria-label="Open Operations Command Center case study">
-                    <span class="block portfolio-card-visual relative" style="background-image: url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80');">
-                        <span class="absolute inset-0 bg-gradient-to-t from-[#080808] via-[#080808]/15 to-transparent"></span>
-                        <span class="absolute top-4 left-4 px-3 py-1 rounded-full bg-cyan-500/15 border border-cyan-400/20 text-cyan-300 text-[10px] uppercase tracking-wider font-bold">AI + SaaS</span>
+            <div class="portfolio-grid stagger-container">
+                <button type="button" class="portfolio-project-btn portfolio-card portfolio-card--featured portfolio-card--cyan animate-item spotlight-card text-left" data-project="ops" data-category="saas ai cloud" aria-label="Open Operations Command Center case study">
+                    <span class="block portfolio-card-visual relative" style="background-image: url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1400&q=84');">
+                        <span class="portfolio-card-index">01 / 08</span>
+                        <span class="portfolio-card-tag">AI + SaaS</span>
                     </span>
-                    <span class="block p-6">
-                        <span class="block text-xl font-bold text-white mb-2 group-hover:text-cyan-300 transition-colors">Operations Command Center</span>
-                        <span class="block text-sm text-gray-400 leading-relaxed mb-5">A realtime coordination dashboard for multi-team dispatch, backlog triage, and performance visibility.</span>
-                        <span class="grid grid-cols-2 gap-3 mb-5">
-                            <span class="block border-l border-cyan-400/40 pl-3">
-                                <span class="block text-lg font-black text-white">42%</span>
-                                <span class="block text-[10px] uppercase tracking-wider text-gray-500">faster handoffs</span>
-                            </span>
-                            <span class="block border-l border-white/10 pl-3">
-                                <span class="block text-lg font-black text-white">8</span>
-                                <span class="block text-[10px] uppercase tracking-wider text-gray-500">integrations</span>
-                            </span>
+                    <span class="portfolio-card-body">
+                        <span class="portfolio-card-kicker">Flagship case · Operations</span>
+                        <span class="portfolio-card-title">Operations Command Center</span>
+                        <span class="portfolio-card-description">A realtime coordination system that brings dispatch, backlog triage, live workload, and executive visibility into one decisive view.</span>
+                        <span class="portfolio-card-metrics">
+                            <span class="portfolio-card-metric"><strong>42%</strong><small>Faster handoffs</small></span>
+                            <span class="portfolio-card-metric"><strong>8</strong><small>Connected systems</small></span>
                         </span>
-                        <span class="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-cyan-400">
-                            View case study <i class="fas fa-arrow-right"></i>
-                        </span>
+                        <span class="portfolio-card-link">Explore case study <i class="fas fa-arrow-right" aria-hidden="true"></i></span>
                     </span>
                 </button>
 
-                <button type="button" class="portfolio-project-btn portfolio-card animate-item delay-100 spotlight-card text-left rounded-lg border border-white/10 bg-[#080808]/50 overflow-hidden group hover:border-green-500/40" data-project="finance" data-category="security cloud saas" aria-label="Open Fintech Trust Portal case study">
-                    <span class="block portfolio-card-visual relative" style="background-image: url('https://images.unsplash.com/photo-1563013544-824ae1b704d3?auto=format&fit=crop&w=1200&q=80');">
-                        <span class="absolute inset-0 bg-gradient-to-t from-[#080808] via-[#080808]/15 to-transparent"></span>
-                        <span class="absolute top-4 left-4 px-3 py-1 rounded-full bg-green-500/15 border border-green-400/20 text-green-300 text-[10px] uppercase tracking-wider font-bold">Security</span>
+                <button type="button" class="portfolio-project-btn portfolio-card portfolio-card--green animate-item delay-100 spotlight-card text-left" data-project="finance" data-category="security cloud saas" aria-label="Open Fintech Trust Portal case study">
+                    <span class="block portfolio-card-visual relative" style="background-image: url('https://images.unsplash.com/photo-1563013544-824ae1b704d3?auto=format&fit=crop&w=1200&q=84');">
+                        <span class="portfolio-card-index">02 / 08</span>
+                        <span class="portfolio-card-tag">Security + Cloud</span>
                     </span>
-                    <span class="block p-6">
-                        <span class="block text-xl font-bold text-white mb-2 group-hover:text-green-300 transition-colors">Fintech Trust Portal</span>
-                        <span class="block text-sm text-gray-400 leading-relaxed mb-5">A secure customer portal with identity checks, payment flows, admin controls, and audit-ready access rules.</span>
-                        <span class="grid grid-cols-2 gap-3 mb-5">
-                            <span class="block border-l border-green-400/40 pl-3">
-                                <span class="block text-lg font-black text-white">99.98%</span>
-                                <span class="block text-[10px] uppercase tracking-wider text-gray-500">uptime target</span>
-                            </span>
-                            <span class="block border-l border-white/10 pl-3">
-                                <span class="block text-lg font-black text-white">4</span>
-                                <span class="block text-[10px] uppercase tracking-wider text-gray-500">risk layers</span>
-                            </span>
+                    <span class="portfolio-card-body">
+                        <span class="portfolio-card-kicker">Fintech · Trust</span>
+                        <span class="portfolio-card-title">Fintech Trust Portal</span>
+                        <span class="portfolio-card-description">Secure onboarding, payments, admin controls, and audit-ready access in one customer-facing platform.</span>
+                        <span class="portfolio-card-metrics">
+                            <span class="portfolio-card-metric"><strong>99.98%</strong><small>Uptime target</small></span>
+                            <span class="portfolio-card-metric"><strong>4</strong><small>Risk layers</small></span>
                         </span>
-                        <span class="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-green-400">
-                            View case study <i class="fas fa-arrow-right"></i>
-                        </span>
+                        <span class="portfolio-card-link">Explore case study <i class="fas fa-arrow-right" aria-hidden="true"></i></span>
                     </span>
                 </button>
 
-                <button type="button" class="portfolio-project-btn portfolio-card animate-item delay-200 spotlight-card text-left rounded-lg border border-white/10 bg-[#080808]/50 overflow-hidden group hover:border-pink-500/40" data-project="health" data-category="ai design saas" aria-label="Open Healthcare Flow Engine case study">
-                    <span class="block portfolio-card-visual relative" style="background-image: url('https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=1200&q=80');">
-                        <span class="absolute inset-0 bg-gradient-to-t from-[#080808] via-[#080808]/15 to-transparent"></span>
-                        <span class="absolute top-4 left-4 px-3 py-1 rounded-full bg-pink-500/15 border border-pink-400/20 text-pink-300 text-[10px] uppercase tracking-wider font-bold">UX + AI</span>
+                <button type="button" class="portfolio-project-btn portfolio-card portfolio-card--pink animate-item delay-200 spotlight-card text-left" data-project="health" data-category="ai design saas" aria-label="Open Healthcare Flow Engine case study">
+                    <span class="block portfolio-card-visual relative" style="background-image: url('https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=1200&q=84');">
+                        <span class="portfolio-card-index">03 / 08</span>
+                        <span class="portfolio-card-tag">UX + AI</span>
                     </span>
-                    <span class="block p-6">
-                        <span class="block text-xl font-bold text-white mb-2 group-hover:text-pink-300 transition-colors">Healthcare Flow Engine</span>
-                        <span class="block text-sm text-gray-400 leading-relaxed mb-5">A booking and care workflow platform that simplifies intake, routing, reminders, and operational reporting.</span>
-                        <span class="grid grid-cols-2 gap-3 mb-5">
-                            <span class="block border-l border-pink-400/40 pl-3">
-                                <span class="block text-lg font-black text-white">31%</span>
-                                <span class="block text-[10px] uppercase tracking-wider text-gray-500">fewer no-shows</span>
-                            </span>
-                            <span class="block border-l border-white/10 pl-3">
-                                <span class="block text-lg font-black text-white">12</span>
-                                <span class="block text-[10px] uppercase tracking-wider text-gray-500">user journeys</span>
-                            </span>
+                    <span class="portfolio-card-body">
+                        <span class="portfolio-card-kicker">Healthcare · Experience</span>
+                        <span class="portfolio-card-title">Healthcare Flow Engine</span>
+                        <span class="portfolio-card-description">A care workflow that simplifies intake, routing, reminders, and reporting without losing the human touch.</span>
+                        <span class="portfolio-card-metrics">
+                            <span class="portfolio-card-metric"><strong>31%</strong><small>Fewer no-shows</small></span>
+                            <span class="portfolio-card-metric"><strong>12</strong><small>Mapped journeys</small></span>
                         </span>
-                        <span class="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-pink-400">
-                            View case study <i class="fas fa-arrow-right"></i>
-                        </span>
+                        <span class="portfolio-card-link">Explore case study <i class="fas fa-arrow-right" aria-hidden="true"></i></span>
                     </span>
                 </button>
 
-                <button type="button" class="portfolio-project-btn portfolio-card animate-item delay-300 spotlight-card text-left rounded-lg border border-white/10 bg-[#080808]/50 overflow-hidden group hover:border-purple-500/40" data-project="learning" data-category="design saas" aria-label="Open Learning Studio case study">
-                    <span class="block portfolio-card-visual relative" style="background-image: url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80');">
-                        <span class="absolute inset-0 bg-gradient-to-t from-[#080808] via-[#080808]/15 to-transparent"></span>
-                        <span class="absolute top-4 left-4 px-3 py-1 rounded-full bg-purple-500/15 border border-purple-400/20 text-purple-300 text-[10px] uppercase tracking-wider font-bold">Design</span>
+                <button type="button" class="portfolio-project-btn portfolio-card portfolio-card--purple animate-item delay-300 spotlight-card text-left" data-project="learning" data-category="design saas" aria-label="Open Learning Studio case study">
+                    <span class="block portfolio-card-visual relative" style="background-image: url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=84');">
+                        <span class="portfolio-card-index">04 / 08</span>
+                        <span class="portfolio-card-tag">Product Design</span>
                     </span>
-                    <span class="block p-6">
-                        <span class="block text-xl font-bold text-white mb-2 group-hover:text-purple-300 transition-colors">Learning Studio</span>
-                        <span class="block text-sm text-gray-400 leading-relaxed mb-5">A polished learning portal with progress tracking, content tooling, cohort management, and mobile-first lessons.</span>
-                        <span class="grid grid-cols-2 gap-3 mb-5">
-                            <span class="block border-l border-purple-400/40 pl-3">
-                                <span class="block text-lg font-black text-white">4.8/5</span>
-                                <span class="block text-[10px] uppercase tracking-wider text-gray-500">learner CSAT</span>
-                            </span>
-                            <span class="block border-l border-white/10 pl-3">
-                                <span class="block text-lg font-black text-white">3x</span>
-                                <span class="block text-[10px] uppercase tracking-wider text-gray-500">content speed</span>
-                            </span>
+                    <span class="portfolio-card-body">
+                        <span class="portfolio-card-kicker">Edtech · Platform</span>
+                        <span class="portfolio-card-title">Learning Studio</span>
+                        <span class="portfolio-card-description">A mobile-first learning environment for content production, cohort management, and visible learner progress.</span>
+                        <span class="portfolio-card-metrics">
+                            <span class="portfolio-card-metric"><strong>4.8/5</strong><small>Learner CSAT</small></span>
+                            <span class="portfolio-card-metric"><strong>3×</strong><small>Content speed</small></span>
                         </span>
-                        <span class="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-purple-400">
-                            View case study <i class="fas fa-arrow-right"></i>
-                        </span>
+                        <span class="portfolio-card-link">Explore case study <i class="fas fa-arrow-right" aria-hidden="true"></i></span>
                     </span>
                 </button>
 
-                <button type="button" class="portfolio-project-btn portfolio-card animate-item delay-400 spotlight-card text-left rounded-lg border border-white/10 bg-[#080808]/50 overflow-hidden group hover:border-blue-500/40" data-project="cloudops" data-category="cloud security" aria-label="Open Cloud Migration Map case study">
-                    <span class="block portfolio-card-visual relative" style="background-image: url('https://images.unsplash.com/photo-1558494949-ef526b0042a0?auto=format&fit=crop&w=1200&q=80');">
-                        <span class="absolute inset-0 bg-gradient-to-t from-[#080808] via-[#080808]/15 to-transparent"></span>
-                        <span class="absolute top-4 left-4 px-3 py-1 rounded-full bg-blue-500/15 border border-blue-400/20 text-blue-300 text-[10px] uppercase tracking-wider font-bold">Cloud</span>
+                <button type="button" class="portfolio-project-btn portfolio-card portfolio-card--blue animate-item delay-400 spotlight-card text-left" data-project="cloudops" data-category="cloud security" aria-label="Open Cloud Migration Map case study">
+                    <span class="block portfolio-card-visual relative" style="background-image: url('https://images.unsplash.com/photo-1558494949-ef526b0042a0?auto=format&fit=crop&w=1200&q=84');">
+                        <span class="portfolio-card-index">05 / 08</span>
+                        <span class="portfolio-card-tag">Cloud + Security</span>
                     </span>
-                    <span class="block p-6">
-                        <span class="block text-xl font-bold text-white mb-2 group-hover:text-blue-300 transition-colors">Cloud Migration Map</span>
-                        <span class="block text-sm text-gray-400 leading-relaxed mb-5">A phased migration program with observability, failover planning, release gates, and cost visibility.</span>
-                        <span class="grid grid-cols-2 gap-3 mb-5">
-                            <span class="block border-l border-blue-400/40 pl-3">
-                                <span class="block text-lg font-black text-white">58%</span>
-                                <span class="block text-[10px] uppercase tracking-wider text-gray-500">lower deploy risk</span>
-                            </span>
-                            <span class="block border-l border-white/10 pl-3">
-                                <span class="block text-lg font-black text-white">0</span>
-                                <span class="block text-[10px] uppercase tracking-wider text-gray-500">data-loss events</span>
-                            </span>
+                    <span class="portfolio-card-body">
+                        <span class="portfolio-card-kicker">Infrastructure · Reliability</span>
+                        <span class="portfolio-card-title">Cloud Migration Map</span>
+                        <span class="portfolio-card-description">A phased transformation with observability, failover planning, release gates, and clear cost control.</span>
+                        <span class="portfolio-card-metrics">
+                            <span class="portfolio-card-metric"><strong>58%</strong><small>Lower deploy risk</small></span>
+                            <span class="portfolio-card-metric"><strong>0</strong><small>Data-loss events</small></span>
                         </span>
-                        <span class="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-blue-400">
-                            View case study <i class="fas fa-arrow-right"></i>
-                        </span>
+                        <span class="portfolio-card-link">Explore case study <i class="fas fa-arrow-right" aria-hidden="true"></i></span>
                     </span>
                 </button>
 
-                <button type="button" class="portfolio-project-btn portfolio-card animate-item delay-500 spotlight-card text-left rounded-lg border border-white/10 bg-[#080808]/50 overflow-hidden group hover:border-yellow-500/40" data-project="support" data-category="ai saas" aria-label="Open AI Support Desk case study">
-                    <span class="block portfolio-card-visual relative" style="background-image: url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1200&q=80');">
-                        <span class="absolute inset-0 bg-gradient-to-t from-[#080808] via-[#080808]/15 to-transparent"></span>
-                        <span class="absolute top-4 left-4 px-3 py-1 rounded-full bg-yellow-500/15 border border-yellow-400/20 text-yellow-300 text-[10px] uppercase tracking-wider font-bold">AI Ops</span>
+                <button type="button" class="portfolio-project-btn portfolio-card portfolio-card--yellow animate-item delay-500 spotlight-card text-left" data-project="support" data-category="ai saas" aria-label="Open AI Support Desk case study">
+                    <span class="block portfolio-card-visual relative" style="background-image: url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1200&q=84');">
+                        <span class="portfolio-card-index">06 / 08</span>
+                        <span class="portfolio-card-tag">AI Operations</span>
                     </span>
-                    <span class="block p-6">
-                        <span class="block text-xl font-bold text-white mb-2 group-hover:text-yellow-300 transition-colors">AI Support Desk</span>
-                        <span class="block text-sm text-gray-400 leading-relaxed mb-5">An assisted support layer that classifies tickets, drafts responses, escalates risk, and improves knowledge coverage.</span>
-                        <span class="grid grid-cols-2 gap-3 mb-5">
-                            <span class="block border-l border-yellow-400/40 pl-3">
-                                <span class="block text-lg font-black text-white">24/7</span>
-                                <span class="block text-[10px] uppercase tracking-wider text-gray-500">first triage</span>
-                            </span>
-                            <span class="block border-l border-white/10 pl-3">
-                                <span class="block text-lg font-black text-white">68%</span>
-                                <span class="block text-[10px] uppercase tracking-wider text-gray-500">faster routing</span>
-                            </span>
+                    <span class="portfolio-card-body">
+                        <span class="portfolio-card-kicker">Support · Automation</span>
+                        <span class="portfolio-card-title">AI Support Desk</span>
+                        <span class="portfolio-card-description">Human-approved ticket triage, reply drafting, risk escalation, and knowledge improvement around the clock.</span>
+                        <span class="portfolio-card-metrics">
+                            <span class="portfolio-card-metric"><strong>24/7</strong><small>First triage</small></span>
+                            <span class="portfolio-card-metric"><strong>68%</strong><small>Faster routing</small></span>
                         </span>
-                        <span class="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-yellow-400">
-                            View case study <i class="fas fa-arrow-right"></i>
-                        </span>
+                        <span class="portfolio-card-link">Explore case study <i class="fas fa-arrow-right" aria-hidden="true"></i></span>
                     </span>
                 </button>
+
+                <button type="button" class="portfolio-project-btn portfolio-card portfolio-card--teal animate-item delay-500 spotlight-card text-left" data-project="field" data-category="design saas cloud" aria-label="Open Field Service Mobile Suite case study">
+                    <span class="block portfolio-card-visual relative" style="background-image: url('https://images.unsplash.com/photo-1516321165247-4aa89a48be28?auto=format&fit=crop&w=1200&q=84');">
+                        <span class="portfolio-card-index">07 / 08</span>
+                        <span class="portfolio-card-tag">Mobile + Cloud</span>
+                    </span>
+                    <span class="portfolio-card-body">
+                        <span class="portfolio-card-kicker">Field teams · Mobility</span>
+                        <span class="portfolio-card-title">Field Service Mobile Suite</span>
+                        <span class="portfolio-card-description">An offline-ready mobile workflow for scheduling, site records, proof of work, and faster job closeout.</span>
+                        <span class="portfolio-card-metrics">
+                            <span class="portfolio-card-metric"><strong>36%</strong><small>Fewer repeat visits</small></span>
+                            <span class="portfolio-card-metric"><strong>2.4×</strong><small>Faster closeout</small></span>
+                        </span>
+                        <span class="portfolio-card-link">Explore case study <i class="fas fa-arrow-right" aria-hidden="true"></i></span>
+                    </span>
+                </button>
+
+                <button type="button" class="portfolio-project-btn portfolio-card portfolio-card--orange animate-item delay-500 spotlight-card text-left" data-project="commerce" data-category="saas ai design" aria-label="Open Commerce Growth Platform case study">
+                    <span class="block portfolio-card-visual relative" style="background-image: url('https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=1200&q=84');">
+                        <span class="portfolio-card-index">08 / 08</span>
+                        <span class="portfolio-card-tag">Commerce + AI</span>
+                    </span>
+                    <span class="portfolio-card-body">
+                        <span class="portfolio-card-kicker">Retail · Conversion</span>
+                        <span class="portfolio-card-title">Commerce Growth Platform</span>
+                        <span class="portfolio-card-description">A responsive storefront and merchandising system shaped around faster discovery, checkout, and iteration.</span>
+                        <span class="portfolio-card-metrics">
+                            <span class="portfolio-card-metric"><strong>27%</strong><small>Checkout lift</small></span>
+                            <span class="portfolio-card-metric"><strong>41%</strong><small>Faster campaigns</small></span>
+                        </span>
+                        <span class="portfolio-card-link">Explore case study <i class="fas fa-arrow-right" aria-hidden="true"></i></span>
+                    </span>
+                </button>
+            </div>
+
+            <div class="animate-item mt-10 md:mt-14 flex flex-col md:flex-row md:items-center md:justify-between gap-5 border-t border-white/10 pt-7">
+                <p class="text-sm text-slate-400 max-w-xl leading-relaxed">Have a complex workflow, legacy platform, or AI opportunity that needs this level of clarity?</p>
+                <a href="#contact" class="magnetic-btn inline-flex items-center justify-center gap-3 px-6 py-3 rounded-full bg-white text-black text-sm font-bold hover:bg-cyan-300 transition-colors">Start a focused brief <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
             </div>
         </div>
     </section>
@@ -5329,9 +5726,8 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             
             // --- Update Rocket Position Tracking ---
-            const rocketEl = document.getElementById('rocket');
-            if(rocketEl && rocketEl.style.opacity !== '0') {
-                const rect = rocketEl.getBoundingClientRect();
+            if(rocket && rocket.style.opacity !== '0') {
+                const rect = rocket.getBoundingClientRect();
                 rocketRect.x = rect.left + rect.width / 2;
                 rocketRect.y = rect.top + rect.height / 2;
             } else {
@@ -5341,9 +5737,8 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
 
             // --- Update Comet Position Tracking ---
             // Fix: Use cometActive flag because opacity is set to '0' immediately with CSS delay
-            const cometEl = document.getElementById('comet');
-            if(cometEl && cometActive) {
-                const rect = cometEl.getBoundingClientRect();
+            if(comet && cometActive) {
+                const rect = comet.getBoundingClientRect();
                 cometRect.x = rect.left + rect.width / 2;
                 cometRect.y = rect.top + rect.height / 2;
             } else {
@@ -6440,11 +6835,14 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
         const detailBtns = document.querySelectorAll('.service-detail-btn');
         const portfolioDetails = {
             ops: {
+                index: "01",
                 title: "Operations Command Center",
                 eyebrow: "AI + SaaS",
                 theme: "cyan",
                 image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1400&q=80",
                 description: "A realtime coordination dashboard that unifies task intake, team workload, AI-assisted triage, and executive reporting in one operational view.",
+                context: "Disconnected tools and handoffs made it difficult for teams to see priority, ownership, and operational risk in real time.",
+                role: "Product strategy · UX/UI · Full-stack engineering · Cloud delivery",
                 metrics: [
                     { value: "42%", label: "faster handoffs" },
                     { value: "8", label: "connected systems" },
@@ -6459,11 +6857,14 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
                 stack: ["React", "Node.js", "PostgreSQL", "WebSockets", "Azure"]
             },
             finance: {
+                index: "02",
                 title: "Fintech Trust Portal",
                 eyebrow: "Security + Cloud",
                 theme: "green",
                 image: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?auto=format&fit=crop&w=1400&q=80",
                 description: "A hardened customer portal for account onboarding, payment activity, admin controls, and compliance-friendly audit review.",
+                context: "The platform needed to make high-trust financial actions feel simple while maintaining strict access, audit, and release controls.",
+                role: "Experience design · Application security · Platform engineering · QA",
                 metrics: [
                     { value: "99.98%", label: "uptime target" },
                     { value: "4", label: "risk layers" },
@@ -6478,11 +6879,14 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
                 stack: ["Next.js", ".NET", "PostgreSQL", "Docker", "AWS"]
             },
             health: {
+                index: "03",
                 title: "Healthcare Flow Engine",
                 eyebrow: "UX + AI",
                 theme: "pink",
                 image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=1400&q=80",
                 description: "A patient-facing booking and care workflow platform that helps clinics reduce friction across intake, routing, reminders, and follow-up.",
+                context: "Patients and staff were navigating fragmented steps across booking, intake, reminders, and follow-up, creating avoidable delay and drop-off.",
+                role: "Service design · UX research · Automation · Front-end engineering",
                 metrics: [
                     { value: "31%", label: "fewer no-shows" },
                     { value: "12", label: "mapped journeys" },
@@ -6497,11 +6901,14 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
                 stack: ["Vue", "Python", "PostgreSQL", "Twilio", "Figma"]
             },
             learning: {
+                index: "04",
                 title: "Learning Studio",
                 eyebrow: "Design + SaaS",
                 theme: "purple",
                 image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1400&q=80",
                 description: "A polished learning portal with content tooling, cohort management, progress tracking, and responsive lesson experiences.",
+                context: "Content teams needed a faster publishing workflow while learners needed a calmer, mobile-first path through lessons and progress.",
+                role: "Product design · Design system · Front-end engineering · Analytics",
                 metrics: [
                     { value: "4.8/5", label: "learner CSAT" },
                     { value: "3x", label: "content speed" },
@@ -6516,11 +6923,14 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
                 stack: ["React", "Firebase", "Tailwind", "Figma", "Analytics"]
             },
             cloudops: {
+                index: "05",
                 title: "Cloud Migration Map",
                 eyebrow: "Cloud + Security",
                 theme: "blue",
                 image: "https://images.unsplash.com/photo-1558494949-ef526b0042a0?auto=format&fit=crop&w=1400&q=80",
                 description: "A phased migration program with release gates, observability, failover planning, cost visibility, and clear cutover discipline.",
+                context: "A high-risk legacy estate required a migration path that protected continuity, made cost visible, and gave every cutover a safe rollback.",
+                role: "Cloud architecture · DevSecOps · Observability · Migration planning",
                 metrics: [
                     { value: "58%", label: "lower deploy risk" },
                     { value: "0", label: "data-loss events" },
@@ -6535,11 +6945,14 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
                 stack: ["AWS", "Kubernetes", "Terraform", "Docker", "Grafana"]
             },
             support: {
+                index: "06",
                 title: "AI Support Desk",
                 eyebrow: "AI Operations",
                 theme: "yellow",
                 image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1400&q=80",
                 description: "An assisted support layer that classifies tickets, drafts replies, escalates risk, and keeps the knowledge base improving over time.",
+                context: "Support volume was outpacing manual triage, but sensitive customer decisions still needed clear human ownership and control.",
+                role: "AI workflow design · Integration engineering · Admin UX · Evaluation",
                 metrics: [
                     { value: "24/7", label: "first triage" },
                     { value: "68%", label: "faster routing" },
@@ -6552,6 +6965,50 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
                     "Admin controls for prompt and policy changes"
                 ],
                 stack: ["OpenAI", "Node.js", "Redis", "PostgreSQL", "Zendesk"]
+            },
+            field: {
+                index: "07",
+                title: "Field Service Mobile Suite",
+                eyebrow: "Mobile + Cloud",
+                theme: "teal",
+                image: "https://images.unsplash.com/photo-1516321165247-4aa89a48be28?auto=format&fit=crop&w=1400&q=80",
+                description: "An offline-ready field service workflow for scheduling, site records, proof of work, inventory notes, and faster job closeout.",
+                context: "Field teams were relying on paper records and scattered messages, leaving dispatchers without reliable status and creating avoidable return visits.",
+                role: "Mobile product design · Offline architecture · Cloud integration · QA",
+                metrics: [
+                    { value: "36%", label: "fewer repeat visits" },
+                    { value: "2.4×", label: "faster closeout" },
+                    { value: "4", label: "field roles" }
+                ],
+                outcomes: [
+                    "Offline-first job records and site checklists",
+                    "Photo, signature, and proof-of-work capture",
+                    "Live scheduling and technician status for dispatch",
+                    "Automatic sync with conflict-safe recovery"
+                ],
+                stack: ["Flutter", "Node.js", "PostgreSQL", "Azure", "Maps"]
+            },
+            commerce: {
+                index: "08",
+                title: "Commerce Growth Platform",
+                eyebrow: "Commerce + AI",
+                theme: "orange",
+                image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=1400&q=80",
+                description: "A responsive commerce experience and merchandising system shaped around faster product discovery, checkout, and campaign iteration.",
+                context: "A slow storefront and rigid content workflow were limiting conversion while making every merchandising change depend on engineering support.",
+                role: "Commerce strategy · UX/UI · Full-stack engineering · Experimentation",
+                metrics: [
+                    { value: "27%", label: "checkout lift" },
+                    { value: "41%", label: "faster campaigns" },
+                    { value: "1.7s", label: "median page load" }
+                ],
+                outcomes: [
+                    "Faster search, filtering, and product discovery",
+                    "Streamlined mobile checkout and payment flows",
+                    "Flexible campaign tooling for merchandising teams",
+                    "AI-assisted product tagging with human review"
+                ],
+                stack: ["Next.js", "Shopify", "Node.js", "OpenAI", "Analytics"]
             }
         };
 
@@ -6654,13 +7111,17 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
             pink: { text: 'text-pink-400', border: 'border-pink-500/30', bg: 'bg-pink-500/10', button: 'bg-pink-400 hover:bg-pink-300 text-black' },
             purple: { text: 'text-purple-400', border: 'border-purple-500/30', bg: 'bg-purple-500/10', button: 'bg-purple-400 hover:bg-purple-300 text-black' },
             blue: { text: 'text-blue-400', border: 'border-blue-500/30', bg: 'bg-blue-500/10', button: 'bg-blue-400 hover:bg-blue-300 text-black' },
-            yellow: { text: 'text-yellow-400', border: 'border-yellow-500/30', bg: 'bg-yellow-500/10', button: 'bg-yellow-300 hover:bg-yellow-200 text-black' }
+            yellow: { text: 'text-yellow-400', border: 'border-yellow-500/30', bg: 'bg-yellow-500/10', button: 'bg-yellow-300 hover:bg-yellow-200 text-black' },
+            teal: { text: 'text-teal-400', border: 'border-teal-500/30', bg: 'bg-teal-500/10', button: 'bg-teal-400 hover:bg-teal-300 text-black' },
+            orange: { text: 'text-orange-400', border: 'border-orange-500/30', bg: 'bg-orange-500/10', button: 'bg-orange-400 hover:bg-orange-300 text-black' }
         };
 
         function setPortfolioFilter(filter = 'all') {
             let visibleCount = 0;
             const activeFilter = Array.from(portfolioFilters).find(button => button.dataset.filter === filter);
             const activeLabel = activeFilter?.textContent.trim() || filter;
+            const portfolioGrid = document.querySelector('.portfolio-grid');
+            portfolioGrid?.classList.toggle('is-filtered', filter !== 'all');
 
             portfolioFilters.forEach(button => {
                 const isActive = button.dataset.filter === filter;
@@ -6675,10 +7136,16 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
                 if (shouldShow) visibleCount += 1;
             });
 
+            const hasVisibleFeatured = Array.from(portfolioCards).some(card =>
+                card.classList.contains('portfolio-card--featured') && !card.classList.contains('is-hidden')
+            );
+            portfolioGrid?.classList.toggle('has-odd-count', filter !== 'all' && visibleCount % 2 === 1);
+            portfolioGrid?.classList.toggle('has-featured', filter !== 'all' && hasVisibleFeatured);
+
             if (portfolioResultCount) {
                 portfolioResultCount.textContent = filter === 'all'
-                    ? `Showing all ${visibleCount} builds`
-                    : `Showing ${visibleCount} ${activeLabel} ${visibleCount === 1 ? 'build' : 'builds'}`;
+                    ? `Showing all ${visibleCount} projects`
+                    : `Showing ${visibleCount} ${activeLabel} ${visibleCount === 1 ? 'project' : 'projects'}`;
             }
         }
 
@@ -6688,58 +7155,68 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
             const c = portfolioColors[data.theme] || portfolioColors.cyan;
 
             modalContent.innerHTML = `
-                <div class="relative overflow-hidden rounded-lg border ${c.border} bg-[#080808]">
-                    <div class="grid lg:grid-cols-[0.9fr_1.1fr]">
-                        <div class="relative min-h-[16rem] lg:min-h-full overflow-hidden">
-                            <img src="${data.image}" alt="${data.title} project visual" class="absolute inset-0 w-full h-full object-cover">
-                            <div class="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-[#080808] via-[#080808]/45 to-transparent"></div>
-                            <div class="relative z-10 p-6 md:p-8 h-full flex flex-col justify-end">
-                                <span class="w-max px-3 py-1 rounded-full ${c.bg} border ${c.border} ${c.text} text-[10px] font-bold uppercase tracking-widest">${data.eyebrow}</span>
-                                <h2 class="text-2xl md:text-4xl font-black text-white mt-4 mb-3">${data.title}</h2>
-                                <p class="text-sm md:text-base text-gray-300 leading-relaxed">${data.description}</p>
+                <article class="relative overflow-hidden rounded-2xl border ${c.border} bg-[#070a10]">
+                    <div class="relative min-h-[18rem] md:min-h-[24rem] overflow-hidden">
+                        <img src="${data.image}" alt="${data.title} project visual" class="absolute inset-0 w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#070a10] via-[#070a10]/55 to-black/10"></div>
+                        <div class="relative z-10 min-h-[18rem] md:min-h-[24rem] p-6 md:p-10 flex flex-col justify-between">
+                            <div class="portfolio-modal-kicker"><span>Case study ${data.index} / 08</span></div>
+                            <div class="max-w-3xl">
+                                <span class="inline-flex px-3 py-1.5 rounded-full ${c.bg} border ${c.border} ${c.text} text-[10px] font-bold uppercase tracking-[0.16em]">${data.eyebrow}</span>
+                                <h2 class="text-3xl md:text-6xl font-black tracking-[-0.04em] leading-[0.95] text-white mt-5 mb-4">${data.title}</h2>
+                                <p class="text-sm md:text-lg text-slate-200 leading-relaxed max-w-2xl">${data.description}</p>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="p-5 md:p-8 space-y-6">
-                            <div class="grid sm:grid-cols-3 gap-3">
-                                ${data.metrics.map(metric => `
-                                    <div class="rounded-lg border border-white/10 bg-white/[0.035] p-4">
-                                        <div class="text-2xl font-black text-white">${metric.value}</div>
-                                        <div class="text-[10px] uppercase tracking-wider text-gray-500 mt-1">${metric.label}</div>
+                    <div class="p-5 md:p-10">
+                        <div class="grid md:grid-cols-[0.78fr_1.22fr] gap-7 md:gap-12">
+                            <div class="space-y-6">
+                                <div>
+                                    <p class="text-[10px] font-bold uppercase tracking-[0.18em] ${c.text} mb-3">The challenge</p>
+                                    <p class="text-sm text-slate-300 leading-relaxed">${data.context}</p>
+                                </div>
+                                <div class="pt-5 border-t border-white/10">
+                                    <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500 mb-3">Pukka Gen role</p>
+                                    <p class="text-sm text-slate-200 leading-relaxed">${data.role}</p>
+                                </div>
+                                <div class="pt-5 border-t border-white/10">
+                                    <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500 mb-3">Built with</p>
+                                    <div class="flex flex-wrap gap-2">
+                                        ${data.stack.map(tool => `<span class="px-3 py-1.5 rounded-full border border-white/10 bg-white/[0.035] text-xs text-slate-300">${tool}</span>`).join('')}
                                     </div>
-                                `).join('')}
+                                </div>
                             </div>
 
                             <div>
-                                <h3 class="text-xs font-bold uppercase tracking-wider text-gray-500 mb-3">Delivery Outcomes</h3>
-                                <div class="grid gap-2">
+                                <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500 mb-3">Proof points</p>
+                                <div class="grid grid-cols-3 gap-2 md:gap-3 mb-7">
+                                    ${data.metrics.map(metric => `
+                                        <div class="rounded-xl border border-white/10 bg-white/[0.035] p-3 md:p-4">
+                                            <div class="text-xl md:text-3xl font-black text-white">${metric.value}</div>
+                                            <div class="text-[9px] md:text-[10px] uppercase tracking-wider text-slate-500 mt-2 leading-tight">${metric.label}</div>
+                                        </div>
+                                    `).join('')}
+                                </div>
+
+                                <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500 mb-3">What the system delivers</p>
+                                <div class="grid sm:grid-cols-2 gap-2.5">
                                     ${data.outcomes.map(item => `
-                                        <div class="flex items-start gap-3 rounded-lg border border-white/5 bg-white/[0.025] p-3">
-                                            <i class="fas fa-check-circle ${c.text} mt-0.5"></i>
-                                            <span class="text-sm text-gray-300 leading-relaxed">${item}</span>
+                                        <div class="flex items-start gap-3 rounded-xl border border-white/[0.07] bg-white/[0.025] p-3.5">
+                                            <span class="mt-0.5 w-5 h-5 rounded-full ${c.bg} ${c.text} flex items-center justify-center shrink-0"><i class="fas fa-check text-[9px]"></i></span>
+                                            <span class="text-xs md:text-sm text-slate-300 leading-relaxed">${item}</span>
                                         </div>
                                     `).join('')}
                                 </div>
                             </div>
+                        </div>
 
-                            <div>
-                                <h3 class="text-xs font-bold uppercase tracking-wider text-gray-500 mb-3">Stack Snapshot</h3>
-                                <div class="flex flex-wrap gap-2">
-                                    ${data.stack.map(tool => `
-                                        <span class="px-3 py-1.5 rounded-full border border-white/10 bg-white/[0.035] text-xs text-gray-300">${tool}</span>
-                                    `).join('')}
-                                </div>
-                            </div>
-
-                            <div class="pt-5 border-t border-white/10 flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
-                                <p class="text-xs text-gray-500 leading-relaxed max-w-sm">Need a similar product system? Start with a focused brief and we will shape the delivery path.</p>
-                                <a href="#contact" class="magnetic-btn inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full ${c.button} text-sm font-bold transition-colors" onclick="closeServiceModal()">
-                                    Discuss a Build <i class="fas fa-arrow-right"></i>
-                                </a>
-                            </div>
+                        <div class="mt-8 pt-6 border-t border-white/10 flex flex-col sm:flex-row gap-4 sm:items-center sm:justify-between">
+                            <div><p class="text-white font-bold">Have a similar challenge?</p><p class="text-xs text-slate-500 mt-1">Let’s turn it into a focused, buildable brief.</p></div>
+                            <a href="#contact" class="magnetic-btn inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full ${c.button} text-sm font-bold transition-colors" onclick="closeServiceModal()">Discuss your project <i class="fas fa-arrow-right"></i></a>
                         </div>
                     </div>
-                </div>
+                </article>
             `;
             serviceModal.setAttribute('aria-label', `${data.title} case study`);
             openModal(serviceModal, modalClose);
