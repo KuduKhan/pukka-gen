@@ -2571,6 +2571,11 @@
                 padding-left: max(0.875rem, env(safe-area-inset-left)) !important;
             }
 
+            section {
+                padding-top: clamp(4rem, 15vw, 5.5rem) !important;
+                padding-bottom: clamp(4rem, 15vw, 5.5rem) !important;
+            }
+
             section > [class*="max-w-"],
             footer#contact > [class*="max-w-"] {
                 width: 100%;
@@ -2590,6 +2595,23 @@
             .grid > *,
             .flex > * {
                 min-width: 0;
+            }
+
+            :is(section, footer#contact) :is(.spotlight-card, .glass-card)[class~="p-8"] {
+                padding: 1.25rem;
+            }
+
+            :is(section, footer#contact) :is(.spotlight-card, .glass-card)[class~="p-10"] {
+                padding: 1.5rem;
+            }
+
+            :is(section, footer#contact) :is(.spotlight-card, .glass-card) [class~="w-14"][class~="h-14"] {
+                width: 3rem;
+                height: 3rem;
+            }
+
+            :is(section, footer#contact) :is(.spotlight-card, .glass-card) [class~="w-14"][class~="h-14"] > i {
+                font-size: 1.25rem;
             }
 
             .spotlight-card,
@@ -2631,35 +2653,35 @@
                 --mobile-testimonial-width: clamp(16.25rem, 78vw, 19.5rem);
                 flex: 0 0 var(--mobile-testimonial-width);
                 width: var(--mobile-testimonial-width) !important;
-                min-height: 20.5rem;
-                padding: 1.5rem;
+                min-height: 0;
+                padding: 1.125rem;
                 border-radius: 1.5rem;
             }
 
             #testimonialMarquee blockquote {
-                font-size: 0.9rem;
-                line-height: 1.7;
-                margin-bottom: 1.5rem;
+                font-size: 0.82rem;
+                line-height: 1.6;
+                margin-bottom: 1rem;
             }
 
             #testimonialMarquee .spotlight-card > .relative.z-10.mb-5 {
-                margin-bottom: 1.25rem;
+                margin-bottom: 0.875rem;
             }
 
             #testimonialMarquee .spotlight-card > .flex.items-center {
-                gap: 0.75rem;
-                padding-top: 1.25rem;
+                gap: 0.65rem;
+                padding-top: 0.875rem;
             }
 
             #testimonialMarquee .spotlight-card > .flex.items-center > div:first-child {
-                width: 2.5rem;
-                height: 2.5rem;
+                width: 2.25rem;
+                height: 2.25rem;
             }
 
             #testimonialMarquee .spotlight-card > .absolute.top-5.right-5 {
-                top: 1.25rem;
-                right: 1.25rem;
-                transform: none;
+                top: 0.875rem;
+                right: 0.875rem;
+                transform: scale(0.82);
                 transform-origin: top right;
             }
 
@@ -2678,8 +2700,8 @@
             }
 
             .tech-marquee-item {
-                min-width: 8.75rem;
-                padding: 1rem 1.5rem;
+                min-width: 7.5rem;
+                padding: 0.75rem 0.9rem;
             }
 
             .service-modal .modal-content,
@@ -2689,80 +2711,80 @@
             }
 
             #values .spotlight-card {
-                padding: 2rem;
+                padding: 1.25rem;
             }
 
             #values .spotlight-card .liquid-bubble {
-                width: 3rem;
-                height: 3rem;
+                width: 2.5rem;
+                height: 2.5rem;
             }
 
             #values .spotlight-card .liquid-bubble > i {
-                font-size: 1.125rem;
+                font-size: 1rem;
             }
 
             #values .spotlight-card h3 {
-                font-size: 1.125rem;
+                font-size: 0.95rem;
             }
 
             #values .spotlight-card > p {
-                font-size: 0.875rem;
+                font-size: 0.8rem;
             }
 
             #team .spotlight-card {
-                padding: 2rem;
-                border-radius: 1.5rem;
+                padding: 1.25rem;
+                border-radius: 1.25rem;
             }
 
             #team .spotlight-card .liquid-bubble {
-                width: 3.5rem;
-                height: 3.5rem;
-            }
-
-            #team .spotlight-card .liquid-bubble > i {
-                font-size: 1.5rem;
-            }
-
-            #team .spotlight-card h3 {
-                font-size: 1.25rem;
-            }
-
-            #team .spotlight-card p.text-gray-400 {
-                font-size: 0.875rem;
-            }
-
-            #industries .animate-astro-bounce svg {
                 width: 3rem;
                 height: 3rem;
             }
 
+            #team .spotlight-card .liquid-bubble > i {
+                font-size: 1.125rem;
+            }
+
+            #team .spotlight-card h3 {
+                font-size: 1rem;
+            }
+
+            #team .spotlight-card p.text-gray-400 {
+                font-size: 0.8rem;
+            }
+
+            #industries .animate-astro-bounce svg {
+                width: 2.25rem;
+                height: 2.25rem;
+            }
+
             #industries [class~="group/node"] > div:first-of-type {
-                width: 4rem;
-                height: 4rem;
+                width: clamp(2.75rem, 14vw, 3.25rem);
+                height: clamp(2.75rem, 14vw, 3.25rem);
             }
 
             #industries [class~="group/node"] > div:first-of-type > i {
-                font-size: 1.25rem;
+                font-size: clamp(0.9rem, 4vw, 1.05rem);
             }
 
             #industries [class~="group/node"] > span {
-                padding: 0.25rem 0.75rem;
-                font-size: 0.625rem;
+                padding: 0.125rem 0.5rem;
+                font-size: 0.5rem;
             }
 
             #industries :has(> .nexus-brand-mark) {
-                width: 8rem;
-                height: 8rem;
+                width: clamp(4.25rem, 22vw, 5.25rem);
+                height: clamp(4.25rem, 22vw, 5.25rem);
             }
 
             #industries .nexus-brand-mark {
-                width: 4.75rem;
-                height: 4.75rem;
+                width: 58%;
+                height: 58%;
             }
 
             #industries .nexus-core-label {
-                max-width: calc(100% - 1rem);
-                font-size: 0.58rem;
+                max-width: calc(100% - 0.5rem);
+                font-size: 0.42rem;
             }
         }
 
@@ -7116,8 +7138,8 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
                             <div class="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-32 ${c.bg} blur-[60px] rounded-full pointer-events-none"></div>
                             
                             <div class="relative z-10">
-                                <div class="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center ${c.bg} border ${c.border} ${c.glow}">
-                                    <i class="${data.icon} text-3xl ${c.text} animate-float"></i>
+                                <div class="w-12 h-12 md:w-16 md:h-16 mx-auto mb-4 rounded-full flex items-center justify-center ${c.bg} border ${c.border} ${c.glow}">
+                                    <i class="${data.icon} text-2xl md:text-3xl ${c.text} animate-float"></i>
                                 </div>
                                 <h2 class="text-2xl md:text-3xl font-bold text-white mb-3">${data.title}</h2>
                                 <p class="text-gray-300 text-sm md:text-base max-w-lg mx-auto leading-relaxed">${data.description}</p>
@@ -7144,7 +7166,7 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
                                 <div class="flex flex-wrap justify-center gap-2 md:gap-3">
                                     ${data.technologies.map(t => `
                                         <div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 hover:${c.border} transition-all group">
-                                            <i class="${t.icon} text-base ${t.icon.includes('colored') ? '' : c.text} group-hover:scale-110 transition-transform duration-300"></i>
+                                            <i class="${t.icon} text-sm md:text-base ${t.icon.includes('colored') ? '' : c.text} group-hover:scale-110 transition-transform duration-300"></i>
                                             <span class="text-[10px] md:text-xs text-gray-300">${t.name}</span>
                                         </div>
                                     `).join('')}
@@ -7338,9 +7360,9 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
                             <!-- Glow Behind Icon -->
                             <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 bg-cyan-500/20 blur-[80px] rounded-full pointer-events-none"></div>
                             
-                            <div class="w-24 h-24 mx-auto mb-6 rounded-2xl bg-[#0A0A0A] border border-white/10 flex items-center justify-center shadow-2xl relative group">
+                            <div class="w-16 h-16 md:w-24 md:h-24 mx-auto mb-6 rounded-2xl bg-[#0A0A0A] border border-white/10 flex items-center justify-center shadow-2xl relative group">
                                 <div class="absolute inset-0 bg-cyan-500/10 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl"></div>
-                                <i class="${data.icon} text-5xl relative z-10 animate-float"></i>
+                                <i class="${data.icon} text-3xl md:text-5xl relative z-10 animate-float"></i>
                             </div>
                             
                             <h2 class="text-2xl md:text-4xl font-bold text-white mb-4 tracking-tight">${data.title}</h2>
@@ -7426,9 +7448,9 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
                         <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-32 ${c.bg} blur-[60px] rounded-full pointer-events-none"></div>
                         
                         <div class="relative z-10">
-                            <div class="w-20 h-20 mx-auto mb-6 rounded-2xl bg-[#0A0A0A] border border-white/10 flex items-center justify-center shadow-2xl relative group">
+                            <div class="w-16 h-16 md:w-20 md:h-20 mx-auto mb-6 rounded-2xl bg-[#0A0A0A] border border-white/10 flex items-center justify-center shadow-2xl relative group">
                                 <div class="absolute inset-0 ${c.bg} blur-md opacity-50 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl"></div>
-                                <i class="${data.icon} text-4xl ${c.text} relative z-10 animate-float"></i>
+                                <i class="${data.icon} text-3xl md:text-4xl ${c.text} relative z-10 animate-float"></i>
                             </div>
                             
                             <h2 class="text-2xl md:text-5xl font-bold text-white mb-4 tracking-tight">${data.title}</h2>
