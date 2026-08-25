@@ -3486,7 +3486,7 @@
                 </button>
 
                 <button type="button" class="portfolio-project-btn portfolio-card portfolio-card--blue animate-item delay-400 spotlight-card text-left" data-project="cloudops" data-category="cloud security" aria-label="Open Cloud Migration Map case study">
-                    <span class="block portfolio-card-visual relative" style="background-image: url('https://images.unsplash.com/photo-1558494949-ef526b0042a0?auto=format&fit=crop&w=1200&q=84');">
+                    <span class="block portfolio-card-visual relative" style="background-color: #071426; background-image: linear-gradient(135deg, rgba(8, 47, 73, 0.28), rgba(15, 23, 42, 0.08)), url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&q=84');">
                         <span class="portfolio-card-index">05 / 08</span>
                         <span class="portfolio-card-tag">Cloud + Security</span>
                     </span>
@@ -7013,7 +7013,8 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
                 title: "Cloud Migration Map",
                 eyebrow: "Cloud + Security",
                 theme: "blue",
-                image: "https://images.unsplash.com/photo-1558494949-ef526b0042a0?auto=format&fit=crop&w=1400&q=80",
+                image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1400&q=84",
+                fallbackImage: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1400&q=84",
                 description: "A phased migration program with release gates, observability, failover planning, cost visibility, and clear cutover discipline.",
                 context: "A high-risk legacy estate required a migration path that protected continuity, made cost visible, and gave every cutover a safe rollback.",
                 role: "Cloud architecture · DevSecOps · Observability · Migration planning",
@@ -7243,7 +7244,7 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
             modalContent.innerHTML = `
                 <article class="relative overflow-hidden rounded-2xl border ${c.border} bg-[#070a10]">
                     <div class="relative min-h-[18rem] md:min-h-[24rem] overflow-hidden">
-                        <img src="${data.image}" alt="${data.title} project visual" class="absolute inset-0 w-full h-full object-cover">
+                        <img src="${data.image}" alt="${data.title} project visual" data-project-visual class="absolute inset-0 w-full h-full object-cover">
                         <div class="absolute inset-0 bg-gradient-to-t from-[#070a10] via-[#070a10]/55 to-black/10"></div>
                         <div class="relative z-10 min-h-[18rem] md:min-h-[24rem] p-6 md:p-10 flex flex-col justify-between">
                             <div class="portfolio-modal-kicker"><span>Case study ${data.index} / 08</span></div>
@@ -7304,6 +7305,15 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
                     </div>
                 </article>
             `;
+            const projectVisual = modalContent.querySelector('[data-project-visual]');
+            projectVisual?.addEventListener('error', () => {
+                if (data.fallbackImage && projectVisual.src !== data.fallbackImage) {
+                    projectVisual.src = data.fallbackImage;
+                    return;
+                }
+                projectVisual.classList.add('hidden');
+            });
+
             serviceModal.setAttribute('aria-label', `${data.title} case study`);
             openModal(serviceModal, modalClose);
         }
