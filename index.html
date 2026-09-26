@@ -622,6 +622,7 @@
             pointer-events: none;
             opacity: 0;
             transition: opacity 0.35s ease;
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
             -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
             -webkit-mask-composite: xor;
             mask-composite: exclude;
@@ -746,6 +747,7 @@
         /* Text Gradient */
         .text-gradient {
             background: linear-gradient(135deg, #fff 10%, var(--neon-accent) 100%);
+            background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-size: 200% 200%;
@@ -2491,7 +2493,7 @@
             }
 
             nav {
-                padding: 0.5rem max(0.625rem, env(safe-area-inset-right)) !important 0.5rem max(0.625rem, env(safe-area-inset-left)) !important;
+                padding: 0.5rem max(0.625rem, env(safe-area-inset-right)) 0.5rem max(0.625rem, env(safe-area-inset-left)) !important;
             }
 
             nav > .max-w-7xl {

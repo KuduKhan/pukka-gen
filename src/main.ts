@@ -91,6 +91,11 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
         // --- 1. Init Animations ---
         function initializePukkaPage() {
             document.querySelectorAll('.reveal-text').forEach(el => el.classList.add('visible'));
+            // The hero is the first thing users need to understand. Do not make
+            // its primary copy depend on an async observer callback: on compact
+            // viewports that callback can be delayed while the page is loading,
+            // leaving a blank-looking first screen.
+            document.querySelectorAll('.hero-copy .animate-item').forEach(el => el.classList.add('visible'));
             typeWriter();
             initHeroSlideshow();
         }
