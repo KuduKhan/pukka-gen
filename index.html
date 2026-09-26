@@ -2965,6 +2965,44 @@
             }
         }
 
+        /* Automatically remove competing decorative work on constrained devices. */
+        .performance-lite #particleCanvas,
+        .performance-lite #rocket,
+        .performance-lite #comet {
+            display: none !important;
+        }
+
+        .performance-lite .orb-1,
+        .performance-lite .orb-2,
+        .performance-lite .orb-3,
+        .performance-lite .tech-icon,
+        .performance-lite .liquid-bubble,
+        .performance-lite .animate-float,
+        .performance-lite .animate-astro-bounce,
+        .performance-lite .animate-scroll-wheel,
+        .performance-lite .animate-pulse,
+        .performance-lite .animate-bounce,
+        .performance-lite .hero-title-gradient,
+        .performance-lite .hero-subtitle-gradient,
+        .performance-lite .marquee-track,
+        .performance-lite [class*="animate-[spin"],
+        .performance-lite [class*="animate-[ping"] {
+            animation: none !important;
+        }
+
+        .performance-lite .spotlight-card,
+        .performance-lite .glass-card,
+        .performance-lite nav > .max-w-7xl,
+        .performance-lite .service-modal {
+            -webkit-backdrop-filter: none;
+            backdrop-filter: none;
+        }
+
+        .performance-lite .spotlight-card::before,
+        .performance-lite .spotlight-card::after {
+            transition: none;
+        }
+
     </style>
 </head>
 <body id="top" class="antialiased selection:bg-cyan-500 selection:text-white relative">

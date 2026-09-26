@@ -6,6 +6,8 @@
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         let isCompactViewport = window.matchMedia('(max-width: 768px), (pointer: coarse)').matches;
         const supportsFinePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+        const isPerformanceConstrained = isCompactViewport || (navigator.hardwareConcurrency || 8) <= 4 || (navigator.deviceMemory || 8) <= 4;
+        document.documentElement.classList.toggle('performance-lite', isPerformanceConstrained || prefersReducedMotion);
         const currentYear = document.getElementById('currentYear');
         if (currentYear) currentYear.textContent = String(new Date().getFullYear());
 
@@ -328,14 +330,14 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
             particleAnimationId = 0;
         }
 
-        if (!prefersReducedMotion) {
+        if (!prefersReducedMotion && !isPerformanceConstrained) {
             initParticles();
             startParticles();
         }
 
         let particleResizeFrame = 0;
         window.addEventListener('resize', () => {
-            if (!canvas || prefersReducedMotion || particleResizeFrame) return;
+            if (!canvas || prefersReducedMotion || isPerformanceConstrained || particleResizeFrame) return;
             particleResizeFrame = requestAnimationFrame(() => {
                 particleResizeFrame = 0;
                 isCompactViewport = window.matchMedia('(max-width: 768px), (pointer: coarse)').matches;
@@ -1976,7 +1978,7 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
         });
 
         // --- 8. Magnetic Buttons ---
-        if (supportsFinePointer && !prefersReducedMotion) {
+        if (supportsFinePointer && !prefersReducedMotion && !isPerformanceConstrained) {
             document.querySelectorAll('.magnetic-btn').forEach(button => {
                 let magneticFrame = 0;
                 let lastPointerEvent = null;
@@ -2213,7 +2215,7 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
         }
 
         // Start rocket sequence after page load
-        if (!prefersReducedMotion && !isCompactViewport) {
+        if (!prefersReducedMotion && !isPerformanceConstrained) {
             setTimeout(launchRocket, 3000);
         }
 
@@ -2293,7 +2295,7 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
         }
 
         // Start comet loop
-        if (!prefersReducedMotion && !isCompactViewport) {
+        if (!prefersReducedMotion && !isPerformanceConstrained) {
             setTimeout(launchComet, 2000);
         }
 
