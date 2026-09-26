@@ -2907,6 +2907,64 @@
             }
         }
 
+        /* Final interaction polish for small screens and keyboard users. */
+        .command-result,
+        .command-result-copy,
+        .portfolio-card,
+        .portfolio-card-body {
+            min-width: 0;
+        }
+
+        .command-result-copy {
+            overflow: hidden;
+        }
+
+        @media (max-width: 767px) {
+            .command-palette-content {
+                max-height: calc(100dvh - 1.25rem);
+            }
+
+            .command-palette-content > .p-5 {
+                padding: 0.8rem;
+            }
+
+            .command-result {
+                min-height: 3.25rem;
+                gap: 0.7rem;
+                padding: 0.75rem;
+            }
+
+            .command-result-icon {
+                width: 2.25rem;
+                height: 2.25rem;
+            }
+
+            .command-result-kbd {
+                display: none;
+            }
+
+            #projectBriefForm :is(input, select, textarea) {
+                min-height: 2.9rem;
+                font-size: 1rem;
+            }
+
+            .portfolio-card-link {
+                gap: 0.75rem;
+                line-height: 1.35;
+            }
+        }
+
+        @media (hover: none), (pointer: coarse) {
+            .magnetic-btn::after {
+                display: none;
+            }
+
+            .tech-marquee-item:hover,
+            .command-result:hover {
+                transform: none;
+            }
+        }
+
     </style>
 </head>
 <body id="top" class="antialiased selection:bg-cyan-500 selection:text-white relative">

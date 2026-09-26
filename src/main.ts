@@ -659,6 +659,7 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
 
         function openCommandPalette() {
             if (!commandPalette) return;
+            if (mobileMenu && !mobileMenu.classList.contains('hidden')) setMobileMenuOpen(false);
             openModal(commandPalette, commandPaletteInput);
             commandPaletteBtn?.setAttribute('aria-expanded', 'true');
             commandActiveIndex = 0;
@@ -2632,6 +2633,7 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
             document.addEventListener('pointerup', () => releaseTouchSurface(false), { passive: true });
             document.addEventListener('pointercancel', () => releaseTouchSurface(true), { passive: true });
             window.addEventListener('scroll', () => releaseTouchSurface(true), { passive: true });
+            window.addEventListener('blur', () => releaseTouchSurface(true));
 
             document.addEventListener('pointerdown', (event) => {
                 const target = event.target.closest(rippleSelector);
