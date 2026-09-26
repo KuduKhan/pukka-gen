@@ -96,7 +96,10 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
             // viewports that callback can be delayed while the page is loading,
             // leaving a blank-looking first screen.
             document.querySelectorAll('.hero-copy .animate-item').forEach(el => el.classList.add('visible'));
-            typeWriter();
+            // DOMContentLoaded can fire while this module is still evaluating
+            // in some browsers. Defer the typewriter one task so its element
+            // reference is initialized before the first call.
+            window.setTimeout(typeWriter, 0);
             initHeroSlideshow();
         }
 

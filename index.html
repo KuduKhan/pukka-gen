@@ -824,6 +824,18 @@
         }
         .animate-item.visible { opacity: 1; transform: translateY(0); }
 
+        /* Keep the page readable if the enhancement layer is unavailable.
+           main.ts adds .ui-ready after its interaction setup completes. */
+        body:not(.ui-ready) .animate-item {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        body:not(.ui-ready) .reveal-text {
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+            transform: translateY(0);
+        }
+
         .delay-100 { transition-delay: 100ms; }
         .delay-200 { transition-delay: 200ms; }
         .delay-300 { transition-delay: 300ms; }
