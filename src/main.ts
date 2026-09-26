@@ -18,6 +18,9 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
 
         function openModal(modal, focusTarget) {
             if (!modal || modal.classList.contains('active')) return;
+            document.querySelectorAll('.service-modal.active').forEach(activeModal => {
+                if (activeModal !== modal) closeModal(activeModal, false);
+            });
             modal._returnFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
             modal.inert = false;
             modal.querySelector('.modal-content')?.scrollTo(0, 0);
@@ -1992,7 +1995,8 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
                 button.addEventListener('pointerleave', () => {
                     cancelAnimationFrame(magneticFrame);
                     magneticFrame = 0;
-                    button.style.transform = 'translate3d(0, 0, 0)';
+                    // Remove the inline transform so CSS hover/active states regain control.
+                    button.style.removeProperty('transform');
                 });
             });
 
@@ -2208,7 +2212,7 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
         }
 
         // Start rocket sequence after page load
-        if (!prefersReducedMotion) {
+        if (!prefersReducedMotion && !isCompactViewport) {
             setTimeout(launchRocket, 3000);
         }
 
@@ -2288,7 +2292,7 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
         }
 
         // Start comet loop
-        if (!prefersReducedMotion) {
+        if (!prefersReducedMotion && !isCompactViewport) {
             setTimeout(launchComet, 2000);
         }
 

@@ -2318,6 +2318,97 @@
             }
         }
 
+        /* Keep compact layouts self-contained and prevent long content from widening cards. */
+        @media (max-width: 767px) {
+            #about .min-h-\[500px\] {
+                min-height: 23rem;
+            }
+
+            #about .min-h-\[500px\] > .text-center {
+                padding: 1.5rem;
+            }
+
+            #about .min-h-\[500px\] .w-32 {
+                width: 5.5rem;
+                height: 5.5rem;
+                margin-bottom: 1.25rem;
+            }
+
+            #about .min-h-\[500px\] .text-6xl {
+                font-size: 2.6rem;
+            }
+
+            .blog-card {
+                aspect-ratio: 4 / 5;
+            }
+
+            #industries {
+                min-height: auto;
+            }
+
+            .service-modal {
+                align-items: flex-start;
+                padding: max(0.625rem, env(safe-area-inset-top)) max(0.625rem, env(safe-area-inset-right)) max(0.625rem, env(safe-area-inset-bottom)) max(0.625rem, env(safe-area-inset-left));
+            }
+
+            .service-modal .modal-content,
+            .service-modal[aria-label$="case study"] .modal-content {
+                width: 100%;
+                max-width: 100%;
+                max-height: calc(100dvh - 1.25rem);
+                border-radius: 1.15rem;
+                scrollbar-gutter: stable;
+            }
+
+            .spotlight-card,
+            .glass-card {
+                backdrop-filter: blur(14px) saturate(125%);
+                -webkit-backdrop-filter: blur(14px) saturate(125%);
+            }
+        }
+
+        @media (max-width: 380px) {
+            header {
+                padding-right: 0.7rem;
+                padding-left: 0.7rem;
+            }
+
+            body .hero-copy h1 {
+                font-size: clamp(1.9rem, 10vw, 2.35rem) !important;
+            }
+
+            .hero-cta-row .hero-cta {
+                width: 100%;
+            }
+
+            .portfolio-card-metrics {
+                gap: 0.45rem;
+            }
+
+            .portfolio-card-metric {
+                padding: 0.65rem;
+            }
+        }
+
+        /* Reveal and card motion share one composed transform instead of fighting. */
+        .animate-item {
+            --reveal-y: 1rem;
+            --reveal-scale: 0.99;
+        }
+
+        .animate-item.visible {
+            --reveal-y: 0px;
+            --reveal-scale: 1;
+        }
+
+        .spotlight-card.animate-item {
+            transform: perspective(1100px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) translate3d(0, calc(var(--lift, 0px) + var(--reveal-y, 0px)), 0) scale(var(--reveal-scale, 1));
+        }
+
+        .spotlight-card.animate-item:hover {
+            transform: perspective(1100px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) translate3d(0, calc(var(--lift, -6px) + var(--reveal-y, 0px)), 0) scale(var(--reveal-scale, 1));
+        }
+
         @media (prefers-reduced-motion: reduce) {
             html { scroll-behavior: auto; }
             *, *::before, *::after {
