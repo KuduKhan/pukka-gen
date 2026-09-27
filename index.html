@@ -3003,6 +3003,133 @@
             transition: none;
         }
 
+        /* Keep the desktop information hierarchy on phones, with compact card internals. */
+        @media (max-width: 767px) {
+            #about > .max-w-7xl {
+                grid-template-columns: minmax(0, 1.06fr) minmax(0, 0.94fr);
+                gap: 0.85rem;
+                align-items: stretch;
+            }
+
+            #about > .max-w-7xl > div:first-child {
+                min-width: 0;
+            }
+
+            #about > .max-w-7xl > div:first-child > .mb-20 {
+                margin-bottom: 1.5rem;
+            }
+
+            #about h2 {
+                font-size: clamp(1.45rem, 6.2vw, 2rem) !important;
+                line-height: 1.08;
+            }
+
+            #about .spotlight-card {
+                padding: 0.85rem;
+                border-radius: 1rem;
+            }
+
+            #about .spotlight-card .flex.items-center {
+                gap: 0.5rem;
+                margin-bottom: 0.55rem;
+            }
+
+            #about .spotlight-card .liquid-bubble {
+                width: 2rem;
+                height: 2rem;
+                flex: 0 0 2rem;
+            }
+
+            #about .spotlight-card h3 {
+                font-size: 0.78rem;
+                line-height: 1.15;
+            }
+
+            #about .spotlight-card p {
+                padding-left: 0;
+                font-size: 0.66rem;
+                line-height: 1.45;
+            }
+
+            #about .min-h-\[500px\] {
+                min-height: 100%;
+                border-radius: 1.35rem;
+            }
+
+            #about .min-h-\[500px\] > .text-center {
+                padding: 0.85rem;
+            }
+
+            #about .min-h-\[500px\] h3 {
+                margin-bottom: 0.75rem;
+                font-size: 1.2rem;
+            }
+
+            #about .min-h-\[500px\] p {
+                font-size: 0.7rem;
+                line-height: 1.5;
+            }
+
+            #services .stagger-container {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 0.75rem;
+            }
+
+            #services .spotlight-card {
+                padding: 0.9rem;
+                border-radius: 1rem;
+            }
+
+            #services .spotlight-card .flex.items-center {
+                gap: 0.5rem;
+                margin-bottom: 0.75rem;
+            }
+
+            #services .spotlight-card .liquid-bubble {
+                width: 2.35rem;
+                height: 2.35rem;
+                flex: 0 0 2.35rem;
+            }
+
+            #services .spotlight-card h3 {
+                font-size: 0.78rem;
+                line-height: 1.12;
+            }
+
+            #services .spotlight-card p {
+                margin-bottom: 0.75rem;
+                font-size: 0.67rem;
+                line-height: 1.45;
+            }
+
+            #services .service-detail-btn {
+                gap: 0.3rem;
+                font-size: 0.55rem;
+                line-height: 1.2;
+            }
+
+            #industries .stagger-container.mb-24 {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 0.75rem;
+                margin-bottom: 3rem;
+            }
+
+            #industries .stagger-container.mb-24 .spotlight-card {
+                padding: 0.9rem;
+                border-radius: 1rem;
+            }
+
+            #industries .stagger-container.mb-24 h3 {
+                font-size: 0.82rem;
+            }
+
+            #industries .stagger-container.mb-24 p,
+            #industries .stagger-container.mb-24 li {
+                font-size: 0.65rem;
+                line-height: 1.4;
+            }
+        }
+
     </style>
 </head>
 <body id="top" class="antialiased selection:bg-cyan-500 selection:text-white relative">
