@@ -3130,7 +3130,8 @@
             }
         }
 
-    </style>
+    .form-trap{position:absolute;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none;overflow:hidden}
+</style>
 </head>
 <body id="top" class="antialiased selection:bg-cyan-500 selection:text-white relative">
 <a href="#about" class="skip-link">Skip to content</a>
@@ -3895,7 +3896,7 @@
             <div class="text-center mb-10 animate-item">
                 <span class="text-pink-400 font-bold tracking-wider text-xs uppercase px-3 py-1 bg-pink-900/30 rounded-full border border-pink-500/20">How We Work</span>
                 <h2 class="text-2xl md:text-4xl font-bold mt-4 mb-3">The Pukka Protocol</h2>
-                <p class="text-gray-400 text-sm md:text-base max-w-2xl mx-auto">This section answers the client's unspoken question: "Am I going to lose money on this?" It establishes a structured, transparent process.</p>
+                <p class="text-gray-400 text-sm md:text-base max-w-2xl mx-auto">Our five-stage delivery process keeps the scope, decisions, quality gates and ownership clear from discovery to launch.</p>
             </div>
 
             <div class="relative max-w-5xl mx-auto">
@@ -5459,7 +5460,7 @@
                                 </a>
 
                                 <!-- Phone -->
-                                <button type="button" onclick="openContactModal()" class="w-full flex items-center gap-3 group/item p-3 rounded-xl bg-white/[0.02] border border-white/5 hover:border-green-500/30 hover:bg-white/[0.05] transition-all duration-300 hover:-translate-y-1 text-left">
+                                <button type="button" data-open-contact-modal="true" class="w-full flex items-center gap-3 group/item p-3 rounded-xl bg-white/[0.02] border border-white/5 hover:border-green-500/30 hover:bg-white/[0.05] transition-all duration-300 hover:-translate-y-1 text-left">
                                     <div class="w-10 h-10 rounded-full flex items-center justify-center text-green-400 bg-green-500/10 group-hover/item:scale-110 transition-transform duration-300 animate-float animate-float-delay-1 shrink-0">
                                         <i class="fab fa-whatsapp text-base"></i>
                                     </div>
@@ -5481,7 +5482,7 @@
                                 </div>
 
                                 <!-- Location -->
-                                <button type="button" onclick="openMapModal()" class="w-full flex items-center gap-3 group/item p-3 rounded-xl bg-white/[0.02] border border-white/5 hover:border-purple-500/30 hover:bg-white/[0.05] transition-all duration-300 hover:-translate-y-1 text-left">
+                                <button type="button" data-open-map-modal="true" class="w-full flex items-center gap-3 group/item p-3 rounded-xl bg-white/[0.02] border border-white/5 hover:border-purple-500/30 hover:bg-white/[0.05] transition-all duration-300 hover:-translate-y-1 text-left">
                                      <div class="w-10 h-10 rounded-full flex items-center justify-center text-purple-400 bg-purple-500/10 group-hover/item:scale-110 transition-transform duration-300 animate-float animate-float-delay-3 shrink-0">
                                         <i class="fas fa-map-marker-alt text-sm"></i>
                                     </div>
@@ -5526,6 +5527,7 @@
             <!-- Right: Contact Form -->
             <div class="animate-item delay-100 h-full">
                 <form id="projectBriefForm" class="bg-white/[0.02] border border-white/5 rounded-[1.5rem] p-6 md:p-8 shadow-2xl relative overflow-hidden group hover:bg-white/[0.04] transition-all duration-500 h-full flex flex-col" novalidate>
+<div class="form-trap" aria-hidden="true"><label for="companyWebsite">Leave this field blank</label><input id="companyWebsite" name="website" type="text" tabindex="-1" autocomplete="off"></div>
                     <!-- Decor -->
                     <div class="absolute top-0 right-0 w-64 h-64 bg-cyan-500/5 rounded-full blur-[80px] pointer-events-none -translate-y-1/2 translate-x-1/2 transition-all duration-500 group-hover:bg-cyan-500/10"></div>
                     <div class="absolute bottom-0 left-0 w-64 h-64 bg-purple-500/5 rounded-full blur-[80px] pointer-events-none translate-y-1/2 -translate-x-1/2 transition-all duration-500 group-hover:bg-purple-500/10"></div>
@@ -5705,9 +5707,9 @@
             <div class="footer-legal">
                 <p class="footer-legal-copy">&copy; <span id="currentYear">2026</span> Pukka Gen. <span class="footer-legal-tag">No Duff.</span> All rights reserved.</p>
                 <nav class="footer-legal-links" aria-label="Legal information">
-                    <a href="mailto:mail@pukkagennoduff.com?subject=Privacy%20Policy%20Request" class="footer-legal-link">Privacy Policy</a>
+                    <a href="/privacy.html" class="footer-legal-link">Privacy Policy</a>
                     <span class="footer-legal-divider" aria-hidden="true"></span>
-                    <a href="mailto:mail@pukkagennoduff.com?subject=Terms%20of%20Service%20Request" class="footer-legal-link">Terms of Service</a>
+                    <a href="/terms.html" class="footer-legal-link">Terms of Service</a>
                 </nav>
             </div>
             <nav class="footer-social" aria-label="Follow Pukka Gen">

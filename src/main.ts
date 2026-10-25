@@ -2,6 +2,7 @@
 // TypeScript module lets Vite type-check and bundle it while preserving the
 // established markup and behavior during this migration.
 // @ts-nocheck
+import { readProjectBriefForm } from "./lib/projectBrief";
 
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         let isCompactViewport = window.matchMedia('(max-width: 768px), (pointer: coarse)').matches;
@@ -60,6 +61,13 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
         function closeServiceModal() {
             closeModal(document.getElementById('serviceModal'));
         }
+        // Register delegated actions, including for dynamically rendered modal content.
+        document.addEventListener('click', event => {
+            if (!(event.target instanceof Element)) return;
+            if (event.target.closest('[data-close-service-modal]')) closeServiceModal();
+            if (event.target.closest('[data-open-contact-modal]')) window.openContactModal?.();
+            if (event.target.closest('[data-open-map-modal]')) window.openMapModal?.();
+        });
 
         function downloadNoDuffChecklist() {
             const checklist = [
@@ -1253,7 +1261,7 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
                             <p class="text-xs md:text-base mb-6 md:mb-8 text-gray-300 max-w-lg mx-auto relative z-10 leading-relaxed">
                                 That is okay. It just means you are in the <strong>Discovery Phase</strong>, not the Build Phase. Don't burn your budget on code yet. Book a "No Duff" Consultation with Pukka Gen. We will help you answer these questions, build a roadmap, and ensure that when we <em>do</em> start coding, it’s built to last.
                             </p>
-                            <a href="#contact" onclick="closeServiceModal()" class="inline-flex items-center px-6 py-3 md:px-8 md:py-4 bg-cyan-500 text-black font-bold rounded-full hover:bg-cyan-400 transition-all shadow-[0_0_20px_rgba(6,182,212,0.3)] hover:shadow-[0_0_30px_rgba(6,182,212,0.5)] hover:scale-105 relative z-10 text-xs md:text-base">
+                            <a href="#contact" data-close-service-modal="true" class="inline-flex items-center px-6 py-3 md:px-8 md:py-4 bg-cyan-500 text-black font-bold rounded-full hover:bg-cyan-400 transition-all shadow-[0_0_20px_rgba(6,182,212,0.3)] hover:shadow-[0_0_30px_rgba(6,182,212,0.5)] hover:scale-105 relative z-10 text-xs md:text-base">
                                 Book Your Consultation Now <i class="fas fa-arrow-right ml-2"></i>
                             </a>
                             <div class="mt-6 md:mt-8 border-t border-white/10 pt-4 md:pt-6">
@@ -1657,7 +1665,7 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
 
                         <!-- Footer -->
                         <div class="p-6 border-t border-white/5 text-center bg-white/[0.02]">
-                            <a href="#contact" class="magnetic-btn inline-flex items-center px-6 py-3 md:px-8 md:py-3 rounded-full bg-white text-black font-bold hover:bg-${theme}-400 hover:text-white transition-all shadow-lg hover:shadow-${theme}-500/50 text-sm" onclick="closeServiceModal()">
+                            <a href="#contact" class="magnetic-btn inline-flex items-center px-6 py-3 md:px-8 md:py-3 rounded-full bg-white text-black font-bold hover:bg-${theme}-400 hover:text-white transition-all shadow-lg hover:shadow-${theme}-500/50 text-sm" data-close-service-modal="true">
                                 Start This Project <i class="fas fa-arrow-right ml-2"></i>
                             </a>
                         </div>
@@ -1780,7 +1788,7 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
 
                         <div class="mt-8 pt-6 border-t border-white/10 flex flex-col sm:flex-row gap-4 sm:items-center sm:justify-between">
                             <div><p class="text-white font-bold">Have a similar challenge?</p><p class="text-xs text-slate-500 mt-1">Let’s turn it into a focused, buildable brief.</p></div>
-                            <a href="#contact" class="magnetic-btn inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full ${c.button} text-sm font-bold transition-colors" onclick="closeServiceModal()">Discuss your project <i class="fas fa-arrow-right"></i></a>
+                            <a href="#contact" class="magnetic-btn inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full ${c.button} text-sm font-bold transition-colors" data-close-service-modal="true">Discuss your project <i class="fas fa-arrow-right"></i></a>
                         </div>
                     </div>
                 </article>
@@ -2084,53 +2092,61 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
                 });
             });
 
-            function handleProjectBriefSubmit(event) {
+            async function handleProjectBriefSubmit(event) {
                 event.preventDefault();
                 fields.forEach(field => {
                     field.dataset.touched = 'true';
                     updateFieldState(field);
                 });
-
                 if (!form.checkValidity()) {
                     const firstInvalid = fields.find(field => !field.validity.valid);
                     if (status) {
-                        status.textContent = 'Please complete the highlighted fields so we can qualify the brief properly.';
+                        status.textContent = 'Please correct the highlighted fields before submitting your brief.';
                         status.className = 'min-h-[1.25rem] text-xs text-red-400';
                     }
-                    showToast('Please complete the highlighted fields.');
                     firstInvalid?.focus();
                     return;
                 }
-
-                const formData = new FormData(form);
-                const fullName = String(formData.get('name') || '').trim();
-                const firstName = fullName.split(' ')[0] || 'there';
-                const service = form.querySelector('#projectService')?.selectedOptions[0]?.textContent.trim() || 'General enquiry';
-                const subject = `Project brief from ${fullName} — ${service}`;
-                const body = [
-                    `Name: ${fullName}`,
-                    `Email: ${String(formData.get('email') || '').trim()}`,
-                    `Phone: ${String(formData.get('phone') || '').trim() || 'Not provided'}`,
-                    `Service: ${service}`,
-                    '',
-                    'Project details:',
-                    String(formData.get('message') || '').trim()
-                ].join('\n');
-
+                const button = form.querySelector('button[type="submit"]');
+                if (button?.disabled) return;
+                if (button) button.disabled = true;
+                form.setAttribute('aria-busy', 'true');
                 if (status) {
-                    status.textContent = 'Your project brief is ready. Review and send it from the email app that opens.';
-                    status.className = 'min-h-[1.25rem] text-xs text-green-400';
+                    status.textContent = 'Sending your project brief…';
+                    status.className = 'min-h-[1.25rem] text-xs text-cyan-300';
                 }
-                showToast(`Thanks, ${firstName}. Opening your email app with the brief prepared.`);
-                window.location.href = `mailto:mail@pukkagennoduff.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+                try {
+                    const response = await fetch('/api/project-brief', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(readProjectBriefForm(form))
+                    });
+                    const result = await response.json().catch(() => null);
+                    if (!response.ok || result?.ok !== true) {
+                        throw new Error(result?.error || 'Online enquiries are unavailable. Please email mail@pukkagennoduff.com.');
+                    }
+                    form.reset();
+                    fields.forEach(field => {
+                        field.dataset.touched = 'false';
+                        field.classList.remove('field-invalid');
+                        field.setAttribute('aria-invalid', 'false');
+                    });
+                    if (status) {
+                        status.textContent = 'Thank you. Your project brief has been received.';
+                        status.className = 'min-h-[1.25rem] text-xs text-green-400';
+                    }
+                    showToast('Project brief delivered successfully.');
+                } catch (error) {
+                    if (status) {
+                        status.textContent = error instanceof Error ? error.message : 'Could not submit your brief. Please email us directly.';
+                        status.className = 'min-h-[1.25rem] text-xs text-red-400';
+                    }
+                } finally {
+                    if (button) button.disabled = false;
+                    form.removeAttribute('aria-busy');
+                }
             }
-
             form.addEventListener('submit', handleProjectBriefSubmit);
-            form.querySelector('button[type="submit"]')?.addEventListener('click', (event) => {
-                if (!form.checkValidity()) {
-                    handleProjectBriefSubmit(event);
-                }
-            });
         }
 
         initProjectBriefForm();
