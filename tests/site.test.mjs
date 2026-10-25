@@ -25,3 +25,11 @@ test('v1.2.0 provides accessibility and motion controls', () => {
   assert.match(style, /prefers-reduced-motion/);
   assert.match(style, /max-width:767px/);
 });
+
+test('email fallback is available if server submission fails', () => {
+  const updatedHtml=readFileSync(new URL('../index.html',import.meta.url),'utf8');
+  const updatedMain=readFileSync(new URL('../src/main.ts',import.meta.url),'utf8');
+  assert.match(updatedHtml,/id="emailBriefFallback"/);
+  assert.match(updatedMain,/emailFallback\.hidden = false/);
+  assert.match(updatedMain,/encodeURIComponent\(body\)/);
+});

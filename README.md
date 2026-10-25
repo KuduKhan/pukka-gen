@@ -35,3 +35,6 @@ v1.2.0: premium responsive, accessible and reduced-motion UI refinement.
 ## v1.2.0 UI
 
 Adds a compiled Vite studio stylesheet, accessible skip link and page landmark, modal Tab focus loop, fluid mobile typography, stronger focus treatments, improved form readability and a saved "Calm visuals" preference. Device-imposed reduced motion remains respected regardless of the preference. The existing Tailwind browser CDN is **not yet migrated** to a compiled Tailwind pipeline; removing it without regenerating all utility styles would break the current page. Make that a separately tested follow-up.
+
+### Deployment safety
+The production headers are in `vercel.json`. Strict Content Security Policy requires a separate cleanup of legacy inline styles/scripts and third-party CDNs; it has not been enforced to avoid breaking the site. If the serverless email provider is unavailable, a clearly labelled mail-client fallback preserves a usable manual route without falsely claiming delivery.

@@ -115,3 +115,11 @@ footer .footer-legal-copy,footer .footer-legal-link { color:#a9bcd0; }
 @supports not (backdrop-filter:blur(1px)) {
   nav[aria-label="Primary navigation"] .glass-pill { background:rgba(8,15,27,.97); }
 }
+
+#emailBriefFallback[hidden] { display:none!important; }
+.project-email-fallback {
+  display:inline-flex; align-items:center; padding:.75rem 1rem;
+  margin:.35rem 0 .5rem; color:#a5f5fe; background:rgba(15,67,80,.4);
+  border:1px solid rgba(117,231,242,.42); border-radius:.75rem;
+  font-size:.89rem; font-weight:700; line-height:1.45; text-decoration:underline;
+}

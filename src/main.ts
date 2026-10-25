@@ -2148,6 +2148,8 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
                 }
                 const button = form.querySelector('button[type="submit"]');
                 if (button?.disabled) return;
+                const emailFallback = document.getElementById('emailBriefFallback');
+                if (emailFallback) emailFallback.hidden = true;
                 if (button) button.disabled = true;
                 form.setAttribute('aria-busy', 'true');
                 if (status) {
@@ -2179,6 +2181,18 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
                     if (status) {
                         status.textContent = error instanceof Error ? error.message : 'Could not submit your brief. Please email us directly.';
                         status.className = 'min-h-[1.25rem] text-xs text-red-400';
+                    }
+                    if (emailFallback) {
+                        const draft = readProjectBriefForm(form);
+                        const subject = 'Pukka Gen project enquiry — ' + draft.service;
+                        const body = [
+                            'Name: ' + draft.name, 'Email: ' + draft.email,
+                            'Phone: ' + (draft.phone || 'Not provided'),
+                            'Service: ' + draft.service, '', draft.message
+                        ].join('\n');
+                        emailFallback.href = 'mailto:mail@pukkagennoduff.com?subject=' +
+                            encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+                        emailFallback.hidden = false;
                     }
                 } finally {
                     if (button) button.disabled = false;
