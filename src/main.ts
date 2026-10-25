@@ -137,8 +137,6 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
             setCalmMode(!calmMode);
             try { window.localStorage.setItem('pukka-visual-mode', calmMode ? 'calm' : 'dynamic'); } catch { /* optional preference */ }
         }));
-        setCalmMode(calmMode);
-
         // --- 1. Init Animations ---
         function initializePukkaPage() {
             document.querySelectorAll('.reveal-text').forEach(el => el.classList.add('visible'));
@@ -377,6 +375,8 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
             particleAnimationId = 0;
         }
 
+        // All particle state is initialized before restoring the saved user preference.
+        setCalmMode(calmMode);
         if (!prefersReducedMotion && !isPerformanceConstrained) {
             initParticles();
             startParticles();
