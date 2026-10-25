@@ -3134,6 +3134,7 @@
 </style>
 </head>
 <body id="top" class="antialiased selection:bg-cyan-500 selection:text-white relative">
+<a class="skip-to-content" href="#main-content">Skip to main content</a>
 <a href="#about" class="skip-link">Skip to content</a>
 
     <!-- Scroll Progress -->
@@ -3192,7 +3193,7 @@
     </button>
 
     <!-- Navigation -->
-    <nav class="fixed w-full z-50 top-0 left-0 px-4 md:px-6 py-4">
+    <nav aria-label="Primary navigation" class="fixed w-full z-50 top-0 left-0 px-4 md:px-6 py-4">
         <div class="max-w-7xl mx-auto flex justify-between items-center glass-pill px-6 py-3 shadow-lg shadow-black/20">
             <a href="#top" class="site-logo-link hover-trigger" aria-label="Pukka Gen home">
                 <img src="pukka-gen-wordmark.png" alt="Pukka Gen No Duff" class="brand-logo-image nav-wordmark" decoding="async">
@@ -3212,6 +3213,9 @@
                 <button type="button" id="commandPaletteBtn" class="command-k-btn hover-trigger" aria-label="Open quick actions" aria-controls="commandPalette" aria-expanded="false" title="Quick actions (Ctrl+K)">
                     <i class="fas fa-search text-sm"></i>
                 </button>
+                <button type="button" data-motion-toggle class="motion-mode-btn" aria-pressed="false" title="Toggle ambient animations">
+                    <i class="fas fa-moon" aria-hidden="true"></i><span class="motion-label">Calm visuals</span>
+                </button>
             </div>
 
             <button type="button" id="mobileMenuBtn" class="lg:hidden" aria-label="Open navigation menu" aria-controls="mobile-menu" aria-expanded="false">
@@ -3227,15 +3231,17 @@
             <a href="#insights" class="mobile-link">Insights</a>
             <a href="#team" class="mobile-link">Team</a>
             <a href="#contact" class="mobile-nav-cta">Start a Project</a>
+            <button type="button" data-motion-toggle class="motion-mode-btn mobile-motion-btn" aria-pressed="false"><i class="fas fa-moon" aria-hidden="true"></i><span class="motion-label">Calm visuals</span></button>
         </div>
     </nav>
 
+    <main id="main-content">
     <!-- Hero Section -->
     <header class="min-h-screen flex items-center justify-center relative pt-20 px-6 overflow-hidden">
         <!-- Background Slideshow -->
         <div id="hero-slideshow" class="absolute inset-0 z-0">
             <!-- 1. Hardcore Engineering (Circuit/Hardware) - Represents "Authentic" -->
-            <div class="absolute inset-0 bg-cover bg-center transition-opacity duration-[2500ms] ease-in-out opacity-100" style="background-image: url('https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1920&q=80');"></div>
+            <div class="absolute inset-0 bg-cover bg-center transition-opacity duration-[2500ms] ease-in-out opacity-100" data-bg="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1920&q=80" style="background-image: linear-gradient(135deg,#081e35,#050b18 60%,#07070e);"></div>
             
             <!-- 2. Infrastructure (Server Room) - Represents "Solid/Reliable" -->
             <div class="absolute inset-0 bg-cover bg-center transition-opacity duration-[2500ms] ease-in-out opacity-0" data-bg="https://images.unsplash.com/photo-1558494949-ef526b0042a0?auto=format&fit=crop&w=1920&q=80"></div>
@@ -5418,6 +5424,7 @@
         </div>
     </section>
 
+    </main>
     <!-- Contact Section -->
     <footer id="contact" class="pt-32 pb-12 px-4 md:px-6 bg-[#020202] relative border-t border-white/5 overflow-hidden">
         <!-- Background Glow -->

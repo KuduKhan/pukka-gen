@@ -1,0 +1,117 @@
+/* PUKKA GEN STUDIO — v1.2.0
+   Progressive visual refinement; original design tokens remain available. */
+:root {
+  color-scheme: dark;
+  --pg-canvas: #070b12;
+  --pg-panel: rgba(10, 19, 32, .85);
+  --pg-line: rgba(126, 164, 190, .22);
+  --pg-text: #eff8ff;
+  --pg-muted: #b2c4d5;
+  --pg-aqua: #67e9f4;
+  --pg-focus: #a4f3ff;
+}
+html { scroll-behavior:smooth; scroll-padding-top:6.75rem; scrollbar-color:#4d657a #080d15; }
+body { min-width:320px; text-rendering:optimizeLegibility; -webkit-font-smoothing:antialiased; }
+:where(section[id],footer[id],header[id]) { scroll-margin-top:6.75rem; }
+:where(p,blockquote) { overflow-wrap:break-word; }
+:where(h1,h2,h3) { text-wrap:balance; }
+:where(a,button,input,select,textarea,[tabindex]):focus-visible {
+  outline:3px solid var(--pg-focus)!important; outline-offset:3px!important;
+}
+:where(button,a,input,select,textarea) { -webkit-tap-highlight-color:rgba(103,233,244,.13); }
+:where(button,a) { touch-action:manipulation; }
+.skip-to-content {
+  position:fixed; top:.75rem; left:.75rem; z-index:10001; padding:.85rem 1.25rem;
+  background:#e8fbff; border-radius:.85rem; color:#061320; font-weight:800;
+  transform:translateY(-160%); box-shadow:0 12px 30px #0008;
+}
+.skip-to-content:focus { transform:translateY(0); }
+nav[aria-label="Primary navigation"] { padding-top:clamp(.65rem,1.2vw,1rem); }
+nav[aria-label="Primary navigation"] .glass-pill {
+  border:1px solid var(--pg-line); background:rgba(7,14,25,.88);
+  backdrop-filter:blur(22px); -webkit-backdrop-filter:blur(22px);
+  box-shadow:0 18px 55px rgba(0,0,0,.28);
+}
+nav .nav-link { letter-spacing:.018em; }
+#mobile-menu { max-height:calc(100dvh - 5rem); overflow-y:auto; overscroll-behavior:contain; }
+.motion-mode-btn {
+  display:inline-flex; align-items:center; justify-content:center; gap:.55rem; flex-shrink:0;
+  padding:.65rem .9rem; min-height:44px; border:1px solid rgba(104,205,225,.25);
+  border-radius:999px; background:rgba(18,39,54,.7); color:#d5edf8;
+  font-size:.79rem; font-weight:700; letter-spacing:.015em; transition:background .2s,border-color .2s;
+}
+.motion-mode-btn:hover,.motion-mode-btn[aria-pressed="true"] {
+  color:#fff; background:rgba(28,78,96,.85); border-color:rgba(103,233,244,.7);
+}
+.mobile-motion-btn { width:100%; border-radius:.9rem; margin-top:.65rem; }
+header:has(#hero-slideshow) { min-height:100svh; padding-bottom:clamp(5rem,10vh,8rem); }
+.hero-copy { padding-block:clamp(3rem,6vw,5rem); }
+.hero-copy h1 { line-height:1.1; letter-spacing:-.035em; overflow-wrap:anywhere; }
+.hero-copy .hero-lede { color:#e4edf5; font-size:clamp(1rem,1.45vw,1.2rem); line-height:1.75; }
+.hero-copy .hero-cta { min-height:50px; display:inline-flex; align-items:center; justify-content:center; }
+#services .section-title,#portfolio .portfolio-title { letter-spacing:-.025em; }
+#services :where(.group,.spotlight-card),#portfolio .portfolio-card {
+  min-width:0; transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease;
+}
+#portfolio .portfolio-card { isolation:isolate; }
+#portfolio .portfolio-card:focus-visible { outline-offset:5px!important; }
+#portfolio .portfolio-card-description { overflow-wrap:anywhere; }
+#portfolio .portfolio-filter { min-height:40px; }
+#portfolio .portfolio-grid { align-items:stretch; }
+#contact input,#contact textarea,#contact select {
+  min-height:44px; font-size:16px; border-color:rgba(160,191,210,.24);
+}
+#contact textarea { min-height:112px; }
+#contact label { color:#b6c7d8; font-size:.75rem; }
+#contact input::placeholder,#contact textarea::placeholder { color:#8297a9; opacity:1; }
+#contact button[type="submit"]:disabled { opacity:.65; cursor:progress; transform:none; }
+#contact .field-invalid { border-color:#ff8497!important; box-shadow:0 0 0 1px #ff849755; }
+#projectFormStatus { line-height:1.5; }
+.service-modal.active { overscroll-behavior:contain; }
+.service-modal .modal-content { max-height:min(90dvh,900px); overflow-y:auto; }
+#testimonialMarquee blockquote { font-size:clamp(.86rem,1vw,.95rem); line-height:1.6; }
+#testimonials .marquee-track { will-change:auto; }
+footer .footer-legal-copy,footer .footer-legal-link { color:#a9bcd0; }
+:where(.text-gray-500,.text-slate-500) { color:#a8b8ca; }
+@media (max-width:1023px) {
+  .hero-copy { padding-inline:clamp(.35rem,2vw,1.25rem); }
+  nav .glass-pill { padding-inline:clamp(1rem,3vw,1.5rem); }
+  #services,#portfolio,#about,#team,#insights { scroll-margin-top:5rem; }
+}
+@media (max-width:767px) {
+  header:has(#hero-slideshow) { min-height:100svh; padding-top:7rem; padding-bottom:6rem; }
+  .hero-copy { padding-block:1rem; }
+  .hero-copy h1 { font-size:clamp(2.1rem,9vw,3.65rem); line-height:1.13; }
+  .hero-copy .hero-lede { margin-bottom:2rem; max-width:34rem; }
+  .hero-copy .hero-cta-row { width:100%; gap:.85rem; }
+  .hero-copy .hero-cta { width:min(100%,24rem); }
+  #services,#portfolio,#team,#insights,#contact { padding-inline:1rem; }
+  #services .grid,#portfolio .portfolio-grid { min-width:0; }
+  #portfolio .portfolio-filter-row { overflow-x:auto; max-width:100%; scrollbar-width:thin; }
+  #contact .grid { min-width:0; }
+  #contact input,#contact select,#contact textarea { width:100%; }
+  .service-modal .modal-content { max-height:92dvh; max-width:calc(100vw - 1.25rem); }
+}
+@media (max-width:390px) {
+  .hero-copy h1 { font-size:clamp(1.95rem,9vw,2.4rem); }
+  nav[aria-label="Primary navigation"] { padding-inline:.5rem; }
+  nav .glass-pill { padding-inline:.75rem; }
+  .motion-mode-btn { font-size:.77rem; }
+}
+@media (hover:none) {
+  #insights .opacity-0.group-hover\\:opacity-100 { opacity:1; }
+}
+@media (prefers-reduced-motion:reduce) {
+  html { scroll-behavior:auto; }
+  .marquee-track,.animate-pulse,.animate-bounce { animation:none!important; }
+  :where(.magnetic-btn,.spotlight-card,.portfolio-card) { transform:none!important; }
+  #particleCanvas { display:none; }
+  *,*::before,*::after { scroll-behavior:auto!important; }
+}
+.calm-mode #particleCanvas { display:none!important; }
+.calm-mode :where(.marquee-track,.animate-pulse,.animate-bounce,.animate-float) { animation:none!important; }
+.calm-mode :where(.magnetic-btn,.spotlight-card,.portfolio-card) { transform:none!important; }
+.calm-mode #hero-slideshow>div { transition:none!important; }
+@supports not (backdrop-filter:blur(1px)) {
+  nav[aria-label="Primary navigation"] .glass-pill { background:rgba(8,15,27,.97); }
+}

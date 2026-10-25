@@ -3,6 +3,7 @@
 // established markup and behavior during this migration.
 // @ts-nocheck
 import { readProjectBriefForm } from "./lib/projectBrief";
+import "./styles/studio.css";
 
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         let isCompactViewport = window.matchMedia('(max-width: 768px), (pointer: coarse)').matches;
@@ -18,6 +19,22 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
                 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
             )).filter(element => !element.closest('[aria-hidden="true"]') && element.getClientRects().length);
         }
+
+        // Keep Tab navigation inside the topmost active dialog.
+        document.addEventListener('keydown', event => {
+            if (event.key !== 'Tab') return;
+            const dialogs = Array.from(document.querySelectorAll('.service-modal.active'));
+            const dialog = dialogs.at(-1);
+            if (!dialog) return;
+            const items = getFocusableElements(dialog);
+            if (!items.length) { event.preventDefault(); dialog.setAttribute('tabindex', '-1'); dialog.focus(); return; }
+            const first = items[0], last = items[items.length - 1];
+            if (!dialog.contains(document.activeElement)) {
+                event.preventDefault(); first.focus(); return;
+            }
+            if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+            else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+        });
 
         function openModal(modal, focusTarget) {
             if (!modal || modal.classList.contains('active')) return;
@@ -101,6 +118,27 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
             showToast('Checklist download started.');
         }
 
+        // An explicit, persisted calm mode overrides optional decorative motion.
+        const motionToggles = document.querySelectorAll('[data-motion-toggle]');
+        let calmMode = false;
+        try { calmMode = window.localStorage.getItem('pukka-visual-mode') === 'calm'; } catch { /* storage may be blocked */ }
+        function setCalmMode(enabled) {
+            calmMode = enabled;
+            document.documentElement.classList.toggle('calm-mode', enabled);
+            motionToggles.forEach(button => {
+                button.setAttribute('aria-pressed', String(enabled));
+                const label = button.querySelector('.motion-label');
+                if (label) label.textContent = enabled ? 'Enable effects' : 'Calm visuals';
+            });
+            if (enabled) stopParticles();
+            else if (!prefersReducedMotion && !isPerformanceConstrained) startParticles();
+        }
+        motionToggles.forEach(button => button.addEventListener('click', () => {
+            setCalmMode(!calmMode);
+            try { window.localStorage.setItem('pukka-visual-mode', calmMode ? 'calm' : 'dynamic'); } catch { /* optional preference */ }
+        }));
+        setCalmMode(calmMode);
+
         // --- 1. Init Animations ---
         function initializePukkaPage() {
             document.querySelectorAll('.reveal-text').forEach(el => el.classList.add('visible'));
@@ -146,12 +184,13 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
                 image.src = source;
             };
 
+            loadSlide(0); // First hero image also uses the reduced mobile resolution.
             const warmNextSlide = () => loadSlide((currentSlide + 1) % slides.length);
             if ('requestIdleCallback' in window) requestIdleCallback(warmNextSlide, { timeout: 1500 });
             else setTimeout(warmNextSlide, 250);
 
             setInterval(() => {
-                if (document.hidden) return;
+                if (document.hidden || document.documentElement.classList.contains("calm-mode")) return;
                 // Fade out current
                 slides[currentSlide].classList.remove('opacity-100');
                 slides[currentSlide].classList.add('opacity-0');
@@ -327,7 +366,7 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
         }
 
         function startParticles() {
-            if (!ctx || !particlesArray || particleAnimationId || document.hidden) return;
+            if (!ctx || !particlesArray || particleAnimationId || document.hidden || document.documentElement.classList.contains("calm-mode")) return;
             lastParticleFrame = 0;
             particleAnimationId = requestAnimationFrame(animateParticles);
         }
@@ -2135,7 +2174,7 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
                         status.textContent = 'Thank you. Your project brief has been received.';
                         status.className = 'min-h-[1.25rem] text-xs text-green-400';
                     }
-                    showToast('Project brief delivered successfully.');
+                    showToast('Project brief accepted for delivery.');
                 } catch (error) {
                     if (status) {
                         status.textContent = error instanceof Error ? error.message : 'Could not submit your brief. Please email us directly.';
