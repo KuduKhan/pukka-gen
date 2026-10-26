@@ -53,3 +53,14 @@ touch-target sizes and small-screen readability refinements.
 
 The email API rejects `Sec-Fetch-Site: cross-site`, but a server-side
 rate-limiting service/WAF remains required for targeted abuse resistance.
+
+## v1.2.2 — Studio clarity and enquiry continuity
+
+- Corrected formerly undersized mobile service, values and industry card typography.
+- Services stack into one readable column on compact displays rather than squeezed two-column cards.
+- Added missing QA & Cybersecurity / Consultancy interest options.
+- Clicking "Start This Project" in a service detail modal now preselects the matching enquiry service.
+- Kept interactive motion settings and added a clearer form privacy explanation.
+- Bumped versions in package.json and npm lockfile; all build dependencies are unchanged.
+
+Run `npm run check` and inspect the resulting Vercel preview before merging.

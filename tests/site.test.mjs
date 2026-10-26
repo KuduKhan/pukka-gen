@@ -56,3 +56,18 @@ test('API blocks cross-site browser requests', async () => {
   await handler(request,result);
   assert.equal(result.code,403);
 });
+
+test('mobile service cards retain readable text and one-column layout', () => {
+  const styles=readFileSync(new URL('../src/styles/studio.css',import.meta.url),'utf8');
+  assert.match(styles,/#services \.stagger-container,#industries/);
+  assert.match(styles,/grid-template-columns:minmax\(0,1fr\)/);
+  assert.match(styles,/#services \.spotlight-card p \{ font-size:/);
+});
+test('service modal connects to a matching project enquiry selection', () => {
+  const page=readFileSync(new URL('../index.html',import.meta.url),'utf8');
+  const source=readFileSync(new URL('../src/main.ts',import.meta.url),'utf8');
+  assert.match(page,/value="security"/);
+  assert.match(page,/value="consultancy"/);
+  assert.match(source,/data-service-interest="\$\{key\}"/);
+  assert.match(source,/resolveServiceValue\(serviceLink\.dataset\.serviceInterest/);
+});
