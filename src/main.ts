@@ -70,7 +70,7 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
                 document.body.classList.remove('modal-open');
                 if (!document.hidden) {
                     document.documentElement.classList.remove('page-paused');
-                    if (!prefersReducedMotion) startParticles();
+                    if (!prefersReducedMotion && !isPerformanceConstrained) startParticles();
                 }
             }
         }
@@ -164,7 +164,7 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
             if(slides.length === 0) return;
 
             let currentSlide = 0;
-            const intervalTime = 8000; // 8 seconds
+            const intervalTime = 9000; // 9 seconds on capable devices
 
             const loadSlide = (index) => {
                 const slide = slides[index];
@@ -184,11 +184,14 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
 
             loadSlide(0); // First hero image also uses the reduced mobile resolution.
             const warmNextSlide = () => loadSlide((currentSlide + 1) % slides.length);
-            if ('requestIdleCallback' in window) requestIdleCallback(warmNextSlide, { timeout: 1500 });
-            else setTimeout(warmNextSlide, 250);
+            if (!prefersReducedMotion && !isPerformanceConstrained) {
+                if ('requestIdleCallback' in window) requestIdleCallback(warmNextSlide, { timeout: 1500 });
+                else setTimeout(warmNextSlide, 250);
+            }
 
             setInterval(() => {
-                if (document.hidden || document.documentElement.classList.contains("calm-mode")) return;
+                if (document.hidden || prefersReducedMotion || isPerformanceConstrained ||
+                    document.documentElement.classList.contains("calm-mode")) return;
                 // Fade out current
                 slides[currentSlide].classList.remove('opacity-100');
                 slides[currentSlide].classList.add('opacity-0');
@@ -517,8 +520,13 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
             if (el.innerText.includes('+')) suffix = '+';
 
             const target = parseInt(rawCount);
-            const duration = 2000;
-            const step = Math.ceil(target / (duration / 16));
+            if (!Number.isFinite(target)) return;
+            if (prefersReducedMotion || document.documentElement.classList.contains('calm-mode')) {
+                el.innerText = target + suffix;
+                return;
+            }
+            const duration = 1400;
+            const step = Math.max(1, Math.ceil(target / (duration / 16)));
             let current = 0;
             
             const timer = setInterval(() => {
@@ -535,11 +543,13 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
         const mobileMenuButton = document.getElementById('mobileMenuBtn');
         const mobileMenu = document.getElementById('mobile-menu');
         const mobileMenuIcon = mobileMenuButton?.querySelector('i');
+        if (mobileMenu) mobileMenu.inert = true;
 
         function setMobileMenuOpen(isOpen) {
             if (!mobileMenuButton || !mobileMenu || !mobileMenuIcon) return;
             mobileMenu.classList.toggle('hidden', !isOpen);
             mobileMenu.setAttribute('aria-hidden', String(!isOpen));
+            mobileMenu.inert = !isOpen;
             mobileMenuButton.setAttribute('aria-expanded', String(isOpen));
             mobileMenuButton.setAttribute('aria-label', isOpen ? 'Close navigation menu' : 'Open navigation menu');
             mobileMenuIcon.classList.toggle('fa-bars', !isOpen);
@@ -569,6 +579,7 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
         document.addEventListener('keydown', event => {
             if (event.key === 'Escape' && mobileMenu && !mobileMenu.classList.contains('hidden')) {
                 setMobileMenuOpen(false);
+                mobileMenuButton?.focus({ preventScroll: true });
             }
         });
 

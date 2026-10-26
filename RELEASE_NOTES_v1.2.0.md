@@ -15,3 +15,17 @@
 
 ## Acceptance
 Run npm ci && npm run check. For full API and browser testing, run Vercel preview with the configured secrets.
+
+## v1.2.1 refinement pass — October 26, 2026
+
+- Corrected the Vite multi-page build to include Privacy and Terms documents.
+- Copied SEO crawler resources to the production public directory.
+- Added post-build release integrity checks in GitHub Actions via npm run check.
+- Improved narrow-screen cards, controls, typographic hierarchy and safe areas.
+- Reduced background slideshow and counter motion for motion-sensitive or constrained devices.
+- Hid closed mobile navigation from keyboard navigation; returned focus on Escape.
+- Added a browser cross-site request guard to the serverless enquiry API.
+- Synchronized npm package metadata with the new patch release.
+
+**Unverified gates:** full real-browser accessibility/visual validation,
+real email inbox delivery, production WAF rate limiting and legal text review.

@@ -25,7 +25,7 @@
     <meta name="twitter:image" content="https://www.pukkagennoduff.com/pukka-gen-wordmark.png">
     <meta name="twitter:image:alt" content="Pukka Gen No Duff wordmark">
     <link rel="preload" as="image" href="pukka-gen-wordmark.png">
-    <link rel="preload" as="image" href="pukka-gen-mark.png">
+    <meta name="format-detection" content="telephone=no">
     <link rel="icon" type="image/png" href="pukka-gen-favicon.png">
     <link rel="apple-touch-icon" href="pukka-gen-favicon.png">
     <script type="application/ld+json">
@@ -3223,7 +3223,7 @@
             </button>
         </div>
 
-        <div id="mobile-menu" class="hidden" aria-hidden="true">
+        <div id="mobile-menu" class="hidden" aria-hidden="true" inert>
             <a href="#about" class="mobile-link">About</a>
             <a href="#values" class="mobile-link">Values</a>
             <a href="#services" class="mobile-link">Services</a>
@@ -3741,7 +3741,7 @@
                     <h3 class="text-2xl md:text-3xl font-bold text-white">Explore the systems behind the outcomes.</h3>
                     <p id="portfolioResultCount" class="text-sm text-slate-500 mt-2" aria-live="polite">Showing all 8 projects</p>
                 </div>
-                <div class="portfolio-filter-row" role="group" aria-label="Filter portfolio projects">
+                <div class="portfolio-filter-row" role="group" aria-label="Filter portfolio projects" tabindex="0">
                     <button type="button" class="portfolio-filter" data-filter="all" aria-pressed="true">All work</button>
                     <button type="button" class="portfolio-filter" data-filter="ai" aria-pressed="false">AI</button>
                     <button type="button" class="portfolio-filter" data-filter="saas" aria-pressed="false">SaaS</button>
@@ -4190,7 +4190,7 @@
             
             <!-- Marquee Container -->
             <!-- Added 'testimonial-marquee' class for mobile specific override and 'id' for JS targeting -->
-            <div class="marquee-container testimonial-marquee mt-12" id="testimonialMarquee">
+            <div class="marquee-container testimonial-marquee mt-12" id="testimonialMarquee" aria-label="Customer testimonials">
                 <div class="marquee-track flex gap-5 hover:[animation-play-state:paused]" style="animation-duration: 50s;">
                     
                     <!-- Original Set of 6 Cards -->

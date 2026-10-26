@@ -38,3 +38,18 @@ Adds a compiled Vite studio stylesheet, accessible skip link and page landmark, 
 
 ### Deployment safety
 The production headers are in `vercel.json`. Strict Content Security Policy requires a separate cleanup of legacy inline styles/scripts and third-party CDNs; it has not been enforced to avoid breaking the site. If the serverless email provider is unavailable, a clearly labelled mail-client fallback preserves a usable manual route without falsely claiming delivery.
+
+## v1.2.1 polish and release integrity
+
+The Vite production build now emits `privacy.html` and `terms.html` as
+independent HTML pages. Files under `public/` ensure `robots.txt` and
+`sitemap.xml` are deployed too. Run `npm run check` to confirm these
+artifacts exist under `dist/`, in addition to unit tests and type-checking.
+
+Motion-reduction requests now pause both particles and rotating hero imagery.
+The navigation uses `inert` while hidden and restores keyboard focus when
+closing with Escape. Portfolio and contact layouts include further minimum
+touch-target sizes and small-screen readability refinements.
+
+The email API rejects `Sec-Fetch-Site: cross-site`, but a server-side
+rate-limiting service/WAF remains required for targeted abuse resistance.

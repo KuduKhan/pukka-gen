@@ -5,6 +5,9 @@ const field = (obj, key, limit) => typeof obj[key] === "string" ? obj[key].trim(
 export default async function handler(req, res) {
   res.setHeader("Cache-Control", "no-store");
   if (req.method !== "POST") { res.setHeader("Allow", "POST"); return reply(res, 405, {ok:false,error:"Method not allowed."}); }
+  if (req.headers["sec-fetch-site"] === "cross-site") {
+    return reply(res,403,{ok:false,error:"Cross-site submissions are not allowed."});
+  }
   if (!String(req.headers["content-type"] ?? "").includes("application/json")) return reply(res, 415, {ok:false,error:"JSON required."});
   let body;
   try {

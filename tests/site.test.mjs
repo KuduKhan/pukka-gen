@@ -33,3 +33,26 @@ test('email fallback is available if server submission fails', () => {
   assert.match(updatedMain,/emailFallback\.hidden = false/);
   assert.match(updatedMain,/encodeURIComponent\(body\)/);
 });
+
+test('build config includes legal pages as HTML entry points', () => {
+  const config=readFileSync(new URL('../vite.config.ts',import.meta.url),'utf8');
+  assert.match(config,/privacy: resolve/);
+  assert.match(config,/terms: resolve/);
+});
+test('navigation and portfolio preserve accessible states', () => {
+  const document=readFileSync(new URL('../index.html',import.meta.url),'utf8');
+  const source=readFileSync(new URL('../src/main.ts',import.meta.url),'utf8');
+  assert.match(document,/id="mobile-menu" class="hidden" aria-hidden="true" inert/);
+  assert.match(source,/mobileMenu\.inert = !isOpen/);
+  assert.match(source,/portfolioResultCount\.textContent/);
+});
+test('reduced motion disables slideshow transitions', () => {
+  const source=readFileSync(new URL('../src/main.ts',import.meta.url),'utf8');
+  assert.match(source,/document\.hidden \|\| prefersReducedMotion \|\| isPerformanceConstrained/);
+});
+test('API blocks cross-site browser requests', async () => {
+  const request={method:'POST',headers:{'content-type':'application/json','sec-fetch-site':'cross-site'},body:{}};
+  const result=res();
+  await handler(request,result);
+  assert.equal(result.code,403);
+});
