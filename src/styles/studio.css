@@ -135,7 +135,7 @@ footer .footer-legal-copy,footer .footer-legal-link { color:#a9bcd0; }
 #main-content :is(.grid,.flex) > * { min-width:0; }
 #services .spotlight-card,
 #portfolio .portfolio-card,
-#contact .bg-white\\/\\[0\\.02\\] {
+#contact [class~="bg-white/[0.02]"] {
   border-color:rgba(151, 186, 217, .14);
 }
 #portfolio .portfolio-card {
@@ -168,14 +168,14 @@ footer .footer-legal-copy,footer .footer-legal-link { color:#a9bcd0; }
   #portfolio .portfolio-card { border-radius:1.15rem; }
   #portfolio .portfolio-grid { gap:1.25rem; }
   #main-content :is(h2,.portfolio-title) { overflow-wrap:break-word; }
-  #contact .grid.md\\:grid-cols-2 { grid-template-columns:minmax(0,1fr); }
+  #contact [class~="md:grid-cols-2"] { grid-template-columns:minmax(0,1fr); }
   .hero-copy { max-width:100%; }
   #mobile-menu { padding-bottom:max(1rem, env(safe-area-inset-bottom)); }
 }
 @media (max-width:390px) {
   #main-content > section { padding-inline:1rem; }
   #portfolio .portfolio-filter-row { gap:.5rem; }
-  #contact .bg-white\\/\\[0\\.02\\] { padding:1.1rem; }
+  #contact [class~="bg-white/[0.02]"] { padding:1.1rem; }
 }
 @media (prefers-reduced-motion:reduce) {
   .hero-copy :where(.animate-item,.reveal-text) { opacity:1!important; visibility:visible!important; }
