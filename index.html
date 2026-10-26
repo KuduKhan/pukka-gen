@@ -25,7 +25,7 @@
     <meta name="twitter:image" content="https://www.pukkagennoduff.com/pukka-gen-wordmark.png">
     <meta name="twitter:image:alt" content="Pukka Gen No Duff wordmark">
     <link rel="preload" as="image" href="pukka-gen-wordmark.png">
-    <link rel="preload" as="image" href="pukka-gen-mark.png">
+    <meta name="format-detection" content="telephone=no">
     <link rel="icon" type="image/png" href="pukka-gen-favicon.png">
     <link rel="apple-touch-icon" href="pukka-gen-favicon.png">
     <script type="application/ld+json">
@@ -3130,9 +3130,11 @@
             }
         }
 
-    </style>
+    .form-trap{position:absolute;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none;overflow:hidden}
+</style>
 </head>
 <body id="top" class="antialiased selection:bg-cyan-500 selection:text-white relative">
+<a class="skip-to-content" href="#main-content">Skip to main content</a>
 <a href="#about" class="skip-link">Skip to content</a>
 
     <!-- Scroll Progress -->
@@ -3191,7 +3193,7 @@
     </button>
 
     <!-- Navigation -->
-    <nav class="fixed w-full z-50 top-0 left-0 px-4 md:px-6 py-4">
+    <nav aria-label="Primary navigation" class="fixed w-full z-50 top-0 left-0 px-4 md:px-6 py-4">
         <div class="max-w-7xl mx-auto flex justify-between items-center glass-pill px-6 py-3 shadow-lg shadow-black/20">
             <a href="#top" class="site-logo-link hover-trigger" aria-label="Pukka Gen home">
                 <img src="pukka-gen-wordmark.png" alt="Pukka Gen No Duff" class="brand-logo-image nav-wordmark" decoding="async">
@@ -3211,6 +3213,9 @@
                 <button type="button" id="commandPaletteBtn" class="command-k-btn hover-trigger" aria-label="Open quick actions" aria-controls="commandPalette" aria-expanded="false" title="Quick actions (Ctrl+K)">
                     <i class="fas fa-search text-sm"></i>
                 </button>
+                <button type="button" data-motion-toggle class="motion-mode-btn" aria-pressed="false" title="Toggle ambient animations">
+                    <i class="fas fa-moon" aria-hidden="true"></i><span class="motion-label">Calm visuals</span>
+                </button>
             </div>
 
             <button type="button" id="mobileMenuBtn" class="lg:hidden" aria-label="Open navigation menu" aria-controls="mobile-menu" aria-expanded="false">
@@ -3218,7 +3223,7 @@
             </button>
         </div>
 
-        <div id="mobile-menu" class="hidden" aria-hidden="true">
+        <div id="mobile-menu" class="hidden" aria-hidden="true" inert>
             <a href="#about" class="mobile-link">About</a>
             <a href="#values" class="mobile-link">Values</a>
             <a href="#services" class="mobile-link">Services</a>
@@ -3226,15 +3231,17 @@
             <a href="#insights" class="mobile-link">Insights</a>
             <a href="#team" class="mobile-link">Team</a>
             <a href="#contact" class="mobile-nav-cta">Start a Project</a>
+            <button type="button" data-motion-toggle class="motion-mode-btn mobile-motion-btn" aria-pressed="false"><i class="fas fa-moon" aria-hidden="true"></i><span class="motion-label">Calm visuals</span></button>
         </div>
     </nav>
 
+    <main id="main-content">
     <!-- Hero Section -->
     <header class="min-h-screen flex items-center justify-center relative pt-20 px-6 overflow-hidden">
         <!-- Background Slideshow -->
         <div id="hero-slideshow" class="absolute inset-0 z-0">
             <!-- 1. Hardcore Engineering (Circuit/Hardware) - Represents "Authentic" -->
-            <div class="absolute inset-0 bg-cover bg-center transition-opacity duration-[2500ms] ease-in-out opacity-100" style="background-image: url('https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1920&q=80');"></div>
+            <div class="absolute inset-0 bg-cover bg-center transition-opacity duration-[2500ms] ease-in-out opacity-100" data-bg="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1920&q=80" style="background-image: linear-gradient(135deg,#081e35,#050b18 60%,#07070e);"></div>
             
             <!-- 2. Infrastructure (Server Room) - Represents "Solid/Reliable" -->
             <div class="absolute inset-0 bg-cover bg-center transition-opacity duration-[2500ms] ease-in-out opacity-0" data-bg="https://images.unsplash.com/photo-1558494949-ef526b0042a0?auto=format&fit=crop&w=1920&q=80"></div>
@@ -3734,7 +3741,7 @@
                     <h3 class="text-2xl md:text-3xl font-bold text-white">Explore the systems behind the outcomes.</h3>
                     <p id="portfolioResultCount" class="text-sm text-slate-500 mt-2" aria-live="polite">Showing all 8 projects</p>
                 </div>
-                <div class="portfolio-filter-row" role="group" aria-label="Filter portfolio projects">
+                <div class="portfolio-filter-row" role="group" aria-label="Filter portfolio projects" tabindex="0">
                     <button type="button" class="portfolio-filter" data-filter="all" aria-pressed="true">All work</button>
                     <button type="button" class="portfolio-filter" data-filter="ai" aria-pressed="false">AI</button>
                     <button type="button" class="portfolio-filter" data-filter="saas" aria-pressed="false">SaaS</button>
@@ -3895,7 +3902,7 @@
             <div class="text-center mb-10 animate-item">
                 <span class="text-pink-400 font-bold tracking-wider text-xs uppercase px-3 py-1 bg-pink-900/30 rounded-full border border-pink-500/20">How We Work</span>
                 <h2 class="text-2xl md:text-4xl font-bold mt-4 mb-3">The Pukka Protocol</h2>
-                <p class="text-gray-400 text-sm md:text-base max-w-2xl mx-auto">This section answers the client's unspoken question: "Am I going to lose money on this?" It establishes a structured, transparent process.</p>
+                <p class="text-gray-400 text-sm md:text-base max-w-2xl mx-auto">Our five-stage delivery process keeps the scope, decisions, quality gates and ownership clear from discovery to launch.</p>
             </div>
 
             <div class="relative max-w-5xl mx-auto">
@@ -4183,7 +4190,7 @@
             
             <!-- Marquee Container -->
             <!-- Added 'testimonial-marquee' class for mobile specific override and 'id' for JS targeting -->
-            <div class="marquee-container testimonial-marquee mt-12" id="testimonialMarquee">
+            <div class="marquee-container testimonial-marquee mt-12" id="testimonialMarquee" aria-label="Customer testimonials">
                 <div class="marquee-track flex gap-5 hover:[animation-play-state:paused]" style="animation-duration: 50s;">
                     
                     <!-- Original Set of 6 Cards -->
@@ -5417,6 +5424,7 @@
         </div>
     </section>
 
+    </main>
     <!-- Contact Section -->
     <footer id="contact" class="pt-32 pb-12 px-4 md:px-6 bg-[#020202] relative border-t border-white/5 overflow-hidden">
         <!-- Background Glow -->
@@ -5459,7 +5467,7 @@
                                 </a>
 
                                 <!-- Phone -->
-                                <button type="button" onclick="openContactModal()" class="w-full flex items-center gap-3 group/item p-3 rounded-xl bg-white/[0.02] border border-white/5 hover:border-green-500/30 hover:bg-white/[0.05] transition-all duration-300 hover:-translate-y-1 text-left">
+                                <button type="button" data-open-contact-modal="true" class="w-full flex items-center gap-3 group/item p-3 rounded-xl bg-white/[0.02] border border-white/5 hover:border-green-500/30 hover:bg-white/[0.05] transition-all duration-300 hover:-translate-y-1 text-left">
                                     <div class="w-10 h-10 rounded-full flex items-center justify-center text-green-400 bg-green-500/10 group-hover/item:scale-110 transition-transform duration-300 animate-float animate-float-delay-1 shrink-0">
                                         <i class="fab fa-whatsapp text-base"></i>
                                     </div>
@@ -5481,7 +5489,7 @@
                                 </div>
 
                                 <!-- Location -->
-                                <button type="button" onclick="openMapModal()" class="w-full flex items-center gap-3 group/item p-3 rounded-xl bg-white/[0.02] border border-white/5 hover:border-purple-500/30 hover:bg-white/[0.05] transition-all duration-300 hover:-translate-y-1 text-left">
+                                <button type="button" data-open-map-modal="true" class="w-full flex items-center gap-3 group/item p-3 rounded-xl bg-white/[0.02] border border-white/5 hover:border-purple-500/30 hover:bg-white/[0.05] transition-all duration-300 hover:-translate-y-1 text-left">
                                      <div class="w-10 h-10 rounded-full flex items-center justify-center text-purple-400 bg-purple-500/10 group-hover/item:scale-110 transition-transform duration-300 animate-float animate-float-delay-3 shrink-0">
                                         <i class="fas fa-map-marker-alt text-sm"></i>
                                     </div>
@@ -5526,6 +5534,7 @@
             <!-- Right: Contact Form -->
             <div class="animate-item delay-100 h-full">
                 <form id="projectBriefForm" class="bg-white/[0.02] border border-white/5 rounded-[1.5rem] p-6 md:p-8 shadow-2xl relative overflow-hidden group hover:bg-white/[0.04] transition-all duration-500 h-full flex flex-col" novalidate>
+<div class="form-trap" aria-hidden="true"><label for="companyWebsite">Leave this field blank</label><input id="companyWebsite" name="website" type="text" tabindex="-1" autocomplete="off"></div>
                     <!-- Decor -->
                     <div class="absolute top-0 right-0 w-64 h-64 bg-cyan-500/5 rounded-full blur-[80px] pointer-events-none -translate-y-1/2 translate-x-1/2 transition-all duration-500 group-hover:bg-cyan-500/10"></div>
                     <div class="absolute bottom-0 left-0 w-64 h-64 bg-purple-500/5 rounded-full blur-[80px] pointer-events-none translate-y-1/2 -translate-x-1/2 transition-all duration-500 group-hover:bg-purple-500/10"></div>
@@ -5598,6 +5607,7 @@
                         </div>
 
                         <p id="projectFormStatus" class="min-h-[1.25rem] text-xs text-gray-500" role="status" aria-live="polite"></p>
+<a id="emailBriefFallback" hidden href="mailto:mail@pukkagennoduff.com" class="project-email-fallback">Online submission unavailable? Send this brief from your email app instead.</a>
 
                         <button type="submit" class="w-full py-4 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold text-base hover:shadow-[0_0_30px_rgba(6,182,212,0.4)] hover:scale-[1.02] active:scale-[0.98] transition-all magnetic-btn mt-4 group/btn overflow-hidden relative border border-white/10 animate-item delay-600">
                             <span class="relative z-10 flex items-center justify-center gap-2">
@@ -5705,9 +5715,9 @@
             <div class="footer-legal">
                 <p class="footer-legal-copy">&copy; <span id="currentYear">2026</span> Pukka Gen. <span class="footer-legal-tag">No Duff.</span> All rights reserved.</p>
                 <nav class="footer-legal-links" aria-label="Legal information">
-                    <a href="mailto:mail@pukkagennoduff.com?subject=Privacy%20Policy%20Request" class="footer-legal-link">Privacy Policy</a>
+                    <a href="/privacy.html" class="footer-legal-link">Privacy Policy</a>
                     <span class="footer-legal-divider" aria-hidden="true"></span>
-                    <a href="mailto:mail@pukkagennoduff.com?subject=Terms%20of%20Service%20Request" class="footer-legal-link">Terms of Service</a>
+                    <a href="/terms.html" class="footer-legal-link">Terms of Service</a>
                 </nav>
             </div>
             <nav class="footer-social" aria-label="Follow Pukka Gen">

@@ -2,6 +2,8 @@
 // TypeScript module lets Vite type-check and bundle it while preserving the
 // established markup and behavior during this migration.
 // @ts-nocheck
+import { readProjectBriefForm } from "./lib/projectBrief";
+import "./styles/studio.css";
 
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         let isCompactViewport = window.matchMedia('(max-width: 768px), (pointer: coarse)').matches;
@@ -17,6 +19,22 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
                 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
             )).filter(element => !element.closest('[aria-hidden="true"]') && element.getClientRects().length);
         }
+
+        // Keep Tab navigation inside the topmost active dialog.
+        document.addEventListener('keydown', event => {
+            if (event.key !== 'Tab') return;
+            const dialogs = Array.from(document.querySelectorAll('.service-modal.active'));
+            const dialog = dialogs.at(-1);
+            if (!dialog) return;
+            const items = getFocusableElements(dialog);
+            if (!items.length) { event.preventDefault(); dialog.setAttribute('tabindex', '-1'); dialog.focus(); return; }
+            const first = items[0], last = items[items.length - 1];
+            if (!dialog.contains(document.activeElement)) {
+                event.preventDefault(); first.focus(); return;
+            }
+            if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+            else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+        });
 
         function openModal(modal, focusTarget) {
             if (!modal || modal.classList.contains('active')) return;
@@ -52,7 +70,7 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
                 document.body.classList.remove('modal-open');
                 if (!document.hidden) {
                     document.documentElement.classList.remove('page-paused');
-                    if (!prefersReducedMotion) startParticles();
+                    if (!prefersReducedMotion && !isPerformanceConstrained) startParticles();
                 }
             }
         }
@@ -60,6 +78,13 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
         function closeServiceModal() {
             closeModal(document.getElementById('serviceModal'));
         }
+        // Register delegated actions, including for dynamically rendered modal content.
+        document.addEventListener('click', event => {
+            if (!(event.target instanceof Element)) return;
+            if (event.target.closest('[data-close-service-modal]')) closeServiceModal();
+            if (event.target.closest('[data-open-contact-modal]')) window.openContactModal?.();
+            if (event.target.closest('[data-open-map-modal]')) window.openMapModal?.();
+        });
 
         function downloadNoDuffChecklist() {
             const checklist = [
@@ -93,6 +118,25 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
             showToast('Checklist download started.');
         }
 
+        // An explicit, persisted calm mode overrides optional decorative motion.
+        const motionToggles = document.querySelectorAll('[data-motion-toggle]');
+        let calmMode = false;
+        try { calmMode = window.localStorage.getItem('pukka-visual-mode') === 'calm'; } catch { /* storage may be blocked */ }
+        function setCalmMode(enabled) {
+            calmMode = enabled;
+            document.documentElement.classList.toggle('calm-mode', enabled);
+            motionToggles.forEach(button => {
+                button.setAttribute('aria-pressed', String(enabled));
+                const label = button.querySelector('.motion-label');
+                if (label) label.textContent = enabled ? 'Enable effects' : 'Calm visuals';
+            });
+            if (enabled) stopParticles();
+            else if (!prefersReducedMotion && !isPerformanceConstrained) startParticles();
+        }
+        motionToggles.forEach(button => button.addEventListener('click', () => {
+            setCalmMode(!calmMode);
+            try { window.localStorage.setItem('pukka-visual-mode', calmMode ? 'calm' : 'dynamic'); } catch { /* optional preference */ }
+        }));
         // --- 1. Init Animations ---
         function initializePukkaPage() {
             document.querySelectorAll('.reveal-text').forEach(el => el.classList.add('visible'));
@@ -120,7 +164,7 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
             if(slides.length === 0) return;
 
             let currentSlide = 0;
-            const intervalTime = 8000; // 8 seconds
+            const intervalTime = 9000; // 9 seconds on capable devices
 
             const loadSlide = (index) => {
                 const slide = slides[index];
@@ -138,12 +182,16 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
                 image.src = source;
             };
 
+            loadSlide(0); // First hero image also uses the reduced mobile resolution.
             const warmNextSlide = () => loadSlide((currentSlide + 1) % slides.length);
-            if ('requestIdleCallback' in window) requestIdleCallback(warmNextSlide, { timeout: 1500 });
-            else setTimeout(warmNextSlide, 250);
+            if (!prefersReducedMotion && !isPerformanceConstrained) {
+                if ('requestIdleCallback' in window) requestIdleCallback(warmNextSlide, { timeout: 1500 });
+                else setTimeout(warmNextSlide, 250);
+            }
 
             setInterval(() => {
-                if (document.hidden) return;
+                if (document.hidden || prefersReducedMotion || isPerformanceConstrained ||
+                    document.documentElement.classList.contains("calm-mode")) return;
                 // Fade out current
                 slides[currentSlide].classList.remove('opacity-100');
                 slides[currentSlide].classList.add('opacity-0');
@@ -319,7 +367,7 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
         }
 
         function startParticles() {
-            if (!ctx || !particlesArray || particleAnimationId || document.hidden) return;
+            if (!ctx || !particlesArray || particleAnimationId || document.hidden || document.documentElement.classList.contains("calm-mode")) return;
             lastParticleFrame = 0;
             particleAnimationId = requestAnimationFrame(animateParticles);
         }
@@ -330,6 +378,8 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
             particleAnimationId = 0;
         }
 
+        // All particle state is initialized before restoring the saved user preference.
+        setCalmMode(calmMode);
         if (!prefersReducedMotion && !isPerformanceConstrained) {
             initParticles();
             startParticles();
@@ -470,8 +520,13 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
             if (el.innerText.includes('+')) suffix = '+';
 
             const target = parseInt(rawCount);
-            const duration = 2000;
-            const step = Math.ceil(target / (duration / 16));
+            if (!Number.isFinite(target)) return;
+            if (prefersReducedMotion || document.documentElement.classList.contains('calm-mode')) {
+                el.innerText = target + suffix;
+                return;
+            }
+            const duration = 1400;
+            const step = Math.max(1, Math.ceil(target / (duration / 16)));
             let current = 0;
             
             const timer = setInterval(() => {
@@ -488,11 +543,13 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
         const mobileMenuButton = document.getElementById('mobileMenuBtn');
         const mobileMenu = document.getElementById('mobile-menu');
         const mobileMenuIcon = mobileMenuButton?.querySelector('i');
+        if (mobileMenu) mobileMenu.inert = true;
 
         function setMobileMenuOpen(isOpen) {
             if (!mobileMenuButton || !mobileMenu || !mobileMenuIcon) return;
             mobileMenu.classList.toggle('hidden', !isOpen);
             mobileMenu.setAttribute('aria-hidden', String(!isOpen));
+            mobileMenu.inert = !isOpen;
             mobileMenuButton.setAttribute('aria-expanded', String(isOpen));
             mobileMenuButton.setAttribute('aria-label', isOpen ? 'Close navigation menu' : 'Open navigation menu');
             mobileMenuIcon.classList.toggle('fa-bars', !isOpen);
@@ -522,6 +579,7 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
         document.addEventListener('keydown', event => {
             if (event.key === 'Escape' && mobileMenu && !mobileMenu.classList.contains('hidden')) {
                 setMobileMenuOpen(false);
+                mobileMenuButton?.focus({ preventScroll: true });
             }
         });
 
@@ -1253,7 +1311,7 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
                             <p class="text-xs md:text-base mb-6 md:mb-8 text-gray-300 max-w-lg mx-auto relative z-10 leading-relaxed">
                                 That is okay. It just means you are in the <strong>Discovery Phase</strong>, not the Build Phase. Don't burn your budget on code yet. Book a "No Duff" Consultation with Pukka Gen. We will help you answer these questions, build a roadmap, and ensure that when we <em>do</em> start coding, it’s built to last.
                             </p>
-                            <a href="#contact" onclick="closeServiceModal()" class="inline-flex items-center px-6 py-3 md:px-8 md:py-4 bg-cyan-500 text-black font-bold rounded-full hover:bg-cyan-400 transition-all shadow-[0_0_20px_rgba(6,182,212,0.3)] hover:shadow-[0_0_30px_rgba(6,182,212,0.5)] hover:scale-105 relative z-10 text-xs md:text-base">
+                            <a href="#contact" data-close-service-modal="true" class="inline-flex items-center px-6 py-3 md:px-8 md:py-4 bg-cyan-500 text-black font-bold rounded-full hover:bg-cyan-400 transition-all shadow-[0_0_20px_rgba(6,182,212,0.3)] hover:shadow-[0_0_30px_rgba(6,182,212,0.5)] hover:scale-105 relative z-10 text-xs md:text-base">
                                 Book Your Consultation Now <i class="fas fa-arrow-right ml-2"></i>
                             </a>
                             <div class="mt-6 md:mt-8 border-t border-white/10 pt-4 md:pt-6">
@@ -1657,7 +1715,7 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
 
                         <!-- Footer -->
                         <div class="p-6 border-t border-white/5 text-center bg-white/[0.02]">
-                            <a href="#contact" class="magnetic-btn inline-flex items-center px-6 py-3 md:px-8 md:py-3 rounded-full bg-white text-black font-bold hover:bg-${theme}-400 hover:text-white transition-all shadow-lg hover:shadow-${theme}-500/50 text-sm" onclick="closeServiceModal()">
+                            <a href="#contact" class="magnetic-btn inline-flex items-center px-6 py-3 md:px-8 md:py-3 rounded-full bg-white text-black font-bold hover:bg-${theme}-400 hover:text-white transition-all shadow-lg hover:shadow-${theme}-500/50 text-sm" data-close-service-modal="true">
                                 Start This Project <i class="fas fa-arrow-right ml-2"></i>
                             </a>
                         </div>
@@ -1780,7 +1838,7 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
 
                         <div class="mt-8 pt-6 border-t border-white/10 flex flex-col sm:flex-row gap-4 sm:items-center sm:justify-between">
                             <div><p class="text-white font-bold">Have a similar challenge?</p><p class="text-xs text-slate-500 mt-1">Let’s turn it into a focused, buildable brief.</p></div>
-                            <a href="#contact" class="magnetic-btn inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full ${c.button} text-sm font-bold transition-colors" onclick="closeServiceModal()">Discuss your project <i class="fas fa-arrow-right"></i></a>
+                            <a href="#contact" class="magnetic-btn inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full ${c.button} text-sm font-bold transition-colors" data-close-service-modal="true">Discuss your project <i class="fas fa-arrow-right"></i></a>
                         </div>
                     </div>
                 </article>
@@ -2084,53 +2142,75 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
                 });
             });
 
-            function handleProjectBriefSubmit(event) {
+            async function handleProjectBriefSubmit(event) {
                 event.preventDefault();
                 fields.forEach(field => {
                     field.dataset.touched = 'true';
                     updateFieldState(field);
                 });
-
                 if (!form.checkValidity()) {
                     const firstInvalid = fields.find(field => !field.validity.valid);
                     if (status) {
-                        status.textContent = 'Please complete the highlighted fields so we can qualify the brief properly.';
+                        status.textContent = 'Please correct the highlighted fields before submitting your brief.';
                         status.className = 'min-h-[1.25rem] text-xs text-red-400';
                     }
-                    showToast('Please complete the highlighted fields.');
                     firstInvalid?.focus();
                     return;
                 }
-
-                const formData = new FormData(form);
-                const fullName = String(formData.get('name') || '').trim();
-                const firstName = fullName.split(' ')[0] || 'there';
-                const service = form.querySelector('#projectService')?.selectedOptions[0]?.textContent.trim() || 'General enquiry';
-                const subject = `Project brief from ${fullName} — ${service}`;
-                const body = [
-                    `Name: ${fullName}`,
-                    `Email: ${String(formData.get('email') || '').trim()}`,
-                    `Phone: ${String(formData.get('phone') || '').trim() || 'Not provided'}`,
-                    `Service: ${service}`,
-                    '',
-                    'Project details:',
-                    String(formData.get('message') || '').trim()
-                ].join('\n');
-
+                const button = form.querySelector('button[type="submit"]');
+                if (button?.disabled) return;
+                const emailFallback = document.getElementById('emailBriefFallback');
+                if (emailFallback) emailFallback.hidden = true;
+                if (button) button.disabled = true;
+                form.setAttribute('aria-busy', 'true');
                 if (status) {
-                    status.textContent = 'Your project brief is ready. Review and send it from the email app that opens.';
-                    status.className = 'min-h-[1.25rem] text-xs text-green-400';
+                    status.textContent = 'Sending your project brief…';
+                    status.className = 'min-h-[1.25rem] text-xs text-cyan-300';
                 }
-                showToast(`Thanks, ${firstName}. Opening your email app with the brief prepared.`);
-                window.location.href = `mailto:mail@pukkagennoduff.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+                try {
+                    const response = await fetch('/api/project-brief', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(readProjectBriefForm(form))
+                    });
+                    const result = await response.json().catch(() => null);
+                    if (!response.ok || result?.ok !== true) {
+                        throw new Error(result?.error || 'Online enquiries are unavailable. Please email mail@pukkagennoduff.com.');
+                    }
+                    form.reset();
+                    fields.forEach(field => {
+                        field.dataset.touched = 'false';
+                        field.classList.remove('field-invalid');
+                        field.setAttribute('aria-invalid', 'false');
+                    });
+                    if (status) {
+                        status.textContent = 'Thank you. Your project brief has been received.';
+                        status.className = 'min-h-[1.25rem] text-xs text-green-400';
+                    }
+                    showToast('Project brief accepted for delivery.');
+                } catch (error) {
+                    if (status) {
+                        status.textContent = error instanceof Error ? error.message : 'Could not submit your brief. Please email us directly.';
+                        status.className = 'min-h-[1.25rem] text-xs text-red-400';
+                    }
+                    if (emailFallback) {
+                        const draft = readProjectBriefForm(form);
+                        const subject = 'Pukka Gen project enquiry — ' + draft.service;
+                        const body = [
+                            'Name: ' + draft.name, 'Email: ' + draft.email,
+                            'Phone: ' + (draft.phone || 'Not provided'),
+                            'Service: ' + draft.service, '', draft.message
+                        ].join('\n');
+                        emailFallback.href = 'mailto:mail@pukkagennoduff.com?subject=' +
+                            encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+                        emailFallback.hidden = false;
+                    }
+                } finally {
+                    if (button) button.disabled = false;
+                    form.removeAttribute('aria-busy');
+                }
             }
-
             form.addEventListener('submit', handleProjectBriefSubmit);
-            form.querySelector('button[type="submit"]')?.addEventListener('click', (event) => {
-                if (!form.checkValidity()) {
-                    handleProjectBriefSubmit(event);
-                }
-            });
         }
 
         initProjectBriefForm();
