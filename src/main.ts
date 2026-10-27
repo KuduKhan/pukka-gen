@@ -3,6 +3,7 @@
 // established markup and behavior during this migration.
 // @ts-nocheck
 import { readProjectBriefForm } from "./lib/projectBrief";
+import { resolveServiceValue } from "./lib/serviceRouting";
 import "./styles/studio.css";
 
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -82,6 +83,17 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
         document.addEventListener('click', event => {
             if (!(event.target instanceof Element)) return;
             if (event.target.closest('[data-close-service-modal]')) closeServiceModal();
+            const serviceLink = event.target.closest('[data-service-interest]');
+            if (serviceLink) {
+                const control = document.getElementById('projectService');
+                if (control instanceof HTMLSelectElement) {
+                    const value = resolveServiceValue(serviceLink.dataset.serviceInterest || '');
+                    if (value) {
+                        control.value = value;
+                        control.dispatchEvent(new Event('change', { bubbles: true }));
+                    }
+                }
+            }
             if (event.target.closest('[data-open-contact-modal]')) window.openContactModal?.();
             if (event.target.closest('[data-open-map-modal]')) window.openMapModal?.();
         });
@@ -450,7 +462,7 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
                 const isActive = link.getAttribute('href') === `#${sectionId}`;
                 link.classList.toggle('active', isActive);
                 if (isActive) {
-                    link.setAttribute('aria-current', 'page');
+                    link.setAttribute('aria-current', 'location');
                 } else {
                     link.removeAttribute('aria-current');
                 }
@@ -1715,7 +1727,7 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
 
                         <!-- Footer -->
                         <div class="p-6 border-t border-white/5 text-center bg-white/[0.02]">
-                            <a href="#contact" class="magnetic-btn inline-flex items-center px-6 py-3 md:px-8 md:py-3 rounded-full bg-white text-black font-bold hover:bg-${theme}-400 hover:text-white transition-all shadow-lg hover:shadow-${theme}-500/50 text-sm" data-close-service-modal="true">
+                            <a href="#contact" class="magnetic-btn inline-flex items-center px-6 py-3 md:px-8 md:py-3 rounded-full bg-white text-black font-bold hover:bg-${theme}-400 hover:text-white transition-all shadow-lg hover:shadow-${theme}-500/50 text-sm" data-close-service-modal="true" data-service-interest="${key}">
                                 Start This Project <i class="fas fa-arrow-right ml-2"></i>
                             </a>
                         </div>
@@ -2151,7 +2163,7 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
                 if (!form.checkValidity()) {
                     const firstInvalid = fields.find(field => !field.validity.valid);
                     if (status) {
-                        status.textContent = 'Please correct the highlighted fields before submitting your brief.';
+                        status.textContent = 'Please correct the highlighted fields before submitting your brief. Fields marked as required must be completed.';
                         status.className = 'min-h-[1.25rem] text-xs text-red-400';
                     }
                     firstInvalid?.focus();
@@ -2184,7 +2196,7 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
                         field.setAttribute('aria-invalid', 'false');
                     });
                     if (status) {
-                        status.textContent = 'Thank you. Your project brief has been received.';
+                        status.textContent = 'Thank you. Your project brief was accepted by our email delivery service.';
                         status.className = 'min-h-[1.25rem] text-xs text-green-400';
                     }
                     showToast('Project brief accepted for delivery.');

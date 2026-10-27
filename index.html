@@ -3135,7 +3135,7 @@
 </head>
 <body id="top" class="antialiased selection:bg-cyan-500 selection:text-white relative">
 <a class="skip-to-content" href="#main-content">Skip to main content</a>
-<a href="#about" class="skip-link">Skip to content</a>
+
 
     <!-- Scroll Progress -->
     <div class="scroll-progress" id="scrollProgress"></div>
@@ -3208,7 +3208,7 @@
                 <a href="#insights" class="nav-link text-sm font-medium text-gray-300 hover:text-white transition-all hover-trigger">Insights</a>
                 <a href="#team" class="nav-link text-sm font-medium text-gray-300 hover:text-white transition-all hover-trigger">Team</a>
                 <a href="#contact" class="magnetic-btn px-6 py-2 rounded-full bg-cyan-500/10 border border-cyan-500/50 text-cyan-400 hover:bg-cyan-500 hover:text-black hover:shadow-[0_0_15px_rgba(0,242,255,0.4)] transition-all font-bold text-sm tracking-wide hover-trigger">
-                    NO DUFF
+                    Start a Project
                 </a>
                 <button type="button" id="commandPaletteBtn" class="command-k-btn hover-trigger" aria-label="Open quick actions" aria-controls="commandPalette" aria-expanded="false" title="Quick actions (Ctrl+K)">
                     <i class="fas fa-search text-sm"></i>
@@ -3275,7 +3275,7 @@
 
         <div class="max-w-5xl mx-auto text-center z-10 relative stagger-container hero-copy">
             <div class="animate-item hero-brand-lockup">
-                <img src="pukka-gen-wordmark.png" alt="Pukka Gen No Duff" class="brand-logo-image hero-wordmark" decoding="async">
+                <img src="pukka-gen-wordmark.png" alt="Pukka Gen No Duff" class="brand-logo-image hero-wordmark" fetchpriority="high" decoding="async">
             </div>
             <div class="animate-item hero-kicker inline-block px-5 py-2 mb-8 rounded-full border border-cyan-500/30 bg-cyan-950/30 backdrop-blur-md hover:border-cyan-400/60 transition-colors cursor-default hover:shadow-[0_0_25px_rgba(0,242,255,0.15)] duration-500 transform hover:scale-105 hover-trigger">
                 <span id="typewriter-text" class="text-cyan-400 text-xs font-bold tracking-[0.2em] uppercase glow-text"></span><span class="typewriter-cursor"></span>
@@ -5589,6 +5589,8 @@
                                         <option class="bg-[#121217]" value="cloud">Cloud Strategy & DevOps</option>
                                         <option class="bg-[#121217]" value="design">Product Design (UI/UX)</option>
                                         <option class="bg-[#121217]" value="audit">Code Audit / Consultation</option>
+                                        <option class="bg-[#121217]" value="security">QA & Cybersecurity</option>
+                                        <option class="bg-[#121217]" value="consultancy">Software Consultancy & Strategy</option>
                                     </select>
                                     <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-gray-500 group-focus-within/input:text-cyan-400 transition-colors"><i class="fas fa-chevron-down text-[10px]"></i></div>
                                     <div class="absolute bottom-0 left-0 w-0 h-[2px] bg-gradient-to-r from-cyan-500 to-blue-500 transition-all duration-500 group-focus-within/input:w-full"></div>
@@ -5601,11 +5603,12 @@
                             <label for="projectMessage" class="block text-[10px] uppercase tracking-wider text-gray-500 font-bold mb-1.5 ml-1 group-focus-within/input:text-cyan-400 transition-colors transform group-focus-within/input:translate-x-1 duration-300">Project Details</label>
                             <div class="relative overflow-hidden rounded-xl">
                                 <div class="absolute left-3 top-3 text-gray-600 group-focus-within/input:text-cyan-400 transition-all duration-300 pointer-events-none z-10 group-focus-within/input:-rotate-12"><i class="fas fa-pen text-xs"></i></div>
-                                <textarea id="projectMessage" name="message" rows="3" required minlength="12" maxlength="700" class="w-full bg-[#050505]/50 border border-white/10 rounded-xl pl-9 pr-4 py-3 focus:outline-none focus:border-cyan-500/50 focus:bg-cyan-500/[0.05] text-white placeholder-gray-700 transition-all duration-300 resize-none text-sm hover:border-white/20 focus:scale-[1.02] focus:shadow-[0_0_20px_rgba(6,182,212,0.1)] relative z-0" placeholder="Tell us about your vision..."></textarea>
+                                <textarea id="projectMessage" name="message" rows="4" required minlength="12" maxlength="1200" class="w-full bg-[#050505]/50 border border-white/10 rounded-xl pl-9 pr-4 py-3 focus:outline-none focus:border-cyan-500/50 focus:bg-cyan-500/[0.05] text-white placeholder-gray-700 transition-all duration-300 resize-none text-sm hover:border-white/20 focus:scale-[1.02] focus:shadow-[0_0_20px_rgba(6,182,212,0.1)] relative z-0" placeholder="Tell us about your vision..."></textarea>
                                 <div class="absolute bottom-0 left-0 w-0 h-[2px] bg-gradient-to-r from-cyan-500 to-blue-500 transition-all duration-500 group-focus-within/input:w-full"></div>
                             </div>
                         </div>
 
+                        <p class="project-privacy-note">We use these details only to respond to your enquiry. <a href="/privacy.html">How we handle your information</a>.</p>
                         <p id="projectFormStatus" class="min-h-[1.25rem] text-xs text-gray-500" role="status" aria-live="polite"></p>
 <a id="emailBriefFallback" hidden href="mailto:mail@pukkagennoduff.com" class="project-email-fallback">Online submission unavailable? Send this brief from your email app instead.</a>
 
