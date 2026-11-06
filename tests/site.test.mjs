@@ -3,89 +3,112 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import handler from '../api/project-brief.mjs';
 
-const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
-const main = readFileSync(new URL('../src/main.ts', import.meta.url), 'utf8');
-function res() { return {code:0,payload:null,status(n){this.code=n;return this},json(x){this.payload=x;return this},setHeader(){}} }
-test('legal pages link internally',()=>{assert.match(html,/href="\/privacy.html"/);assert.match(html,/href="\/terms.html"/)});
-test('modal actions do not rely on inaccessible inline handlers',()=>{assert.doesNotMatch(main,/onclick="closeServiceModal\(\)"/);assert.match(main,/data-close-service-modal/)});
-test('contact form uses server instead of mailto',()=>{assert.match(main,/fetch\('\/api\/project-brief'/);assert.doesNotMatch(main,/window.location.href = `mailto:/)});
-test('contact API rejects wrong method',async()=>{const r=res();await handler({method:'GET',headers:{}},r);assert.equal(r.code,405)});
-test('contact API rejects invalid body',async()=>{const r=res();await handler({method:'POST',headers:{'content-type':'application/json'},body:{name:'x'}},r);assert.equal(r.code,422)});
-test('contact API rejects oversized body',async()=>{const r=res();await handler({method:'POST',headers:{'content-type':'application/json'},body:{message:'x'.repeat(15000)}},r);assert.equal(r.code,413)});
+const read = path => readFileSync(new URL('../' + path, import.meta.url), 'utf8');
+const html = read('index.html');
+const main = read('src/main.ts');
+const css = read('src/styles.css');
+const content = read('src/content.ts');
 
-test('v1.2.0 provides accessibility and motion controls', () => {
-  const style = readFileSync(new URL('../src/styles/studio.css', import.meta.url), 'utf8');
-  const updatedHtml = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
-  const updatedMain = readFileSync(new URL('../src/main.ts', import.meta.url), 'utf8');
-  assert.match(updatedHtml, /class="skip-to-content"/);
-  assert.match(updatedHtml, /id="main-content"/);
-  assert.match(updatedHtml, /data-motion-toggle/);
-  assert.match(updatedMain, /event\.key !== 'Tab'/);
-  assert.match(updatedMain, /setCalmMode\(calmMode\)/);
-  assert.match(style, /prefers-reduced-motion/);
-  assert.match(style, /max-width:767px/);
-});
-
-test('email fallback is available if server submission fails', () => {
-  const updatedHtml=readFileSync(new URL('../index.html',import.meta.url),'utf8');
-  const updatedMain=readFileSync(new URL('../src/main.ts',import.meta.url),'utf8');
-  assert.match(updatedHtml,/id="emailBriefFallback"/);
-  assert.match(updatedMain,/emailFallback\.hidden = false/);
-  assert.match(updatedMain,/encodeURIComponent\(body\)/);
+function response() {
+  return {
+    code:0, payload:null, headers:{},
+    status(n){ this.code=n; return this; },
+    json(x){ this.payload=x; return this; },
+    setHeader(name,value){ this.headers[name]=value; }
+  };
+}
+const valid = {
+  name:'Test Engineer',email:'test@example.org',phone:'',service:'dev',
+  message:'I would like to discuss a secure application build.',website:''
+};
+const request = (body=valid, headers={}) => ({
+  method:'POST',headers:{'content-type':'application/json',...headers},body
 });
 
-test('build config includes legal pages as HTML entry points', () => {
-  const config=readFileSync(new URL('../vite.config.ts',import.meta.url),'utf8');
-  assert.match(config,/privacy: resolve/);
-  assert.match(config,/terms: resolve/);
+test('fresh application uses semantic sections and accessible navigation',()=>{
+  const ids=['main','about','services','work','values','approach','industries',
+    'insights','technology','team','testimonials','faq','contact'];
+  for(const id of ids) assert.match(html,new RegExp('id="'+id+'"'));
+  assert.match(html,/class="skip-link"/);
+  assert.match(html,/aria-label="Primary navigation"/);
+  assert.match(html,/aria-expanded="false"/);
+  assert.match(html,/id="mobile-navigation"[^>]*hidden inert/);
+  assert.match(main,/mobileNav\.inert = !open/);
+  assert.match(main,/setMenuOpen\(false\)/);
 });
-test('navigation and portfolio preserve accessible states', () => {
-  const document=readFileSync(new URL('../index.html',import.meta.url),'utf8');
-  const source=readFileSync(new URL('../src/main.ts',import.meta.url),'utf8');
-  assert.match(document,/id="mobile-menu" class="hidden" aria-hidden="true" inert/);
-  assert.match(source,/mobileMenu\.inert = !isOpen/);
-  assert.match(source,/portfolioResultCount\.textContent/);
+test('all original service and portfolio data survives rebuild',()=>{
+  for(const key of ['software','ai','cloud','design','security','consultancy'])
+    assert.match(content,new RegExp('\\b'+key+': \\{'));
+  for(const key of ['ops','finance','health','learning','cloudops','support','field','commerce'])
+    assert.match(content,new RegExp('\\b'+key+': \\{'));
+  assert.match(content,/export const allFaqs/);
+  assert.match(content,/export const techDetails/);
+  assert.match(content,/export const blogDetails/);
+  assert.match(content,/The MVP Trap/);
+  assert.match(content,/Karim Nyambok Omar/);
+  assert.match(content,/Mufasa Khan/);
+  assert.match(content,/Mombasa, Kenya/);
+  assert.match(content,/No-Duff Discovery/);
 });
-test('reduced motion disables slideshow transitions', () => {
-  const source=readFileSync(new URL('../src/main.ts',import.meta.url),'utf8');
-  assert.match(source,/document\.hidden \|\| prefersReducedMotion \|\| isPerformanceConstrained/);
+test('new design supports responsive motion preferences and type-safe module',()=>{
+  assert.doesNotMatch(main,/@ts-nocheck/);
+  assert.doesNotMatch(html,/cdn\.tailwindcss\.com/);
+  assert.match(css,/@media \(max-width:600px\)/);
+  assert.match(css,/@media \(max-width:800px\)/);
+  assert.match(css,/@media \(prefers-reduced-motion:reduce\)/);
+  assert.match(css,/max-height:calc\(100dvh - 96px\)/);
+  assert.match(html,/<dialog id="detail-dialog"/);
+  assert.match(main,/dialog\.showModal\(\)/);
 });
-test('API blocks cross-site browser requests', async () => {
-  const request={method:'POST',headers:{'content-type':'application/json','sec-fetch-site':'cross-site'},body:{}};
-  const result=res();
-  await handler(request,result);
-  assert.equal(result.code,403);
+test('filtered projects, service enquiries and original content are wired',()=>{
+  assert.match(main,/function renderWork/);
+  assert.match(main,/aria-pressed/);
+  assert.match(main,/function showService/);
+  assert.match(main,/function showCase/);
+  assert.match(main,/function showArticle/);
+  assert.match(main,/findTech/);
+  assert.match(html,/name="service"/);
+  assert.match(main,/fetch\('\/api\/project-brief'/);
+  assert.match(html,/id="email-fallback"/);
+  assert.match(html,/href="\/privacy.html"/);
+  assert.match(html,/href="\/terms.html"/);
 });
-
-test('mobile service cards retain readable text and one-column layout', () => {
-  const styles=readFileSync(new URL('../src/styles/studio.css',import.meta.url),'utf8');
-  assert.match(styles,/#services \.stagger-container,#industries/);
-  assert.match(styles,/grid-template-columns:minmax\(0,1fr\)/);
-  assert.match(styles,/#services \.spotlight-card p \{ font-size:/);
+test('legal pages preserve original privacy and contract notices',()=>{
+  for(const path of ['privacy.html','terms.html']) {
+    const document=read(path);
+    assert.match(document,/Last updated: October 26, 2026/);
+    assert.match(document,/href="\/src\/styles.css"/);
+    assert.match(document,/href="\/"/);
+  }
+  assert.match(read('privacy.html'),/Information collected/);
+  assert.match(read('terms.html'),/separately agreed written contract/);
 });
-test('service modal connects to a matching project enquiry selection', () => {
-  const page=readFileSync(new URL('../index.html',import.meta.url),'utf8');
-  const source=readFileSync(new URL('../src/main.ts',import.meta.url),'utf8');
-  assert.match(page,/value="security"/);
-  assert.match(page,/value="consultancy"/);
-  assert.match(source,/data-service-interest="\$\{key\}"/);
-  assert.match(source,/resolveServiceValue\(serviceLink\.dataset\.serviceInterest/);
+test('API only accepts POST',async()=>{
+  const res=response(); await handler({method:'GET',headers:{}},res);assert.equal(res.code,405);
+  assert.equal(res.headers.Allow,'POST');
 });
-
-test('v1.2.3 has one typed Tab trap for service dialogs', () => {
-  const focus = readFileSync(new URL('../src/lib/focusTrap.ts', import.meta.url), 'utf8');
-  assert.match(main, /import \{ getFocusableElements, trapTabFocus \} from ".\/lib\/focusTrap"/);
-  assert.match(main, /trapTabFocus\(event, dialog\)/);
-  assert.equal((main.match(/event\.key !== 'Tab'/g) || []).length, 1);
-  assert.match(focus, /\[inert\], \[hidden\], \[aria-hidden="true"\]/);
-  assert.match(focus, /dialog\.contains\(document\.activeElement\)/);
+test('API validates JSON and data lengths',async()=>{
+  const malformed=response();await handler(request('not-json'),malformed);assert.equal(malformed.code,400);
+  const shortName=response();await handler(request({...valid,name:'x'}),shortName);assert.equal(shortName.code,422);
+  const oversized=response();await handler(request({...valid,message:'x'.repeat(15000)}),oversized);assert.equal(oversized.code,413);
 });
-test('v1.2.3 keeps navigation readable through tablet and laptop widths', () => {
-  const styles = readFileSync(new URL('../src/styles/studio.css', import.meta.url), 'utf8');
-  assert.match(html, /class="hidden xl:flex gap-3 2xl:gap-6 items-center"/);
-  assert.match(html, /id="mobileMenuBtn" class="xl:hidden"/);
-  assert.match(html, /@media \(max-width: 1279px\)/);
-  assert.match(main, /min-width: 1280px/);
-  assert.match(styles, /@media \(min-width: 1280px\) and \(max-width: 1439px\)/);
-  assert.match(styles, /#mobileMenuBtn \{/);
+test('API prevents cross-site browser submissions',async()=>{
+  const res=response();await handler(request(valid,{'sec-fetch-site':'cross-site'}),res);
+  assert.equal(res.code,403);
+});
+test('honeypot does not dispatch email',async()=>{
+  const res=response();await handler(request({...valid,website:'bot'}),res);
+  assert.equal(res.code,200);
+});
+test('without server-side email configuration, client gets honest 503',async()=>{
+  const envKeys=['RESEND_API_KEY','RESEND_FROM','PROJECT_BRIEF_TO'];
+  const previous=envKeys.map(key=>process.env[key]);
+  for(const key of envKeys) delete process.env[key];
+  try {
+    const res=response();await handler(request(),res);
+    assert.equal(res.code,503);
+    assert.equal(res.payload.ok,false);
+  } finally {
+    envKeys.forEach((key,i)=>{if(previous[i]===undefined)delete process.env[key];else process.env[key]=previous[i];});
+  }
 });

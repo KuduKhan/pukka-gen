@@ -1,7 +1,7 @@
-name: Quality Gate
+name: Pukka Gen Quality Gate
 on:
   push:
-    branches: [main, "upgrade/**"]
+    branches: [main, "rebuild/**"]
   pull_request:
     branches: [main]
 permissions:
@@ -11,6 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       - uses: actions/setup-node@v4
         with:
           node-version: "22"

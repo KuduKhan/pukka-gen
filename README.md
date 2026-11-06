@@ -1,8 +1,18 @@
-# Pukka Gen
+# Pukka Gen — Studio Edition
 
-Vite + TypeScript services website.
+**v2.0.0**, rebuilt from scratch from the previous Pukka Gen site. The production-facing experience uses **Vite + strict TypeScript + authored CSS**, retaining the original content and trusted brand identity, without runtime Tailwind CDN or a large untyped interaction layer.
 
-## Local development
+## What is included
+
+- Rebuilt responsive home, about, values, services, portfolio, delivery process, audience and sector, insights and full No-Duff checklist, technology, team, testimonials, FAQ, contact, legal and social links.
+- The original **six complete service specifications**, **eight full portfolio case-study data sets**, **technology information**, **nine article and checklist resources**, and **FAQ data** preserved as typed, static editorial content in `src/content.ts`.
+- Accessible, keyboard-friendly native HTML dialogs, a mobile navigation menu, working portfolio filtering, service-to-enquiry preselection, checklist download, privacy-aware enquiry confirmation and direct email fallback.
+- Stable original brand images: `pukka-gen-wordmark.png`, `pukka-gen-mark.png`, and `pukka-gen-favicon.png`.
+- Independently accessible Privacy and Terms pages sharing the new visual system.
+
+This rebuild intentionally does **not** use invented customer data. Testimonials, project metrics, staff biographies and existing technology claims from the earlier site are preserved for continuity but require independent publication verification. No new client results have been fabricated.
+
+## Development
 
 ```sh
 npm ci
@@ -10,67 +20,23 @@ npm run dev
 npm run check
 ```
 
-## Enquiry delivery (Vercel)
+Run `npm run check` before each preview and release. It runs strict TypeScript, Node regression/API tests, production build and output verification. Vite emits `dist/` for Vercel.
 
-The project form posts to `/api/project-brief` (Vercel Node function) and does not pretend an unsent email was delivered. To enable real delivery, configure these **server-only** deployment environment variables:
+## Real enquiry delivery
 
-- `RESEND_API_KEY`: restricted transactional email provider key.
-- `RESEND_FROM`: sender on a provider-verified domain.
-- `PROJECT_BRIEF_TO`: receiving mailbox.
-- `SITE_ORIGIN`: optional exact allowed origin, e.g. `https://www.pukkagennoduff.com`.
+The project form submits to `POST /api/project-brief`, a Vercel serverless function. Configure these **server-only Vercel environment variables**:
 
-Use `vercel dev` to test serverless API locally; `npm run dev` serves just the frontend. Production form must be tested with genuine inbox delivery before release. Without configured secrets it displays a clear error and offers direct email contact. A honeypot is included; enable WAF/rate limiting and abuse management in production.
+- `RESEND_API_KEY` — transactional email provider key
+- `RESEND_FROM` — sender address at a verified domain
+- `PROJECT_BRIEF_TO` — monitored receiving mailbox
+- `SITE_ORIGIN` — optional exact production origin
 
-`npm run check` runs TypeScript checks, Node API smoke tests, and the Vite production build. The legacy `src/main.ts` is still marked `@ts-nocheck` while typed modules are incrementally extracted. Legal notices need professional review against the final hosting and data practices.
+The UI only reports acceptance by the email delivery service; it does **not** claim receipt by the mailbox. Without provider configuration, the API returns a non-success result and the user sees a direct-mail fallback. Never commit provider keys or secrets.
 
-## Deployment
+## Release acceptance
 
-Output directory: `dist`. Target platform for `api/`: Vercel.
+Before claiming full production validation, independently verify responsive views at 320, 375, 768, 1024, 1280 and 1440 px, keyboard and screen-reader journeys, successful real email delivery, platform WAF/rate limiting, legal notices and truthful portfolio testimonials. API smoke tests do not replace end-to-end delivery confirmation.
 
-## Upgrade plan
+## Rebuild history
 
-v1.1.0: repair contact/modal functionality and establish an automated quality gate.
-v1.2.0: premium responsive, accessible and reduced-motion UI refinement.
-
-## v1.2.0 UI
-
-Adds a compiled Vite studio stylesheet, accessible skip link and page landmark, modal Tab focus loop, fluid mobile typography, stronger focus treatments, improved form readability and a saved "Calm visuals" preference. Device-imposed reduced motion remains respected regardless of the preference. The existing Tailwind browser CDN is **not yet migrated** to a compiled Tailwind pipeline; removing it without regenerating all utility styles would break the current page. Make that a separately tested follow-up.
-
-### Deployment safety
-The production headers are in `vercel.json`. Strict Content Security Policy requires a separate cleanup of legacy inline styles/scripts and third-party CDNs; it has not been enforced to avoid breaking the site. If the serverless email provider is unavailable, a clearly labelled mail-client fallback preserves a usable manual route without falsely claiming delivery.
-
-## v1.2.1 polish and release integrity
-
-The Vite production build now emits `privacy.html` and `terms.html` as
-independent HTML pages. Files under `public/` ensure `robots.txt` and
-`sitemap.xml` are deployed too. Run `npm run check` to confirm these
-artifacts exist under `dist/`, in addition to unit tests and type-checking.
-
-Motion-reduction requests now pause both particles and rotating hero imagery.
-The navigation uses `inert` while hidden and restores keyboard focus when
-closing with Escape. Portfolio and contact layouts include further minimum
-touch-target sizes and small-screen readability refinements.
-
-The email API rejects `Sec-Fetch-Site: cross-site`, but a server-side
-rate-limiting service/WAF remains required for targeted abuse resistance.
-
-## v1.2.2 — Studio clarity and enquiry continuity
-
-- Corrected formerly undersized mobile service, values and industry card typography.
-- Services stack into one readable column on compact displays rather than squeezed two-column cards.
-- Added missing QA & Cybersecurity / Consultancy interest options.
-- Clicking "Start This Project" in a service detail modal now preselects the matching enquiry service.
-- Kept interactive motion settings and added a clearer form privacy explanation.
-- Bumped versions in package.json and npm lockfile; all build dependencies are unchanged.
-
-Run `npm run check` and inspect the resulting Vercel preview before merging.
-
-## v1.2.3 — Compact navigation and dialog keyboard reliability
-
-- Keep the compact menu available on tablets and smaller laptops through 1279px, instead of squeezing seven desktop links into the header.
-- Tighten the desktop header's spacing, logo size and interaction targets without changing the existing site identity or adding navigation destinations.
-- Deduplicate modal Tab handling and extract the focusable-element filter into a strictly typed module. The filter excludes inert and hidden descendants.
-- Make the motion control's accessible name independent of text hidden by responsive layouts.
-- Preserve all existing enquiry, portfolio, accessibility and reduced-motion features; add regression checks for the refined interaction contracts.
-
-Run `npm ci && npm run check`, then check the Vercel preview at 320, 375, 768, 1024, 1280 and 1440px with keyboard and touch before promotion. This release does **not** claim independent browser/device or live inbox acceptance.
+The previous site is archived on GitHub branch `archive/pre-rebuild-v1.2.3`. The replacement removes its obsolete DOM-first scripts, old Tailwind-dependent styles and duplicate original front-end files. Preserve the archive until this version has passed business acceptance.
