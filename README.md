@@ -40,3 +40,16 @@ Before claiming full production validation, independently verify responsive view
 ## Rebuild history
 
 The previous site is archived on GitHub branch `archive/pre-rebuild-v1.2.3`. The replacement removes its obsolete DOM-first scripts, old Tailwind-dependent styles and duplicate original front-end files. Preserve the archive until this version has passed business acceptance.
+
+## v2.1.0 — Enterprise Experience design refresh
+
+The rebuilt site is styled with a restrained, editorial enterprise aesthetic, informed by the professional information architecture and visual patterns of Nocturnals Intellisoft. It is **not** a copy of that company's content, source code, photographs, wordmark or distinctive branding.
+
+- Compact navigation with visible current-section location, scroll-aware appearance and a small reading-progress indicator.
+- More substantial display typography, controlled whitespace, refined enterprise color layers and consistent buttons.
+- An image-led hero with original Pukka Gen copy, a clear engineering-focus band and a new outcome-focused editorial feature.
+- Responsive 2-column numbered service directory, improved portfolio gallery, dark/light section alternation, image-backed sector tiles, polished team, insights, process, FAQ and enquiry presentation.
+- Respect for mobile device widths, keyboard access, explicit focus on portfolio filters, and reduced-motion preferences.
+- All service specifications, case studies, editorial resources, team details, Pukka contact channels, legal pages and serverless enquiry functions are preserved.
+
+New presentation CSS lives in `src/enterprise.css` and is loaded after the v2.0 base styles. Required quality gates: `npm ci && npm run check`, preview review, desktop/tablet/mobile browser validation and genuine email-delivery verification before declaring full acceptance.
