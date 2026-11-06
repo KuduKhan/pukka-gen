@@ -112,3 +112,30 @@ test('without server-side email configuration, client gets honest 503',async()=>
     envKeys.forEach((key,i)=>{if(previous[i]===undefined)delete process.env[key];else process.env[key]=previous[i];});
   }
 });
+
+test('v2.1 enterprise identity and structure are present without copying the reference brand',()=>{
+  const updatedStyle=read('src/enterprise.css');
+  assert.match(html, /href="\/src\/enterprise.css"/);
+  assert.match(html, /id="reading-progress-bar"/);
+  assert.match(html, /id="outcome-heading"/);
+  assert.match(html, /enterprise-ribbon-grid/);
+  assert.match(html, /class="hero-scene"/);
+  assert.match(html, /alt="Modern technology workspace/);
+  assert.doesNotMatch(html, /nocturnalsintellisoft\.com/i);
+  assert.doesNotMatch(updatedStyle, /nocturnalsintellisoft\.com/i);
+  assert.match(updatedStyle, /#services \{/);
+  assert.match(updatedStyle, /outcome-showcase-grid/);
+  assert.match(updatedStyle, /sector-strip span:nth-child\(6\)/);
+  assert.match(updatedStyle, /@media \(max-width:380px\)/);
+  assert.match(updatedStyle, /prefers-reduced-motion:reduce/);
+  assert.match(read('package.json'), /"version": "2\.1\.0"/);
+});
+test('v2.1 nav scroll state, reveal enhancements and portfolio keyboard focus are wired',()=>{
+  assert.match(main, /function updateScrollVisuals/);
+  assert.match(main, /classList\.toggle\('is-scrolled'/);
+  assert.match(main, /setAttribute\('aria-current', 'location'\)/);
+  assert.match(main, /restoreKeyboardFocus/);
+  assert.match(main, /selected\?\.focus\(\{preventScroll:true\}\)/);
+  assert.match(main, /revealObserver\.unobserve\(entry\.target\)/);
+  assert.match(main, /prefers-reduced-motion: reduce/);
+});

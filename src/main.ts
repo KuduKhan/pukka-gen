@@ -171,8 +171,14 @@ filterNode.addEventListener('click', event => {
   if (!button) return;
   const requested = button.dataset.filter || 'All work';
   if (!workFilters.some(value => value === requested)) return;
+  const restoreKeyboardFocus = document.activeElement === button;
   currentFilter = requested;
   renderWork();
+  if (restoreKeyboardFocus) {
+    const selected = Array.from(filterNode.querySelectorAll<HTMLButtonElement>('[data-filter]'))
+      .find(item => item.dataset.filter === requested);
+    selected?.focus({preventScroll:true});
+  }
 });
 function showCase(key: keyof typeof portfolioDetails): void {
   const data = portfolioDetails[key];
@@ -395,3 +401,62 @@ contactForm.addEventListener('submit', async event => {
     contactForm.removeAttribute('aria-busy');
   }
 });
+
+/** v2.1 presentation improvements: progressive enhancement only. */
+const header = requireElement<HTMLElement>('#site-header');
+const progressBar = requireElement<HTMLElement>('#reading-progress-bar');
+let scrollFrame = 0;
+function updateScrollVisuals(): void {
+  scrollFrame = 0;
+  const total = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+  const progress = total ? Math.min(100, Math.max(0, (window.scrollY / total) * 100)) : 0;
+  progressBar.style.width = progress.toFixed(1) + '%';
+  header.classList.toggle('is-scrolled', window.scrollY > 16);
+}
+window.addEventListener('scroll', () => {
+  if (!scrollFrame) scrollFrame = requestAnimationFrame(updateScrollVisuals);
+}, {passive:true});
+window.addEventListener('resize', updateScrollVisuals, {passive:true});
+updateScrollVisuals();
+
+// Section location stays accurate in both desktop and keyboard navigation.
+const sectionLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>(
+  '.desktop-navigation a[href^="#"], .mobile-navigation a[href^="#"]'
+));
+const sections = sectionLinks
+  .map(link => document.getElementById(link.hash.slice(1)))
+  .filter((section): section is HTMLElement => section instanceof HTMLElement);
+function setCurrentSection(id: string): void {
+  sectionLinks.forEach(link => {
+    if (link.hash === '#' + id) link.setAttribute('aria-current', 'location');
+    else link.removeAttribute('aria-current');
+  });
+}
+if ('IntersectionObserver' in window) {
+  const currentObserver = new IntersectionObserver(entries => {
+    for (const entry of entries) {
+      if (entry.isIntersecting) setCurrentSection(entry.target.id);
+    }
+  }, {rootMargin:'-22% 0px -62% 0px',threshold:0});
+  sections.forEach(section => currentObserver.observe(section));
+}
+
+// Content is visible by default; animation is enabled only when supported and wanted.
+if ('IntersectionObserver' in window &&
+    !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  const revealTargets = Array.from(document.querySelectorAll<HTMLElement>(
+    '.service-card, .portfolio-card, .article-card, .audience-card, .team-card, .process-row, .value-item, .testimonial-card'
+  ));
+  const revealObserver = new IntersectionObserver(entries => {
+    for (const entry of entries) {
+      if (!entry.isIntersecting) continue;
+      entry.target.classList.add('is-visible');
+      revealObserver.unobserve(entry.target);
+    }
+  }, {threshold:0.07,rootMargin:'0px 0px 30px 0px'});
+  revealTargets.forEach(target => {
+    target.classList.add('reveal-item');
+    revealObserver.observe(target);
+  });
+  document.documentElement.classList.add('reveal-ready');
+}
