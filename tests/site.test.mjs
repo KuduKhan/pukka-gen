@@ -71,3 +71,21 @@ test('service modal connects to a matching project enquiry selection', () => {
   assert.match(source,/data-service-interest="\$\{key\}"/);
   assert.match(source,/resolveServiceValue\(serviceLink\.dataset\.serviceInterest/);
 });
+
+test('v1.2.3 has one typed Tab trap for service dialogs', () => {
+  const focus = readFileSync(new URL('../src/lib/focusTrap.ts', import.meta.url), 'utf8');
+  assert.match(main, /import \{ getFocusableElements, trapTabFocus \} from ".\/lib\/focusTrap"/);
+  assert.match(main, /trapTabFocus\(event, dialog\)/);
+  assert.equal((main.match(/event\.key !== 'Tab'/g) || []).length, 1);
+  assert.match(focus, /\[inert\], \[hidden\], \[aria-hidden="true"\]/);
+  assert.match(focus, /dialog\.contains\(document\.activeElement\)/);
+});
+test('v1.2.3 keeps navigation readable through tablet and laptop widths', () => {
+  const styles = readFileSync(new URL('../src/styles/studio.css', import.meta.url), 'utf8');
+  assert.match(html, /class="hidden xl:flex gap-3 2xl:gap-6 items-center"/);
+  assert.match(html, /id="mobileMenuBtn" class="xl:hidden"/);
+  assert.match(html, /@media \(max-width: 1279px\)/);
+  assert.match(main, /min-width: 1280px/);
+  assert.match(styles, /@media \(min-width: 1280px\) and \(max-width: 1439px\)/);
+  assert.match(styles, /#mobileMenuBtn \{/);
+});

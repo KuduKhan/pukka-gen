@@ -4,6 +4,7 @@
 // @ts-nocheck
 import { readProjectBriefForm } from "./lib/projectBrief";
 import { resolveServiceValue } from "./lib/serviceRouting";
+import { getFocusableElements, trapTabFocus } from "./lib/focusTrap";
 import "./styles/studio.css";
 
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -14,27 +15,12 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
         const currentYear = document.getElementById('currentYear');
         if (currentYear) currentYear.textContent = String(new Date().getFullYear());
 
-        function getFocusableElements(container) {
-            if (!container) return [];
-            return Array.from(container.querySelectorAll(
-                'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
-            )).filter(element => !element.closest('[aria-hidden="true"]') && element.getClientRects().length);
-        }
-
-        // Keep Tab navigation inside the topmost active dialog.
+        // One keyboard trap for all dialogs; Escape is handled separately below.
         document.addEventListener('keydown', event => {
             if (event.key !== 'Tab') return;
             const dialogs = Array.from(document.querySelectorAll('.service-modal.active'));
             const dialog = dialogs.at(-1);
-            if (!dialog) return;
-            const items = getFocusableElements(dialog);
-            if (!items.length) { event.preventDefault(); dialog.setAttribute('tabindex', '-1'); dialog.focus(); return; }
-            const first = items[0], last = items[items.length - 1];
-            if (!dialog.contains(document.activeElement)) {
-                event.preventDefault(); first.focus(); return;
-            }
-            if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
-            else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+            if (dialog instanceof HTMLElement) trapTabFocus(event, dialog);
         });
 
         function openModal(modal, focusTarget) {
@@ -584,7 +570,7 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
             }
         }, { passive: true });
 
-        window.matchMedia('(min-width: 1024px)').addEventListener?.('change', event => {
+        window.matchMedia('(min-width: 1280px)').addEventListener?.('change', event => {
             if (event.matches) setMobileMenuOpen(false);
         });
 
@@ -2631,32 +2617,11 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
         }
 
         document.addEventListener('keydown', (event) => {
+            if (event.key !== 'Escape') return;
             const activeModal = document.querySelector('.service-modal.active');
-            if (!activeModal) return;
-
-            if (event.key === 'Escape') {
+            if (activeModal) {
                 event.preventDefault();
                 closeModal(activeModal);
-                return;
-            }
-
-            if (event.key !== 'Tab') return;
-
-            const focusable = getFocusableElements(activeModal);
-            if (!focusable.length) {
-                event.preventDefault();
-                return;
-            }
-
-            const first = focusable[0];
-            const last = focusable[focusable.length - 1];
-
-            if (event.shiftKey && document.activeElement === first) {
-                event.preventDefault();
-                last.focus();
-            } else if (!event.shiftKey && document.activeElement === last) {
-                event.preventDefault();
-                first.focus();
             }
         });
 

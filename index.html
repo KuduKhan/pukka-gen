@@ -2489,8 +2489,8 @@
                     text-shadow: 0 0 10px rgba(255,255,255,0.3);
                 }
 
-        /* Phone layout: one contained responsive layer with no competing effects. */
-        @media (max-width: 1023px) {
+        /* Compact navigation from phones through smaller laptops. */
+        @media (max-width: 1279px) {
             nav {
                 padding: 1rem;
             }
@@ -3200,7 +3200,7 @@
             </a>
             
             <!-- Desktop Links -->
-            <div class="hidden lg:flex gap-4 xl:gap-8 items-center" id="nav-links">
+            <div class="hidden xl:flex gap-3 2xl:gap-6 items-center" id="nav-links">
                 <a href="#about" class="nav-link text-sm font-medium text-gray-300 hover:text-white transition-all hover-trigger">About</a>
                 <a href="#values" class="nav-link text-sm font-medium text-gray-300 hover:text-white transition-all hover-trigger">Values</a>
                 <a href="#services" class="nav-link text-sm font-medium text-gray-300 hover:text-white transition-all hover-trigger">Services</a>
@@ -3213,12 +3213,12 @@
                 <button type="button" id="commandPaletteBtn" class="command-k-btn hover-trigger" aria-label="Open quick actions" aria-controls="commandPalette" aria-expanded="false" title="Quick actions (Ctrl+K)">
                     <i class="fas fa-search text-sm"></i>
                 </button>
-                <button type="button" data-motion-toggle class="motion-mode-btn" aria-pressed="false" title="Toggle ambient animations">
+                <button type="button" data-motion-toggle class="motion-mode-btn" aria-label="Calm mode" aria-pressed="false" title="Toggle ambient animations">
                     <i class="fas fa-moon" aria-hidden="true"></i><span class="motion-label">Calm visuals</span>
                 </button>
             </div>
 
-            <button type="button" id="mobileMenuBtn" class="lg:hidden" aria-label="Open navigation menu" aria-controls="mobile-menu" aria-expanded="false">
+            <button type="button" id="mobileMenuBtn" class="xl:hidden" aria-label="Open navigation menu" aria-controls="mobile-menu" aria-expanded="false">
                 <i class="fas fa-bars" aria-hidden="true"></i>
             </button>
         </div>
@@ -3231,7 +3231,7 @@
             <a href="#insights" class="mobile-link">Insights</a>
             <a href="#team" class="mobile-link">Team</a>
             <a href="#contact" class="mobile-nav-cta">Start a Project</a>
-            <button type="button" data-motion-toggle class="motion-mode-btn mobile-motion-btn" aria-pressed="false"><i class="fas fa-moon" aria-hidden="true"></i><span class="motion-label">Calm visuals</span></button>
+            <button type="button" data-motion-toggle class="motion-mode-btn mobile-motion-btn" aria-label="Calm mode" aria-pressed="false"><i class="fas fa-moon" aria-hidden="true"></i><span class="motion-label">Calm visuals</span></button>
         </div>
     </nav>
 

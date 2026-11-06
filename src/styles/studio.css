@@ -228,3 +228,72 @@ footer .footer-legal-copy,footer .footer-legal-link { color:#a9bcd0; }
 @media (max-width:390px) {
   #services .spotlight-card p,#about .spotlight-card p { font-size:.91rem; }
 }
+
+/* v1.2.3 — compact responsive navigation and consistent interaction targets. */
+nav[aria-label="Primary navigation"] {
+  padding-block: clamp(.45rem, .7vw, .75rem);
+}
+nav[aria-label="Primary navigation"] > .max-w-7xl {
+  min-width: 0;
+  column-gap: clamp(.65rem, 1.1vw, 1rem);
+}
+nav[aria-label="Primary navigation"] .site-logo-link {
+  min-width: 0;
+  flex-shrink: 1;
+}
+nav[aria-label="Primary navigation"] .nav-wordmark {
+  height: clamp(2.15rem, 2.6vw, 2.7rem);
+  max-width: min(15rem, 25vw);
+}
+nav[aria-label="Primary navigation"] #nav-links {
+  min-width: 0;
+  flex-shrink: 0;
+  gap: clamp(.65rem, 1vw, 1.15rem);
+}
+nav[aria-label="Primary navigation"] #nav-links .nav-link {
+  white-space: nowrap;
+  font-size: .85rem;
+}
+nav[aria-label="Primary navigation"] #nav-links > a.magnetic-btn {
+  white-space: nowrap;
+  padding: .6rem 1rem;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+nav[aria-label="Primary navigation"] #nav-links .command-k-btn {
+  min-width: 44px;
+  min-height: 44px;
+}
+@media (min-width: 1280px) and (max-width: 1439px) {
+  nav[aria-label="Primary navigation"] > .max-w-7xl { padding-inline: 1rem; }
+  nav[aria-label="Primary navigation"] #nav-links { gap: .7rem; }
+  nav[aria-label="Primary navigation"] .motion-mode-btn { padding: .6rem .7rem; font-size: .75rem; }
+}
+@media (max-width: 1279px) {
+  nav[aria-label="Primary navigation"] .nav-wordmark {
+    height: clamp(2.15rem, 3vw, 2.65rem);
+    max-width: min(15rem, 64vw);
+  }
+  nav[aria-label="Primary navigation"] #mobileMenuBtn {
+    display: inline-grid;
+    place-items: center;
+    flex: 0 0 44px;
+    width: 44px;
+    height: 44px;
+  }
+  nav[aria-label="Primary navigation"] #mobile-menu {
+    max-height: calc(100dvh - 6rem);
+    overscroll-behavior: contain;
+  }
+}
+@media (max-width: 767px) {
+  nav[aria-label="Primary navigation"] { padding-inline: .6rem; }
+  nav[aria-label="Primary navigation"] > .max-w-7xl {
+    padding-inline: clamp(.8rem, 3vw, 1.2rem);
+  }
+  nav[aria-label="Primary navigation"] .nav-wordmark { max-width: min(13.75rem, 62vw); }
+  #mobile-menu .mobile-link,
+  #mobile-menu .mobile-nav-cta,
+  #mobile-menu .mobile-motion-btn { min-height: 48px; }
+}
