@@ -7,6 +7,9 @@ const required = [
   "terms.html",
   "robots.txt",
   "sitemap.xml",
+  "pukka-gen-wordmark.png",
+  "pukka-gen-mark.png",
+  "pukka-gen-favicon.png",
 ];
 for (const path of required) {
   const absolute = resolve(process.cwd(), "dist", path);
