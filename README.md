@@ -1,6 +1,6 @@
 # Pukka Gen — Studio Edition
 
-**v2.0.0**, rebuilt from scratch from the previous Pukka Gen site. The production-facing experience uses **Vite + strict TypeScript + authored CSS**, retaining the original content and trusted brand identity, without runtime Tailwind CDN or a large untyped interaction layer.
+**v2.2.0**, rebuilt from scratch from the previous Pukka Gen site. The production-facing experience uses **Vite + strict TypeScript + authored CSS**, retaining the original content and trusted brand identity, without runtime Tailwind CDN or a large untyped interaction layer.
 
 ## What is included
 
@@ -53,3 +53,16 @@ The rebuilt site is styled with a restrained, editorial enterprise aesthetic, in
 - All service specifications, case studies, editorial resources, team details, Pukka contact channels, legal pages and serverless enquiry functions are preserved.
 
 New presentation CSS lives in `src/enterprise.css` and is loaded after the v2.0 base styles. Required quality gates: `npm ci && npm run check`, preview review, desktop/tablet/mobile browser validation and genuine email-delivery verification before declaring full acceptance.
+
+## v2.2.0 — Precision Glass UI/UX overhaul
+
+- `src/premium.css`: controlled glassmorphism, refined contrast, premium cards, spacing, gradient depth, responsive layouts and reduced-motion fallbacks.
+- `src/icons.ts`: original dependency-free SVG line illustrations for service, delivery, portfolio, audience, article and detail views.
+- `public/tech/`: **29 self-hosted technology SVG marks** sourced from the community [Simple Icons project](https://github.com/simple-icons/simple-icons). Names and trademarks are the property of their respective owners; their use does not imply endorsement or certification.
+- Adobe XD, OpenAI, AWS and Azure have neutral SVG monograms because a verified appropriate brand SVG was not available from that source. No unrelated brand icons are substituted.
+- Technology chips are now balanced vector-logo tiles. Existing descriptive panels and service selection continue working.
+- White service cards, dark portfolio cards, glass industry panels, staff and insights, delivery stages, contact form and dialog views all have consistent interaction, spacing and iconography.
+- The full Pukka Gen editorial, business, service, portfolio, contact, FAQ and legal material is preserved.
+- `npm run check` verifies package metadata, typed client logic, Node API tests, Vite build, and presence of production technology assets.
+
+Styling is specific to Pukka Gen; no third-party studio's source code or proprietary designs were copied. Independent real-device/browser/screen-reader checks, actual email arrival verification and client-claim/legal review remain outstanding acceptance work.

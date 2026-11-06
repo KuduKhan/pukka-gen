@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 import handler from '../api/project-brief.mjs';
 
 const read = path => readFileSync(new URL('../' + path, import.meta.url), 'utf8');
@@ -128,7 +128,7 @@ test('v2.1 enterprise identity and structure are present without copying the ref
   assert.match(updatedStyle, /sector-strip span:nth-child\(6\)/);
   assert.match(updatedStyle, /@media \(max-width:380px\)/);
   assert.match(updatedStyle, /prefers-reduced-motion:reduce/);
-  assert.match(read('package.json'), /"version": "2\.1\.0"/);
+  assert.match(read('package.json'), /"version": "2\.2\.0"/);
 });
 test('v2.1 nav scroll state, reveal enhancements and portfolio keyboard focus are wired',()=>{
   assert.match(main, /function updateScrollVisuals/);
@@ -138,4 +138,43 @@ test('v2.1 nav scroll state, reveal enhancements and portfolio keyboard focus ar
   assert.match(main, /selected\?\.focus\(\{preventScroll:true\}\)/);
   assert.match(main, /revealObserver\.unobserve\(entry\.target\)/);
   assert.match(main, /prefers-reduced-motion: reduce/);
+});
+
+test('v2.2 premium UI polish is responsive and respects access needs',()=>{
+  const style=read('src/premium.css');
+  const icons=read('src/icons.ts');
+  assert.match(html,/href="\/src\/premium.css"/);
+  assert.match(style,/#services \.service-grid/);
+  assert.match(style,/#work \.portfolio-card/);
+  assert.match(style,/#technology \.technology-pills/);
+  assert.match(style,/@supports/);
+  assert.match(style, /backdrop-filter:blur\(12px\)/);
+  assert.match(style,/@media \(max-width:600px\)/);
+  assert.match(style,/@media \(max-width:390px\)/);
+  assert.match(style,/@media \(prefers-reduced-motion:reduce\)/);
+  assert.match(main,/technologyMark\(label\)/);
+  assert.match(main,/icon\(service\.key\)/);
+  assert.match(main,/articleIcons\[article\.key\]/);
+  assert.match(main,/processIcons\[index\]/);
+  assert.match(icons,/aria-hidden="true"/);
+  assert.doesNotMatch(main,/@ts-nocheck/);
+});
+test('v2.2 contains verified local SVG files for technology names',()=>{
+  const icons=read('src/icons.ts');
+  const begin=icons.indexOf('const brandSlugs:');
+  const end=icons.indexOf('};',begin);
+  assert.ok(begin!==-1 && end>begin);
+  const map=icons.slice(begin,end);
+  const slugs=[...map.matchAll(/'[^']+':'([a-z0-9]+)'/g)].map(match=>match[1]);
+  assert.ok(slugs.length>=27,'expected at least 27 verified technology logos');
+  const assets=readdirSync(new URL('../public/tech/',import.meta.url));
+  assert.equal(new Set(slugs).size,slugs.length);
+  for(const slug of slugs){
+    assert.ok(assets.includes(slug+'.svg'),slug+' SVG missing');
+    const svg=read('public/tech/'+slug+'.svg');
+    assert.match(svg,/^<svg/);
+    assert.match(svg,/<path/);
+    assert.match(svg,/fill="#[0-9A-Fa-f]{6}"/);
+  }
+  assert.match(icons,/tech-mark-generic/);
 });

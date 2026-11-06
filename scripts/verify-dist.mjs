@@ -1,4 +1,4 @@
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { resolve } from "node:path";
 
 const required = [
@@ -29,4 +29,14 @@ for (const route of ["/privacy.html", "/terms.html"]) {
 if (!/src="\/assets\//.test(index)) {
   throw new Error("Vite production script was not generated.");
 }
-console.log("Verified all public entry points, sitemap, robots and bundled script.");
+const iconDirectory = resolve(process.cwd(), "dist", "tech");
+if (!existsSync(iconDirectory)) throw new Error("Technology brand SVG assets are missing from production build.");
+const iconFiles = readdirSync(iconDirectory).filter(name => name.endsWith(".svg"));
+if (iconFiles.length < 27) throw new Error(`Only ${iconFiles.length} technology SVG assets found (expected at least 27).`);
+for (const filename of iconFiles) {
+  const contents = readFileSync(resolve(iconDirectory, filename), "utf8");
+  if (!contents.startsWith("<svg") || !contents.includes("<path")) {
+    throw new Error(`Invalid SVG asset: ${filename}`);
+  }
+}
+console.log(`Verified website entry points, sitemap, legal routes, bundle and ${iconFiles.length} technology icons.`);
