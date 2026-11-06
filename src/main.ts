@@ -3,6 +3,7 @@ import {
   portfolioDetails, sectors, serviceDetails, serviceSummaries,
   studio, team, techDetails, techGroups, testimonials, values
 } from './content';
+import { icon, technologyMark, type IconName } from './icons';
 
 const $ = <T extends Element = HTMLElement>(selector: string, root: ParentNode = document): T | null =>
   root.querySelector<T>(selector);
@@ -91,10 +92,10 @@ mount('service-grid', serviceSummaries.map((service, i) => `
   <button type="button" class="service-card" data-service="${escapeHtml(service.key)}"
      aria-label="Explore ${escapeHtml(service.title)}">
     <span class="service-number">SERVICE / ${String(i+1).padStart(2,'0')}</span>
-    <span class="service-icon" aria-hidden="true">${escapeHtml(service.symbol)}</span>
+    <span class="service-icon" aria-hidden="true">${icon(service.key)}</span>
     <h3>${escapeHtml(service.title)}</h3>
     <p>${escapeHtml(service.body)}</p>
-    <span class="card-bottom"><span>${escapeHtml(service.category)}</span><span aria-hidden="true">↗</span></span>
+    <span class="card-bottom"><span>${escapeHtml(service.category)}</span><span class="card-arrow" aria-hidden="true">${icon("arrowUp")}</span></span>
   </button>`).join(''));
 
 const enquiryCategory: Record<keyof typeof serviceDetails,string> = {
@@ -103,6 +104,7 @@ const enquiryCategory: Record<keyof typeof serviceDetails,string> = {
 function showService(key: keyof typeof serviceDetails): void {
   const data = serviceDetails[key];
   openDetail(`
+    <span class="detail-service-icon" aria-hidden="true">${icon(key)}</span>
     <span class="detail-kicker">SERVICE / PUKKA GEN</span>
     <h2 id="dialog-title">${escapeHtml(data.title)}</h2>
     <p class="detail-description">${escapeHtml(data.description)}</p>
@@ -112,20 +114,22 @@ function showService(key: keyof typeof serviceDetails): void {
 }
 
 mount('values-grid', values.map(value => `
-  <article class="value-item"><span>${escapeHtml(value.number)}</span><div>
+  <article class="value-item"><span class="value-number">${escapeHtml(value.number)}</span><div>
     <h3>${escapeHtml(value.title)}</h3><p>${escapeHtml(value.body)}</p>
   </div></article>`).join(''));
-mount('process-list', delivery.map(stage => `
+const processIcons: readonly IconName[] = ['target','layout','layers','shield','rocket'];
+mount('process-list', delivery.map((stage, index) => `
   <article class="process-row">
-    <div class="process-number">${escapeHtml(stage.number)}</div>
+    <div class="process-number"><span class="process-step">${escapeHtml(stage.number)}</span><span class="process-step-icon" aria-hidden="true">${icon(processIcons[index] ?? "target")}</span></div>
     <div class="process-head"><h3>${escapeHtml(stage.title)}</h3><p>${escapeHtml(stage.subtitle)}</p></div>
     <div class="process-text"><p class="process-quote">“${escapeHtml(stage.quote)}”</p>
       <p>${escapeHtml(stage.body)}</p><div class="process-output">Output: ${escapeHtml(stage.output)}</div>
     </div>
   </article>`).join(''));
 
-mount('audience-grid', audiences.map(a => `
-  <article class="audience-card"><span>${escapeHtml(a.tag)}</span>
+const audienceIcons: readonly IconName[] = ['sparkles','briefcase','server'];
+mount('audience-grid', audiences.map((a, index) => `
+  <article class="audience-card"><span class="audience-category">${escapeHtml(a.tag)}</span><span class="audience-icon" aria-hidden="true">${icon(audienceIcons[index] ?? "briefcase")}</span>
     <h3>${escapeHtml(a.title)}</h3><p>${escapeHtml(a.body)}</p>
     <div class="tag-list">${a.tags.map(t=>'<span>'+escapeHtml(t)+'</span>').join('')}</div>
   </article>`).join(''));
@@ -137,6 +141,7 @@ const categories: Record<keyof typeof portfolioDetails,string> = {
   ops:'AI',finance:'Security',health:'AI',learning:'Design',
   cloudops:'Cloud',support:'AI',field:'Software',commerce:'Software'
 };
+const categoryIcons: Record<string, IconName> = {AI:'ai',Security:'shield',Cloud:'cloud',Software:'software',Design:'design'};
 const workFilters = ['All work','AI','Software','Cloud','Security','Design'] as const;
 let currentFilter: string = 'All work';
 const filterNode = requireElement<HTMLElement>('#work-filters');
@@ -154,8 +159,8 @@ function renderWork(): void {
       <div class="portfolio-image"><img loading="lazy" decoding="async" src="${escapeHtml(info.image)}" alt="Visual reference for ${escapeHtml(info.title)}">
         <span class="portfolio-index">${escapeHtml(info.index)} / 08</span></div>
       <div class="portfolio-information">
-        <span class="portfolio-tag">${escapeHtml(info.eyebrow)}</span>
-        <div class="portfolio-title-row"><h3>${escapeHtml(info.title)}</h3><span aria-hidden="true">↗</span></div>
+        <span class="portfolio-tag"><span class="portfolio-category-symbol" aria-hidden="true">${icon(categoryIcons[categories[key]] ?? "code")}</span>${escapeHtml(info.eyebrow)}</span>
+        <div class="portfolio-title-row"><h3>${escapeHtml(info.title)}</h3><span class="portfolio-arrow" aria-hidden="true">${icon("arrowUp")}</span></div>
         <p>${escapeHtml(info.description)}</p>
         <div class="portfolio-metrics">${info.metrics.slice(0,2).map(metric =>
           '<span><strong>'+escapeHtml(metric.value)+'</strong>'+escapeHtml(metric.label)+'</span>').join('')}</div>
@@ -209,12 +214,13 @@ const articleCatalog = [
   {key:'cloud_security',category:'Cybersecurity'},
   {key:'serverless',category:'Cloud architecture'}
 ] as const;
+const articleIcons: Record<(typeof articleCatalog)[number]['key'], IconName> = {mvp_trap:'target',scope:'layers',cheap_code:'code',bluffing:'users',ai_business:'ai',pwa:'phone',cloud_security:'shield',serverless:'server'};
 mount('article-grid', articleCatalog.map(article => {
   const data = blogDetails[article.key];
   return `<button type="button" class="article-card" data-article="${article.key}">
-      <span class="article-category">${escapeHtml(article.category)}</span>
+      <span class="article-topline"><span class="article-category">${escapeHtml(article.category)}</span><span class="article-symbol" aria-hidden="true">${icon(articleIcons[article.key])}</span></span>
       <h3>${escapeHtml(data.title)}</h3><p>${escapeHtml(data.description)}</p>
-      <span class="article-read">Read insight ↗</span>
+      <span class="article-read">Read insight <span aria-hidden="true">${icon("arrowUp")}</span></span>
     </button>`;
 }).join(''));
 function cleanStaticArticle(content: string): string {
@@ -271,20 +277,22 @@ function findTech(label: string): keyof typeof techDetails | null {
     normalize(String(key)) === mapped || normalize(info.title) === query);
   return match?.[0] || null;
 }
-mount('technology-groups', techGroups.map(group => `
+const technologyGroupIcons: readonly IconName[] = ['layout','ai','server'];
+mount('technology-groups', techGroups.map((group, index) => `
   <section class="technology-group">
-    <h3>${escapeHtml(group.title)}</h3><div class="technology-pills">
+    <div class="technology-heading"><span class="technology-group-icon" aria-hidden="true">${icon(technologyGroupIcons[index] ?? "layers")}</span><h3>${escapeHtml(group.title)}</h3><span class="technology-item-count">${String(group.items.length).padStart(2,"0")} TOOLS</span></div><div class="technology-pills">
       ${group.items.map(label => {
         const key = findTech(label);
         return key
-          ? `<button type="button" data-tech="${escapeHtml(key)}" aria-label="About ${escapeHtml(label)}">${escapeHtml(label)}</button>`
-          : `<span>${escapeHtml(label)}</span>`;
+          ? `<button type="button" data-tech="${escapeHtml(key)}" aria-label="About ${escapeHtml(label)}">${technologyMark(label)}<span class="technology-name">${escapeHtml(label)}</span></button>`
+          : `<span class="technology-static">${technologyMark(label)}<span class="technology-name">${escapeHtml(label)}</span></span>`;
       }).join('')}
     </div>
   </section>`).join(''));
 function showTech(key: keyof typeof techDetails): void {
   const item = techDetails[key];
-  openDetail(`<span class="detail-kicker">TECHNOLOGY / OUR TOOLKIT</span>
+  const knownBrand = techGroups.flatMap(group => group.items).find(label => findTech(label) === key) ?? item.title;
+  openDetail(`<div class="detail-tech-mark">${technologyMark(knownBrand)}</div><span class="detail-kicker">TECHNOLOGY / OUR TOOLKIT</span>
     <h2 id="dialog-title">${escapeHtml(item.title)}</h2>
     <p class="detail-description">${escapeHtml(item.description)}</p>
     <div class="detail-section"><h3>Where it fits</h3>${listMarkup(item.uses)}</div>`);
@@ -303,7 +311,7 @@ mount('team-grid', team.map(person => `
 mount('disciplines', disciplines.map(item => `
   <article><h3>${escapeHtml(item.title)}</h3><strong>${escapeHtml(item.subtitle)}</strong><p>${escapeHtml(item.body)}</p></article>`).join(''));
 mount('testimonial-grid', testimonials.map(item => `
-  <article class="testimonial-card"><span class="metric">${escapeHtml(item.metric)}</span>
+  <article class="testimonial-card"><div class="testimonial-heading"><span class="metric">${escapeHtml(item.metric)}</span><span class="testimonial-icon" aria-hidden="true">${icon("quote")}</span></div>
   <blockquote>“${escapeHtml(item.quote)}”</blockquote>
   <footer>${escapeHtml(item.name)}<span>${escapeHtml(item.role)}</span></footer>
   </article>`).join(''));
