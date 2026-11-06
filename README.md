@@ -64,3 +64,13 @@ rate-limiting service/WAF remains required for targeted abuse resistance.
 - Bumped versions in package.json and npm lockfile; all build dependencies are unchanged.
 
 Run `npm run check` and inspect the resulting Vercel preview before merging.
+
+## v1.2.3 — Compact navigation and dialog keyboard reliability
+
+- Keep the compact menu available on tablets and smaller laptops through 1279px, instead of squeezing seven desktop links into the header.
+- Tighten the desktop header's spacing, logo size and interaction targets without changing the existing site identity or adding navigation destinations.
+- Deduplicate modal Tab handling and extract the focusable-element filter into a strictly typed module. The filter excludes inert and hidden descendants.
+- Make the motion control's accessible name independent of text hidden by responsive layouts.
+- Preserve all existing enquiry, portfolio, accessibility and reduced-motion features; add regression checks for the refined interaction contracts.
+
+Run `npm ci && npm run check`, then check the Vercel preview at 320, 375, 768, 1024, 1280 and 1440px with keyboard and touch before promotion. This release does **not** claim independent browser/device or live inbox acceptance.
