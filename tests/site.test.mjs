@@ -265,4 +265,5 @@ test('KhanHomes-inspired Pukka visual layer keeps a single stylesheet and safe d
   assert.match(style,/@media \(prefers-contrast:more\)/);
   assert.match(html,/src="\/pukka-gen-wordmark\.png"/);
   assert.match(html,/id="project-form"/);
+  assert.match(style,/#insights \.article-card \.article-index \{opacity:1;color:#075943/);
 });
