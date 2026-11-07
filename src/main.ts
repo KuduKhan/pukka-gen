@@ -95,7 +95,7 @@ setMenuOpen(false);
 // Service catalog: complete descriptive copy lives in the typed content model.
 mount('service-grid', serviceSummaries.map((service, i) => `
   <button type="button" class="service-card" data-service="${escapeHtml(service.key)}"
-     aria-label="Explore ${escapeHtml(service.title)}">
+     >
     <span class="service-card-top"><span class="service-number">SERVICE / ${String(i+1).padStart(2,'0')}</span><span class="service-icon" aria-hidden="true">${icon(service.key)}</span></span>
     <h3>${escapeHtml(service.title)}</h3>
     <p>${escapeHtml(service.body)}</p>
@@ -159,7 +159,7 @@ function renderWork(): void {
     currentFilter === 'All work' || categories[key] === currentFilter);
   mount('portfolio-grid', visible.map(([key,info]) => `
     <article class="portfolio-card${currentFilter === 'All work' && key === 'ops' ? ' portfolio-card-featured' : ''}"><button type="button" data-case="${escapeHtml(key)}"
-      aria-label="Explore case study: ${escapeHtml(info.title)}">
+      >
       <div class="portfolio-image"><img loading="lazy" decoding="async" src="${escapeHtml(info.image)}" alt="Visual reference for ${escapeHtml(info.title)}">
         <span class="portfolio-index">${escapeHtml(info.index)} / 08</span></div>
       <div class="portfolio-information">

@@ -95,7 +95,7 @@ for(const [name,engine] of Object.entries(browserTypes)){
        await page.goto(origin,{waitUntil:'domcontentloaded'});
        await page.locator('.service-card').first().waitFor();
        const axe=await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21a','wcag21aa']).analyze();
-       data.axeViolations=axe.violations.map(v=>({id:v.id,impact:v.impact,nodes:v.nodes.length,help:v.help}));
+       data.axeViolations=axe.violations.map(v=>({id:v.id,impact:v.impact,nodes:v.nodes.length,help:v.help,examples:v.nodes.slice(0,16).map(n=>({target:n.target,html:n.html?.slice(0,220),summary:n.failureSummary?.slice(0,250)}))}));
        const serious=axe.violations.filter(v=>['critical','serious'].includes(v.impact||''));
        if(serious.length)throw new Error('Axe serious/critical: '+serious.map(v=>v.id+':'+v.nodes.length).join(', '));
      }

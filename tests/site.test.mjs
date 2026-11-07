@@ -229,3 +229,9 @@ test('v2.3.4 includes automated multi-engine responsive and accessible browser Q
  assert.match(workflow,/playwright install --with-deps/);
  assert.match(read('package.json'),/"version": "2\.3\.4"/);
 });
+
+test('v2.3.4 card names derive from visible content',()=>{
+ assert.ok(!main.includes('aria-label="Explore ${escapeHtml(service.title)}"'));
+ assert.ok(!main.includes('aria-label="Explore case study:'));
+ assert.match(read('scripts/browser-qa.mjs'),/failureSummary/);
+});
