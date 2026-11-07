@@ -128,7 +128,7 @@ test('v2.1 enterprise identity and structure are present without copying the ref
   assert.match(updatedStyle, /sector-strip span:nth-child\(6\)/);
   assert.match(updatedStyle, /@media \(max-width:380px\)/);
   assert.match(updatedStyle, /prefers-reduced-motion:reduce/);
-  assert.match(read('package.json'), /"version": "2\.3\.2"/);
+  assert.match(read('package.json'), /"version": "2\.3\.3"/);
 });
 test('v2.1 nav scroll state, reveal enhancements and portfolio keyboard focus are wired',()=>{
   assert.match(main, /function updateScrollVisuals/);
@@ -203,4 +203,15 @@ test('v2.3.2 ships original architecture artwork and verified technology asset m
  assert.match(read('public/illustrations/delivery-pipeline.svg'),/Five clear stages/);
  for(const brand of ['Adobe XD','AWS','Azure']) assert.ok(icons.includes("'"+brand+"'"));
  for(const file of ['xd.svg','azure.svg','amazonwebservices.svg']) assert.match(read('public/tech/'+file),/^<svg/);
+});
+
+test('v2.3.3 avoids hidden content, supports safe areas and preserves contact focus',()=>{
+ const style=read('src/site.css');
+ assert.match(style,/prefers-reduced-data:reduce/);
+ assert.match(style,/safe-area-inset-bottom/);
+ assert.match(style,/max-width:375px/);
+ assert.match(style,/max-width:330px/);
+ assert.match(style,/\.reveal-ready \.reveal-item \{opacity:1/);
+ assert.match(main,/focusContactAfterClose/);
+ assert.match(main,/getBoundingClientRect\(\)\.top/);
 });

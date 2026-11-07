@@ -1515,3 +1515,91 @@ h1,h2,h3,h4 {font-family:var(--pg-font-display);font-weight:750}
  .hero-visual-architecture .float-one,.hero-visual-architecture .float-two {display:none}
  .outcome-image img[src$="delivery-pipeline.svg"] {object-fit:cover}
 }
+
+/* v2.3.3: motion restraint and responsive excellence, from 320px to wide screens. */
+:root {--pg-motion-fast:150ms;--pg-motion-standard:230ms;--pg-motion-slow:400ms}
+html {scroll-padding-top:80px}
+body {width:100%;overflow-wrap:anywhere}
+:where(.container,.hero-layout,.about-layout,.tech-layout,.contact-layout,.portfolio-grid,.technology-groups,.section-top,.footer-links,.field-grid,.audience-grid,.team-grid) > * {min-width:0}
+:where(.container,.hero-copy,.hero-visual,.hero-image-shell,.project-form,.detail-dialog,.technology-pills) {max-width:100%}
+img,svg,video,canvas {max-inline-size:100%}
+:where(.technology-name,.portfolio-information h3,.service-card h3,.contact-feature a) {overflow-wrap:anywhere}
+:where(.button,.filter-button,.technology-pills button,.menu-toggle,.project-form input,.project-form textarea,.project-form select) {transition-timing-function:var(--pg-motion-ease)}
+:where(.service-card,.portfolio-card,.article-card,.testimonial-card) {contain:layout style}
+:where(.project-form input,.project-form select,.project-form textarea) {font-size:16px}
+#work .portfolio-toolbar {max-width:100%;gap:15px}
+#work .filter-group {display:flex;flex-wrap:wrap;gap:8px;max-width:100%}
+#technology .technology-pills button {min-width:0;overflow:hidden}
+.mobile-navigation {max-height:min(76dvh,650px);overflow-y:auto}
+.hero-image-shell {contain:paint}
+.outcome-image {isolation:isolate}
+@media (prefers-reduced-motion:no-preference) {
+ .reveal-ready .reveal-item {opacity:1;transform:translateY(12px);transition:transform .38s var(--pg-motion-ease)}
+ .reveal-ready .reveal-item.is-visible {opacity:1;transform:none}
+ :where(.service-card,.portfolio-card,.article-card) {transition-duration:var(--pg-motion-standard)}
+}
+@media (min-width:1441px) {
+ .container {max-width:var(--pg-content-max)}
+ .hero h1 {max-width:870px}
+}
+@media (min-width:1101px) and (max-width:1279px) {
+ .hero-layout {gap:clamp(24px,3.5vw,45px)}
+ .hero h1 {font-size:clamp(3.5rem,5.2vw,5.2rem)}
+ #technology .technology-pills {grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (min-width:769px) and (max-width:1100px) {
+ .hero-layout {gap:32px}
+ #services .service-grid {grid-template-columns:repeat(2,minmax(0,1fr))}
+ #work .portfolio-grid {gap:16px}
+ #technology .technology-pills {grid-template-columns:repeat(2,minmax(0,1fr))}
+ .project-form {min-width:0}
+}
+@media (max-width:768px) {
+ .section-top {gap:20px}
+ .hero-layout,.about-layout,.tech-layout,.contact-layout {grid-template-columns:minmax(0,1fr)}
+ .hero-proof {max-width:560px}
+ #technology .technology-pills {grid-template-columns:repeat(2,minmax(0,1fr))}
+ .outcome-showcase-grid {grid-template-columns:minmax(0,1fr)}
+ .contact-layout {gap:var(--pg-space-8)}
+}
+@media (max-width:600px) {
+ body {min-width:320px}
+ .container {width:calc(100% - 34px)}
+ .hero {padding-top:calc(103px + env(safe-area-inset-top,0px))}
+ .hero .hero-actions {display:grid;grid-template-columns:minmax(0,1fr);gap:10px}
+ .hero .hero-actions .button {justify-content:center;text-align:center;max-width:100%;white-space:normal}
+ .hero-proof {gap:6px}
+ .hero-proof>div {min-width:0;overflow-wrap:anywhere}
+ .hero-proof strong {font-size:clamp(1.25rem,5vw,1.55rem)}
+ .hero-proof span {font-size:clamp(.57rem,2.15vw,.67rem)}
+ .hero .eyebrow {display:flex;flex-wrap:wrap;gap:7px 10px}
+ .hero-visual-architecture {max-width:100%;max-height:420px}
+ .site-footer {padding-bottom:calc(28px + env(safe-area-inset-bottom,0px))}
+ #services .service-grid,#insights .article-grid,#work .portfolio-grid {gap:13px}
+ #work .portfolio-card-featured .portfolio-image {min-height:0}
+ #technology .technology-name {overflow-wrap:anywhere}
+ .technology-group {min-width:0}
+ .form-field {min-width:0}
+}
+@media (max-width:375px) {
+ #technology .technology-group {padding-inline:12px}
+ #technology .technology-pills {gap:7px}
+ .technology-item-count {display:none}
+ .hero h1 {font-size:clamp(2.5rem,10.5vw,2.9rem)}
+ .hero-proof span {max-width:none}
+ .portfolio-toolbar {align-items:flex-start}
+}
+@media (max-width:330px) {
+ #technology .technology-pills {grid-template-columns:minmax(0,1fr)}
+ .hero-proof {grid-template-columns:repeat(3,minmax(0,1fr))}
+ .hero-proof span {font-size:.57rem}
+}
+@media (prefers-reduced-data:reduce) {
+ .hero-mesh,.float-one,.float-two {display:none!important}
+ .hero-scene {transition:none!important}
+}
+@media (prefers-reduced-motion:reduce) {
+ html {scroll-behavior:auto}
+ .reveal-ready .reveal-item,.reveal-ready .reveal-item.is-visible {opacity:1!important;transform:none!important}
+ .hero-scene,.service-card,.portfolio-card,.article-card,.technology-pills button {animation:none!important;transition:none!important}
+}

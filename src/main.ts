@@ -31,6 +31,7 @@ const dialog = requireElement<HTMLDialogElement>('#detail-dialog');
 const dialogBody = requireElement<HTMLElement>('#dialog-body');
 const dialogContact = requireElement<HTMLAnchorElement>('#dialog-contact');
 let previousFocus: HTMLElement | null = null;
+let focusContactAfterClose = false;
 let proposedService = '';
 
 function openDetail(markup: string, service = ''): void {
@@ -51,11 +52,15 @@ dialog.addEventListener('click', event => {
 });
 dialog.addEventListener('close', () => {
   document.body.classList.remove('dialog-open');
-  previousFocus?.focus({preventScroll:true});
+  if (focusContactAfterClose) {
+    focusContactAfterClose = false;
+    window.requestAnimationFrame(() => document.querySelector<HTMLElement>('#project-name')?.focus({preventScroll:true}));
+  } else previousFocus?.focus({preventScroll:true});
 });
 dialogContact.addEventListener('click', () => {
   const select = $<HTMLSelectElement>('#project-service');
   if (select && proposedService) select.value = proposedService;
+  focusContactAfterClose = true;
   closeDetail();
 });
 
@@ -463,7 +468,8 @@ if ('IntersectionObserver' in window &&
   }, {threshold:0.07,rootMargin:'0px 0px 30px 0px'});
   revealTargets.forEach(target => {
     target.classList.add('reveal-item');
-    revealObserver.observe(target);
+    if (target.getBoundingClientRect().top < window.innerHeight * .94) target.classList.add('is-visible');
+    else revealObserver.observe(target);
   });
   document.documentElement.classList.add('reveal-ready');
 }
