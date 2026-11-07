@@ -1610,3 +1610,275 @@ img,svg,video,canvas {max-inline-size:100%}
 .portfolio-card button:hover .portfolio-image img[src^="/illustrations/case-"] {transform:scale(1.015)}
 .detail-hero-image[src^="/illustrations/case-"] {object-fit:cover}
 @media (prefers-reduced-motion:reduce) {.portfolio-card button:hover .portfolio-image img[src^="/illustrations/case-"] {transform:none}}
+
+
+/* ==========================================================================
+   PUKKA GEN — KHANHOMES DISCOVER-INSPIRED VISUAL REFINEMENT (preview)
+   Reference principles: compact translucent navigation, strong editorial
+   hierarchy, restrained green-slate palette, tactile cards, responsive rhythm.
+   Pukka Gen's branding, content, diagrams, actions and dark/light alternation
+   are deliberately retained. No fonts, icons or assets are hotlinked.
+   ========================================================================== */
+:root {
+  --pg-homes-canvas:#f6faf7;
+  --pg-homes-paper:#ffffff;
+  --pg-homes-soft:#ecf5f0;
+  --pg-homes-line:#dbe9e2;
+  --pg-homes-ink:#173c40;
+  --pg-homes-muted:#536f70;
+  --pg-homes-green:#086d59;
+  --pg-homes-hover:#054c40;
+  --pg-homes-deep:#102f35;
+  --pg-homes-mint:#96ebc9;
+  --pg-homes-glow:rgba(41,174,136,.16);
+  --pg-homes-ease:cubic-bezier(.2,.75,.22,1);
+  --pg-font-display:Manrope,"Segoe UI Variable Display","Segoe UI",system-ui,sans-serif;
+  --pg-font-body:"DM Sans","Segoe UI Variable Text","Segoe UI",system-ui,sans-serif;
+  --pg-content-max:1312px;
+  --pg-radius-md:14px;
+  --pg-radius-lg:20px;
+  --pg-radius-xl:26px;
+  --pg-focus-ring:#49e2b8;
+}
+html {scroll-padding-top:80px}
+body {font-family:var(--pg-font-body);font-size:16px;line-height:1.68}
+h1,h2,h3,h4 {font-family:var(--pg-font-display);letter-spacing:-.052em}
+:where(h1,h2,h3) {text-wrap:balance}
+:where(.container) {width:min(var(--pg-content-max),calc(100% - clamp(32px,6vw,88px)))}
+.section {padding-block:clamp(68px,7vw,102px);scroll-margin-top:80px}
+.section-top {gap:clamp(20px,4vw,52px);margin-bottom:clamp(27px,3.5vw,43px)}
+.section-top h2,.section-heading h2,.contact-intro h2 {
+  font-size:clamp(2.2rem,4.25vw,4.05rem);line-height:1.12;letter-spacing:-.063em;
+}
+.section-top>p {max-width:43ch;line-height:1.75}
+.section-kicker,.mini-label {font-size:.69rem;font-weight:840;letter-spacing:.12em}
+:where(h1,h2) em {font-family:Georgia,"Times New Roman",serif;font-style:italic;font-weight:500;letter-spacing:-.045em}
+:where(.button,.filter-button,.menu-toggle,.mobile-navigation a) {
+  transition:transform .22s var(--pg-homes-ease),background-color .22s ease,
+    border-color .22s ease,box-shadow .22s ease,color .22s ease;
+}
+.button {min-height:47px;border-radius:13px;padding:11px 19px;gap:10px;font-size:.88rem}
+.button-small {min-height:42px;padding:9px 16px;font-size:.8rem}
+.button:focus-visible,.filter-button:focus-visible,.menu-toggle:focus-visible {
+  outline:3px solid var(--pg-focus-ring);outline-offset:3px;
+}
+
+/* KhanHomes compact navigation adapted to Pukka's original dark wordmark. */
+.site-header,.site-header.is-scrolled {
+  background:rgba(14,39,45,.91);border-bottom:1px solid rgba(172,227,209,.22);
+  box-shadow:0 7px 24px rgba(6,25,27,.1);
+  -webkit-backdrop-filter:saturate(120%) blur(18px);
+  backdrop-filter:saturate(120%) blur(18px);
+}
+.site-header.is-scrolled {background:rgba(10,32,38,.97)}
+.nav-shell {min-height:72px;gap:clamp(12px,2vw,25px)}
+.brand img {height:36px;max-width:175px;filter:none}
+.desktop-navigation {gap:clamp(13px,1.9vw,29px)}
+.desktop-navigation a {font-size:.82rem;font-weight:750;color:#c1d9d2;letter-spacing:0}
+.desktop-navigation a:hover,.desktop-navigation a[aria-current="location"] {color:#aaf2d7}
+.nav-cta {
+  flex-shrink:0;margin-left:0;border:1px solid rgba(255,255,255,.12);
+  background:#a5efd1;color:#0d362e;box-shadow:0 6px 16px rgba(10,30,25,.14);
+}
+.nav-cta:hover {background:#cbffe7;color:#0a3029;box-shadow:0 10px 24px rgba(0,0,0,.2)}
+.menu-toggle {
+  border-radius:12px;border-color:rgba(167,224,208,.32);
+  background:#183b41;box-shadow:inset 0 1px rgba(255,255,255,.06);
+}
+.mobile-navigation {
+  border-radius:17px;background:#16363b;border:1px solid rgba(183,234,219,.25);
+  box-shadow:0 22px 50px rgba(1,16,19,.34);padding:11px;gap:4px;
+}
+.mobile-navigation a {border-radius:11px;font-size:.88rem;min-height:46px}
+.mobile-navigation a:hover,.mobile-navigation a:focus-visible {background:#26524e;color:#d2f8e9}
+.mobile-navigation .mobile-contact {background:#b3efd6;color:#0c3a2f}
+
+/* Editorial hero — content-forward and intentional, without a full-height wall. */
+.hero {
+  min-height:0;padding-block:clamp(133px,12vw,164px) clamp(34px,5vw,67px);
+  background:radial-gradient(ellipse 56% 78% at 95% 16%,rgba(39,143,112,.19),transparent 76%),
+             linear-gradient(137deg,#102a30 0%,#15383f 57%,#10242c 100%);
+}
+.hero-mesh {opacity:.48}
+.hero-layout {gap:clamp(27px,4.4vw,65px)}
+.hero h1 {
+  font-size:clamp(3.1rem,5.6vw,5.65rem);line-height:1.07;letter-spacing:-.071em;
+  text-shadow:none;max-width:12ch;
+}
+.hero h1 em {background:none;color:#a7f2d1;-webkit-text-fill-color:#a7f2d1}
+.hero .outline-word {-webkit-text-stroke:0;color:#e8f4ed}
+.hero .eyebrow {color:#b6ebd3;font-size:.64rem;letter-spacing:.11em}
+.hero-statement {color:#e4d6bd;font-size:clamp(.95rem,1.25vw,1.15rem)}
+.hero-description {color:#c2d8d2;line-height:1.8;max-width:53ch}
+.hero-actions {gap:11px;margin-top:30px}
+.hero-actions .button-primary {background:#b6f3d9;color:#103a31}
+.hero-actions .button-primary:hover {background:#d0ffe8}
+.hero-actions .button-ghost {border-color:rgba(196,237,223,.4);color:#effaf4}
+.hero-actions .button-ghost:hover {border-color:#a8efdc;color:#b7ffe2}
+.hero-proof {margin-top:clamp(33px,5vw,57px);padding-top:18px;border-color:rgba(191,235,216,.24)}
+.hero-proof strong {font-size:clamp(1.35rem,2.4vw,1.8rem)}
+.hero-proof span {color:#b8d2ca}
+.hero-visual-architecture {
+  border-radius:27px;border:1px solid rgba(189,238,222,.28);
+  box-shadow:0 22px 57px rgba(0,13,18,.25),inset 0 1px rgba(255,255,255,.09);
+}
+.hero-visual-architecture .hero-image-shell {border-radius:20px;overflow:hidden}
+.hero-footnote {margin-top:28px}
+
+/* Discover's paper/soft-surface rhythm across Pukka's existing light sections. */
+.section-soft,#services,#approach,#insights,#team,#faq {
+  --ink:var(--pg-homes-ink);--muted:var(--pg-homes-muted);
+  --jade:var(--pg-homes-green);--line:rgba(25,82,65,.16);
+  --line-strong:rgba(25,82,65,.28);
+  color:var(--pg-homes-ink);
+}
+.section-soft,#approach {background:var(--pg-homes-canvas)}
+#services {background:linear-gradient(180deg,#fff 0%,#f7fbf8 100%)}
+#insights {background:radial-gradient(ellipse at 100% 0%,rgba(73,187,138,.11),transparent 46%),#f8fcf9}
+#team {background:#f5faf7}
+#faq {background:#f8fbf9}
+.section-soft h2 em,#services h2 em,#approach h2 em,#insights h2 em,#team h2 em,#faq h2 em {
+  color:var(--pg-homes-green);
+}
+.section-soft .section-heading h2 {color:var(--pg-homes-ink)}
+.section-soft .about-content .lead-copy {color:#284c4b}
+.section-soft .mission-grid article {
+  background:rgba(255,255,255,.88);border:1px solid var(--pg-homes-line);
+  border-radius:18px;box-shadow:0 10px 28px rgba(17,77,55,.055);
+}
+.statement-band {border-color:var(--pg-homes-line)}
+.statement-band p {line-height:1.45}
+.outcome-showcase {background:linear-gradient(125deg,#ecf5ef,#f7fbf8)}
+.outcome-showcase h2 em {color:var(--pg-homes-green)}
+.outcome-content {color:var(--pg-homes-ink)}
+.outcome-content p {color:var(--pg-homes-muted)}
+.outcome-showcase-grid {gap:clamp(26px,4vw,64px)}
+.outcome-image {border-radius:24px;overflow:hidden}
+.outcome-values>div {border-color:var(--pg-homes-line)}
+
+/* Structured service, journal and FAQ cards: raised white paper, no visual noise. */
+#services .service-grid {gap:clamp(13px,1.6vw,22px)}
+#services .service-card {
+  min-height:314px;padding:clamp(22px,2.5vw,34px);border-radius:20px;
+  background:linear-gradient(151deg,#fff 15%,#f2f9f4 100%);
+  color:var(--pg-homes-ink);border:1px solid var(--pg-homes-line);
+  box-shadow:0 10px 34px rgba(14,65,49,.065),inset 0 1px #fff;
+}
+#services .service-card:hover {
+  background:#fff;border-color:#9acbb7;
+  box-shadow:0 18px 43px rgba(14,65,49,.12);transform:translateY(-3px);
+}
+#services .service-card h3 {color:var(--pg-homes-ink);margin-top:23px;letter-spacing:-.04em}
+#services .service-card p {color:var(--pg-homes-muted);font-size:.9rem}
+#services .service-number {color:#3e7966}
+#services .service-icon {
+  border-radius:15px;color:#08745c;background:#e5f5ed;
+  border:1px solid #cce8d9;box-shadow:none;
+}
+#services .card-bottom {color:var(--pg-homes-green);border-top-color:var(--pg-homes-line)}
+#insights .article-grid {gap:clamp(12px,1.5vw,20px)}
+#insights .article-card {
+  background:#fff;border:1px solid var(--pg-homes-line);border-radius:19px;
+  color:var(--pg-homes-ink);box-shadow:0 9px 28px rgba(17,77,55,.055);
+}
+#insights .article-card:hover {border-color:#9dcfba;box-shadow:0 17px 36px rgba(12,78,55,.1)}
+#insights .article-card p {color:var(--pg-homes-muted)}
+#insights .article-card :is(.article-category,.article-read) {color:var(--pg-homes-green)}
+#faq .faq-list details {
+  border:1px solid var(--pg-homes-line);border-radius:15px;
+  background:#fff;box-shadow:0 7px 20px rgba(17,77,55,.04);
+}
+#faq .faq-list details[open] {border-color:#9acbb7;background:#fff}
+#faq .faq-list summary {color:var(--pg-homes-ink)}
+#faq .faq-list details p {color:var(--pg-homes-muted)}
+.filter-button {border-radius:11px}
+#work .filter-button[aria-pressed="true"] {background:#a6ebce;border-color:#a6ebce;color:#073c31}
+
+/* KhanHomes' dark canvas treatment for Pukka's technical editorial sections. */
+#work,#industries,#technology,#testimonials {
+  background:radial-gradient(ellipse 50% 70% at 95% 4%,rgba(44,132,111,.12),transparent 72%),
+             var(--pg-homes-deep);
+}
+#work .portfolio-card {
+  border-color:rgba(189,237,220,.21);border-radius:23px;
+  box-shadow:0 16px 46px rgba(3,20,25,.22);background:#183941;
+}
+#work .portfolio-card:hover {border-color:rgba(180,242,215,.48)}
+#work .portfolio-image {background:#102b32}
+#work .portfolio-information {padding:clamp(22px,2.5vw,32px)}
+#work .portfolio-tag,#work .portfolio-title-row span {color:#abefd2}
+#work .portfolio-metrics {border-color:rgba(184,234,216,.19)}
+#industries .audience-card,#technology .technology-group,#testimonials .testimonial-card {
+  background:linear-gradient(145deg,rgba(31,68,74,.96),rgba(20,49,57,.96));
+  border:1px solid rgba(184,236,218,.19);border-radius:20px;
+  box-shadow:0 12px 36px rgba(4,20,23,.17);
+}
+#industries .audience-card:hover {border-color:rgba(181,237,215,.42)}
+#technology .technology-pills button {border-radius:13px}
+#team .team-card {border-radius:20px;box-shadow:0 15px 40px rgba(11,45,45,.13)}
+#approach .process-row {border-color:var(--pg-homes-line);gap:clamp(18px,3vw,48px)}
+#approach .process-head p {color:#286b5a}
+#approach .process-output {color:#096b59}
+.contact-section {
+  background:radial-gradient(ellipse 43% 50% at 100% 2%,rgba(51,151,126,.14),transparent 75%),#0f2c34;
+}
+.project-form {border-radius:22px;box-shadow:0 21px 55px rgba(2,21,26,.24)}
+.form-field :is(input,select,textarea):focus-visible {outline:3px solid #84ebc6;outline-offset:2px}
+.detail-dialog {border-radius:22px}
+.site-footer {background:#0b242b}
+
+/* Responsive parity: 320px mobile, tablet, desktop and large screens. */
+@media (max-width:1100px) {
+  .hero-layout {gap:32px}
+  .hero h1 {font-size:clamp(3.15rem,7.3vw,5.2rem)}
+}
+@media (max-width:800px) {
+  .section {padding-block:clamp(58px,8vw,80px)}
+  .section-top {align-items:flex-start}
+  .hero {padding-top:126px}
+  .hero-visual-architecture {border-radius:22px}
+  .outcome-showcase-grid {grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:600px) {
+  html {scroll-padding-top:73px}
+  .container {width:calc(100% - 34px)}
+  .nav-shell {min-height:66px}
+  .brand img {height:34px;max-width:min(157px,43vw)}
+  .mobile-navigation {left:12px;right:12px;top:calc(100% + 6px)}
+  .hero {min-height:0;padding-block:calc(104px + env(safe-area-inset-top,0px)) 37px}
+  .hero h1 {font-size:clamp(2.63rem,10.5vw,3.8rem);max-width:100%;letter-spacing:-.066em}
+  .hero-description {font-size:1rem}
+  .hero-actions {margin-top:25px}
+  .hero-actions .button {min-height:47px}
+  .hero-proof {margin-top:34px}
+  .hero-visual-architecture {border-radius:18px}
+  .section-top h2,.section-heading h2,.contact-intro h2 {font-size:clamp(2.05rem,8vw,3rem)}
+  #services .service-card {min-height:0;padding:24px;border-radius:18px}
+  #insights .article-card {border-radius:17px}
+  #work .portfolio-card {border-radius:18px}
+  #work .portfolio-information {padding:21px}
+  #approach .process-row {gap:17px}
+}
+@media (max-width:380px) {
+  .container {width:calc(100% - 28px)}
+  .nav-shell {gap:8px}
+  .brand img {max-width:148px}
+  .hero h1 {font-size:clamp(2.44rem,10.1vw,2.78rem)}
+  .hero-proof {gap:6px}
+  .hero-proof strong {font-size:1.26rem}
+  #services .service-card {padding:21px}
+  #work .portfolio-information {padding:18px}
+}
+@media (hover:none) {
+  #services .service-card:hover,#insights .article-card:hover {transform:none}
+}
+@media (prefers-reduced-motion:reduce) {
+  html {scroll-behavior:auto}
+  .hero,.hero-visual,.button,.service-card,.portfolio-card,.article-card {
+    animation:none!important;transition:none!important;
+  }
+}
+@media (prefers-contrast:more) {
+  #services .service-card,#insights .article-card,#faq .faq-list details {border-width:2px}
+  .site-header {backdrop-filter:none;-webkit-backdrop-filter:none}
+}
