@@ -30,9 +30,10 @@ for(const [name,engine] of Object.entries(browserTypes)){
  const browser = await engine.launch({headless:true});
  try{
   for(const width of widths){
-   const page = await browser.newPage({
+   const context = await browser.newContext({
      viewport:{width,height},reducedMotion:'reduce',deviceScaleFactor:1
    });
+   const page = await context.newPage();
    const errors=[];
    page.on('pageerror',err=>errors.push(err.message));
    const data={browser:name,width,ok:false,overflow:0,serviceCount:0,portfolioCount:0,articleCount:0,techCount:0,consoleErrors:[]};
@@ -102,6 +103,7 @@ for(const [name,engine] of Object.entries(browserTypes)){
    }catch(err){const reason=err instanceof Error?err.message:String(err);failures.push({browser:name,width,reason});data.error=reason;try{await page.screenshot({path:`${folder}/failure-${name}-${width}.png`,fullPage:false,animations:'disabled'});}catch{}}
    results.push(data);
    await page.close();
+   await context.close();
   }
  } finally {await browser.close();}
 }
