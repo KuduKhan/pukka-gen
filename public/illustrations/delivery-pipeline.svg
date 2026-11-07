@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-labelledby="title desc">
+<title id="title">Pukka Gen delivery pipeline concept</title><desc id="desc">An original visual showing discovery, design, engineering, verification and deployment as five connected stages.</desc>
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#0B263A"/><stop offset="1" stop-color="#163F4D"/></linearGradient>
+  <linearGradient id="surface" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#285062"/><stop offset="1" stop-color="#163949"/></linearGradient>
+  <linearGradient id="glow" x1="0" y1="0" x2="1"><stop stop-color="#A9F9E6"/><stop offset="1" stop-color="#72B6F5"/></linearGradient>
+  <pattern id="grid" width="34" height="34" patternUnits="userSpaceOnUse"><path d="M34 0H0V34" stroke="#91E7DA" stroke-opacity=".075" fill="none"/></pattern>
+  <filter id="shadow"><feGaussianBlur stdDeviation="18"/></filter>
+</defs>
+<rect width="1200" height="900" fill="url(#bg)"/><rect width="1200" height="900" fill="url(#grid)"/>
+<circle cx="1000" cy="120" r="285" fill="#81D2D0" opacity=".07" filter="url(#shadow)"/>
+<g font-family="Arial,Helvetica,sans-serif">
+ <text x="72" y="94" fill="#83E8DA" font-weight="750" font-size="21" letter-spacing="2.2">PUKKA / DELIVERY PROTOCOL</text>
+ <text x="72" y="145" fill="#F0FBFE" font-size="47" font-weight="750">From intention to operation.</text>
+ <text x="72" y="185" fill="#A7C8D0" font-size="21">Five clear stages. One accountable engineering approach.</text>
+</g>
+<path d="M210 460H1027" stroke="#97E9DA" stroke-width="4" stroke-dasharray="7 12" opacity=".65"/>
+<g font-family="Arial,Helvetica,sans-serif">
+  <rect x="74" y="338" width="204" height="232" rx="22" fill="url(#surface)" stroke="#8BE2D9" stroke-width="2" stroke-opacity=".65"/>
+  <rect x="301" y="338" width="204" height="232" rx="22" fill="url(#surface)" stroke="#8BE2D9" stroke-width="2" stroke-opacity=".65"/>
+  <rect x="528" y="338" width="204" height="232" rx="22" fill="#285A64" stroke="#A7F5E7" stroke-width="2.5"/>
+  <rect x="755" y="338" width="204" height="232" rx="22" fill="url(#surface)" stroke="#8BE2D9" stroke-width="2" stroke-opacity=".65"/>
+  <rect x="982" y="338" width="144" height="232" rx="22" fill="url(#surface)" stroke="#8BE2D9" stroke-width="2" stroke-opacity=".65"/>
+  <g font-weight="750" font-size="19" fill="#A8FCE9">
+   <text x="96" y="376">01</text><text x="323" y="376">02</text><text x="550" y="376">03</text><text x="777" y="376">04</text><text x="1004" y="376">05</text>
+  </g>
+  <g stroke="#C4FAED" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round">
+   <circle cx="176" cy="442" r="22"/><circle cx="176" cy="442" r="9"/>
+   <path d="M385 424h31v33h-31zM385 436h31M395 436v21"/>
+   <path d="m608 425-20 18 20 18m43-36 20 18-20 18"/>
+   <path d="M856 415c12 9 24 11 35 13v31c0 17-12 28-35 38-23-10-35-21-35-38v-31 0c11-2 23-4 35-13z" transform="translate(0,-2) scale(1,.86)"/>
+   <path d="M1020 450l18-18 18 18m-18-18v38m-28 0h57"/>
+  </g>
+  <g fill="#E7FBFA" font-size="23" font-weight="740">
+   <text x="95" y="516">Discover</text><text x="323" y="516">Design</text><text x="549" y="516">Engineer</text><text x="777" y="516">Verify</text><text x="1003" y="516" font-size="19">Deploy</text>
+  </g>
+  <g fill="#AFCCD2" font-size="15">
+   <text x="95" y="545">Clear objectives</text><text x="323" y="545">Useful journeys</text><text x="549" y="545">Working systems</text><text x="777" y="545">Proof of quality</text><text x="1003" y="545">Live &amp; owned</text>
+  </g>
+</g>
+<rect x="76" y="651" width="1049" height="104" rx="18" fill="#102C40" stroke="#7DE0D3" stroke-opacity=".25"/>
+<path d="M114 703h210M383 703h210M652 703h210" stroke="url(#glow)" stroke-width="7" stroke-linecap="round"/>
+<circle cx="135" cy="703" r="12" fill="#91F6DB"/><circle cx="403" cy="703" r="12" fill="#91F6DB"/><circle cx="672" cy="703" r="12" fill="#91F6DB"/><circle cx="957" cy="703" r="12" fill="#91F6DB"/>
+<g font-family="Arial,Helvetica,sans-serif" font-size="18" font-weight="700" fill="#BBD7DD" letter-spacing="1.1">
+ <text x="105" y="814">SCOPE</text><text x="365" y="814">BUILD</text><text x="624" y="814">TEST</text><text x="888" y="814">RELEASE</text>
+</g>
+<text x="79" y="861" font-family="Arial,Helvetica,sans-serif" font-size="17" fill="#9ABEC7">Concept diagram • Not a client deployment or certification claim.</text>
+</svg>

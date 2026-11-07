@@ -31,6 +31,7 @@ const dialog = requireElement<HTMLDialogElement>('#detail-dialog');
 const dialogBody = requireElement<HTMLElement>('#dialog-body');
 const dialogContact = requireElement<HTMLAnchorElement>('#dialog-contact');
 let previousFocus: HTMLElement | null = null;
+let focusContactAfterClose = false;
 let proposedService = '';
 
 function openDetail(markup: string, service = ''): void {
@@ -51,11 +52,15 @@ dialog.addEventListener('click', event => {
 });
 dialog.addEventListener('close', () => {
   document.body.classList.remove('dialog-open');
-  previousFocus?.focus({preventScroll:true});
+  if (focusContactAfterClose) {
+    focusContactAfterClose = false;
+    window.requestAnimationFrame(() => document.querySelector<HTMLElement>('#project-name')?.focus({preventScroll:true}));
+  } else previousFocus?.focus({preventScroll:true});
 });
 dialogContact.addEventListener('click', () => {
   const select = $<HTMLSelectElement>('#project-service');
   if (select && proposedService) select.value = proposedService;
+  focusContactAfterClose = true;
   closeDetail();
 });
 
@@ -90,9 +95,8 @@ setMenuOpen(false);
 // Service catalog: complete descriptive copy lives in the typed content model.
 mount('service-grid', serviceSummaries.map((service, i) => `
   <button type="button" class="service-card" data-service="${escapeHtml(service.key)}"
-     aria-label="Explore ${escapeHtml(service.title)}">
-    <span class="service-number">SERVICE / ${String(i+1).padStart(2,'0')}</span>
-    <span class="service-icon" aria-hidden="true">${icon(service.key)}</span>
+     >
+    <span class="service-card-top"><span class="service-number">SERVICE / ${String(i+1).padStart(2,'0')}</span><span class="service-icon" aria-hidden="true">${icon(service.key)}</span></span>
     <h3>${escapeHtml(service.title)}</h3>
     <p>${escapeHtml(service.body)}</p>
     <span class="card-bottom"><span>${escapeHtml(service.category)}</span><span class="card-arrow" aria-hidden="true">${icon("arrowUp")}</span></span>
@@ -154,9 +158,9 @@ function renderWork(): void {
   const visible = caseEntries.filter(([key]) =>
     currentFilter === 'All work' || categories[key] === currentFilter);
   mount('portfolio-grid', visible.map(([key,info]) => `
-    <article class="portfolio-card"><button type="button" data-case="${escapeHtml(key)}"
-      aria-label="Explore case study: ${escapeHtml(info.title)}">
-      <div class="portfolio-image"><img loading="lazy" decoding="async" src="${escapeHtml(info.image)}" alt="Visual reference for ${escapeHtml(info.title)}">
+    <article class="portfolio-card${currentFilter === 'All work' && key === 'ops' ? ' portfolio-card-featured' : ''}"><button type="button" data-case="${escapeHtml(key)}"
+      >
+      <div class="portfolio-image"><img loading="lazy" decoding="async" src="${escapeHtml(info.image)}" alt="Conceptual illustration for ${escapeHtml(info.title)}">
         <span class="portfolio-index">${escapeHtml(info.index)} / 08</span></div>
       <div class="portfolio-information">
         <span class="portfolio-tag"><span class="portfolio-category-symbol" aria-hidden="true">${icon(categoryIcons[categories[key]] ?? "code")}</span>${escapeHtml(info.eyebrow)}</span>
@@ -193,7 +197,7 @@ function showCase(key: keyof typeof portfolioDetails): void {
     <span class="detail-kicker">SELECTED WORK / ${escapeHtml(data.eyebrow)}</span>
     <h2 id="dialog-title">${escapeHtml(data.title)}</h2>
     <p class="detail-description">${escapeHtml(data.description)}</p>
-    <img class="detail-hero-image" src="${escapeHtml(data.image)}" alt="Visual reference for ${escapeHtml(data.title)}" loading="lazy">
+    <img class="detail-hero-image" src="${escapeHtml(data.image)}" alt="Conceptual illustration for ${escapeHtml(data.title)}" loading="lazy">
     <div class="detail-metrics">${metrics}</div>
     <div class="detail-section"><h3>The context</h3><p>${escapeHtml(data.context)}</p></div>
     <div class="detail-section"><h3>Our role</h3><p>${escapeHtml(data.role)}</p></div>
@@ -215,10 +219,10 @@ const articleCatalog = [
   {key:'serverless',category:'Cloud architecture'}
 ] as const;
 const articleIcons: Record<(typeof articleCatalog)[number]['key'], IconName> = {mvp_trap:'target',scope:'layers',cheap_code:'code',bluffing:'users',ai_business:'ai',pwa:'phone',cloud_security:'shield',serverless:'server'};
-mount('article-grid', articleCatalog.map(article => {
+mount('article-grid', articleCatalog.map((article,index) => {
   const data = blogDetails[article.key];
   return `<button type="button" class="article-card" data-article="${article.key}">
-      <span class="article-topline"><span class="article-category">${escapeHtml(article.category)}</span><span class="article-symbol" aria-hidden="true">${icon(articleIcons[article.key])}</span></span>
+      <span class="article-topline"><span class="article-category"><span class="article-index">${String(index+1).padStart(2,"0")} / </span>${escapeHtml(article.category)}</span><span class="article-symbol" aria-hidden="true">${icon(articleIcons[article.key])}</span></span>
       <h3>${escapeHtml(data.title)}</h3><p>${escapeHtml(data.description)}</p>
       <span class="article-read">Read insight <span aria-hidden="true">${icon("arrowUp")}</span></span>
     </button>`;
@@ -464,7 +468,8 @@ if ('IntersectionObserver' in window &&
   }, {threshold:0.07,rootMargin:'0px 0px 30px 0px'});
   revealTargets.forEach(target => {
     target.classList.add('reveal-item');
-    revealObserver.observe(target);
+    if (target.getBoundingClientRect().top < window.innerHeight * .94) target.classList.add('is-visible');
+    else revealObserver.observe(target);
   });
   document.documentElement.classList.add('reveal-ready');
 }

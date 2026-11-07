@@ -1,7 +1,7 @@
 /**
  * Pukka Gen v2.2 visual iconography.
  * Self-contained line SVGs for interface actions and verified, self-hosted
- * technology marks sourced from the Simple Icons community collection.
+ * technology marks sourced from Simple Icons and Devicon public collections.
  * Fallbacks for unavailable brand assets are purposefully neutral monograms,
  * never substituted third-party logos.
  */
@@ -47,30 +47,25 @@ export function icon(name: IconName, className = 'ui-icon'): string {
 // Only paths verified and bundled under /public/tech.
 const brandSlugs: Readonly<Record<string, string>> = {
   'React':'react','Angular':'angular','Vue.js':'vuedotjs','TypeScript':'typescript',
-  'Flutter':'flutter','Swift':'swift','Figma':'figma','Sketch':'sketch',
+  'Flutter':'flutter','Swift':'swift','Figma':'figma','Sketch':'sketch','Adobe XD':'xd',
   'Node.js':'nodedotjs','Python':'python','Java':'openjdk','C#':'sharp',
   '.NET':'dotnet','Go':'go','MongoDB':'mongodb','PostgreSQL':'postgresql',
   'Redis':'redis','TensorFlow':'tensorflow','PyTorch':'pytorch',
-  'Google Cloud':'googlecloud','Docker':'docker','Kubernetes':'kubernetes',
+  'Google Cloud':'googlecloud','AWS':'amazonwebservices','Azure':'azure','Docker':'docker','Kubernetes':'kubernetes',
   'Terraform':'terraform','Jenkins':'jenkins','Git':'git','GitLab':'gitlab',
   'Selenium':'selenium','Cypress':'cypress','Jira':'jira'
 };
-const initial = (value: string): string => value
-  .split(/[^A-Za-z0-9]+/).filter(Boolean)
-  .map(word => word[0]!.toUpperCase()).join('').slice(0,3) || 'TECH';
-
 export function technologyMark(label: string): string {
   const slug = brandSlugs[label];
   if (slug) {
     return '<span class="tech-mark" aria-hidden="true"><img src="/tech/' + slug +
       '.svg" alt="" width="25" height="25" loading="lazy" decoding="async"></span>';
   }
-  // Neutral SVG monogram avoids inventing or misattributing a corporate logo.
-  const chars = initial(label).replace(/[^A-Z0-9]/g,'');
+  // Neutral, non-textual glyph; visible adjacent label identifies the technology.
   return '<span class="tech-mark tech-mark-generic" aria-hidden="true">' +
-    '<svg viewBox="0 0 36 36" width="28" height="28" focusable="false">' +
+    '<svg viewBox="0 0 36 36" width="28" height="28" focusable="false" aria-hidden="true">' +
     '<rect x="2" y="2" width="32" height="32" rx="9" fill="#1E3A4A" />' +
     '<rect x="2.5" y="2.5" width="31" height="31" rx="8.5" fill="none" stroke="#86DCCF" stroke-opacity=".7" />' +
-    '<text x="18" y="22.1" fill="#D3FFF5" text-anchor="middle" font-size="' + (chars.length > 2 ? '9':'12') +
-    '" font-weight="750" font-family="Arial, sans-serif">' + chars + '</text></svg></span>';
+    '<path d="M9 17h5l4-6 4 12 4-5h2" fill="none" stroke="#BCFFF1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />' +
+    '<circle cx="9" cy="17" r="2" fill="#B6FFF2"/><circle cx="28" cy="18" r="2" fill="#B6FFF2"/></svg></span>';
 }

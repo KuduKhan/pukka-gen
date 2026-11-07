@@ -1,7 +1,7 @@
 {
   "name": "pukka-gen",
   "private": true,
-  "version": "2.2.0",
+  "version": "2.3.4",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -16,5 +16,5 @@
     "typescript": "^5.6.3",
     "vite": "^6.0.0"
   },
-  "description": "Pukka Gen — Precision Glass Design System"
+  "description": "Pukka Gen — Visual Quality and Controlled Release"
 }

@@ -6,7 +6,7 @@ import handler from '../api/project-brief.mjs';
 const read = path => readFileSync(new URL('../' + path, import.meta.url), 'utf8');
 const html = read('index.html');
 const main = read('src/main.ts');
-const css = read('src/styles.css');
+const css = read('src/site.css');
 const content = read('src/content.ts');
 
 function response() {
@@ -77,7 +77,7 @@ test('legal pages preserve original privacy and contract notices',()=>{
   for(const path of ['privacy.html','terms.html']) {
     const document=read(path);
     assert.match(document,/Last updated: October 26, 2026/);
-    assert.match(document,/href="\/src\/styles.css"/);
+    assert.match(document,/href="\/src\/site.css"/);
     assert.match(document,/href="\/"/);
   }
   assert.match(read('privacy.html'),/Information collected/);
@@ -114,13 +114,13 @@ test('without server-side email configuration, client gets honest 503',async()=>
 });
 
 test('v2.1 enterprise identity and structure are present without copying the reference brand',()=>{
-  const updatedStyle=read('src/enterprise.css');
-  assert.match(html, /href="\/src\/enterprise.css"/);
+  const updatedStyle=read('src/site.css');
+  assert.match(html, /href="\/src\/site.css"/);
   assert.match(html, /id="reading-progress-bar"/);
   assert.match(html, /id="outcome-heading"/);
   assert.match(html, /enterprise-ribbon-grid/);
   assert.match(html, /class="hero-scene"/);
-  assert.match(html, /alt="Modern technology workspace/);
+  assert.match(html, /alt="Conceptual software architecture/);
   assert.doesNotMatch(html, /nocturnalsintellisoft\.com/i);
   assert.doesNotMatch(updatedStyle, /nocturnalsintellisoft\.com/i);
   assert.match(updatedStyle, /#services \{/);
@@ -128,7 +128,7 @@ test('v2.1 enterprise identity and structure are present without copying the ref
   assert.match(updatedStyle, /sector-strip span:nth-child\(6\)/);
   assert.match(updatedStyle, /@media \(max-width:380px\)/);
   assert.match(updatedStyle, /prefers-reduced-motion:reduce/);
-  assert.match(read('package.json'), /"version": "2\.2\.0"/);
+  assert.match(read('package.json'), /"version": "2\.3\.4"/);
 });
 test('v2.1 nav scroll state, reveal enhancements and portfolio keyboard focus are wired',()=>{
   assert.match(main, /function updateScrollVisuals/);
@@ -141,9 +141,9 @@ test('v2.1 nav scroll state, reveal enhancements and portfolio keyboard focus ar
 });
 
 test('v2.2 premium UI polish is responsive and respects access needs',()=>{
-  const style=read('src/premium.css');
+  const style=read('src/site.css');
   const icons=read('src/icons.ts');
-  assert.match(html,/href="\/src\/premium.css"/);
+  assert.match(html,/href="\/src\/site.css"/);
   assert.match(style,/#services \.service-grid/);
   assert.match(style,/#work \.portfolio-card/);
   assert.match(style,/#technology \.technology-pills/);
@@ -177,4 +177,72 @@ test('v2.2 contains verified local SVG files for technology names',()=>{
     assert.match(svg,/fill="#[0-9A-Fa-f]{6}"/);
   }
   assert.match(icons,/tech-mark-generic/);
+});
+
+test('v2.3.0 design system consolidates styling and exposes reusable tokens',()=>{
+  const sheet=read('src/site.css');
+  for(const token of ['--pg-font-display','--pg-font-body','--pg-space-4','--pg-radius-lg','--pg-surface-light','--pg-shadow-md','--pg-motion-standard','--pg-focus-ring']) assert.ok(sheet.includes(token),token+' absent');
+  assert.equal((html.match(/rel="stylesheet"/g)||[]).length,1);
+  assert.match(html,/href="\/src\/site.css"/);
+  for(const file of ['privacy.html','terms.html']) assert.match(read(file),/href="\/src\/site.css"/);
+});
+
+test('v2.3.1 premium cards preserve content and adapt the first portfolio entry',()=>{
+ const css=read('src/site.css');
+ for (const token of ['service-card-top','portfolio-card-featured','article-index']) assert.match(main,new RegExp(token));
+ assert.match(css,/#work \.portfolio-card-featured/);
+ assert.match(css,/#testimonials \.testimonial-grid/);
+ assert.match(css,/grid-template-columns:minmax\(0,1fr\)/);
+});
+
+test('v2.3.2 ships original architecture artwork and verified technology asset mapping',()=>{
+ const icons=read('src/icons.ts');
+ assert.match(html,/src="\/illustrations\/architecture.svg"/);
+ assert.match(html,/src="\/illustrations\/delivery-pipeline.svg"/);
+ assert.match(read('public/illustrations/architecture.svg'),/conceptual engineering blueprint/i);
+ assert.match(read('public/illustrations/delivery-pipeline.svg'),/Five clear stages/);
+ for(const brand of ['Adobe XD','AWS','Azure']) assert.ok(icons.includes("'"+brand+"'"));
+ for(const file of ['xd.svg','azure.svg','amazonwebservices.svg']) assert.match(read('public/tech/'+file),/^<svg/);
+});
+
+test('v2.3.3 avoids hidden content, supports safe areas and preserves contact focus',()=>{
+ const style=read('src/site.css');
+ assert.match(style,/prefers-reduced-data:reduce/);
+ assert.match(style,/safe-area-inset-bottom/);
+ assert.match(style,/max-width:375px/);
+ assert.match(style,/max-width:330px/);
+ assert.match(style,/\.reveal-ready \.reveal-item \{opacity:1/);
+ assert.match(main,/focusContactAfterClose/);
+ assert.match(main,/getBoundingClientRect\(\)\.top/);
+});
+
+test('v2.3.4 includes automated multi-engine responsive and accessible browser QA',()=>{
+ const qa=read('scripts/browser-qa.mjs');
+ const workflow=read('.github/workflows/browser-quality.yml');
+ for(const engine of ['chromium','firefox','webkit']) assert.match(qa,new RegExp('\\b'+engine+'\\b'));
+ for(const viewport of ['320','375','768','1024','1280','1440']) assert.ok(qa.includes(viewport));
+ assert.match(qa,/AxeBuilder/);
+ assert.match(qa,/data\.overflow/);
+ assert.match(qa,/aria-expanded/);
+ assert.match(qa,/screenshot/);
+ assert.match(workflow,/upload-artifact@v4/);
+ assert.match(workflow,/playwright install --with-deps/);
+ assert.match(read('package.json'),/"version": "2\.3\.4"/);
+});
+
+test('v2.3.4 card names derive from visible content',()=>{
+ assert.ok(!main.includes('aria-label="Explore ${escapeHtml(service.title)}"'));
+ assert.ok(!main.includes('aria-label="Explore case study:'));
+ assert.match(read('scripts/browser-qa.mjs'),/failureSummary/);
+});
+
+test('v2.3.4 portfolio artwork is self-hosted, identified as conceptual and verified in browser QA',()=>{
+ const models=read('src/content.ts');
+ for(const key of ['ops','finance','health','learning','cloudops','support','field','commerce']){
+  assert.ok(models.includes('image: "/illustrations/case-'+key+'.svg"'));
+  assert.match(read('public/illustrations/case-'+key+'.svg'),/NOT A CLIENT SCREENSHOT/);
+ }
+ assert.match(read('src/site.css'),/#approach \.process-head p \{color:#24636b\}/);
+ assert.match(read('scripts/browser-qa.mjs'),/Undelivered case-study artwork/);
+ assert.doesNotMatch(read('src/icons.ts'),/<text x="18"/);
 });

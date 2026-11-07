@@ -1,4 +1,4 @@
-import { existsSync, readFileSync, readdirSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { resolve } from "node:path";
 
 const required = [
@@ -10,6 +10,16 @@ const required = [
   "pukka-gen-wordmark.png",
   "pukka-gen-mark.png",
   "pukka-gen-favicon.png",
+  "illustrations/architecture.svg",
+  "illustrations/delivery-pipeline.svg",
+  "illustrations/case-ops.svg",
+  "illustrations/case-finance.svg",
+  "illustrations/case-health.svg",
+  "illustrations/case-learning.svg",
+  "illustrations/case-cloudops.svg",
+  "illustrations/case-support.svg",
+  "illustrations/case-field.svg",
+  "illustrations/case-commerce.svg",
 ];
 for (const path of required) {
   const absolute = resolve(process.cwd(), "dist", path);
@@ -32,7 +42,7 @@ if (!/src="\/assets\//.test(index)) {
 const iconDirectory = resolve(process.cwd(), "dist", "tech");
 if (!existsSync(iconDirectory)) throw new Error("Technology brand SVG assets are missing from production build.");
 const iconFiles = readdirSync(iconDirectory).filter(name => name.endsWith(".svg"));
-if (iconFiles.length < 27) throw new Error(`Only ${iconFiles.length} technology SVG assets found (expected at least 27).`);
+if (iconFiles.length < 32) throw new Error(`Only ${iconFiles.length} technology SVG assets found (expected at least 32).`);
 for (const filename of iconFiles) {
   const contents = readFileSync(resolve(iconDirectory, filename), "utf8");
   if (!contents.startsWith("<svg") || !contents.includes("<path")) {
@@ -40,3 +50,11 @@ for (const filename of iconFiles) {
   }
 }
 console.log(`Verified website entry points, sitemap, legal routes, bundle and ${iconFiles.length} technology icons.`);
+
+const bundleDir = resolve(process.cwd(), "dist", "assets");
+const assetNames = readdirSync(bundleDir);
+const jsBytes = assetNames.filter(name=>name.endsWith(".js")).reduce((total,name)=>total+statSync(resolve(bundleDir,name)).size,0);
+const cssBytes = assetNames.filter(name=>name.endsWith(".css")).reduce((total,name)=>total+statSync(resolve(bundleDir,name)).size,0);
+if(jsBytes>260_000)throw new Error(`JavaScript budget exceeded: ${jsBytes}/260000 bytes`);
+if(cssBytes>160_000)throw new Error(`CSS budget exceeded: ${cssBytes}/160000 bytes`);
+console.log(`Production budgets: JS ${jsBytes} B / 260 kB, CSS ${cssBytes} B / 160 kB.`);
