@@ -91,8 +91,7 @@ setMenuOpen(false);
 mount('service-grid', serviceSummaries.map((service, i) => `
   <button type="button" class="service-card" data-service="${escapeHtml(service.key)}"
      aria-label="Explore ${escapeHtml(service.title)}">
-    <span class="service-number">SERVICE / ${String(i+1).padStart(2,'0')}</span>
-    <span class="service-icon" aria-hidden="true">${icon(service.key)}</span>
+    <span class="service-card-top"><span class="service-number">SERVICE / ${String(i+1).padStart(2,'0')}</span><span class="service-icon" aria-hidden="true">${icon(service.key)}</span></span>
     <h3>${escapeHtml(service.title)}</h3>
     <p>${escapeHtml(service.body)}</p>
     <span class="card-bottom"><span>${escapeHtml(service.category)}</span><span class="card-arrow" aria-hidden="true">${icon("arrowUp")}</span></span>
@@ -154,7 +153,7 @@ function renderWork(): void {
   const visible = caseEntries.filter(([key]) =>
     currentFilter === 'All work' || categories[key] === currentFilter);
   mount('portfolio-grid', visible.map(([key,info]) => `
-    <article class="portfolio-card"><button type="button" data-case="${escapeHtml(key)}"
+    <article class="portfolio-card${currentFilter === 'All work' && key === 'ops' ? ' portfolio-card-featured' : ''}"><button type="button" data-case="${escapeHtml(key)}"
       aria-label="Explore case study: ${escapeHtml(info.title)}">
       <div class="portfolio-image"><img loading="lazy" decoding="async" src="${escapeHtml(info.image)}" alt="Visual reference for ${escapeHtml(info.title)}">
         <span class="portfolio-index">${escapeHtml(info.index)} / 08</span></div>
@@ -215,10 +214,10 @@ const articleCatalog = [
   {key:'serverless',category:'Cloud architecture'}
 ] as const;
 const articleIcons: Record<(typeof articleCatalog)[number]['key'], IconName> = {mvp_trap:'target',scope:'layers',cheap_code:'code',bluffing:'users',ai_business:'ai',pwa:'phone',cloud_security:'shield',serverless:'server'};
-mount('article-grid', articleCatalog.map(article => {
+mount('article-grid', articleCatalog.map((article,index) => {
   const data = blogDetails[article.key];
   return `<button type="button" class="article-card" data-article="${article.key}">
-      <span class="article-topline"><span class="article-category">${escapeHtml(article.category)}</span><span class="article-symbol" aria-hidden="true">${icon(articleIcons[article.key])}</span></span>
+      <span class="article-topline"><span class="article-category"><span class="article-index">${String(index+1).padStart(2,"0")} / </span>${escapeHtml(article.category)}</span><span class="article-symbol" aria-hidden="true">${icon(articleIcons[article.key])}</span></span>
       <h3>${escapeHtml(data.title)}</h3><p>${escapeHtml(data.description)}</p>
       <span class="article-read">Read insight <span aria-hidden="true">${icon("arrowUp")}</span></span>
     </button>`;

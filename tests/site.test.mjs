@@ -128,7 +128,7 @@ test('v2.1 enterprise identity and structure are present without copying the ref
   assert.match(updatedStyle, /sector-strip span:nth-child\(6\)/);
   assert.match(updatedStyle, /@media \(max-width:380px\)/);
   assert.match(updatedStyle, /prefers-reduced-motion:reduce/);
-  assert.match(read('package.json'), /"version": "2\.3\.0"/);
+  assert.match(read('package.json'), /"version": "2\.3\.1"/);
 });
 test('v2.1 nav scroll state, reveal enhancements and portfolio keyboard focus are wired',()=>{
   assert.match(main, /function updateScrollVisuals/);
@@ -185,4 +185,12 @@ test('v2.3.0 design system consolidates styling and exposes reusable tokens',()=
   assert.equal((html.match(/rel="stylesheet"/g)||[]).length,1);
   assert.match(html,/href="\/src\/site.css"/);
   for(const file of ['privacy.html','terms.html']) assert.match(read(file),/href="\/src\/site.css"/);
+});
+
+test('v2.3.1 premium cards preserve content and adapt the first portfolio entry',()=>{
+ const css=read('src/site.css');
+ for (const token of ['service-card-top','portfolio-card-featured','article-index']) assert.match(main,new RegExp(token));
+ assert.match(css,/#work \.portfolio-card-featured/);
+ assert.match(css,/#testimonials \.testimonial-grid/);
+ assert.match(css,/grid-template-columns:minmax\(0,1fr\)/);
 });

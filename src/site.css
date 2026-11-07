@@ -1433,3 +1433,59 @@ h1,h2,h3,h4 {font-family:var(--pg-font-display);font-weight:750}
   html {scroll-behavior:auto}
   :where(.button,.filter-button,.service-card,.portfolio-card,.article-card) {transition:none!important}
 }
+
+/* v2.3.1: structured, deliberate card hierarchy and editorial bento layout. */
+#services .service-grid {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--pg-space-5)}
+#services .service-card {display:flex;flex-direction:column;min-height:335px;padding:clamp(24px,2.5vw,36px);border-radius:var(--pg-radius-lg)}
+#services .service-card-top {display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
+#services .service-card .service-number {padding-top:5px}
+#services .service-card .service-icon {margin:0;flex:0 0 60px;width:60px;height:60px;border-radius:var(--pg-radius-md)}
+#services .service-card h3 {margin-top:var(--pg-space-8);line-height:1.2;max-width:23ch}
+#services .service-card p {line-height:1.7;max-width:48ch}
+#services .service-card .card-bottom {width:100%;margin-top:auto;padding-top:var(--pg-space-5);border-top:1px solid var(--pg-border-light)}
+#work .portfolio-grid {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--pg-space-5)}
+#work .portfolio-card-featured {grid-column:span 2}
+#work .portfolio-card-featured button {display:grid;grid-template-columns:minmax(0,1.12fr) minmax(0,.88fr);height:100%;text-align:left}
+#work .portfolio-card-featured .portfolio-image {height:100%;aspect-ratio:auto;min-height:365px}
+#work .portfolio-card-featured .portfolio-image img {height:100%;object-fit:cover}
+#work .portfolio-card-featured .portfolio-information {justify-content:center;padding:clamp(30px,4vw,60px)}
+#work .portfolio-card-featured .portfolio-title-row h3 {font-size:clamp(1.65rem,3vw,2.8rem)}
+#work .portfolio-card-featured .portfolio-information>p {font-size:1rem;max-width:37ch}
+#work .portfolio-card-featured .portfolio-metrics {margin-top:var(--pg-space-10)}
+#work .portfolio-information>p {max-width:58ch}
+#insights .article-grid {display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--pg-space-4)}
+#insights .article-card {display:flex;flex-direction:column;min-height:295px}
+#insights .article-card h3 {font-size:clamp(1.05rem,1.6vw,1.36rem);line-height:1.3}
+#insights .article-read {margin-top:auto;padding-top:var(--pg-space-6);font-weight:740}
+.article-index {font:750 .72rem/1.2 var(--pg-font-technical);letter-spacing:.03em;opacity:.75}
+#testimonials .testimonial-grid {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--pg-space-4)}
+#testimonials .testimonial-card {display:flex;flex-direction:column;min-height:250px;padding:clamp(24px,2.6vw,38px)}
+#testimonials .testimonial-card blockquote {margin:var(--pg-space-5) 0 var(--pg-space-6);line-height:1.8}
+#testimonials .testimonial-card footer {margin-top:auto;padding-top:var(--pg-space-5);border-top:1px solid rgba(193,235,237,.16)}
+#team .team-grid {gap:var(--pg-space-5)}
+#team .team-card {height:100%}
+@media (max-width:1100px) {
+ #services .service-grid {grid-template-columns:repeat(2,minmax(0,1fr))}
+ #insights .article-grid {grid-template-columns:repeat(2,minmax(0,1fr))}
+ #work .portfolio-card-featured .portfolio-image {min-height:330px}
+}
+@media (max-width:800px) {
+ #work .portfolio-card-featured button {grid-template-columns:minmax(0,1fr)}
+ #work .portfolio-card-featured .portfolio-image {min-height:0;aspect-ratio:16/8}
+ #work .portfolio-card-featured .portfolio-information {padding:clamp(23px,4vw,36px)}
+ #work .portfolio-card-featured .portfolio-title-row h3 {font-size:clamp(1.5rem,4.5vw,2.2rem)}
+ #testimonials .testimonial-card {min-height:0}
+}
+@media (max-width:600px) {
+ #services .service-grid,#work .portfolio-grid,#insights .article-grid,#testimonials .testimonial-grid {grid-template-columns:minmax(0,1fr)}
+ #services .service-card {min-height:0;padding:var(--pg-space-6)}
+ #services .service-card .service-icon {width:55px;height:55px;flex-basis:55px}
+ #services .service-card h3 {margin-top:var(--pg-space-6)}
+ #services .service-card .card-bottom {margin-top:var(--pg-space-6)}
+ #work .portfolio-card-featured {grid-column:auto}
+ #work .portfolio-card-featured .portfolio-image {aspect-ratio:16/9}
+ #work .portfolio-card-featured .portfolio-information {padding:23px}
+ #work .portfolio-card-featured .portfolio-title-row h3 {font-size:1.5rem}
+ #insights .article-card {min-height:0}
+ #testimonials .testimonial-card {padding:24px}
+}
