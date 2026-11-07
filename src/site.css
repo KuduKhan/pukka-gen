@@ -1784,6 +1784,8 @@ h1,h2,h3,h4 {font-family:var(--pg-font-display);letter-spacing:-.052em}
 #insights .article-card:hover {border-color:#9dcfba;box-shadow:0 17px 36px rgba(12,78,55,.1)}
 #insights .article-card p {color:var(--pg-homes-muted)}
 #insights .article-card :is(.article-category,.article-read) {color:var(--pg-homes-green)}
+/* The index was inherited at 75% opacity; opaque ink meets WCAG AA on white. */
+#insights .article-card .article-index {opacity:1;color:#075943;font-weight:800}
 #faq .faq-list details {
   border:1px solid var(--pg-homes-line);border-radius:15px;
   background:#fff;box-shadow:0 7px 20px rgba(17,77,55,.04);
