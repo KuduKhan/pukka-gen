@@ -6,7 +6,7 @@ import handler from '../api/project-brief.mjs';
 const read = path => readFileSync(new URL('../' + path, import.meta.url), 'utf8');
 const html = read('index.html');
 const main = read('src/main.ts');
-const css = read('src/styles.css');
+const css = read('src/site.css');
 const content = read('src/content.ts');
 
 function response() {
@@ -114,7 +114,7 @@ test('without server-side email configuration, client gets honest 503',async()=>
 });
 
 test('v2.1 enterprise identity and structure are present without copying the reference brand',()=>{
-  const updatedStyle=read('src/enterprise.css');
+  const updatedStyle=read('src/site.css');
   assert.match(html, /href="\/src\/enterprise.css"/);
   assert.match(html, /id="reading-progress-bar"/);
   assert.match(html, /id="outcome-heading"/);
@@ -128,7 +128,7 @@ test('v2.1 enterprise identity and structure are present without copying the ref
   assert.match(updatedStyle, /sector-strip span:nth-child\(6\)/);
   assert.match(updatedStyle, /@media \(max-width:380px\)/);
   assert.match(updatedStyle, /prefers-reduced-motion:reduce/);
-  assert.match(read('package.json'), /"version": "2\.2\.0"/);
+  assert.match(read('package.json'), /"version": "2\.3\.0"/);
 });
 test('v2.1 nav scroll state, reveal enhancements and portfolio keyboard focus are wired',()=>{
   assert.match(main, /function updateScrollVisuals/);
@@ -141,7 +141,7 @@ test('v2.1 nav scroll state, reveal enhancements and portfolio keyboard focus ar
 });
 
 test('v2.2 premium UI polish is responsive and respects access needs',()=>{
-  const style=read('src/premium.css');
+  const style=read('src/site.css');
   const icons=read('src/icons.ts');
   assert.match(html,/href="\/src\/premium.css"/);
   assert.match(style,/#services \.service-grid/);
@@ -177,4 +177,12 @@ test('v2.2 contains verified local SVG files for technology names',()=>{
     assert.match(svg,/fill="#[0-9A-Fa-f]{6}"/);
   }
   assert.match(icons,/tech-mark-generic/);
+});
+
+test('v2.3.0 design system consolidates styling and exposes reusable tokens',()=>{
+  const sheet=read('src/site.css');
+  for(const token of ['--pg-font-display','--pg-font-body','--pg-space-4','--pg-radius-lg','--pg-surface-light','--pg-shadow-md','--pg-motion-standard','--pg-focus-ring']) assert.ok(sheet.includes(token),token+' absent');
+  assert.equal((html.match(/rel="stylesheet"/g)||[]).length,1);
+  assert.match(html,/href="\/src\/site.css"/);
+  for(const file of ['privacy.html','terms.html']) assert.match(read(file),/href="\/src\/site.css"/);
 });
