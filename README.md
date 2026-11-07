@@ -78,3 +78,10 @@ Styling is specific to Pukka Gen; no third-party studio's source code or proprie
 For local browser acceptance, install ephemeral tooling with `npm install --no-save --package-lock=false playwright @axe-core/playwright`, run `npx playwright install chromium firefox webkit`, start `npm run dev -- --host 127.0.0.1 --port 4173`, then run `node scripts/browser-qa.mjs`.
 
 The automated browser suite captures **visual QA snapshots**, not signed pixel-diff approval of a new visual baseline. Physical device and assistive-technology signoff, measured field Core Web Vitals, actual email arrival, and independent substantiation of inherited customer metrics require separate evidence. Do not treat a green browser run as proof of those external gates.
+
+
+## KhanHomes Discover-inspired styling preview (unreleased)
+
+The `design/khanhomes-visual-refinement` branch adds a reference-informed styling layer to the existing consolidated `src/site.css`, retaining Pukka Gen's logo, content, workflows and dark/light editorial sections. The adaptation uses KhanHomes Discover's compact navigation, green-slate design tokens, editorial typography rhythm, refined cards, accessible focus treatment, and responsive spacing; it does not reproduce KhanHomes branding or code.
+
+This is a **visual preview**, not an independently accepted production release. The browser QA suite and accessibility checks must run against the branch. In particular review the header/logo contrast, technical diagram readability, portfolio filters, enquiry form focus and mobile navigation at 320, 375, 768, 1024, 1280 and 1440px. Physical device and screen-reader signoff, real email delivery and business/legal validation remain separate gates. No runtime features or external font dependencies were added.
