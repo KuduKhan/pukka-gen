@@ -248,12 +248,13 @@ test('v2.3.4 portfolio artwork is self-hosted, identified as conceptual and veri
 });
 
 
-test('KhanHomes-inspired Pukka visual layer keeps a single stylesheet and safe defaults',()=>{
+test('Logo-led navy Pukka visual layer preserves the accessible single-stylesheet contract',()=>{
   const style=read('src/site.css');
   assert.equal((html.match(/rel="stylesheet"/g)||[]).length,1);
   for(const token of [
-    '--pg-homes-canvas','--pg-homes-paper','--pg-homes-ink',
-    '--pg-homes-green','--pg-homes-mint','--pg-homes-ease'
+    '--pg-brand-navy-950','--pg-brand-navy-900','--pg-brand-navy-700',
+    '--pg-brand-cyan','--pg-brand-blue','--pg-brand-violet',
+    '--pg-brand-motion','--pg-brand-paper'
   ]) assert.ok(style.includes(token),token+' visual token missing');
   for(const selector of [
     '.site-header.is-scrolled','#services .service-card',
@@ -265,5 +266,9 @@ test('KhanHomes-inspired Pukka visual layer keeps a single stylesheet and safe d
   assert.match(style,/@media \(prefers-contrast:more\)/);
   assert.match(html,/src="\/pukka-gen-wordmark\.png"/);
   assert.match(html,/id="project-form"/);
-  assert.match(style,/#insights \.article-card \.article-index \{opacity:1;color:#075943/);
+  assert.match(style,/#insights \.article-card \.article-index \{opacity:1;color:#07569a/);
+  assert.match(style,/\.site-header,\.site-header\.is-scrolled \{/);
+  assert.match(style,/\.hero h1 em \{/);
+  assert.doesNotMatch(style,/--pg-homes-green/);
+  assert.match(html,/name="theme-color" content="#06152f"/);
 });
