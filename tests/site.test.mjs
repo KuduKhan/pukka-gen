@@ -120,7 +120,7 @@ test('v2.1 enterprise identity and structure are present without copying the ref
   assert.match(html, /id="outcome-heading"/);
   assert.match(html, /enterprise-ribbon-grid/);
   assert.match(html, /class="hero-scene"/);
-  assert.match(html, /alt="Modern technology workspace/);
+  assert.match(html, /alt="Conceptual software architecture/);
   assert.doesNotMatch(html, /nocturnalsintellisoft\.com/i);
   assert.doesNotMatch(updatedStyle, /nocturnalsintellisoft\.com/i);
   assert.match(updatedStyle, /#services \{/);
@@ -128,7 +128,7 @@ test('v2.1 enterprise identity and structure are present without copying the ref
   assert.match(updatedStyle, /sector-strip span:nth-child\(6\)/);
   assert.match(updatedStyle, /@media \(max-width:380px\)/);
   assert.match(updatedStyle, /prefers-reduced-motion:reduce/);
-  assert.match(read('package.json'), /"version": "2\.3\.1"/);
+  assert.match(read('package.json'), /"version": "2\.3\.2"/);
 });
 test('v2.1 nav scroll state, reveal enhancements and portfolio keyboard focus are wired',()=>{
   assert.match(main, /function updateScrollVisuals/);
@@ -193,4 +193,14 @@ test('v2.3.1 premium cards preserve content and adapt the first portfolio entry'
  assert.match(css,/#work \.portfolio-card-featured/);
  assert.match(css,/#testimonials \.testimonial-grid/);
  assert.match(css,/grid-template-columns:minmax\(0,1fr\)/);
+});
+
+test('v2.3.2 ships original architecture artwork and verified technology asset mapping',()=>{
+ const icons=read('src/icons.ts');
+ assert.match(html,/src="\/illustrations\/architecture.svg"/);
+ assert.match(html,/src="\/illustrations\/delivery-pipeline.svg"/);
+ assert.match(read('public/illustrations/architecture.svg'),/Conceptual engineering blueprint/);
+ assert.match(read('public/illustrations/delivery-pipeline.svg'),/Five clear stages/);
+ for(const brand of ['Adobe XD','AWS','Azure']) assert.ok(icons.includes("'"+brand+"'"));
+ for(const file of ['xd.svg','azure.svg','amazonwebservices.svg']) assert.match(read('public/tech/'+file),/^<svg/);
 });

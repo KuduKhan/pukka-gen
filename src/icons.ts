@@ -1,7 +1,7 @@
 /**
  * Pukka Gen v2.2 visual iconography.
  * Self-contained line SVGs for interface actions and verified, self-hosted
- * technology marks sourced from the Simple Icons community collection.
+ * technology marks sourced from Simple Icons and Devicon public collections.
  * Fallbacks for unavailable brand assets are purposefully neutral monograms,
  * never substituted third-party logos.
  */
@@ -47,11 +47,11 @@ export function icon(name: IconName, className = 'ui-icon'): string {
 // Only paths verified and bundled under /public/tech.
 const brandSlugs: Readonly<Record<string, string>> = {
   'React':'react','Angular':'angular','Vue.js':'vuedotjs','TypeScript':'typescript',
-  'Flutter':'flutter','Swift':'swift','Figma':'figma','Sketch':'sketch',
+  'Flutter':'flutter','Swift':'swift','Figma':'figma','Sketch':'sketch','Adobe XD':'xd',
   'Node.js':'nodedotjs','Python':'python','Java':'openjdk','C#':'sharp',
   '.NET':'dotnet','Go':'go','MongoDB':'mongodb','PostgreSQL':'postgresql',
   'Redis':'redis','TensorFlow':'tensorflow','PyTorch':'pytorch',
-  'Google Cloud':'googlecloud','Docker':'docker','Kubernetes':'kubernetes',
+  'Google Cloud':'googlecloud','AWS':'amazonwebservices','Azure':'azure','Docker':'docker','Kubernetes':'kubernetes',
   'Terraform':'terraform','Jenkins':'jenkins','Git':'git','GitLab':'gitlab',
   'Selenium':'selenium','Cypress':'cypress','Jira':'jira'
 };

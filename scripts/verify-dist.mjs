@@ -10,6 +10,8 @@ const required = [
   "pukka-gen-wordmark.png",
   "pukka-gen-mark.png",
   "pukka-gen-favicon.png",
+  "illustrations/architecture.svg",
+  "illustrations/delivery-pipeline.svg",
 ];
 for (const path of required) {
   const absolute = resolve(process.cwd(), "dist", path);
@@ -32,7 +34,7 @@ if (!/src="\/assets\//.test(index)) {
 const iconDirectory = resolve(process.cwd(), "dist", "tech");
 if (!existsSync(iconDirectory)) throw new Error("Technology brand SVG assets are missing from production build.");
 const iconFiles = readdirSync(iconDirectory).filter(name => name.endsWith(".svg"));
-if (iconFiles.length < 27) throw new Error(`Only ${iconFiles.length} technology SVG assets found (expected at least 27).`);
+if (iconFiles.length < 32) throw new Error(`Only ${iconFiles.length} technology SVG assets found (expected at least 32).`);
 for (const filename of iconFiles) {
   const contents = readFileSync(resolve(iconDirectory, filename), "utf8");
   if (!contents.startsWith("<svg") || !contents.includes("<path")) {

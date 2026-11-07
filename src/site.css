@@ -1489,3 +1489,29 @@ h1,h2,h3,h4 {font-family:var(--pg-font-display);font-weight:750}
  #insights .article-card {min-height:0}
  #testimonials .testimonial-card {padding:24px}
 }
+
+/* v2.3.2 — Original technical illustrations and correctly attributed icon marks. */
+.hero-visual-architecture {background:#0d2534;overflow:visible}
+.hero-visual-architecture .hero-image-shell {background:#0c2535}
+.hero-visual-architecture .hero-scene {display:block;object-fit:contain;object-position:center;opacity:1;filter:none}
+.hero-visual-architecture .hero-scene-gradient {display:none}
+.hero-visual-architecture .scene-caption {display:none}
+.hero-visual-architecture .visual-topline,.hero-visual-architecture .visual-bottom {
+  background:rgba(9,32,45,.83);border:1px solid rgba(148,234,221,.22);
+  border-radius:9px;padding:8px 12px;left:19px;right:19px;
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+}
+.hero-visual-architecture .visual-topline {top:16px}
+.hero-visual-architecture .visual-bottom {bottom:15px}
+.outcome-image img[src$="delivery-pipeline.svg"] {object-fit:cover;object-position:center;filter:none}
+#technology .tech-mark img[src$="amazonwebservices.svg"] {background:#f5fbff;border-radius:5px;padding:2px}
+#technology .tech-mark img[src$="xd.svg"] {border-radius:5px}
+#technology .tech-mark img[src$="azure.svg"] {padding:1px}
+@media (max-width:600px) {
+ .hero-visual-architecture {aspect-ratio:1.05;max-height:440px}
+ .hero-visual-architecture .hero-scene {object-fit:contain}
+ .hero-visual-architecture .visual-topline {font-size:.5rem}
+ .hero-visual-architecture .visual-bottom {font-size:.48rem}
+ .hero-visual-architecture .float-one,.hero-visual-architecture .float-two {display:none}
+ .outcome-image img[src$="delivery-pipeline.svg"] {object-fit:cover}
+}
