@@ -77,7 +77,7 @@ test('legal pages preserve original privacy and contract notices',()=>{
   for(const path of ['privacy.html','terms.html']) {
     const document=read(path);
     assert.match(document,/Last updated: October 26, 2026/);
-    assert.match(document,/href="\/src\/styles.css"/);
+    assert.match(document,/href="\/src\/site.css"/);
     assert.match(document,/href="\/"/);
   }
   assert.match(read('privacy.html'),/Information collected/);
@@ -115,7 +115,7 @@ test('without server-side email configuration, client gets honest 503',async()=>
 
 test('v2.1 enterprise identity and structure are present without copying the reference brand',()=>{
   const updatedStyle=read('src/site.css');
-  assert.match(html, /href="\/src\/enterprise.css"/);
+  assert.match(html, /href="\/src\/site.css"/);
   assert.match(html, /id="reading-progress-bar"/);
   assert.match(html, /id="outcome-heading"/);
   assert.match(html, /enterprise-ribbon-grid/);
@@ -143,7 +143,7 @@ test('v2.1 nav scroll state, reveal enhancements and portfolio keyboard focus ar
 test('v2.2 premium UI polish is responsive and respects access needs',()=>{
   const style=read('src/site.css');
   const icons=read('src/icons.ts');
-  assert.match(html,/href="\/src\/premium.css"/);
+  assert.match(html,/href="\/src\/site.css"/);
   assert.match(style,/#services \.service-grid/);
   assert.match(style,/#work \.portfolio-card/);
   assert.match(style,/#technology \.technology-pills/);
