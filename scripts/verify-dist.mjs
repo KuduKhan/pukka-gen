@@ -1,4 +1,4 @@
-import { existsSync, readFileSync, readdirSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { resolve } from "node:path";
 
 const required = [
@@ -42,3 +42,11 @@ for (const filename of iconFiles) {
   }
 }
 console.log(`Verified website entry points, sitemap, legal routes, bundle and ${iconFiles.length} technology icons.`);
+
+const bundleDir = resolve(process.cwd(), "dist", "assets");
+const assetNames = readdirSync(bundleDir);
+const jsBytes = assetNames.filter(name=>name.endsWith(".js")).reduce((total,name)=>total+statSync(resolve(bundleDir,name)).size,0);
+const cssBytes = assetNames.filter(name=>name.endsWith(".css")).reduce((total,name)=>total+statSync(resolve(bundleDir,name)).size,0);
+if(jsBytes>260_000)throw new Error(`JavaScript budget exceeded: ${jsBytes}/260000 bytes`);
+if(cssBytes>160_000)throw new Error(`CSS budget exceeded: ${cssBytes}/160000 bytes`);
+console.log(`Production budgets: JS ${jsBytes} B / 260 kB, CSS ${cssBytes} B / 160 kB.`);

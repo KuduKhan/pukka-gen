@@ -128,7 +128,7 @@ test('v2.1 enterprise identity and structure are present without copying the ref
   assert.match(updatedStyle, /sector-strip span:nth-child\(6\)/);
   assert.match(updatedStyle, /@media \(max-width:380px\)/);
   assert.match(updatedStyle, /prefers-reduced-motion:reduce/);
-  assert.match(read('package.json'), /"version": "2\.3\.3"/);
+  assert.match(read('package.json'), /"version": "2\.3\.4"/);
 });
 test('v2.1 nav scroll state, reveal enhancements and portfolio keyboard focus are wired',()=>{
   assert.match(main, /function updateScrollVisuals/);
@@ -199,7 +199,7 @@ test('v2.3.2 ships original architecture artwork and verified technology asset m
  const icons=read('src/icons.ts');
  assert.match(html,/src="\/illustrations\/architecture.svg"/);
  assert.match(html,/src="\/illustrations\/delivery-pipeline.svg"/);
- assert.match(read('public/illustrations/architecture.svg'),/Conceptual engineering blueprint/);
+ assert.match(read('public/illustrations/architecture.svg'),/conceptual engineering blueprint/i);
  assert.match(read('public/illustrations/delivery-pipeline.svg'),/Five clear stages/);
  for(const brand of ['Adobe XD','AWS','Azure']) assert.ok(icons.includes("'"+brand+"'"));
  for(const file of ['xd.svg','azure.svg','amazonwebservices.svg']) assert.match(read('public/tech/'+file),/^<svg/);
@@ -214,4 +214,18 @@ test('v2.3.3 avoids hidden content, supports safe areas and preserves contact fo
  assert.match(style,/\.reveal-ready \.reveal-item \{opacity:1/);
  assert.match(main,/focusContactAfterClose/);
  assert.match(main,/getBoundingClientRect\(\)\.top/);
+});
+
+test('v2.3.4 includes automated multi-engine responsive and accessible browser QA',()=>{
+ const qa=read('scripts/browser-qa.mjs');
+ const workflow=read('.github/workflows/browser-quality.yml');
+ for(const engine of ['chromium','firefox','webkit']) assert.match(qa,new RegExp('\\b'+engine+'\\b'));
+ for(const viewport of ['320','375','768','1024','1280','1440']) assert.ok(qa.includes(viewport));
+ assert.match(qa,/AxeBuilder/);
+ assert.match(qa,/data\.overflow/);
+ assert.match(qa,/aria-expanded/);
+ assert.match(qa,/screenshot/);
+ assert.match(workflow,/upload-artifact@v4/);
+ assert.match(workflow,/playwright install --with-deps/);
+ assert.match(read('package.json'),/"version": "2\.3\.4"/);
 });
