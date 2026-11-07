@@ -246,3 +246,29 @@ test('v2.3.4 portfolio artwork is self-hosted, identified as conceptual and veri
  assert.match(read('scripts/browser-qa.mjs'),/Undelivered case-study artwork/);
  assert.doesNotMatch(read('src/icons.ts'),/<text x="18"/);
 });
+
+
+test('Logo-led navy Pukka visual layer preserves the accessible single-stylesheet contract',()=>{
+  const style=read('src/site.css');
+  assert.equal((html.match(/rel="stylesheet"/g)||[]).length,1);
+  for(const token of [
+    '--pg-brand-navy-950','--pg-brand-navy-900','--pg-brand-navy-700',
+    '--pg-brand-cyan','--pg-brand-blue','--pg-brand-violet',
+    '--pg-brand-motion','--pg-brand-paper'
+  ]) assert.ok(style.includes(token),token+' visual token missing');
+  for(const selector of [
+    '.site-header.is-scrolled','#services .service-card',
+    '#insights .article-card','#work .portfolio-card',
+    '#faq .faq-list details','.hero-visual-architecture'
+  ]) assert.ok(style.includes(selector),selector+' visual style missing');
+  assert.match(style,/@media \(max-width:380px\)/);
+  assert.match(style,/@media \(prefers-reduced-motion:reduce\)/);
+  assert.match(style,/@media \(prefers-contrast:more\)/);
+  assert.match(html,/src="\/pukka-gen-wordmark\.png"/);
+  assert.match(html,/id="project-form"/);
+  assert.match(style,/#insights \.article-card \.article-index \{opacity:1;color:#07569a/);
+  assert.match(style,/\.site-header,\.site-header\.is-scrolled \{/);
+  assert.match(style,/\.hero h1 em \{/);
+  assert.doesNotMatch(style,/--pg-homes-green/);
+  assert.match(html,/name="theme-color" content="#06152f"/);
+});
