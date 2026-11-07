@@ -235,3 +235,14 @@ test('v2.3.4 card names derive from visible content',()=>{
  assert.ok(!main.includes('aria-label="Explore case study:'));
  assert.match(read('scripts/browser-qa.mjs'),/failureSummary/);
 });
+
+test('v2.3.4 portfolio artwork is self-hosted, identified as conceptual and verified in browser QA',()=>{
+ const models=read('src/content.ts');
+ for(const key of ['ops','finance','health','learning','cloudops','support','field','commerce']){
+  assert.ok(models.includes('image: "/illustrations/case-'+key+'.svg"'));
+  assert.match(read('public/illustrations/case-'+key+'.svg'),/NOT A CLIENT SCREENSHOT/);
+ }
+ assert.match(read('src/site.css'),/#approach \.process-head p \{color:#24636b\}/);
+ assert.match(read('scripts/browser-qa.mjs'),/Undelivered case-study artwork/);
+ assert.doesNotMatch(read('src/icons.ts'),/<text x="18"/);
+});

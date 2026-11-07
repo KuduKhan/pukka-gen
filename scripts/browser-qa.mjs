@@ -89,6 +89,13 @@ for(const [name,engine] of Object.entries(browserTypes)){
      if(name==='chromium' && [375,768,1440].includes(width)){
        await page.goto(origin,{waitUntil:'domcontentloaded'});
        await page.locator('.service-card').first().waitFor();
+       await page.evaluate(async()=>{
+         const images=Array.from(document.querySelectorAll('.portfolio-image img'));
+         images.forEach(img=>img.loading='eager');
+         await Promise.all(images.map(img=>img.decode().catch(()=>{})));
+       });
+       const broken=await page.locator('.portfolio-image img').evaluateAll(images=>images.filter(img=>!img.complete||img.naturalWidth===0).map(img=>img.getAttribute('src')));
+       if(broken.length)throw new Error('Undelivered case-study artwork: '+broken.join(', '));
        await page.screenshot({path:`${folder}/pukka-v2.3.4-${width}.png`,fullPage:true,animations:'disabled'});
      }
      if(name==='chromium' && [375,1440].includes(width)){

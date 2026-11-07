@@ -12,6 +12,14 @@ const required = [
   "pukka-gen-favicon.png",
   "illustrations/architecture.svg",
   "illustrations/delivery-pipeline.svg",
+  "illustrations/case-ops.svg",
+  "illustrations/case-finance.svg",
+  "illustrations/case-health.svg",
+  "illustrations/case-learning.svg",
+  "illustrations/case-cloudops.svg",
+  "illustrations/case-support.svg",
+  "illustrations/case-field.svg",
+  "illustrations/case-commerce.svg",
 ];
 for (const path of required) {
   const absolute = resolve(process.cwd(), "dist", path);

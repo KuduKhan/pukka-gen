@@ -26,3 +26,10 @@
 - Legal review, and real-user field performance metrics; lab bundle budgets cannot establish actual LCP/INP/CLS at the 75th percentile.
 
 Never represent automated QA as independent production signoff.
+
+## Closed automated findings
+- Card button labels now use their visible content, resolving 14 accessible-name mismatches.
+- The remaining technology badge was changed to a non-textual decorative vector glyph.
+- Timeline subtitle contrast improved from an axe-reported 4.36:1 to a darker accessible foreground.
+- Eight case-study stock images replaced with original local conceptual SVG art, labelled **not client screenshots**.
+- Automated screenshot QA now decodes all case-study images and rejects blank/unavailable art.
