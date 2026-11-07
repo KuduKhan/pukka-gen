@@ -246,3 +246,23 @@ test('v2.3.4 portfolio artwork is self-hosted, identified as conceptual and veri
  assert.match(read('scripts/browser-qa.mjs'),/Undelivered case-study artwork/);
  assert.doesNotMatch(read('src/icons.ts'),/<text x="18"/);
 });
+
+
+test('KhanHomes-inspired Pukka visual layer keeps a single stylesheet and safe defaults',()=>{
+  const style=read('src/site.css');
+  assert.equal((html.match(/rel="stylesheet"/g)||[]).length,1);
+  for(const token of [
+    '--pg-homes-canvas','--pg-homes-paper','--pg-homes-ink',
+    '--pg-homes-green','--pg-homes-mint','--pg-homes-ease'
+  ]) assert.ok(style.includes(token),token+' visual token missing');
+  for(const selector of [
+    '.site-header.is-scrolled','#services .service-card',
+    '#insights .article-card','#work .portfolio-card',
+    '#faq .faq-list details','.hero-visual-architecture'
+  ]) assert.ok(style.includes(selector),selector+' visual style missing');
+  assert.match(style,/@media \(max-width:380px\)/);
+  assert.match(style,/@media \(prefers-reduced-motion:reduce\)/);
+  assert.match(style,/@media \(prefers-contrast:more\)/);
+  assert.match(html,/src="\/pukka-gen-wordmark\.png"/);
+  assert.match(html,/id="project-form"/);
+});
