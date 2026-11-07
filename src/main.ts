@@ -160,7 +160,7 @@ function renderWork(): void {
   mount('portfolio-grid', visible.map(([key,info]) => `
     <article class="portfolio-card${currentFilter === 'All work' && key === 'ops' ? ' portfolio-card-featured' : ''}"><button type="button" data-case="${escapeHtml(key)}"
       >
-      <div class="portfolio-image"><img loading="lazy" decoding="async" src="${escapeHtml(info.image)}" alt="Visual reference for ${escapeHtml(info.title)}">
+      <div class="portfolio-image"><img loading="lazy" decoding="async" src="${escapeHtml(info.image)}" alt="Conceptual illustration for ${escapeHtml(info.title)}">
         <span class="portfolio-index">${escapeHtml(info.index)} / 08</span></div>
       <div class="portfolio-information">
         <span class="portfolio-tag"><span class="portfolio-category-symbol" aria-hidden="true">${icon(categoryIcons[categories[key]] ?? "code")}</span>${escapeHtml(info.eyebrow)}</span>
@@ -197,7 +197,7 @@ function showCase(key: keyof typeof portfolioDetails): void {
     <span class="detail-kicker">SELECTED WORK / ${escapeHtml(data.eyebrow)}</span>
     <h2 id="dialog-title">${escapeHtml(data.title)}</h2>
     <p class="detail-description">${escapeHtml(data.description)}</p>
-    <img class="detail-hero-image" src="${escapeHtml(data.image)}" alt="Visual reference for ${escapeHtml(data.title)}" loading="lazy">
+    <img class="detail-hero-image" src="${escapeHtml(data.image)}" alt="Conceptual illustration for ${escapeHtml(data.title)}" loading="lazy">
     <div class="detail-metrics">${metrics}</div>
     <div class="detail-section"><h3>The context</h3><p>${escapeHtml(data.context)}</p></div>
     <div class="detail-section"><h3>Our role</h3><p>${escapeHtml(data.role)}</p></div>

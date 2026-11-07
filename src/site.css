@@ -1603,3 +1603,10 @@ img,svg,video,canvas {max-inline-size:100%}
  .reveal-ready .reveal-item,.reveal-ready .reveal-item.is-visible {opacity:1!important;transform:none!important}
  .hero-scene,.service-card,.portfolio-card,.article-card,.technology-pills button {animation:none!important;transition:none!important}
 }
+
+/* v2.3.4 real axe findings: timeline subtitle contrast and original case artwork. */
+#approach .process-head p {color:#24636b}
+.portfolio-image img[src^="/illustrations/case-"] {opacity:1;filter:none;object-fit:cover;object-position:center}
+.portfolio-card button:hover .portfolio-image img[src^="/illustrations/case-"] {transform:scale(1.015)}
+.detail-hero-image[src^="/illustrations/case-"] {object-fit:cover}
+@media (prefers-reduced-motion:reduce) {.portfolio-card button:hover .portfolio-image img[src^="/illustrations/case-"] {transform:none}}
