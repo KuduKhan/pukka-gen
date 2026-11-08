@@ -2158,3 +2158,32 @@ h1,h2,h3,h4 {font-family:var(--pg-font-display);letter-spacing:-.048em}
 @media (prefers-reduced-motion:reduce) {
   .studio-assurance,#services .service-card,#insights .article-card {animation:none!important;transition:none!important;transform:none!important}
 }
+
+
+/* WCAG AA: values section changed from a navy block to a light paper surface.
+   Scope semantic ink/blue tokens so legacy dark-section text cannot bleed in. */
+#values {
+  background:#f4f7fc;color:#142b4b;
+  --ink:#142b4b;--muted:#546b85;--jade:#07569a;
+  --line:rgba(16,75,143,.16);--line-strong:rgba(16,75,143,.28);
+}
+#values .section-heading h2 {color:#142b4b}
+#values .section-heading h2 em,#values .section-heading .section-kicker {color:#07569a}
+#values .section-heading>p {color:#546b85}
+#values .values-list {border-color:#d9e5f3}
+#values .value-item {
+  background:#fff;border:1px solid #d9e5f3;border-radius:18px;
+  box-shadow:0 9px 28px rgba(10,43,88,.05);
+}
+#values .value-item:hover {background:#fff;border-color:#97bce0}
+#values .value-item h3 {color:#142b4b}
+#values .value-item p {color:#546b85}
+#values .value-number {color:#07569a}
+#values .quote-strip {
+  color:#f5faff;border:1px solid rgba(118,198,255,.28);
+  background:radial-gradient(circle at 90% 0%,rgba(21,165,231,.13),transparent 48%),
+             linear-gradient(135deg,#0b2d59,#071c3c);
+}
+#values .quote-strip p {color:#f5faff}
+#values .quote-strip .quote-mark {color:#7ae3fa}
+#values .quote-strip strong {color:#b8eafa}
