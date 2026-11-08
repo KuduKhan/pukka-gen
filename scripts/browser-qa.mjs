@@ -28,6 +28,20 @@ for(const [browserName,engine] of Object.entries({chromium,firefox,webkit})){
    if((await page.locator("[data-project]").count())!==3)throw new Error("Three concept cases missing");
    const overflow=await page.evaluate(()=>Math.max(0,document.documentElement.scrollWidth-window.innerWidth));
    if(overflow>2)throw new Error("Horizontal overflow: "+overflow+"px");
+   if(await page.locator('[data-solution-select]').count()!==4)throw new Error("Four outcome paths missing");
+   if(await page.locator('[data-sector]').count()!==6)throw new Error("Six industry playbooks missing");
+   await page.locator('[data-solution-select="knowledge"]').click();
+   if(await page.locator('#solution-explorer').getAttribute("data-solution")!=="knowledge" ||
+      !(await page.locator('#solution-title').innerText()).includes("intelligence"))throw new Error("Solution explorer failed");
+   await page.locator('[data-solution-select="knowledge"]').focus();
+   await page.keyboard.press("ArrowRight");
+   if(await page.locator('#solution-explorer').getAttribute("data-solution")!=="trust")throw new Error("Solution explorer keyboard control failed");
+   await page.locator('[data-sector="maritime"]').click();
+   if(!(await page.locator('#detail-dialog').evaluate(el=>el.open)))throw new Error("Sector panel unavailable");
+   if(!(await page.locator('.detail-disclaimer').innerText()).includes("Sector application"))throw new Error("Sector transparency absent");
+   await page.locator('#dialog-close').click();
+   if(await page.locator('#proof-accordion details').count()!==4)throw new Error("No Duff proof missing");
+   if(await page.locator('#faq .faq-list details').count()!==4)throw new Error("FAQ missing");
    const logo=await page.locator(".brand img").evaluate(img=>img.complete&&img.naturalWidth>0);
    if(!logo)throw new Error("Original logo is missing");
    await page.locator('[data-system-select="security"]').click();
