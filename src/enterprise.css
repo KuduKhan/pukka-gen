@@ -117,7 +117,7 @@ html{scroll-padding-top:96px}
 .studio-section{background:#eaf3fc}
 .studio-wordmark{border-radius:15px}
 .studio-text h2 em{color:#1266a0}
-.studio-text .ink-note-light{color:#075f90}
+#studio .ink-note-light{color:#075f90}
 .journal-section{background:#fff}
 .journal-card{border-radius:14px;min-height:304px;box-shadow:0 10px 27px rgba(9,46,91,.04)}
 .faq-section{background:var(--pe-paper)}
