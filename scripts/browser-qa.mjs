@@ -50,6 +50,17 @@ for(const [browserName,engine] of Object.entries({chromium,firefox,webkit})){
    if(await page.locator('#faq .faq-list details').count()!==4)throw new Error("FAQ missing");
    if(await page.locator('.ink-note').count()<4)throw new Error("Handwritten annotations absent");
    if(await page.locator('.journal-symbol svg').count()!==3)throw new Error("Field note icon system inconsistent");
+   if(await page.locator(".pg-capabilities-band").count()!==1)throw new Error("Enterprise capability bridge missing");
+   if(await page.locator(".pg-sector-watermark").count()!==6)throw new Error("Sector visual context missing");
+   if(await page.locator(".pg-cinematic-art").count()!==1)throw new Error("Cinematic engineering scene missing");
+   await page.locator(".pg-cinematic-art").scrollIntoViewIfNeeded();
+   await page.waitForFunction(()=>{
+     const img=document.querySelector(".pg-cinematic-art");
+     return img?.complete&&img?.naturalWidth>0;
+   },null,{timeout:10000});
+   const mastheadVisible=await page.locator(".pg-studio-strip").isVisible();
+   if(width>700&&!mastheadVisible)throw new Error("Desktop enterprise studio strip missing");
+   if(width<=700&&mastheadVisible)throw new Error("Mobile studio strip should be suppressed");
    if(await page.locator('.expertise-icon svg use').count()!==6 ||
       await page.locator('.sector-symbol svg use').count()!==6 ||
       await page.locator('.journal-symbol svg use').count()!==3)
@@ -64,7 +75,7 @@ for(const [browserName,engine] of Object.entries({chromium,firefox,webkit})){
      filter:getComputedStyle(node).backdropFilter || getComputedStyle(node).webkitBackdropFilter
    }));
    if(!glass.filter.includes('blur'))throw new Error("Frosted system panel style missing: "+JSON.stringify(glass));
-   if(await page.locator(".ink-note-hero").isVisible()!==true)throw new Error("Hero handwritten note missing");
+   if(await page.locator(".pg-hero-signoff").isVisible()!==true)throw new Error("No Duff handwritten brand signoff missing");
    const logo=await page.locator(".brand img").evaluate(img=>img.complete&&img.naturalWidth>0);
    if(!logo)throw new Error("Original logo is missing");
    await page.locator('[data-system-select="security"]').click();
