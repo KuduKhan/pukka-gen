@@ -1,5 +1,5 @@
 /**
- * Pukka Gen v2.3.4 cross-browser visual and interaction acceptance.
+ * Pukka Gen v3.0 Precision in Motion, cross-browser engineering experience acceptance.
  * Run in CI after `npm ci && npm install --no-save --package-lock=false playwright @axe-core/playwright`
  * and `npx playwright install --with-deps chromium firefox webkit`.
  * Produces deterministic viewport screenshots + a JSON evidence report.
@@ -59,6 +59,34 @@ for(const [name,engine] of Object.entries(browserTypes)){
      data.overflow=layout.overflow;
      if(data.overflow>2)throw new Error('Horizontal overflow '+JSON.stringify(layout));
      if(errors.length)throw new Error('Uncaught errors: '+errors.join(' | '));
+     // Engineering blueprint must explain real capabilities and support both
+     // pointer and keyboard selection (not merely animate a decorative picture).
+     const blueprint=page.locator('#living-blueprint');
+     if(await page.locator('#blueprint-controls button').count()!==6)
+       throw new Error('Expected six engineering disciplines');
+     if(await blueprint.getAttribute('data-blueprint-focus')!=='software')
+       throw new Error('Blueprint initial discipline mismatch');
+     await page.locator('[data-blueprint-domain="ai"]').click();
+     if(await blueprint.getAttribute('data-blueprint-focus')!=='ai' ||
+        await page.locator('[data-blueprint-domain="ai"]').getAttribute('aria-pressed')!=='true' ||
+        await page.locator('[data-bp-node="ai"]').getAttribute('data-active')!=='true')
+       throw new Error('Blueprint did not activate AI diagram and controls');
+     if(!(await page.locator('#blueprint-title').innerText()).includes('Intelligence'))
+       throw new Error('Blueprint explanation did not update');
+     await page.locator('[data-blueprint-domain="ai"]').focus();
+     await page.keyboard.press('ArrowRight');
+     if(await blueprint.getAttribute('data-blueprint-focus')!=='cloud' ||
+        await page.locator('[data-blueprint-domain="cloud"]').getAttribute('aria-pressed')!=='true')
+       throw new Error('Blueprint arrow-key navigation failed');
+     if(await page.locator('.pg-concept-indicator').count()!==8)
+       throw new Error('Concept transparency badges missing');
+     if(await page.locator('#work .portfolio-metrics').count())
+       throw new Error('Unverified performance metrics should not be shown');
+     await page.locator('.portfolio-card').first().click();
+     if(!(await page.locator('#detail-dialog').evaluate(el=>el.open)) ||
+        !(await page.locator('.pg-case-disclosure').innerText()).includes('Concept study'))
+       throw new Error('Engineering case detail disclosure not accessible');
+     await page.locator('#dialog-close').click();
      // Interactive service and technology dialogs remain keyboard-accessible.
      await page.locator('.service-card').first().click();
      if(!(await page.locator('#detail-dialog').evaluate(el=>el.open)))
@@ -86,7 +114,7 @@ for(const [name,engine] of Object.entries(browserTypes)){
      await page.locator('#project-form button[type="submit"]').click();
      const state=await page.locator('#form-status').getAttribute('data-state');
      if(state!=='error')throw new Error('Form validation did not surface');
-     if(name==='chromium' && [375,768,1440].includes(width)){
+     if(name==='chromium' && widths.includes(width)){
        await page.goto(origin,{waitUntil:'domcontentloaded'});
        await page.locator('.service-card').first().waitFor();
        await page.evaluate(async()=>{
@@ -96,7 +124,7 @@ for(const [name,engine] of Object.entries(browserTypes)){
        });
        const broken=await page.locator('.portfolio-image img').evaluateAll(images=>images.filter(img=>!img.complete||img.naturalWidth===0).map(img=>img.getAttribute('src')));
        if(broken.length)throw new Error('Undelivered case-study artwork: '+broken.join(', '));
-       await page.screenshot({path:`${folder}/pukka-v2.3.4-${width}.png`,fullPage:true,animations:'disabled'});
+       await page.screenshot({path:`${folder}/pukka-v3-precision-${width}.png`,fullPage:true,animations:'disabled'});
      }
      if(name==='chromium' && [375,1440].includes(width)){
        await page.goto(origin,{waitUntil:'domcontentloaded'});
