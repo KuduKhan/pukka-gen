@@ -190,3 +190,29 @@ test("iconography v2 is one distinct local SVG symbol family with precise contex
  assert.match(read("src/premium.css"),/\.sector-card\[data-sector="health"\]/);
  assert.doesNotMatch(sprite,/\b(?:href|src)=["\x27]https?:\/\//,"SVG symbols must not import remote imagery");
 });
+
+
+test("original enterprise editorial direction is organized for decision-makers",()=>{
+ const enterprise=read("src/enterprise.css");
+ const art=read("public/illustrations/pukka-systems-horizon.svg");
+ const sections=["expertise","solutions","systems","work","sectors","approach","proof","studio","journal","faq","contact"];
+ let cursor=0;
+ for(const id of sections){
+  const index=html.indexOf('id="'+id+'"',cursor);
+  assert.ok(index>cursor,"Section missing/out of sequence: "+id);
+  cursor=index;
+ }
+ assert.match(html,/class="pg-studio-strip"/);
+ assert.match(html,/class="pg-capabilities-band"/);
+ assert.match(html,/class="pg-cinematic-art"/);
+ assert.match(html,/Technology<br>built to <em>matter/);
+ assert.match(html,/No Duff<span class="full-stop">/);
+ assert.match(html,/pukka-gen-wordmark\.png/);
+ assert.equal((html.match(/class="pg-sector-watermark"/g)||[]).length,6);
+ assert.match(enterprise,/\.pg-cinematic/);
+ assert.match(enterprise,/@media\(max-width:375px\)/);
+ assert.match(enterprise,/@media\(prefers-reduced-motion:reduce\)/);
+ assert.match(art,/<svg xmlns="http:\/\/www\.w3\.org\/2000\/svg"/);
+ assert.doesNotMatch(html,/nocturnals|intellisoft|https:\/\/images/i);
+ assert.doesNotMatch(enterprise,/nocturnalsintellisoft\.com/);
+});
