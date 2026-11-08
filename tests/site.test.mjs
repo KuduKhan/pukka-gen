@@ -159,3 +159,14 @@ test("illustrative icon scenes use consistent semantic SVG instead of platform-d
   assert.match(main,/document\.documentElement\.classList\.add\("motion-enabled"\)/);
   assert.doesNotMatch(read("src/premium.css"),/https?:\/\//);
 });
+
+
+test("motion QA exercises both reduced and normal motion modes without runtime font dependencies",()=>{
+  const browserSuite=read("scripts/browser-qa.mjs");
+  assert.match(browserSuite,/reducedMotion:"reduce"/);
+  assert.match(browserSuite,/reducedMotion:"no-preference"/);
+  assert.match(browserSuite,/document\.fonts\.check/);
+  assert.match(browserSuite,/motion-enabled/);
+  assert.match(browserSuite,/data-reveal/);
+  assert.match(browserSuite,/motion-work-/);
+});

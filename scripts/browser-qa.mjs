@@ -25,6 +25,8 @@ for(const [browserName,engine] of Object.entries({chromium,firefox,webkit})){
    if(!response?.ok())throw new Error("Page HTTP failure");
    await page.locator("[data-service]").first().waitFor({timeout:12000});
    if((await page.locator("[data-service]").count())!==6)throw new Error("Six service cards missing");
+   if(await page.evaluate(()=>document.documentElement.classList.contains("motion-enabled")))
+    throw new Error("Reduced-motion preference should suppress scroll effects");
    if((await page.locator("[data-project]").count())!==3)throw new Error("Three concept cases missing");
    const overflow=await page.evaluate(()=>Math.max(0,document.documentElement.scrollWidth-window.innerWidth));
    if(overflow>2)throw new Error("Horizontal overflow: "+overflow+"px");
@@ -95,6 +97,36 @@ for(const [browserName,engine] of Object.entries({chromium,firefox,webkit})){
      const serious=axe.violations.filter(v=>["serious","critical"].includes(v.impact||""));
      if(serious.length)throw new Error("Axe: "+JSON.stringify(serious.map(v=>({id:v.id,nodes:v.nodes.slice(0,6).map(n=>({target:n.target,summary:n.failureSummary?.slice(0,260)}))}))));
     }
+   }
+   // Independently verify purposeful animations when the user allows motion.
+   // The main QA context uses reduced-motion to protect accessibility.
+   if(browserName==="chromium" && [375,1440].includes(width)){
+    const motionContext=await browser.newContext({
+      viewport:{width,height:900},deviceScaleFactor:1,reducedMotion:"no-preference"
+    });
+    try{
+      const motionPage=await motionContext.newPage();
+      const motionErrors=[];
+      motionPage.on("pageerror",error=>motionErrors.push(error.message));
+      await motionPage.goto(url,{waitUntil:"domcontentloaded"});
+      await motionPage.locator(".ink-note-hero").waitFor();
+      if(!await motionPage.evaluate(()=>document.documentElement.classList.contains("motion-enabled")))
+        throw new Error("Normal-motion progressive enhancement did not start");
+      const fontLoaded=await motionPage.evaluate(async()=>{
+        await document.fonts.ready;
+        return document.fonts.check('600 22px "Pukka Hand"');
+      });
+      if(!fontLoaded)throw new Error("Self-hosted Caveat handwriting font did not load");
+      await motionPage.locator("#work .section-head").scrollIntoViewIfNeeded();
+      await motionPage.waitForFunction(
+        ()=>document.querySelector("#work .section-head")?.getAttribute("data-reveal")==="shown",
+        null,{timeout:7000}
+      );
+      if(motionErrors.length)throw new Error("Normal-motion runtime error: "+motionErrors.join(" | "));
+      await motionPage.screenshot({
+        path:"artifacts/qa/motion-work-"+width+".png",animations:"disabled"
+      });
+    }finally{await motionContext.close();}
    }
    results.push({browser:browserName,width,ok:true});
   }catch(error){
