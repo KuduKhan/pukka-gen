@@ -78,3 +78,26 @@ Styling is specific to Pukka Gen; no third-party studio's source code or proprie
 For local browser acceptance, install ephemeral tooling with `npm install --no-save --package-lock=false playwright @axe-core/playwright`, run `npx playwright install chromium firefox webkit`, start `npm run dev -- --host 127.0.0.1 --port 4173`, then run `node scripts/browser-qa.mjs`.
 
 The automated browser suite captures **visual QA snapshots**, not signed pixel-diff approval of a new visual baseline. Physical device and assistive-technology signoff, measured field Core Web Vitals, actual email arrival, and independent substantiation of inherited customer metrics require separate evidence. Do not treat a green browser run as proof of those external gates.
+
+## Pukka Gen 3.0 — Precision in Motion (candidate, not production)
+
+**Design objective:** make Pukka Gen's own website a tangible demonstration of engineering competence. The design is original and logo-informed (navy, cyan, electric blue, restrained violet); no copied KhanHomes assets or generic decorative 3D demo.
+
+### Three signature experiences
+
+1. **Living Engineering Blueprint** — first-party inline SVG systems model with six engineering disciplines, interactive nodes and explanatory content, arrow/Home/End keyboard support, accessible pressed state and reduced-motion compatibility. It is explicitly a concept diagram, never a live infrastructure monitor.
+2. **No Duff Editorial Identity** — original composition, precise typography, confident messaging and clear paths to selected work or an enquiry. The existing Pukka Gen gear/circuit logo and service information remain intact.
+3. **Interactive Engineering Portfolio** — the eight legacy concepts now lead with engineering problem, proposed capabilities and representative technology. Concept labels are always visible and old unverified outcome metrics are not shown as achieved results.
+
+### Engineering boundaries
+
+- This branch starts from the tested main v2.3.4 baseline; it is **not built on pending PR #8**. Avoid stacking competing redesigns.
+- Preserve every existing route, contact field and server-side enquiry API; six services, eight concept cases, eight insight articles, technology inventory and legal content.
+- No new runtime dependencies or remote illustration assets. Existing self-hosted images and SVG icon system are retained.
+- Distinguish concept demonstrations from independently verified deployments. Inherited testimonials still require verification and are not independently authenticated.
+- Real email delivery requires secure provider-side configuration and a verified test receipt. Keep the honest mailto fallback.
+- Do not merge or promote until CI, screenshot review, physical-device/assistive-technology acceptance and separate publication/legal gates pass.
+
+### Candidate validation
+
+Run npm ci && npm run check, then the Playwright+axe flow described above. The v3 browser suite tests blueprint interactions, portfolio disclosure, original service and contact behavior, overflow and accessibility in Chromium, Firefox and WebKit at 320, 375, 768, 1024, 1280 and 1440 px. Screenshots at all six widths require **human visual review**, not a presumed automatic sign-off.
