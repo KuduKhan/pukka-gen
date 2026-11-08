@@ -92,6 +92,77 @@ window.matchMedia('(min-width: 1101px)').addEventListener('change', event => {
 });
 setMenuOpen(false);
 
+// PUKKA v3: semantic SVG systems explorer, driven by real capability copy.
+// Controls work with pointer, keyboard and reduced-motion preferences.
+const blueprintTopics = {
+  software: {
+    kicker:'01 / APPLICATION ENGINEERING',title:'Reliable software, by design.',
+    description:'Clear architecture, maintainable code and dependable interfaces—from useful prototypes to production systems.',
+    output:'DELIVERABLE / RESPONSIVE APPLICATIONS'
+  },
+  ai: {
+    kicker:'02 / INTELLIGENT AUTOMATION',title:'Intelligence with a purpose.',
+    description:'Applied AI, language workflows and automation designed around human oversight, evaluation and measurable utility.',
+    output:'DELIVERABLE / ASSISTED WORKFLOWS'
+  },
+  cloud: {
+    kicker:'03 / CLOUD & OPERATIONS',title:'Built to run. Built to recover.',
+    description:'Versioned infrastructure, observable deployments, scalable services and recovery-minded cloud operations.',
+    output:'DELIVERABLE / RESILIENT INFRASTRUCTURE'
+  },
+  security: {
+    kicker:'04 / SECURITY & VERIFICATION',title:'Trust is an engineering decision.',
+    description:'Threat-aware architecture, authorization boundaries, automated checks and practical release safeguards.',
+    output:'DELIVERABLE / SECURITY & QUALITY GATES'
+  },
+  design: {
+    kicker:'05 / PRODUCT EXPERIENCE',title:'Clarity is a product feature.',
+    description:'Purposeful interfaces, accessibility-aware components and intuitive journeys that serve real users.',
+    output:'DELIVERABLE / HUMAN-CENTRED UX'
+  },
+  consultancy: {
+    kicker:'06 / TECHNICAL STRATEGY',title:'Think clearly. Build intentionally.',
+    description:'Requirements discovery, architecture trade-offs, phased roadmaps and decisions teams can defend.',
+    output:'DELIVERABLE / ENGINEERING ROADMAP'
+  }
+} as const;
+type BlueprintKey = keyof typeof blueprintTopics;
+const blueprintRoot = requireElement<HTMLElement>('#living-blueprint');
+const blueprintControls = requireElement<HTMLElement>('#blueprint-controls');
+const blueprintButtons = Array.from(blueprintControls.querySelectorAll<HTMLButtonElement>('[data-blueprint-domain]'));
+function selectBlueprintDomain(key:BlueprintKey):void {
+  const item = blueprintTopics[key];
+  blueprintRoot.dataset.blueprintFocus = key;
+  requireElement('#blueprint-kicker').textContent = item.kicker;
+  requireElement('#blueprint-title').textContent = item.title;
+  requireElement('#blueprint-description').textContent = item.description;
+  requireElement('#blueprint-output').textContent = item.output;
+  blueprintButtons.forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.blueprintDomain===key)));
+  blueprintRoot.querySelectorAll<SVGElement>('[data-bp-node],[data-bp-wire]').forEach(element=>{
+    element.dataset.active = String(
+      (element.dataset.bpNode ?? element.dataset.bpWire) === key
+    );
+  });
+}
+blueprintControls.addEventListener('click',event=>{
+  if(!(event.target instanceof Element))return;
+  const key=event.target.closest<HTMLButtonElement>('[data-blueprint-domain]')?.dataset.blueprintDomain;
+  if(key && Object.prototype.hasOwnProperty.call(blueprintTopics,key))selectBlueprintDomain(key as BlueprintKey);
+});
+blueprintControls.addEventListener('keydown',event=>{
+  if(!['ArrowRight','ArrowLeft','ArrowUp','ArrowDown','Home','End'].includes(event.key))return;
+  const current=event.target instanceof Element?event.target.closest<HTMLButtonElement>('[data-blueprint-domain]'):null;
+  if(!current)return;
+  const index=blueprintButtons.indexOf(current);
+  if(index<0)return;
+  event.preventDefault();
+  const next=event.key==='Home'?0:event.key==='End'?blueprintButtons.length-1:
+    (index+((event.key==='ArrowLeft'||event.key==='ArrowUp')?-1:1)+blueprintButtons.length)%blueprintButtons.length;
+  const selected=blueprintButtons[next];const key=selected?.dataset.blueprintDomain;
+  if(key && Object.prototype.hasOwnProperty.call(blueprintTopics,key)){selectBlueprintDomain(key as BlueprintKey);selected.focus();}
+});
+selectBlueprintDomain('software');
+
 // Service catalog: complete descriptive copy lives in the typed content model.
 mount('service-grid', serviceSummaries.map((service, i) => `
   <button type="button" class="service-card" data-service="${escapeHtml(service.key)}"
@@ -158,17 +229,26 @@ function renderWork(): void {
   const visible = caseEntries.filter(([key]) =>
     currentFilter === 'All work' || categories[key] === currentFilter);
   mount('portfolio-grid', visible.map(([key,info]) => `
-    <article class="portfolio-card${currentFilter === 'All work' && key === 'ops' ? ' portfolio-card-featured' : ''}"><button type="button" data-case="${escapeHtml(key)}"
-      >
-      <div class="portfolio-image"><img loading="lazy" decoding="async" src="${escapeHtml(info.image)}" alt="Conceptual illustration for ${escapeHtml(info.title)}">
-        <span class="portfolio-index">${escapeHtml(info.index)} / 08</span></div>
-      <div class="portfolio-information">
-        <span class="portfolio-tag"><span class="portfolio-category-symbol" aria-hidden="true">${icon(categoryIcons[categories[key]] ?? "code")}</span>${escapeHtml(info.eyebrow)}</span>
-        <div class="portfolio-title-row"><h3>${escapeHtml(info.title)}</h3><span class="portfolio-arrow" aria-hidden="true">${icon("arrowUp")}</span></div>
-        <p>${escapeHtml(info.description)}</p>
-        <div class="portfolio-metrics">${info.metrics.slice(0,2).map(metric =>
-          '<span><strong>'+escapeHtml(metric.value)+'</strong>'+escapeHtml(metric.label)+'</span>').join('')}</div>
-      </div></button></article>`).join(''));
+    <article class="portfolio-card${currentFilter === 'All work' && key === 'ops' ? ' portfolio-card-featured' : ''}">
+      <button type="button" data-case="${escapeHtml(key)}">
+        <div class="portfolio-image">
+          <img loading="lazy" decoding="async" src="${escapeHtml(info.image)}" alt="Conceptual engineering illustration for ${escapeHtml(info.title)}">
+          <span class="portfolio-index">SYSTEM / ${escapeHtml(info.index)}</span>
+          <span class="pg-concept-indicator">ILLUSTRATIVE CONCEPT</span>
+        </div>
+        <div class="portfolio-information">
+          <span class="portfolio-tag"><span class="portfolio-category-symbol" aria-hidden="true">${icon(categoryIcons[categories[key]] ?? "code")}</span>${escapeHtml(info.eyebrow)}</span>
+          <div class="portfolio-title-row"><h3>${escapeHtml(info.title)}</h3><span class="portfolio-arrow" aria-hidden="true">${icon("arrowUp")}</span></div>
+          <p>${escapeHtml(info.description)}</p>
+          <div class="pg-case-explainer">
+            <span>ENGINEERING APPROACH</span>
+            <strong>${escapeHtml(info.outcomes[0] ?? info.role)}</strong>
+          </div>
+          <div class="pg-case-stack" aria-label="Representative technologies">${info.stack.slice(0,3).map(tool => '<span>'+escapeHtml(tool)+'</span>').join('')}</div>
+          <span class="pg-case-action">Explore concept <span aria-hidden="true">↗</span></span>
+        </div>
+      </button>
+    </article>`).join(''));
   requireElement('#work-count').textContent =
     `Showing ${visible.length} of ${caseEntries.length} projects`;
   renderFilters();
@@ -190,20 +270,17 @@ filterNode.addEventListener('click', event => {
   }
 });
 function showCase(key: keyof typeof portfolioDetails): void {
-  const data = portfolioDetails[key];
-  const metrics = data.metrics.map(metric =>
-    '<span><strong>'+escapeHtml(metric.value)+'</strong>'+escapeHtml(metric.label)+'</span>').join('');
+  const data=portfolioDetails[key];
   openDetail(`
-    <span class="detail-kicker">SELECTED WORK / ${escapeHtml(data.eyebrow)}</span>
+    <span class="detail-kicker">PUKKA GEN / ILLUSTRATIVE ENGINEERING CONCEPT</span>
     <h2 id="dialog-title">${escapeHtml(data.title)}</h2>
     <p class="detail-description">${escapeHtml(data.description)}</p>
-    <img class="detail-hero-image" src="${escapeHtml(data.image)}" alt="Conceptual illustration for ${escapeHtml(data.title)}" loading="lazy">
-    <div class="detail-metrics">${metrics}</div>
-    <div class="detail-section"><h3>The context</h3><p>${escapeHtml(data.context)}</p></div>
-    <div class="detail-section"><h3>Our role</h3><p>${escapeHtml(data.role)}</p></div>
-    <div class="detail-section"><h3>Work delivered</h3>${listMarkup(data.outcomes)}</div>
-    <div class="detail-section"><h3>Technology</h3>${chipMarkup(data.stack)}</div>
-    <p class="note-line">Portfolio outcomes and measurements are carried over from the previous site and await independent verification.</p>
+    <div class="pg-case-disclosure"><strong>Concept study — not a verified client deployment.</strong><p>This model explores one credible system approach. Visuals are conceptual; outcomes and figures from older portfolio copy are intentionally not presented as achieved results.</p></div>
+    <img class="detail-hero-image" src="${escapeHtml(data.image)}" alt="Conceptual architecture illustration for ${escapeHtml(data.title)}" loading="lazy">
+    <div class="detail-section"><h3>The engineering problem</h3><p>${escapeHtml(data.context)}</p></div>
+    <div class="detail-section"><h3>Design and technical focus</h3><p>${escapeHtml(data.role)}</p></div>
+    <div class="detail-section"><h3>Proposed system capabilities</h3>${listMarkup(data.outcomes)}</div>
+    <div class="detail-section"><h3>Representative technology choices</h3>${chipMarkup(data.stack)}</div>
   `);
 }
 
