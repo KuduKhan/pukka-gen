@@ -119,8 +119,8 @@ test('v2.1 enterprise identity and structure are present without copying the ref
   assert.match(html, /id="reading-progress-bar"/);
   assert.match(html, /id="outcome-heading"/);
   assert.match(html, /enterprise-ribbon-grid/);
-  assert.match(html, /class="hero-scene"/);
-  assert.match(html, /alt="Conceptual software architecture/);
+  assert.match(html, /class="pg-blueprint-svg"/);
+  assert.match(html, /Six engineering disciplines connected through the Pukka Gen core/);
   assert.doesNotMatch(html, /nocturnalsintellisoft\.com/i);
   assert.doesNotMatch(updatedStyle, /nocturnalsintellisoft\.com/i);
   assert.match(updatedStyle, /#services \{/);
@@ -197,7 +197,8 @@ test('v2.3.1 premium cards preserve content and adapt the first portfolio entry'
 
 test('v2.3.2 ships original architecture artwork and verified technology asset mapping',()=>{
  const icons=read('src/icons.ts');
- assert.match(html,/src="\/illustrations\/architecture.svg"/);
+ assert.match(html,/id="living-blueprint"/);
+ assert.match(html,/src="\/illustrations\/delivery-pipeline.svg"/);
  assert.match(html,/src="\/illustrations\/delivery-pipeline.svg"/);
  assert.match(read('public/illustrations/architecture.svg'),/conceptual engineering blueprint/i);
  assert.match(read('public/illustrations/delivery-pipeline.svg'),/Five clear stages/);
@@ -245,4 +246,51 @@ test('v2.3.4 portfolio artwork is self-hosted, identified as conceptual and veri
  assert.match(read('src/site.css'),/#approach \.process-head p \{color:#24636b\}/);
  assert.match(read('scripts/browser-qa.mjs'),/Undelivered case-study artwork/);
  assert.doesNotMatch(read('src/icons.ts'),/<text x="18"/);
+});
+
+
+test('v3.0 interactive engineering blueprint is meaningful, accessible and brand-owned',()=>{
+  const sheet=read('src/site.css');
+  const expectedDomains=['software','ai','cloud','security','design','consultancy'];
+  assert.match(html,/id="living-blueprint"/);
+  assert.match(html,/aria-labelledby="bp-svg-title bp-svg-desc"/);
+  assert.match(html,/id="blueprint-controls" role="group"/);
+  assert.match(html,/id="blueprint-description" aria-live="polite"/);
+  for(const domain of expectedDomains){
+    assert.ok(html.includes('data-blueprint-domain="'+domain+'"'),domain+' control absent');
+    assert.ok(html.includes('data-bp-node="'+domain+'"'),domain+' SVG node absent');
+    assert.ok(html.includes('data-bp-wire="'+domain+'"'),domain+' SVG connector absent');
+    assert.ok(main.includes(domain+': {'),domain+' explanation absent');
+  }
+  assert.match(main,/function selectBlueprintDomain/);
+  assert.match(main,/blueprintControls\.addEventListener\('keydown'/);
+  assert.match(main,/aria-pressed/);
+  assert.match(sheet,/\.bp-wire\[data-active="true"\]/);
+  assert.match(sheet,/@media \(prefers-reduced-motion:reduce\)/);
+  assert.match(sheet,/--p3-night:#06152f/);
+  assert.doesNotMatch(html,/khanhomes/i);
+});
+
+test('v3.0 portfolio is an honest engineering concept showcase without unverifiable claims',()=>{
+  assert.match(main,/pg-concept-indicator/);
+  assert.match(main,/pg-case-explainer/);
+  assert.match(main,/pg-case-stack/);
+  assert.match(main,/pg-case-disclosure/);
+  assert.match(main,/Concept study — not a verified client deployment/);
+  assert.doesNotMatch(main,/info\.metrics\.slice/);
+  assert.doesNotMatch(main,/data\.metrics\.map/);
+  assert.match(html,/These are illustrative engineering concepts/);
+  assert.ok(html.indexOf('id="work"')<html.indexOf('id="services"'),'work should precede expertise');
+  assert.match(html,/id="project-form"/);
+  assert.match(html,/id="email-fallback"/);
+});
+
+test('v3.0 keeps original technology and legal assets and avoids runtime dependencies',()=>{
+  assert.match(html,/src="\/pukka-gen-wordmark.png"/);
+  assert.match(html,/src="\/illustrations\/delivery-pipeline.svg"/);
+  assert.match(read('public/illustrations/architecture.svg'),/conceptual engineering blueprint/i);
+  const pkg=JSON.parse(read('package.json'));
+  assert.ok(!pkg.dependencies || Object.keys(pkg.dependencies).length===0);
+  for(const route of ['privacy.html','terms.html']) assert.match(read(route),/href="\/src\/site.css"/);
+  assert.match(read('src/site.css'),/\.pg-blueprint-controls/);
 });
