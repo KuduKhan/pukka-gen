@@ -148,7 +148,9 @@ test("premium glass card system has one cohesive self-hosted handwriting identit
   assert.ok(existsSync(new URL("../public/fonts/Caveat-variable.ttf",import.meta.url)));
   assert.ok(existsSync(new URL("../public/fonts/OFL-Caveat.txt",import.meta.url)));
   assert.match(read("public/fonts/OFL-Caveat.txt"),/SIL OPEN FONT LICENSE/i);
-  assert.ok((html.match(/class="ink-note/g)||[]).length>=4);
+  assert.ok((html.match(/class="ink-note/g)||[]).length>=3);
+  assert.match(html,/class="pg-hero-signoff"/);
+  assert.doesNotMatch(html,/class="ink-note ink-note-hero"/);
 });
 test("illustrative icon scenes use consistent semantic SVG instead of platform-dependent pictograms",()=>{
   assert.equal((html.match(/class="journal-symbol" aria-hidden="true"><svg/g)||[]).length,3);
