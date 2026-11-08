@@ -573,7 +573,7 @@ img,svg{max-width:100%;display:block}
  .pipeline-step svg {width:34px;height:34px}
  .pipeline-step>span {font-size:.47rem}
  .pipeline-step strong {font-size:.6rem;overflow-wrap:anywhere}
- ..solution-stage-copy {padding:20px}
+ .solution-stage-copy {padding:20px}
  .solution-stage-copy h3 {font-size:1.45rem}
  .solution-stage-copy p {font-size:.85rem}
  .proof-preview {min-height:280px;padding:23px}
