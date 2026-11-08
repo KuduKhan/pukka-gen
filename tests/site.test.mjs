@@ -188,5 +188,5 @@ test("iconography v2 is one distinct local SVG symbol family with precise contex
  assert.match(main,/setAttribute\("href","\/icons\/pukka-symbols\.svg#pg-"/);
  assert.match(read("src/premium.css"),/\.pg-stage-plate/);
  assert.match(read("src/premium.css"),/\.sector-card\[data-sector="health"\]/);
- assert.doesNotMatch(sprite,/https?:\/\//);
+ assert.doesNotMatch(sprite,/\b(?:href|src)=["\x27]https?:\/\//,"SVG symbols must not import remote imagery");
 });
