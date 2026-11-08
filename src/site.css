@@ -2123,7 +2123,9 @@ h1,h2,h3,h4 {font-family:var(--pg-font-display);letter-spacing:-.055em}
   .portfolio-card:hover,.service-card:hover,.article-card:hover {transform:none!important}
 }
 @media (prefers-reduced-motion:reduce) {
-  .bp-wire,.bp-node,.bp-control,.portfolio-card,.pg-v3-hero .button {animation:none!important;transition:none!important;transform:none!important}
+  .bp-wire,.bp-node,.bp-control,.portfolio-card,.pg-v3-hero .button {animation:none!important;transition:none!important}
+  .portfolio-card,.pg-v3-hero .button {transform:none!important}
+  /* SVG node transform attributes position the graph. Never erase them. */
 }
 @media (prefers-contrast:more) {
   .pg-blueprint {border-width:2px}
