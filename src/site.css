@@ -2137,3 +2137,9 @@ h1,h2,h3,h4 {font-family:var(--pg-font-display);letter-spacing:-.055em}
 .bp-node-icon {stroke:#c3d9f3;transition:stroke .2s var(--p3-ease)}
 .bp-node[data-active="true"] .bp-node-icon {stroke:#c4f6ff}
 .bp-node-icon rect,.bp-node-icon path,.bp-node-icon circle {vector-effect:non-scaling-stroke}
+
+
+/* v3 accessibility finding: legacy teal labels on pale editorial paper.
+   Dark navy-blue ink restores WCAG AA contrast without changing semantics. */
+#about .statement-band>span:first-child {color:#07548a}
+#team .discipline-list article>strong,#team #disciplines article>strong {color:#07548a}
