@@ -219,6 +219,7 @@ const categories: Record<keyof typeof portfolioDetails,string> = {
 const categoryIcons: Record<string, IconName> = {AI:'ai',Security:'shield',Cloud:'cloud',Software:'software',Design:'design'};
 const workFilters = ['All work','AI','Software','Cloud','Security','Design'] as const;
 let currentFilter: string = 'All work';
+let allConceptsVisible = false;
 const filterNode = requireElement<HTMLElement>('#work-filters');
 function renderFilters(): void {
   filterNode.innerHTML = workFilters.map(filter =>
@@ -249,11 +250,21 @@ function renderWork(): void {
         </div>
       </button>
     </article>`).join(''));
+  const compactView = currentFilter==='All work' && !allConceptsVisible;
+  requireElement<HTMLElement>('#portfolio-grid').dataset.expanded = String(!compactView);
+  const expand = requireElement<HTMLButtonElement>('#work-expand');
+  expand.hidden = currentFilter!=='All work';
+  expand.setAttribute('aria-expanded',String(allConceptsVisible));
+  expand.innerHTML = allConceptsVisible ? 'Show fewer concepts <span aria-hidden="true">↗</span>' : 'Explore all eight concepts <span aria-hidden="true">↘</span>';
   requireElement('#work-count').textContent =
-    `Showing ${visible.length} of ${caseEntries.length} projects`;
+    `Showing ${compactView?Math.min(3,visible.length):visible.length} of ${caseEntries.length} concept studies`;
   renderFilters();
 }
 renderWork();
+requireElement<HTMLButtonElement>('#work-expand').addEventListener('click',()=>{
+  allConceptsVisible=!allConceptsVisible;
+  renderWork();
+});
 filterNode.addEventListener('click', event => {
   if (!(event.target instanceof Element)) return;
   const button = event.target.closest<HTMLButtonElement>('[data-filter]');
@@ -304,6 +315,15 @@ mount('article-grid', articleCatalog.map((article,index) => {
       <span class="article-read">Read insight <span aria-hidden="true">${icon("arrowUp")}</span></span>
     </button>`;
 }).join(''));
+const articleGrid=requireElement<HTMLElement>('#article-grid');
+const insightsExpand=requireElement<HTMLButtonElement>('#insights-expand');
+articleGrid.dataset.expanded='false';
+insightsExpand.addEventListener('click',()=>{
+  const expanded=articleGrid.dataset.expanded!=='true';
+  articleGrid.dataset.expanded=String(expanded);
+  insightsExpand.setAttribute('aria-expanded',String(expanded));
+  insightsExpand.innerHTML=expanded?'Show fewer insights <span aria-hidden="true">↗</span>':'Read all eight insights <span aria-hidden="true">↘</span>';
+});
 function cleanStaticArticle(content: string): string {
   // Source is bundled, authored studio copy, never user-supplied HTML.
   // Remove legacy CSS hooks and any executable/embedded content from the archive.
