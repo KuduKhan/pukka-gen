@@ -304,3 +304,15 @@ test('v3 engineering evidence uses verified practices rather than publishing unc
   assert.match(read('src/content.ts'),/export const testimonials/);
   assert.match(html,/intentionally withheld pending independent authentication/);
 });
+
+
+test('v3 portfolio and journal progressively disclose content without removing the archives',()=>{
+  assert.match(html,/id="work-expand"/);
+  assert.match(html,/id="insights-expand"/);
+  assert.match(main,/let allConceptsVisible = false/);
+  assert.match(main,/allConceptsVisible=!allConceptsVisible/);
+  assert.match(main,/articleGrid\.dataset\.expanded/);
+  assert.match(main,/insightsExpand\.setAttribute\('aria-expanded'/);
+  assert.match(read('src/site.css'),/#work #portfolio-grid\[data-expanded="false"\]/);
+  assert.match(read('src/site.css'),/#insights #article-grid\[data-expanded="false"\]/);
+});
