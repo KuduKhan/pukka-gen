@@ -33,6 +33,10 @@ for(const [browserName,engine] of Object.entries({chromium,firefox,webkit})){
    if(await page.locator('[data-solution-select]').count()!==4)throw new Error("Four outcome paths missing");
    if(await page.locator('[data-sector]').count()!==6)throw new Error("Six industry playbooks missing");
    await page.locator('[data-solution-select="knowledge"]').click();
+   const solutionSymbol=await page.locator('[data-solution-icon="engineer"]').getAttribute("href");
+   if(solutionSymbol!=="/icons/pukka-symbols.svg#pg-insight")
+     throw new Error("Solution architecture illustration failed to change");
+
    if(await page.locator('#solution-explorer').getAttribute("data-solution")!=="knowledge" ||
       !(await page.locator('#solution-title').innerText()).includes("intelligence"))throw new Error("Solution explorer failed");
    await page.locator('[data-solution-select="knowledge"]').focus();
@@ -46,6 +50,14 @@ for(const [browserName,engine] of Object.entries({chromium,firefox,webkit})){
    if(await page.locator('#faq .faq-list details').count()!==4)throw new Error("FAQ missing");
    if(await page.locator('.ink-note').count()<4)throw new Error("Handwritten annotations absent");
    if(await page.locator('.journal-symbol svg').count()!==3)throw new Error("Field note icon system inconsistent");
+   if(await page.locator('.expertise-icon svg use').count()!==6 ||
+      await page.locator('.sector-symbol svg use').count()!==6 ||
+      await page.locator('.journal-symbol svg use').count()!==3)
+     throw new Error("First-party icon sprite placements are incomplete");
+   const responseIcons=await page.request.get(new URL("/icons/pukka-symbols.svg",url).toString());
+   if(!responseIcons.ok() || !(await responseIcons.text()).includes('<symbol id="pg-maritime"'))
+     throw new Error("Local icon sprite asset is missing or inaccessible");
+
    if(await page.locator('.expertise-icon svg').count()!==6)throw new Error("Service SVG system inconsistent");
    const glass=await page.locator('.system-panel').evaluate(node=>({
      background:getComputedStyle(node).backgroundColor,
@@ -74,6 +86,9 @@ for(const [browserName,engine] of Object.entries({chromium,firefox,webkit})){
    if(!(await page.locator("#detail-dialog").evaluate(el=>el.open)))throw new Error("Service dialog unavailable");
    await page.keyboard.press("Escape");
    await page.locator('[data-step="verify"]').click();
+   if(await page.locator('[data-stage-icon="1"]').getAttribute("href")!=="/icons/pukka-symbols.svg#pg-release")
+     throw new Error("Selected engineering stage did not update SVG artwork");
+
    if(!(await page.locator("#process-title").innerText()).includes("Tests"))throw new Error("Process steps did not update");
    await page.locator('[data-article="discovery"]').click();
    if(!(await page.locator("#detail-dialog").evaluate(el=>el.open)))throw new Error("Field note dialog unavailable");

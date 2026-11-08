@@ -40,3 +40,7 @@ The contact form uses server-only environment variables: `RESEND_API_KEY`, `RESE
 ## Precision Glass UX refinement — preview-only
 
 The site now includes a separate, cohesive `src/premium.css` visual contract: navy translucent technical panels, restrained white glass cards, matching custom SVG plates, accessible high-contrast states, self-hosted Caveat handwriting accents under the SIL Open Font License, and optional motion-triggered entrance transitions. Motion is disabled for reduced-motion users and original content is visible without JavaScript. No external font provider, extra JS library, or new business functionality is introduced. Real hardware visual approval remains a separate launch gate.
+
+## Precision SVG icon system / review candidate
+
+Pukka Gen now ships a single first-party, same-origin vector icon sprite at `public/icons/pukka-symbols.svg`. Three intentional visual treatments are used: distinct technical service icons in light dimensional plates; sector-specific pictograms in illuminated dark-glass badges; and compact editorial/journal icons. The solution diagram and five engineering process stages now change their SVG composition with the selected use case or stage. SVGs are inline semantic references to local symbols (not external logo services, web fonts, emoji, or runtime icon packages). Colors remain tied to the original navy/cyan/violet identity. Mobile, reduced-motion and high-contrast treatments are explicit. These additions are preview-only; production acceptance is unchanged.

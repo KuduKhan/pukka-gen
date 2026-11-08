@@ -170,3 +170,23 @@ test("motion QA exercises both reduced and normal motion modes without runtime f
   assert.match(browserSuite,/data-reveal/);
   assert.match(browserSuite,/motion-work-/);
 });
+
+
+test("iconography v2 is one distinct local SVG symbol family with precise contextual placement",()=>{
+ const sprite=read("public/icons/pukka-symbols.svg");
+ const count=(sprite.match(/<symbol id="pg-/g)||[]).length;
+ assert.ok(count>=25,"Icon sprite should provide a complete visual vocabulary");
+ for(const key of ["software","ai","cloud","security","design","strategy","maritime","property","finance","education","health","workforce","discovery","journal-security","journal-ai","scope","roadmap","flow","release"]){
+  assert.ok(sprite.includes('id="pg-'+key+'"'),key+" missing in sprite");
+ }
+ for(const section of ["expertise-icon","sector-symbol","journal-symbol"])assert.match(html,new RegExp('class="pg-icon pg-icon-'+section+'"'));
+ assert.equal((html.match(/href="\/icons\/pukka-symbols\.svg#pg-/g)||[]).length>=18,true);
+ assert.match(html,/data-stage-icon="0"/);
+ assert.match(html,/data-solution-icon="input"/);
+ assert.match(main,/const solutionIconMap:/);
+ assert.match(main,/const stageIconMap:/);
+ assert.match(main,/setAttribute\("href","\/icons\/pukka-symbols\.svg#pg-"/);
+ assert.match(read("src/premium.css"),/\.pg-stage-plate/);
+ assert.match(read("src/premium.css"),/\.sector-card\[data-sector="health"\]/);
+ assert.doesNotMatch(sprite,/https?:\/\//);
+});

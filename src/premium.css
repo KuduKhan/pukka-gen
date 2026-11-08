@@ -415,3 +415,171 @@ section {isolation:isolate}
   .site-header,.system-panel,.solution-stage,.process-display,.proof-preview,.studio-wordmark,.project-form {background:#09264e}
   .project,.expertise-card,.journal-card,.faq-list details,.proof-accordion details {background:#fff}
 }
+
+
+/* Three complementary, purpose-built Pukka Gen icon families:
+   1. Product-engineering diagrams: technical line + violet data accents
+   2. Sector badges: luminous pictograms on dark dimensional glass
+   3. Editorial notes: clean light plaques with focused ink blue
+   External SVG symbols are local, scalable and do not introduce font icons. */
+:root{
+ --pg-icon-electric:#0a70b7;
+ --pg-icon-violet:#8a6de5;
+ --pg-icon-ice:#b7efff;
+ --pg-icon-plate-border:rgba(94,165,224,.46);
+}
+.pg-icon{
+ display:block;overflow:visible;shape-rendering:geometricPrecision;
+ transition:transform .27s var(--lux-ease),filter .27s var(--lux-ease);
+}
+.expertise-card .expertise-icon{
+ width:65px;height:65px;margin:20px 0 19px;border-radius:19px;
+ background:radial-gradient(circle at 19% 12%,rgba(255,255,255,.95),transparent 64%),
+ linear-gradient(145deg,#e3f5ff,#d8e6ff);
+ border-color:rgba(104,160,223,.48);
+ box-shadow:0 14px 27px rgba(22,85,151,.14),inset 0 1px 0 #fff;
+}
+.expertise-icon>.pg-icon{
+ width:39px;height:39px;color:#0c69ac;
+ filter:drop-shadow(0 3px 4px rgba(35,119,182,.08));
+}
+.expertise-card[data-service="ai"] .expertise-icon,
+.expertise-card[data-service="strategy"] .expertise-icon {
+ background:linear-gradient(135deg,#f0f1ff,#dbe6ff);
+ border-color:#bec6ed;
+}
+.expertise-card[data-service="ai"] .pg-icon,
+.expertise-card[data-service="strategy"] .pg-icon{color:#3c6db5}
+.expertise-card[data-service="cloud"] .expertise-icon,
+.expertise-card[data-service="design"] .expertise-icon{
+ background:linear-gradient(135deg,#e8f9ff,#d4ecfb);
+}
+.expertise-card[data-service="security"] .expertise-icon{
+ background:linear-gradient(145deg,#e2f8ff,#d9f4f6);
+}
+.expertise-card:hover .expertise-icon,.expertise-card:focus-visible .expertise-icon{
+ transform:translateY(-3px);
+ border-color:rgba(67,175,227,.8);
+ box-shadow:0 17px 31px rgba(19,94,180,.2),0 0 0 4px rgba(72,173,233,.075);
+}
+.expertise-card:hover .expertise-icon>.pg-icon,
+.expertise-card:focus-visible .expertise-icon>.pg-icon {
+ transform:scale(1.055) rotate(-2deg);
+ filter:drop-shadow(0 5px 8px rgba(15,108,195,.16));
+}
+.expertise-card .expertise-number,
+.sector-card .sector-meta,
+.journal-card .journal-label {font-variant-numeric:tabular-nums}
+.sector-card .sector-symbol{
+ width:85px;height:85px;border-radius:23px;
+ margin:18px 0 20px;background:
+ radial-gradient(circle at 18% 13%,rgba(139,228,251,.3),transparent 59%),
+ linear-gradient(135deg,rgba(36,124,189,.8),rgba(13,64,124,.75));
+ border:1px solid rgba(151,220,250,.43);
+ box-shadow:0 15px 32px rgba(0,16,42,.24),inset 0 1px 0 rgba(227,250,255,.16);
+}
+.sector-card .sector-symbol .pg-icon{
+ width:54px;height:54px;color:#b0edff;
+}
+.sector-card[data-sector="education"] .sector-symbol,
+.sector-card[data-sector="finance"] .sector-symbol{
+ background:linear-gradient(145deg,rgba(55,87,173,.7),rgba(24,65,134,.79));
+}
+.sector-card[data-sector="health"] .sector-symbol{
+ background:linear-gradient(145deg,rgba(20,123,153,.72),rgba(14,62,106,.77));
+}
+.sector-card:is(:hover,:focus-visible) .sector-symbol{transform:translateY(-3px)}
+.sector-card:is(:hover,:focus-visible) .sector-symbol .pg-icon{
+ transform:scale(1.07) rotate(2deg);
+ filter:drop-shadow(0 0 8px rgba(112,224,255,.32));
+}
+.journal-card .journal-symbol{
+ width:64px;height:64px;margin:22px 0 20px;border-radius:19px;
+ background:linear-gradient(150deg,#e9f6ff,#e2edff);
+}
+.journal-symbol .pg-icon{width:39px;height:39px;color:#116eae}
+.journal-card[data-article="security"] .journal-symbol{background:linear-gradient(150deg,#e6f2ff,#e6e9ff)}
+.journal-card[data-article="ai"] .journal-symbol{background:linear-gradient(150deg,#eff2ff,#dfecff)}
+.journal-card:is(:hover,:focus-visible) .journal-symbol .pg-icon{transform:scale(1.08)}
+.solution-pipeline .pg-pipeline-icon{
+ width:55px;height:55px;color:#94eaff;
+ fill:none;stroke:none;
+ filter:drop-shadow(0 3px 11px rgba(22,144,216,.16));
+}
+.solution-pipeline .pipeline-center .pg-pipeline-icon{color:#def9ff}
+.solution-pipeline .pipeline-step{min-height:168px}
+.solution-pipeline .pipeline-center{position:relative}
+.solution-pipeline .pipeline-center:before{
+ content:"";pointer-events:none;position:absolute;inset:-7px;border:1px solid rgba(89,221,255,.17);
+ border-radius:20px;
+}
+.process-visual-v3{
+ display:flex;align-items:center;justify-content:flex-start;
+ width:min(460px,100%);height:145px;max-height:none;
+ margin:19px 0 17px;gap:0;filter:none;
+}
+.pg-stage-plate{
+ position:relative;flex:0 0 clamp(65px,9vw,95px);
+ height:clamp(65px,9vw,95px);display:grid;place-items:center;
+ border:1px solid rgba(123,209,249,.46);
+ border-radius:20px;background:linear-gradient(153deg,rgba(30,95,159,.78),rgba(12,46,105,.73));
+ box-shadow:0 15px 30px rgba(0,13,43,.2),inset 0 1px 0 rgba(211,250,255,.13);
+ -webkit-backdrop-filter:blur(11px);backdrop-filter:blur(11px);
+}
+.pg-stage-plate svg{width:50px;height:50px;color:#9ce8ff}
+.pg-stage-plate-center{
+ background:linear-gradient(135deg,rgba(51,125,204,.86),rgba(39,86,163,.86));
+ border-color:rgba(183,233,255,.78);
+ box-shadow:0 14px 35px rgba(14,126,221,.27),inset 0 1px 0 rgba(240,253,255,.2);
+}
+.pg-stage-plate-center svg{color:#e3faff}
+.pg-stage-connector{
+ flex:1;min-width:12px;height:2px;background:linear-gradient(90deg,#4889bc,#84e4fa);
+ position:relative;opacity:.92;
+}
+.pg-stage-connector:after{
+ content:"";width:7px;height:7px;transform:rotate(45deg);
+ border-top:2px solid #94eaff;border-right:2px solid #94eaff;
+ position:absolute;right:-1px;top:-3px;
+}
+.process-display{overflow:hidden}
+.project-visual .ai-scene .ai-node{border-radius:17px}
+.project-visual .ai-ic svg{
+ stroke-width:1.9;
+ filter:drop-shadow(0 2px 6px rgba(65,216,251,.14));
+}
+@media(max-width:900px) {
+ .expertise-card .expertise-icon {width:62px;height:62px}
+ .sector-card .sector-symbol {width:78px;height:78px}
+ .pg-stage-plate{flex-basis:82px;height:82px}
+ .pg-stage-plate svg{width:45px;height:45px}
+}
+@media(max-width:600px) {
+ .expertise-card .expertise-icon {width:59px;height:59px;margin:17px 0 18px}
+ .expertise-card .expertise-icon>.pg-icon{width:36px;height:36px}
+ .sector-card .sector-symbol{width:72px;height:72px;margin:15px 0 18px}
+ .sector-card .sector-symbol .pg-icon{width:45px;height:45px}
+ .journal-card .journal-symbol{width:56px;height:56px;margin:18px 0}
+ .journal-card .journal-symbol .pg-icon{width:36px;height:36px}
+ .solution-pipeline .pg-pipeline-icon{width:37px;height:37px}
+ .solution-pipeline .pipeline-step{min-height:130px}
+ .process-visual-v3{height:114px;margin:8px 0 11px}
+ .pg-stage-plate{flex-basis:65px;height:65px;border-radius:15px}
+ .pg-stage-plate svg{width:39px;height:39px}
+}
+@media(max-width:380px) {
+ .pg-stage-plate{flex-basis:57px;height:57px;border-radius:13px}
+ .pg-stage-plate svg{width:35px;height:35px}
+ .process-visual-v3{height:96px}
+ .solution-pipeline .pg-pipeline-icon{width:32px;height:32px}
+}
+@media(prefers-reduced-motion:reduce){
+ .pg-icon,.expertise-icon,.sector-symbol,.journal-symbol{transition:none!important;animation:none!important;transform:none!important}
+ .pg-icon:is(:hover,:focus-visible){transform:none!important}
+}
+@media(prefers-contrast:more){
+ .expertise-card .expertise-icon,.sector-card .sector-symbol,.journal-card .journal-symbol,
+ .pg-stage-plate{border-width:2px}
+ .expertise-icon>.pg-icon,.journal-symbol .pg-icon{color:#075189}
+ .sector-symbol .pg-icon,.pg-stage-plate svg{color:#f4fbff}
+}

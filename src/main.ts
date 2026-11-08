@@ -67,11 +67,22 @@ const solutionData:Record<SolutionKey,{
   trust:{kicker:"TRUST / SYSTEM ASSURANCE",title:"Security designed in, not bolted on.",description:"Start with identity, sensitive data and trust boundaries. Design authorization, verification and recovery into the system from day one.",input:"Security exposure",engineer:"Assurance model",output:"Clear controls",proof:"Threat modeling · access isolation · release review"},
   products:{kicker:"PRODUCTS / DIGITAL EXPERIENCE",title:"Build the right thing, beautifully.",description:"Turn a business problem into an accessible software experience supported by thoughtful architecture, reliable delivery and maintainable systems.",input:"Unclear requirements",engineer:"Product engineering",output:"Usable software",proof:"Usability review · cross-device QA · release evidence"}
 };
+const solutionIconMap:Record<SolutionKey,readonly [string,string,string]>={
+ operations:["input","flow","release"],
+ knowledge:["input","insight","release"],
+ trust:["security","system","release"],
+ products:["requirements","code","observe"]
+};
 const solutionRoot=byId<HTMLElement>("solution-explorer");
 const solutionControls=Array.from(document.querySelectorAll<HTMLButtonElement>("[data-solution-select]"));
 function selectSolution(key:SolutionKey):void{
  const item=solutionData[key];
  solutionRoot.dataset.solution=key;
+ const artwork=solutionIconMap[key];
+ document.querySelectorAll<SVGUseElement>("[data-solution-icon]").forEach((item,index)=>{
+   const symbol=artwork[index];
+   if(symbol)item.setAttribute("href","/icons/pukka-symbols.svg#pg-"+symbol);
+ });
  byId("solution-kicker").textContent=item.kicker;
  byId("solution-title").textContent=item.title;
  byId("solution-description").textContent=item.description;
@@ -111,10 +122,22 @@ const steps:Record<Step,{label:string;title:string;copy:string;result:string}>={
  verify:{label:"STAGE 04 / PROVE IT WORKS",title:"Tests before promises.",copy:"Review accessibility, authorization, regression behavior, deployment integrity and recovery paths before approving a release.",result:"QA results · security review · release acceptance evidence"},
  evolve:{label:"STAGE 05 / KEEP IT HEALTHY",title:"Make the next step easier.",copy:"Measure behavior, learn from users, review incidents and improve the system without unnecessary complexity.",result:"Operations handover · improvement priorities · sustainable ownership"}
 };
+const stageIconMap:Record<Step,readonly [string,string,string]>={
+ discover:["scope","roadmap","requirements"],
+ architect:["strategy","system","security"],
+ engineer:["code","flow","cloud"],
+ verify:["security","release","observe"],
+ evolve:["observe","roadmap","insight"]
+};
 const processButtons=Array.from(document.querySelectorAll<HTMLButtonElement>("[data-step]"));
 function selectStep(key:Step):void{
  const item=steps[key];
  byId("process-index").textContent=item.label;
+ const artwork=stageIconMap[key];
+ document.querySelectorAll<SVGUseElement>("[data-stage-icon]").forEach((node,index)=>{
+   const symbol=artwork[index];
+   if(symbol)node.setAttribute("href","/icons/pukka-symbols.svg#pg-"+symbol);
+ });
  byId("process-title").textContent=item.title;
  byId("process-copy").textContent=item.copy;
  byId("process-result").textContent=item.result;
