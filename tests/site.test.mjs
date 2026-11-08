@@ -294,3 +294,13 @@ test('v3.0 keeps original technology and legal assets and avoids runtime depende
   for(const route of ['privacy.html','terms.html']) assert.match(read(route),/href="\/src\/site.css"/);
   assert.match(read('src/site.css'),/\.pg-blueprint-controls/);
 });
+
+
+test('v3 engineering evidence uses verified practices rather than publishing unconfirmed endorsements',()=>{
+  assert.match(html,/Proof over <em>promises/);
+  assert.match(main,/const proofStandards =/);
+  assert.match(main,/pg-proof-card/);
+  assert.doesNotMatch(main,/testimonials\.map/);
+  assert.match(read('src/content.ts'),/export const testimonials/);
+  assert.match(html,/intentionally withheld pending independent authentication/);
+});
