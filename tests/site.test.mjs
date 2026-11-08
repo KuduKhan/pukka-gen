@@ -113,7 +113,7 @@ test("industry playbooks are illustrative rather than claims about actual custom
  const sectorKeys=["maritime","property","finance","education","health","workforce"];
  for(const key of sectorKeys){
   assert.ok(html.includes('data-sector="'+key+'"'),key+" sector absent");
-  assert.match(main,new RegExp("\\b"+key+":\\{label:\\"SECTOR PLAYBOOK"));
+  assert.ok(main.includes(key+':{label:"SECTOR PLAYBOOK'),key+" sector detail absent");
  }
  assert.match(html,/id="sector-grid"/);
  assert.match(html,/not unverified claims about our clients/i);
