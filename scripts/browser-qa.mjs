@@ -58,6 +58,30 @@ for(const [name,engine] of Object.entries(browserTypes)){
      });
      data.overflow=layout.overflow;
      if(data.overflow>2)throw new Error('Horizontal overflow '+JSON.stringify(layout));
+     // The new Discover-inspired layout must be visibly composed, not merely themed.
+     const composition=await page.evaluate(()=>{
+       const logo=document.querySelector('.site-header .brand img');
+       const feature=document.querySelector('.studio-assurance');
+       const hero=document.querySelector('.hero');
+       const header=document.querySelector('.site-header');
+       const copy=document.querySelector('.hero-copy');
+       const visual=document.querySelector('.hero-visual');
+       if(!logo||!feature||!hero||!header||!copy||!visual)return {missing:true};
+       const a=copy.getBoundingClientRect(),b=visual.getBoundingClientRect();
+       const h=getComputedStyle(hero),n=getComputedStyle(header);
+       return {missing:false,logoLoaded:logo instanceof HTMLImageElement&&logo.complete&&logo.naturalWidth>0,
+         floatingVisible:feature.getBoundingClientRect().width>0,
+         heroInk:h.color,headerBackground:n.backgroundColor,
+         stacked:b.top>=a.bottom-8,sideBySide:b.left>=a.right-8};
+     });
+     if(composition.missing||!composition.logoLoaded||!composition.floatingVisible)
+       throw new Error('Brand/hero composition missing: '+JSON.stringify(composition));
+     if(!composition.heroInk.includes('20, 43, 75') || !composition.headerBackground.includes('255, 255, 255'))
+       throw new Error('Light hero / light header palette mismatch: '+JSON.stringify(composition));
+     if(width<=1100 && !composition.stacked)
+       throw new Error('Hero did not stack on tablet/mobile: '+JSON.stringify(composition));
+     if(width>1100 && !composition.sideBySide)
+       throw new Error('Hero failed two-column desktop layout: '+JSON.stringify(composition));
      if(errors.length)throw new Error('Uncaught errors: '+errors.join(' | '));
      // Interactive service and technology dialogs remain keyboard-accessible.
      await page.locator('.service-card').first().click();
@@ -86,7 +110,7 @@ for(const [name,engine] of Object.entries(browserTypes)){
      await page.locator('#project-form button[type="submit"]').click();
      const state=await page.locator('#form-status').getAttribute('data-state');
      if(state!=='error')throw new Error('Form validation did not surface');
-     if(name==='chromium' && [375,768,1440].includes(width)){
+     if(name==='chromium' && widths.includes(width)){
        await page.goto(origin,{waitUntil:'domcontentloaded'});
        await page.locator('.service-card').first().waitFor();
        await page.evaluate(async()=>{
