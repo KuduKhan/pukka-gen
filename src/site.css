@@ -2174,3 +2174,26 @@ h1,h2,h3,h4 {font-family:var(--pg-font-display);letter-spacing:-.055em}
 #testimonials .note-line {margin-top:24px;max-width:95ch;color:#9bb8da;font-size:.78rem;line-height:1.7}
 @media (max-width:900px) {#testimonials .testimonial-grid {grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:600px) {#testimonials .testimonial-grid {grid-template-columns:minmax(0,1fr)}#testimonials .pg-proof-card {min-height:0}}
+
+
+/* Progressive discovery: meaningful content first, full inventory on demand.
+   Hidden articles remain in the semantic DOM only while collapsed; controls
+   expose expansion state and preserve keyboard accessibility. */
+#work #portfolio-grid[data-expanded="false"] > .portfolio-card:nth-child(n+4),
+#insights #article-grid[data-expanded="false"] > .article-card:nth-child(n+5) {display:none}
+.pg-expand-wrap {display:flex;justify-content:center;margin-top:28px}
+.pg-expand-button {
+  min-height:48px;display:inline-flex;align-items:center;justify-content:center;gap:15px;
+  padding:12px 20px;border-radius:12px;
+  font-size:.83rem;font-weight:800;letter-spacing:-.01em;cursor:pointer;
+  background:#fff;color:#0c4e83;border:1px solid #b3d2ed;
+  box-shadow:0 6px 19px rgba(11,52,106,.065);
+  transition:transform .2s,border-color .2s,background-color .2s;
+}
+.pg-expand-button:hover {border-color:#4998cd;background:#eff9ff;transform:translateY(-2px)}
+.pg-expand-button:focus-visible {outline:3px solid #087cc0;outline-offset:3px}
+.pg-expand-button span {color:#0b88b4;font-size:1rem}
+#work .pg-expand-wrap {margin-bottom:9px}
+#insights .pg-expand-wrap {margin-top:25px}
+@media(max-width:600px){.pg-expand-button {width:100%;min-height:46px}.pg-expand-wrap {margin-top:20px}}
+@media(prefers-reduced-motion:reduce){.pg-expand-button {transition:none!important;transform:none!important}}
