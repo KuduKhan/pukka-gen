@@ -1,7 +1,7 @@
 /* Pukka Gen — fresh TypeScript interaction layer. No legacy UI code. */
 type Domain = "software"|"ai"|"cloud"|"security"|"design"|"strategy";
 type Step = "discover"|"architect"|"engineer"|"verify"|"evolve";
-type Kind = "project"|"service"|"article";
+type Kind = "project"|"service"|"sector"|"article";
 type Detail = {label:string;title:string;intro:string;points:readonly string[];disclaimer?:string};
 function byId<T extends HTMLElement>(id:string):T {
  const node=document.getElementById(id);
@@ -56,6 +56,54 @@ byId("system-tabs").addEventListener("keydown",event=>{
 });
 setDomain("software");
 
+// Outcome-first solution explorer: technical choices are shown as proposed
+// architecture patterns, never as verified client deployments.
+type SolutionKey="operations"|"knowledge"|"trust"|"products";
+const solutionData:Record<SolutionKey,{
+  kicker:string;title:string;description:string;input:string;engineer:string;output:string;proof:string
+}>={
+  operations:{kicker:"OPERATIONS / PROCESS INTELLIGENCE",title:"Less handoff. More progress.",description:"Model the work, simplify the approvals and give teams a reliable view of what needs attention—without replacing control with guesswork.",input:"Fragmented work",engineer:"Workflow platform",output:"Reviewable outcome",proof:"Workflow regression · permission tests · operational usability"},
+  knowledge:{kicker:"KNOWLEDGE / CONTROLLED AI",title:"Useful intelligence. Human oversight.",description:"Connect internal knowledge to practical tasks through permission-aware retrieval, evaluated responses and explicit review paths.",input:"Disconnected knowledge",engineer:"Governed retrieval",output:"Assisted decisions",proof:"Retrieval evaluation · data boundaries · human review"},
+  trust:{kicker:"TRUST / SYSTEM ASSURANCE",title:"Security designed in, not bolted on.",description:"Start with identity, sensitive data and trust boundaries. Design authorization, verification and recovery into the system from day one.",input:"Security exposure",engineer:"Assurance model",output:"Clear controls",proof:"Threat modeling · access isolation · release review"},
+  products:{kicker:"PRODUCTS / DIGITAL EXPERIENCE",title:"Build the right thing, beautifully.",description:"Turn a business problem into an accessible software experience supported by thoughtful architecture, reliable delivery and maintainable systems.",input:"Unclear requirements",engineer:"Product engineering",output:"Usable software",proof:"Usability review · cross-device QA · release evidence"}
+};
+const solutionRoot=byId<HTMLElement>("solution-explorer");
+const solutionControls=Array.from(document.querySelectorAll<HTMLButtonElement>("[data-solution-select]"));
+function selectSolution(key:SolutionKey):void{
+ const item=solutionData[key];
+ solutionRoot.dataset.solution=key;
+ byId("solution-kicker").textContent=item.kicker;
+ byId("solution-title").textContent=item.title;
+ byId("solution-description").textContent=item.description;
+ byId("solution-input").textContent=item.input;
+ byId("solution-engineer").textContent=item.engineer;
+ byId("solution-output").textContent=item.output;
+ byId("solution-proof").textContent=item.proof;
+ solutionControls.forEach(button=>button.setAttribute("aria-pressed",String(button.dataset.solutionSelect===key)));
+}
+const solutionSelector=byId<HTMLElement>("solution-selector");
+solutionSelector.addEventListener("click",event=>{
+ const origin=event.target;
+ const button=origin instanceof Element?origin.closest<HTMLButtonElement>("[data-solution-select]"):null;
+ const key=button?.dataset.solutionSelect;
+ if(key && Object.hasOwn(solutionData,key))selectSolution(key as SolutionKey);
+});
+solutionSelector.addEventListener("keydown",event=>{
+ if(!(event instanceof KeyboardEvent)||!["ArrowDown","ArrowUp","ArrowRight","ArrowLeft","Home","End"].includes(event.key))return;
+ const origin=event.target;
+ const button=origin instanceof Element?origin.closest<HTMLButtonElement>("[data-solution-select]"):null;
+ if(!button)return;
+ const index=solutionControls.indexOf(button);
+ if(index<0)return;
+ event.preventDefault();
+ const newIndex=event.key==="Home"?0:event.key==="End"?solutionControls.length-1:
+  (index+(event.key==="ArrowLeft"||event.key==="ArrowUp"?-1:1)+solutionControls.length)%solutionControls.length;
+ const target=solutionControls[newIndex];
+ const key=target?.dataset.solutionSelect;
+ if(key && Object.hasOwn(solutionData,key)){selectSolution(key as SolutionKey);target.focus();}
+});
+selectSolution("operations");
+
 const steps:Record<Step,{label:string;title:string;copy:string;result:string}>={
  discover:{label:"STAGE 01 / FIND THE REAL PROBLEM",title:"Understand before building.",copy:"Define the people, constraints, intended outcomes and genuine business problem before proposing a solution.",result:"Problem statement · scope boundaries · success measures"},
  architect:{label:"STAGE 02 / DESIGN THE SYSTEM",title:"Make the hard decisions early.",copy:"Choose system boundaries, data flows, technology trade-offs and security controls with long-term ownership in mind.",result:"Architecture blueprint · risk register · product experience model"},
@@ -107,6 +155,14 @@ const details:Record<Kind,Record<string,Detail>>={
   design:{label:"CAPABILITY 05 / PRODUCT UX",title:"Product design",intro:"Human-centred interfaces that express complex engineering through clarity, trust and intuitive interactions.",points:["Research-led information architecture","Accessible and responsive user experiences","Design systems, prototypes and usability review","Polished interface components with purpose"]},
   strategy:{label:"CAPABILITY 06 / DIRECTION",title:"Technical strategy",intro:"Clear choices at the beginning save teams from expensive and unnecessary implementation later.",points:["Problem discovery and feasibility","Architecture and technology trade-off analysis","Phased delivery and ownership planning","Quality, security and maintenance requirements"]}
  },
+ sector:{
+  maritime:{label:"SECTOR PLAYBOOK / MARITIME & LOGISTICS",title:"Maritime & logistics",intro:"An engineering use-case model for operational coordination, asset status and exception-handling in complex maritime and logistics workflows.",points:["Problem pattern: disconnected shipping, cargo or equipment updates that slow operational coordination.","Proposed system: role-scoped workflow tracking, structured event updates and a clear operational dashboard.","Assurance: data-integrity checks, resilient connectivity, audit visibility and device-aware interface acceptance.","First step: map the actual operations and applicable access boundaries with the responsible team."],disclaimer:"Sector application pattern only. It does not represent an existing maritime customer or completed deployment."},
+  property:{label:"SECTOR PLAYBOOK / PROPERTY SYSTEMS",title:"Real estate & property",intro:"A conceptual property information and operations platform for structured records and accountable service workflows.",points:["Problem pattern: scattered property documents, inquiries and service updates.","Proposed system: searchable asset records, permissions, approval tracking and clear owner/tenant interactions.","Assurance: secure document access, record integrity and tenant isolation as applicable.","First step: agree on the exact property-management process and stakeholder access rules."],disclaimer:"Illustrative sector scenario, not a claim about a client or launched product."},
+  finance:{label:"SECTOR PLAYBOOK / FINANCIAL WORKFLOWS",title:"Finance & operations",intro:"A proposed operations workflow with transparent approvals, reconciliation and traceable decision paths.",points:["Problem pattern: complex approvals, inconsistent handoffs and hard-to-reconcile reporting.","Proposed system: permissioned financial workflows, status history, reconciliation support and exportable records.","Assurance: least privilege, separation of duties, transaction integrity and independent acceptance where needed.","First step: define financial controls, required audit evidence and applicable regulations."],disclaimer:"No regulated-services certifications or production customer outcomes are asserted."},
+  education:{label:"SECTOR PLAYBOOK / DIGITAL LEARNING",title:"Education & learning",intro:"A conceptual learning platform designed around clear learning journeys and trustworthy academic evidence.",points:["Problem pattern: fragmented lessons, unclear progress and confusing feedback.","Proposed system: syllabus-first navigation, structured practice and reviewable completion records.","Assurance: learner data protection, accessible interfaces and integrity-aware assessment paths.","First step: map the actual teaching outcomes, learner roles and evidence requirements."],disclaimer:"A design reference, not a claim that a deployed institution uses this platform."},
+  health:{label:"SECTOR PLAYBOOK / HEALTH ADMINISTRATION",title:"Healthcare administration",intro:"A non-clinical operational application pattern for staffing, scheduling and secure information flow.",points:["Problem pattern: hard-to-coordinate staffing and administrative workflows.","Proposed system: staff scheduling, administrative approvals and operational visibility with role boundaries.","Assurance: privacy-by-design, data minimization and independent clinical review if scope ever becomes clinical.","First step: document the non-clinical intended use and applicable data-protection obligations."],disclaimer:"Administrative use cases only. No diagnosis, treatment claims or certified healthcare deployments."},
+  workforce:{label:"SECTOR PLAYBOOK / PERSONNEL OPERATIONS",title:"Enterprise workforce",intro:"A conceptual people-operations workspace with permission-aware records and accountable approvals.",points:["Problem pattern: scattered personnel information, inconsistent leave routing and unclear workforce availability.","Proposed system: role-based workforce workflows, self-service requests and status-aware oversight.","Assurance: cross-user isolation, privacy controls, approval history and organization-scoped permissions.","First step: determine the target organization, data retention needs and valid HR rules."],disclaimer:"Illustrative system design. It is not a statement of an active HR customer deployment."}
+ },
  article:{
   discovery:{label:"FIELD NOTE 01 / PRODUCT STRATEGY",title:"Before the first line of code.",intro:"Shipping software faster is not useful if the team never defined the problem properly.",points:["Describe the user and the expensive friction in their day—not a list of fashionable features.","Choose a small, meaningful first release and define what success would look like.","Make ownership, security and recovery expectations explicit before implementation.","The most valuable design decision is often a feature you decide not to build."]},
   security:{label:"FIELD NOTE 02 / SYSTEM SECURITY",title:"Security is not a launch checklist.",intro:"Security is stronger when it shapes architecture rather than appearing after the product is complete.",points:["Identify data boundaries, trust relationships and high-risk workflows from the start.","Design authorization separately from visible interface permissions.","Test failure paths and cross-account access, not only happy-path screens.","Independent review and documented remediation remain necessary for high-risk systems."]},
@@ -133,7 +189,7 @@ function showDetail(kind:Kind,key:string):void{
 }
 document.addEventListener("click",event=>{
  if(!(event.target instanceof Element))return;
- for(const kind of ["project","service","article"] as const){
+ for(const kind of ["project","service","sector","article"] as const){
   const button=event.target.closest<HTMLButtonElement>("[data-"+kind+"]");
   if(button){const key=button.dataset[kind];if(key)showDetail(kind,key);return;}
  }
