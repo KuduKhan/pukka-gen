@@ -272,3 +272,22 @@ test('Logo-led navy Pukka visual layer preserves the accessible single-styleshee
   assert.doesNotMatch(style,/--pg-homes-green/);
   assert.match(html,/name="theme-color" content="#06152f"/);
 });
+
+
+test('Discover-standard layout has a light editorial hero and navy identity without new features',()=>{
+  const css=read('src/site.css');
+  assert.match(css,/PUKKA GEN \/ DISCOVER-STANDARD VISUAL ARCHITECTURE/);
+  assert.match(css,/linear-gradient\(139deg,#fafdff,#edf5ff/);
+  assert.match(css,/\.site-header \.brand \{/);
+  assert.match(css,/\.hero-visual-architecture/);
+  assert.match(css,/\.studio-assurance/);
+  assert.match(css,/#approach \.process-row \{/);
+  assert.match(css,/@media \(max-width:380px\)/);
+  assert.match(css,/@media \(prefers-reduced-motion:reduce\)/);
+  assert.match(html,/class="studio-assurance"/);
+  assert.doesNotMatch(html,/class="floating-label float-one"/);
+  assert.match(html,/src="\/pukka-gen-wordmark\.png"/);
+  assert.match(html,/src="\/illustrations\/architecture\.svg"/);
+  assert.match(html,/id="work-filters"/);
+  assert.match(html,/id="project-form"/);
+});
