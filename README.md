@@ -48,3 +48,7 @@ Pukka Gen now ships a single first-party, same-origin vector icon sprite at `pub
 ## Enterprise editorial layout adaptation (preview-only)
 
 Nocturnals Intellisoft provided a *high-level* reference for business-first presentation, editorial typography, capability sequencing, sector context and contrasting section design. Pukka Gen does **not** copy its website code, assets, wordmark, images, branding, claims or customer data. The new original presentation uses a compact two-level desktop masthead, software/AI/security services first, original outcome/technical portfolio content, self-authored panoramic SVG visual break, sector-specific architectural motifs and a clear No Duff engineering methodology. The Pukka navy/cyan/violet palette, original logo, licensed handwritten signoff, keyboard-accessible System Atlas and verified-content policy remain unchanged. This is an isolated Vercel preview candidate, not authorized production.
+
+## Production release authorization — November 8, 2026
+
+The owner explicitly authorized promotion to **production** after inspection of the Enterprise Editorial redesign preview. Homepage indexing and `robots.txt` preview restrictions were removed accordingly. This does **not** constitute independent verification of the third-party email provider, device-specific behavior, or legal notices; those remain operational follow-ups. The code history remains preserved in Git.

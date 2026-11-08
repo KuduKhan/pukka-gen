@@ -12,8 +12,9 @@ test("fresh source uses only new architecture and original brand assets",()=>{
  assert.doesNotMatch(html,/khanhomes|wasafi/i);
  assert.doesNotMatch(html,/testimonials|unverified client results/i);
  assert.doesNotMatch(html,/https:\/\/images\./i);
- assert.match(html,/name="robots" content="noindex,nofollow"/);
- assert.match(read("public/robots.txt"),/Disallow: \//);
+ assert.match(html,/name="robots" content="index,follow"/);
+ assert.match(read("public/robots.txt"),/Allow: \//);
+ assert.doesNotMatch(read("public/robots.txt"),/Disallow: \/\s*(?:\n|$)/);
 });
 test("all meaningful sections, contact links and legal pages exist",()=>{
  const ids=["main","top","work","expertise","approach","studio","journal","contact","project-form","detail-dialog","system-panel"];
