@@ -48,7 +48,7 @@ for(const [browserName,engine] of Object.entries({chromium,firefox,webkit})){
    await page.locator('#dialog-close').click();
    if(await page.locator('#proof-accordion details').count()!==4)throw new Error("No Duff proof missing");
    if(await page.locator('#faq .faq-list details').count()!==4)throw new Error("FAQ missing");
-   if(await page.locator('.ink-note').count()<4)throw new Error("Handwritten annotations absent");
+   if(await page.locator('.ink-note').count()<3)throw new Error("Editorial handwritten annotations absent");
    if(await page.locator('.journal-symbol svg').count()!==3)throw new Error("Field note icon system inconsistent");
    if(await page.locator(".pg-capabilities-band").count()!==1)throw new Error("Enterprise capability bridge missing");
    if(await page.locator(".pg-sector-watermark").count()!==6)throw new Error("Sector visual context missing");
@@ -135,7 +135,7 @@ for(const [browserName,engine] of Object.entries({chromium,firefox,webkit})){
       const motionErrors=[];
       motionPage.on("pageerror",error=>motionErrors.push(error.message));
       await motionPage.goto(url,{waitUntil:"domcontentloaded"});
-      await motionPage.locator(".ink-note-hero").waitFor();
+      await motionPage.locator(".pg-hero-signoff").waitFor();
       if(!await motionPage.evaluate(()=>document.documentElement.classList.contains("motion-enabled")))
         throw new Error("Normal-motion progressive enhancement did not start");
       const fontLoaded=await motionPage.evaluate(async()=>{
