@@ -1,0 +1,48 @@
+name: Pukka Fresh Preview QA
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [rebuild/pukka-fresh-v1-preview]
+permissions:
+  contents: read
+jobs:
+  quality:
+    name: Quality Gate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - run: npm run check
+  browser:
+    name: Cross-browser & Accessibility
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - run: npm install --no-save --package-lock=false playwright @axe-core/playwright
+      - run: npx playwright install --with-deps chromium firefox webkit
+      - name: Start preview server
+        run: |
+          npm run dev -- --host 127.0.0.1 --port 4173 > /tmp/pukka-fresh-vite.log 2>&1 &
+      - name: Run browser QA
+        run: node scripts/browser-qa.mjs
+      - name: Upload responsive QA
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pukka-fresh-responsive-qa
+          path: artifacts/qa/
+          retention-days: 14

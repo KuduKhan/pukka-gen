@@ -1,4 +1,2 @@
 User-agent: *
-Allow: /
-
-Sitemap: https://www.pukkagennoduff.com/sitemap.xml
+Disallow: /
