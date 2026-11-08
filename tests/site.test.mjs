@@ -131,3 +131,31 @@ test("No Duff assurance is explicit, inspectable and provides direct FAQ answers
  assert.equal((html.match(/class="sector-card/g)||[]).length,6);
  assert.equal((html.match(/class="solution-choice/g)||[]).length,4);
 });
+
+
+test("premium glass card system has one cohesive self-hosted handwriting identity",()=>{
+  const premium=read("src/premium.css");
+  assert.match(html,/href="\/src\/premium.css"/);
+  assert.match(premium,/@font-face\s*\{/);
+  assert.match(premium,/font-family:"Pukka Hand"/);
+  assert.match(premium,/\/fonts\/Caveat-variable\.ttf/);
+  assert.match(premium,/--glass-dark:/);
+  assert.match(premium,/backdrop-filter:blur/);
+  assert.match(premium,/\.sector-symbol svg/);
+  assert.match(premium,/\.expertise-icon svg/);
+  assert.match(premium,/\.journal-symbol svg/);
+  assert.match(premium,/\.project-form :is\(input,select,textarea\):focus-visible/);
+  assert.ok(existsSync(new URL("../public/fonts/Caveat-variable.ttf",import.meta.url)));
+  assert.ok(existsSync(new URL("../public/fonts/OFL-Caveat.txt",import.meta.url)));
+  assert.match(read("public/fonts/OFL-Caveat.txt"),/SIL OPEN FONT LICENSE/i);
+  assert.ok((html.match(/class="ink-note/g)||[]).length>=4);
+});
+test("illustrative icon scenes use consistent semantic SVG instead of platform-dependent pictograms",()=>{
+  assert.equal((html.match(/class="journal-symbol" aria-hidden="true"><svg/g)||[]).length,3);
+  assert.equal((html.match(/class="ai-ic"><svg/g)||[]).length,3);
+  assert.match(read("src/premium.css"),/prefers-reduced-motion:reduce/);
+  assert.match(read("src/premium.css"),/prefers-contrast:more/);
+  assert.match(main,/IntersectionObserver/);
+  assert.match(main,/document\.documentElement\.classList\.add\("motion-enabled"\)/);
+  assert.doesNotMatch(read("src/premium.css"),/https?:\/\//);
+});

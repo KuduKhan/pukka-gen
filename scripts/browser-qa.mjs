@@ -42,6 +42,15 @@ for(const [browserName,engine] of Object.entries({chromium,firefox,webkit})){
    await page.locator('#dialog-close').click();
    if(await page.locator('#proof-accordion details').count()!==4)throw new Error("No Duff proof missing");
    if(await page.locator('#faq .faq-list details').count()!==4)throw new Error("FAQ missing");
+   if(await page.locator('.ink-note').count()<4)throw new Error("Handwritten annotations absent");
+   if(await page.locator('.journal-symbol svg').count()!==3)throw new Error("Field note icon system inconsistent");
+   if(await page.locator('.expertise-icon svg').count()!==6)throw new Error("Service SVG system inconsistent");
+   const glass=await page.locator('.system-panel').evaluate(node=>({
+     background:getComputedStyle(node).backgroundColor,
+     filter:getComputedStyle(node).backdropFilter || getComputedStyle(node).webkitBackdropFilter
+   }));
+   if(!glass.filter.includes('blur'))throw new Error("Frosted system panel style missing: "+JSON.stringify(glass));
+   if(await page.locator(".ink-note-hero").isVisible()!==true)throw new Error("Hero handwritten note missing");
    const logo=await page.locator(".brand img").evaluate(img=>img.complete&&img.naturalWidth>0);
    if(!logo)throw new Error("Original logo is missing");
    await page.locator('[data-system-select="security"]').click();

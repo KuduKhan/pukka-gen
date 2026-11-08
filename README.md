@@ -36,3 +36,7 @@ The contact form uses server-only environment variables: `RESEND_API_KEY`, `RESE
 - Removal of preview indexing restrictions after explicit production approval.
 
 **Preview is not authorization to deploy to production.**
+
+## Precision Glass UX refinement — preview-only
+
+The site now includes a separate, cohesive `src/premium.css` visual contract: navy translucent technical panels, restrained white glass cards, matching custom SVG plates, accessible high-contrast states, self-hosted Caveat handwriting accents under the SIL Open Font License, and optional motion-triggered entrance transitions. Motion is disabled for reduced-motion users and original content is visible without JavaScript. No external font provider, extra JS library, or new business functionality is introduced. Real hardware visual approval remains a separate launch gate.
