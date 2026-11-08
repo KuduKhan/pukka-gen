@@ -1,80 +1,54 @@
-# Pukka Gen — Studio Edition
+# Pukka Gen — Fresh Studio Preview
 
-**v2.3.4**, rebuilt from scratch from the previous Pukka Gen site. The production-facing experience uses **Vite + strict TypeScript + authored CSS**, retaining the original content and trusted brand identity, without runtime Tailwind CDN or a large untyped interaction layer.
+A new, source-clean Pukka Gen website built from scratch on the isolated branch `rebuild/pukka-fresh-v1-preview`.
 
-## What is included
+## Release model
 
-- Rebuilt responsive home, about, values, services, portfolio, delivery process, audience and sector, insights and full No-Duff checklist, technology, team, testimonials, FAQ, contact, legal and social links.
-- The original **six complete service specifications**, **eight full portfolio case-study data sets**, **technology information**, **nine article and checklist resources**, and **FAQ data** preserved as typed, static editorial content in `src/content.ts`.
-- Accessible, keyboard-friendly native HTML dialogs, a mobile navigation menu, working portfolio filtering, service-to-enquiry preselection, checklist download, privacy-aware enquiry confirmation and direct email fallback.
-- Stable original brand images: `pukka-gen-wordmark.png`, `pukka-gen-mark.png`, and `pukka-gen-favicon.png`.
-- Independently accessible Privacy and Terms pages sharing the new visual system.
+This branch contains a **new Git tree**. Legacy application sources, styles, tests, JavaScript modules and old media were not carried into this tree. Only the original Pukka Gen wordmark, mark and favicon blobs were retained. The existing Git repository and its history remain intact; the current main branch, open production URL and prior versions remain recoverable.
 
-This rebuild intentionally does **not** use invented customer data. Testimonials, project metrics, staff biographies and existing technology claims from the earlier site are preserved for continuity but require independent publication verification. No new client results have been fabricated.
+The Vercel integration may publish a **preview** build of this branch. Do **not** merge this branch into main, promote an alias or deploy to the production target until the owner inspects the Vercel preview and explicitly approves production.
 
-## Development
+The public pages intentionally include `noindex,nofollow` and a restrictive `robots.txt` while in review. These need controlled adjustment before public production promotion.
 
-```sh
-npm ci
-npm run dev
-npm run check
-```
+## Structure
 
-Run `npm run check` before each preview and release. It runs strict TypeScript, Node regression/API tests, production build and output verification. Vite emits `dist/` for Vercel.
+- `index.html`: accessible, new layout and original inline SVG engineering atlas; services, three labeled engineering concepts, process, studio, journal and enquiry.
+- `src/styles.css`: authored navy/cyan/violet responsive design system with compact mobile navigation, visual interface concepts, original iconography and reduced-motion support.
+- `src/main.ts`: small TypeScript interaction layer; keyboard-usable diagram and process explorer, accessible dialogs, portfolio filtering, mobile navigation and form feedback.
+- `api/project-brief.js`: server-only Resend email handler; refuses unconfigured delivery and exposes no credentials to the browser.
+- `privacy.html` and `terms.html`: clearly labeled preview drafts requiring independent business/legal review before public launch.
+- `tests/` and `scripts/`: automated integrity, API, build artifact, multi-browser, responsiveness and axe checks.
 
-## Real enquiry delivery
+## Local QA
 
-The project form submits to `POST /api/project-brief`, a Vercel serverless function. Configure these **server-only Vercel environment variables**:
+Run `npm ci`, `npm run check` and `npm run dev`. Browser QA additionally requires temporary Playwright and axe packages and browser runtimes as configured in GitHub Actions. Verify at 320, 375, 768, 1024, 1280 and 1440 CSS pixels and on physical phones, including reduced motion and keyboard navigation.
 
-- `RESEND_API_KEY` — transactional email provider key
-- `RESEND_FROM` — sender address at a verified domain
-- `PROJECT_BRIEF_TO` — monitored receiving mailbox
-- `SITE_ORIGIN` — optional exact production origin
+## Online enquiries
 
-The UI only reports acceptance by the email delivery service; it does **not** claim receipt by the mailbox. Without provider configuration, the API returns a non-success result and the user sees a direct-mail fallback. Never commit provider keys or secrets.
+The contact form uses server-only environment variables: `RESEND_API_KEY`, `RESEND_FROM` and `PROJECT_BRIEF_TO`. If missing or provider delivery fails, it offers a user-driven email fallback. A success message only means the provider accepted the email; actual receipt and user-response workflows must be verified separately.
 
-## Release acceptance
+## Acceptance blockers
 
-Before claiming full production validation, independently verify responsive views at 320, 375, 768, 1024, 1280 and 1440 px, keyboard and screen-reader journeys, successful real email delivery, platform WAF/rate limiting, legal notices and truthful portfolio testimonials. API smoke tests do not replace end-to-end delivery confirmation.
+- Human approval of screenshots, words, logo rendering, interaction and responsive appearance.
+- Real-device and assistive-technology verification; measured performance and accessibility.
+- Real email receipt and provider/domain configuration.
+- Independent privacy, legal and public business-copy sign-off.
+- Removal of preview indexing restrictions after explicit production approval.
 
-## Rebuild history
+**Preview is not authorization to deploy to production.**
 
-The previous site is archived on GitHub branch `archive/pre-rebuild-v1.2.3`. The replacement removes its obsolete DOM-first scripts, old Tailwind-dependent styles and duplicate original front-end files. Preserve the archive until this version has passed business acceptance.
+## Precision Glass UX refinement — preview-only
 
-## v2.1.0 — Enterprise Experience design refresh
+The site now includes a separate, cohesive `src/premium.css` visual contract: navy translucent technical panels, restrained white glass cards, matching custom SVG plates, accessible high-contrast states, self-hosted Caveat handwriting accents under the SIL Open Font License, and optional motion-triggered entrance transitions. Motion is disabled for reduced-motion users and original content is visible without JavaScript. No external font provider, extra JS library, or new business functionality is introduced. Real hardware visual approval remains a separate launch gate.
 
-The rebuilt site is styled with a restrained, editorial enterprise aesthetic, informed by the professional information architecture and visual patterns of Nocturnals Intellisoft. It is **not** a copy of that company's content, source code, photographs, wordmark or distinctive branding.
+## Precision SVG icon system / review candidate
 
-- Compact navigation with visible current-section location, scroll-aware appearance and a small reading-progress indicator.
-- More substantial display typography, controlled whitespace, refined enterprise color layers and consistent buttons.
-- An image-led hero with original Pukka Gen copy, a clear engineering-focus band and a new outcome-focused editorial feature.
-- Responsive 2-column numbered service directory, improved portfolio gallery, dark/light section alternation, image-backed sector tiles, polished team, insights, process, FAQ and enquiry presentation.
-- Respect for mobile device widths, keyboard access, explicit focus on portfolio filters, and reduced-motion preferences.
-- All service specifications, case studies, editorial resources, team details, Pukka contact channels, legal pages and serverless enquiry functions are preserved.
+Pukka Gen now ships a single first-party, same-origin vector icon sprite at `public/icons/pukka-symbols.svg`. Three intentional visual treatments are used: distinct technical service icons in light dimensional plates; sector-specific pictograms in illuminated dark-glass badges; and compact editorial/journal icons. The solution diagram and five engineering process stages now change their SVG composition with the selected use case or stage. SVGs are inline semantic references to local symbols (not external logo services, web fonts, emoji, or runtime icon packages). Colors remain tied to the original navy/cyan/violet identity. Mobile, reduced-motion and high-contrast treatments are explicit. These additions are preview-only; production acceptance is unchanged.
 
-New presentation CSS lives in `src/enterprise.css` and is loaded after the v2.0 base styles. Required quality gates: `npm ci && npm run check`, preview review, desktop/tablet/mobile browser validation and genuine email-delivery verification before declaring full acceptance.
+## Enterprise editorial layout adaptation (preview-only)
 
-## v2.2.0 — Precision Glass UI/UX overhaul
+Nocturnals Intellisoft provided a *high-level* reference for business-first presentation, editorial typography, capability sequencing, sector context and contrasting section design. Pukka Gen does **not** copy its website code, assets, wordmark, images, branding, claims or customer data. The new original presentation uses a compact two-level desktop masthead, software/AI/security services first, original outcome/technical portfolio content, self-authored panoramic SVG visual break, sector-specific architectural motifs and a clear No Duff engineering methodology. The Pukka navy/cyan/violet palette, original logo, licensed handwritten signoff, keyboard-accessible System Atlas and verified-content policy remain unchanged. This is an isolated Vercel preview candidate, not authorized production.
 
-- `src/premium.css`: controlled glassmorphism, refined contrast, premium cards, spacing, gradient depth, responsive layouts and reduced-motion fallbacks.
-- `src/icons.ts`: original dependency-free SVG line illustrations for service, delivery, portfolio, audience, article and detail views.
-- `public/tech/`: **29 self-hosted technology SVG marks** sourced from the community [Simple Icons project](https://github.com/simple-icons/simple-icons). Names and trademarks are the property of their respective owners; their use does not imply endorsement or certification.
-- Adobe XD, OpenAI, AWS and Azure have neutral SVG monograms because a verified appropriate brand SVG was not available from that source. No unrelated brand icons are substituted.
-- Technology chips are now balanced vector-logo tiles. Existing descriptive panels and service selection continue working.
-- White service cards, dark portfolio cards, glass industry panels, staff and insights, delivery stages, contact form and dialog views all have consistent interaction, spacing and iconography.
-- The full Pukka Gen editorial, business, service, portfolio, contact, FAQ and legal material is preserved.
-- `npm run check` verifies package metadata, typed client logic, Node API tests, Vite build, and presence of production technology assets.
+## Production release authorization — November 8, 2026
 
-Styling is specific to Pukka Gen; no third-party studio's source code or proprietary designs were copied. Independent real-device/browser/screen-reader checks, actual email arrival verification and client-claim/legal review remain outstanding acceptance work.
-
-## v2.3.0–v2.3.4 sequential visual-excellence releases
-
-- **v2.3.0**: unified typography, colours, spacing, radii, shadows, interaction and focus tokens; merged three legacy override stylesheets into `src/site.css` and updated legal pages.
-- **v2.3.1**: responsive service grid, featured image-led case-study card, editorial insights and consistent testimonial layout.
-- **v2.3.2**: original `public/illustrations/architecture.svg` and `delivery-pipeline.svg`; three verified Devicon brand marks; fallback for OpenAI remains a clearly neutral monogram; icon provenance in `TECH_ASSETS.md`.
-- **v2.3.3**: 320–1440px width safeguards, motion restraint, contact form focus on dialog CTA and mobile-safe layout adjustments.
-- **v2.3.4**: static CI gate + Chromium, Firefox and WebKit browser QA at six widths, screenshot evidence capture, Playwright interaction tests and axe-core automated WCAG checks. Build asset-size budgets guard script/style bloat.
-
-For local browser acceptance, install ephemeral tooling with `npm install --no-save --package-lock=false playwright @axe-core/playwright`, run `npx playwright install chromium firefox webkit`, start `npm run dev -- --host 127.0.0.1 --port 4173`, then run `node scripts/browser-qa.mjs`.
-
-The automated browser suite captures **visual QA snapshots**, not signed pixel-diff approval of a new visual baseline. Physical device and assistive-technology signoff, measured field Core Web Vitals, actual email arrival, and independent substantiation of inherited customer metrics require separate evidence. Do not treat a green browser run as proof of those external gates.
+The owner explicitly authorized promotion to **production** after inspection of the Enterprise Editorial redesign preview. Homepage indexing and `robots.txt` preview restrictions were removed accordingly. This does **not** constitute independent verification of the third-party email provider, device-specific behavior, or legal notices; those remain operational follow-ups. The code history remains preserved in Git.

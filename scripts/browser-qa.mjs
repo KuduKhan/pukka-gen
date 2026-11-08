@@ -1,120 +1,169 @@
-/**
- * Pukka Gen v2.3.4 cross-browser visual and interaction acceptance.
- * Run in CI after `npm ci && npm install --no-save --package-lock=false playwright @axe-core/playwright`
- * and `npx playwright install --with-deps chromium firefox webkit`.
- * Produces deterministic viewport screenshots + a JSON evidence report.
- * Screenshot baseline review is a separate human approval, not an inferred pass.
- */
-import { chromium, firefox, webkit } from 'playwright';
-import AxeBuilder from '@axe-core/playwright';
-import { mkdir, writeFile } from 'node:fs/promises';
-
-const origin = process.env.PUKKA_BASE_URL || 'http://127.0.0.1:4173/';
-const widths = [320,375,768,1024,1280,1440];
-const height = 900;
-const folder = 'artifacts/visual-qa';
-const results = [];
-const failures = [];
-await mkdir(folder,{recursive:true});
-
-async function serverReady(){
- for(let attempt=0;attempt<60;attempt++){
-   try{const response=await fetch(origin);if(response.ok)return;}catch{}
-   await new Promise(resolve=>setTimeout(resolve,500));
+import {chromium,firefox,webkit} from "playwright";
+import AxeBuilder from "@axe-core/playwright";
+import {mkdir,writeFile} from "node:fs/promises";
+const url=process.env.PUKKA_BASE_URL||"http://127.0.0.1:4173/";
+const widths=[320,375,768,1024,1280,1440];
+const results=[],failures=[];
+await mkdir("artifacts/qa",{recursive:true});
+async function ready(){
+ for(let i=0;i<80;i++){
+  try{if((await fetch(url)).ok)return;}catch{}
+  await new Promise(resolve=>setTimeout(resolve,500));
  }
- throw new Error('Vite preview server did not start: '+origin);
+ throw new Error("Development site did not start");
 }
-await serverReady();
-const browserTypes={chromium,firefox,webkit};
-for(const [name,engine] of Object.entries(browserTypes)){
- const browser = await engine.launch({headless:true});
+await ready();
+for(const [browserName,engine] of Object.entries({chromium,firefox,webkit})){
+ const browser=await engine.launch({headless:true});
  try{
-  for(const width of widths){
-   const context = await browser.newContext({
-     viewport:{width,height},reducedMotion:'reduce',deviceScaleFactor:1
-   });
-   const page = await context.newPage();
-   const errors=[];
-   page.on('pageerror',err=>errors.push(err.message));
-   const data={browser:name,width,ok:false,overflow:0,serviceCount:0,portfolioCount:0,articleCount:0,techCount:0,consoleErrors:[]};
-   try{
-     const response=await page.goto(origin,{waitUntil:'domcontentloaded',timeout:30000});
-     if(!response?.ok())throw new Error('Page response '+response?.status());
-     await page.locator('.service-card').first().waitFor({timeout:15000});
-     data.serviceCount=await page.locator('.service-card').count();
-     data.portfolioCount=await page.locator('.portfolio-card').count();
-     data.articleCount=await page.locator('.article-card').count();
-     data.techCount=await page.locator('.technology-pills button, .technology-pills .technology-static').count();
-     if(data.serviceCount!==6 || data.portfolioCount!==8 || data.articleCount!==8 || data.techCount!==33)
-       throw new Error('Unexpected content counts '+JSON.stringify(data));
-     const layout=await page.evaluate(()=>{
-       const vw=window.innerWidth;
-       const doc=document.documentElement;
-       const overflow=Math.max(0,doc.scrollWidth-vw);
-       const candidates=Array.from(document.querySelectorAll('body *'))
-         .filter(el=>{const r=el.getBoundingClientRect();return r.width>0 && (r.right>vw+2 || r.left < -2) && getComputedStyle(el).position !== 'fixed'})
-         .slice(0,10).map(el=>({tag:el.tagName,class:typeof el.className==='string'?el.className.slice(0,80):'',right:Math.round(el.getBoundingClientRect().right)}));
-       return {overflow,candidates};
-     });
-     data.overflow=layout.overflow;
-     if(data.overflow>2)throw new Error('Horizontal overflow '+JSON.stringify(layout));
-     if(errors.length)throw new Error('Uncaught errors: '+errors.join(' | '));
-     // Interactive service and technology dialogs remain keyboard-accessible.
-     await page.locator('.service-card').first().click();
-     if(!(await page.locator('#detail-dialog').evaluate(el=>el.open)))
-       throw new Error('Service dialog failed to open');
-     await page.locator('#dialog-close').click();
-     await page.locator('[data-filter="AI"]').click();
-     const filtered=await page.locator('.portfolio-card').count();
-     if(filtered<=0 || filtered>=8)throw new Error('Portfolio filter did not respond');
-     await page.locator('[data-filter="All work"]').click();
-     if(await page.locator('.portfolio-card').count()!==8)
-       throw new Error('All work filter did not restore eight cases');
-     await page.locator('.technology-pills button[data-tech]').first().click();
-     if(!(await page.locator('#detail-dialog').evaluate(el=>el.open)))
-       throw new Error('Technology dialog failed');
-     await page.locator('#dialog-close').click();
-     const mobile=width<=1100;
-     if(mobile){
-       await page.locator('#menu-toggle').click();
-       if(await page.locator('#menu-toggle').getAttribute('aria-expanded')!=='true')
-         throw new Error('Mobile menu failed to open');
-       await page.keyboard.press('Escape');
-       if(await page.locator('#menu-toggle').getAttribute('aria-expanded')!=='false')
-         throw new Error('Mobile Escape close failed');
-     }
-     await page.locator('#project-form button[type="submit"]').click();
-     const state=await page.locator('#form-status').getAttribute('data-state');
-     if(state!=='error')throw new Error('Form validation did not surface');
-     if(name==='chromium' && [375,768,1440].includes(width)){
-       await page.goto(origin,{waitUntil:'domcontentloaded'});
-       await page.locator('.service-card').first().waitFor();
-       await page.evaluate(async()=>{
-         const images=Array.from(document.querySelectorAll('.portfolio-image img'));
-         images.forEach(img=>img.loading='eager');
-         await Promise.all(images.map(img=>img.decode().catch(()=>{})));
-       });
-       const broken=await page.locator('.portfolio-image img').evaluateAll(images=>images.filter(img=>!img.complete||img.naturalWidth===0).map(img=>img.getAttribute('src')));
-       if(broken.length)throw new Error('Undelivered case-study artwork: '+broken.join(', '));
-       await page.screenshot({path:`${folder}/pukka-v2.3.4-${width}.png`,fullPage:true,animations:'disabled'});
-     }
-     if(name==='chromium' && [375,1440].includes(width)){
-       await page.goto(origin,{waitUntil:'domcontentloaded'});
-       await page.locator('.service-card').first().waitFor();
-       const axe=await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21a','wcag21aa']).analyze();
-       data.axeViolations=axe.violations.map(v=>({id:v.id,impact:v.impact,nodes:v.nodes.length,help:v.help,examples:v.nodes.slice(0,16).map(n=>({target:n.target,html:n.html?.slice(0,220),summary:n.failureSummary?.slice(0,250)}))}));
-       const serious=axe.violations.filter(v=>['critical','serious'].includes(v.impact||''));
-       if(serious.length)throw new Error('Axe serious/critical: '+serious.map(v=>v.id+':'+v.nodes.length).join(', '));
-     }
-     data.ok=true;
-   }catch(err){const reason=err instanceof Error?err.message:String(err);failures.push({browser:name,width,reason});data.error=reason;try{await page.screenshot({path:`${folder}/failure-${name}-${width}.png`,fullPage:false,animations:'disabled'});}catch{}}
-   results.push(data);
-   await page.close();
-   await context.close();
-  }
- } finally {await browser.close();}
+ for(const width of widths){
+  const context=await browser.newContext({viewport:{width,height:900},deviceScaleFactor:1,reducedMotion:"reduce"});
+  const page=await context.newPage();const errors=[];
+  page.on("pageerror",error=>errors.push(error.message));
+  try{
+   const response=await page.goto(url,{waitUntil:"domcontentloaded"});
+   if(!response?.ok())throw new Error("Page HTTP failure");
+   await page.locator("[data-service]").first().waitFor({timeout:12000});
+   if((await page.locator("[data-service]").count())!==6)throw new Error("Six service cards missing");
+   if(await page.evaluate(()=>document.documentElement.classList.contains("motion-enabled")))
+    throw new Error("Reduced-motion preference should suppress scroll effects");
+   if((await page.locator("[data-project]").count())!==3)throw new Error("Three concept cases missing");
+   const overflow=await page.evaluate(()=>Math.max(0,document.documentElement.scrollWidth-window.innerWidth));
+   if(overflow>2)throw new Error("Horizontal overflow: "+overflow+"px");
+   if(await page.locator('[data-solution-select]').count()!==4)throw new Error("Four outcome paths missing");
+   if(await page.locator('[data-sector]').count()!==6)throw new Error("Six industry playbooks missing");
+   await page.locator('[data-solution-select="knowledge"]').click();
+   const solutionSymbol=await page.locator('[data-solution-icon="engineer"]').getAttribute("href");
+   if(solutionSymbol!=="/icons/pukka-symbols.svg#pg-insight")
+     throw new Error("Solution architecture illustration failed to change");
+
+   if(await page.locator('#solution-explorer').getAttribute("data-solution")!=="knowledge" ||
+      !(await page.locator('#solution-title').innerText()).includes("intelligence"))throw new Error("Solution explorer failed");
+   await page.locator('[data-solution-select="knowledge"]').focus();
+   await page.keyboard.press("ArrowRight");
+   if(await page.locator('#solution-explorer').getAttribute("data-solution")!=="trust")throw new Error("Solution explorer keyboard control failed");
+   await page.locator('[data-sector="maritime"]').click();
+   if(!(await page.locator('#detail-dialog').evaluate(el=>el.open)))throw new Error("Sector panel unavailable");
+   if(!(await page.locator('.detail-disclaimer').innerText()).includes("Sector application"))throw new Error("Sector transparency absent");
+   await page.locator('#dialog-close').click();
+   if(await page.locator('#proof-accordion details').count()!==4)throw new Error("No Duff proof missing");
+   if(await page.locator('#faq .faq-list details').count()!==4)throw new Error("FAQ missing");
+   if(await page.locator('.ink-note').count()<3)throw new Error("Editorial handwritten annotations absent");
+   if(await page.locator('.journal-symbol svg').count()!==3)throw new Error("Field note icon system inconsistent");
+   if(await page.locator(".pg-capabilities-band").count()!==1)throw new Error("Enterprise capability bridge missing");
+   if(await page.locator(".pg-sector-watermark").count()!==6)throw new Error("Sector visual context missing");
+   if(await page.locator(".pg-cinematic-art").count()!==1)throw new Error("Cinematic engineering scene missing");
+   await page.locator(".pg-cinematic-art").scrollIntoViewIfNeeded();
+   await page.waitForFunction(()=>{
+     const img=document.querySelector(".pg-cinematic-art");
+     return img?.complete&&img?.naturalWidth>0;
+   },null,{timeout:10000});
+   const mastheadVisible=await page.locator(".pg-studio-strip").isVisible();
+   if(width>700&&!mastheadVisible)throw new Error("Desktop enterprise studio strip missing");
+   if(width<=700&&mastheadVisible)throw new Error("Mobile studio strip should be suppressed");
+   if(await page.locator('.expertise-icon svg use').count()!==6 ||
+      await page.locator('.sector-symbol svg use').count()!==6 ||
+      await page.locator('.journal-symbol svg use').count()!==3)
+     throw new Error("First-party icon sprite placements are incomplete");
+   const responseIcons=await page.request.get(new URL("/icons/pukka-symbols.svg",url).toString());
+   if(!responseIcons.ok() || !(await responseIcons.text()).includes('<symbol id="pg-maritime"'))
+     throw new Error("Local icon sprite asset is missing or inaccessible");
+
+   if(await page.locator('.expertise-icon svg').count()!==6)throw new Error("Service SVG system inconsistent");
+   const glass=await page.locator('.system-panel').evaluate(node=>({
+     background:getComputedStyle(node).backgroundColor,
+     filter:getComputedStyle(node).backdropFilter || getComputedStyle(node).webkitBackdropFilter
+   }));
+   if(!glass.filter.includes('blur'))throw new Error("Frosted system panel style missing: "+JSON.stringify(glass));
+   if(await page.locator(".pg-hero-signoff").isVisible()!==true)throw new Error("No Duff handwritten brand signoff missing");
+   const logo=await page.locator(".brand img").evaluate(img=>img.complete&&img.naturalWidth>0);
+   if(!logo)throw new Error("Original logo is missing");
+   await page.locator('[data-system-select="security"]').click();
+   if(await page.locator("#system-panel").getAttribute("data-active")!=="security"||
+      await page.locator('[data-node="security"]').getAttribute("data-active")!=="true")
+    throw new Error("Engineering atlas did not update");
+   await page.locator('[data-system-select="security"]').focus();
+   await page.keyboard.press("ArrowRight");
+   if(await page.locator("#system-panel").getAttribute("data-active")!=="design")throw new Error("Atlas keyboard navigation failed");
+   await page.locator('[data-filter="trust"]').click();
+   if(await page.locator(".project:visible").count()!==1)throw new Error("Project filter failed");
+   await page.locator('[data-filter="all"]').click();
+   if(await page.locator(".project:visible").count()!==3)throw new Error("Project filter did not reset");
+   await page.locator('[data-project="operations"]').click();
+   if(!(await page.locator("#detail-dialog").evaluate(el=>el.open)))throw new Error("Project dialog unavailable");
+   if(!(await page.locator(".detail-disclaimer").isVisible()))throw new Error("Concept disclosure not visible");
+   await page.locator("#dialog-close").click();
+   await page.locator('[data-service="software"]').click();
+   if(!(await page.locator("#detail-dialog").evaluate(el=>el.open)))throw new Error("Service dialog unavailable");
+   await page.keyboard.press("Escape");
+   await page.locator('[data-step="verify"]').click();
+   if(await page.locator('[data-stage-icon="1"]').getAttribute("href")!=="/icons/pukka-symbols.svg#pg-release")
+     throw new Error("Selected engineering stage did not update SVG artwork");
+
+   if(!(await page.locator("#process-title").innerText()).includes("Tests"))throw new Error("Process steps did not update");
+   await page.locator('[data-article="discovery"]').click();
+   if(!(await page.locator("#detail-dialog").evaluate(el=>el.open)))throw new Error("Field note dialog unavailable");
+   await page.locator("#dialog-close").click();
+   if(width<=980){
+    await page.locator("#menu-toggle").click();
+    if(await page.locator("#menu-toggle").getAttribute("aria-expanded")!=="true")throw new Error("Mobile menu inaccessible");
+    await page.keyboard.press("Escape");
+    if(await page.locator("#menu-toggle").getAttribute("aria-expanded")!=="false")throw new Error("Mobile Escape failed");
+   }
+   await page.locator("#project-form button[type=submit]").click();
+   if(await page.locator("#form-status").getAttribute("data-state")!=="error")throw new Error("Invalid form not blocked");
+   if(errors.length)throw new Error("Unhandled browser errors: "+errors.join(" | "));
+   // Bring the page back to its initial view for visual acceptance and axe scans.
+   await page.goto(url,{waitUntil:"domcontentloaded"});
+   await page.locator("[data-service]").first().waitFor();
+   if(browserName==="chromium"){
+    await page.screenshot({path:"artifacts/qa/preview-"+width+".png",fullPage:true,animations:"disabled"});
+    if([375,1440].includes(width)){
+     const axe=await new AxeBuilder({page}).withTags(["wcag2a","wcag2aa","wcag21a","wcag21aa"]).analyze();
+     const serious=axe.violations.filter(v=>["serious","critical"].includes(v.impact||""));
+     if(serious.length)throw new Error("Axe: "+JSON.stringify(serious.map(v=>({id:v.id,nodes:v.nodes.slice(0,6).map(n=>({target:n.target,summary:n.failureSummary?.slice(0,260)}))}))));
+    }
+   }
+   // Independently verify purposeful animations when the user allows motion.
+   // The main QA context uses reduced-motion to protect accessibility.
+   if(browserName==="chromium" && [375,1440].includes(width)){
+    const motionContext=await browser.newContext({
+      viewport:{width,height:900},deviceScaleFactor:1,reducedMotion:"no-preference"
+    });
+    try{
+      const motionPage=await motionContext.newPage();
+      const motionErrors=[];
+      motionPage.on("pageerror",error=>motionErrors.push(error.message));
+      await motionPage.goto(url,{waitUntil:"domcontentloaded"});
+      await motionPage.locator(".pg-hero-signoff").waitFor();
+      if(!await motionPage.evaluate(()=>document.documentElement.classList.contains("motion-enabled")))
+        throw new Error("Normal-motion progressive enhancement did not start");
+      const fontLoaded=await motionPage.evaluate(async()=>{
+        await document.fonts.ready;
+        return document.fonts.check('600 22px "Pukka Hand"');
+      });
+      if(!fontLoaded)throw new Error("Self-hosted Caveat handwriting font did not load");
+      await motionPage.locator("#work .section-head").scrollIntoViewIfNeeded();
+      await motionPage.waitForFunction(
+        ()=>document.querySelector("#work .section-head")?.getAttribute("data-reveal")==="shown",
+        null,{timeout:7000}
+      );
+      if(motionErrors.length)throw new Error("Normal-motion runtime error: "+motionErrors.join(" | "));
+      await motionPage.screenshot({
+        path:"artifacts/qa/motion-work-"+width+".png",animations:"disabled"
+      });
+    }finally{await motionContext.close();}
+   }
+   results.push({browser:browserName,width,ok:true});
+  }catch(error){
+   const reason=error instanceof Error?error.message:String(error);
+   failures.push({browser:browserName,width,reason});
+   results.push({browser:browserName,width,ok:false,error:reason});
+   try{await page.screenshot({path:"artifacts/qa/failure-"+browserName+"-"+width+".png",animations:"disabled"});}catch{}
+  }finally{await context.close();}
+ }
+ }finally{await browser.close();}
 }
-const report={origin,widths,browsers:Object.keys(browserTypes),passed:failures.length===0,failures,results};
-await writeFile(`${folder}/report.json`,JSON.stringify(report,null,2));
-console.log(JSON.stringify({passed:report.passed,viewports:results.length,failures,axe:results.filter(r=>r.axeViolations).map(r=>({width:r.width,violations:r.axeViolations}))},null,2));
+await writeFile("artifacts/qa/report.json",JSON.stringify({passed:failures.length===0,results,failures},null,2));
+console.log(JSON.stringify({passed:failures.length===0,checked:results.length,failures},null,2));
 if(failures.length)process.exitCode=1;

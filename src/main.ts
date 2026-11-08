@@ -1,475 +1,334 @@
-import {
-  allFaqs, audiences, blogDetails, checklist, delivery, disciplines,
-  portfolioDetails, sectors, serviceDetails, serviceSummaries,
-  studio, team, techDetails, techGroups, testimonials, values
-} from './content';
-import { icon, technologyMark, type IconName } from './icons';
-
-const $ = <T extends Element = HTMLElement>(selector: string, root: ParentNode = document): T | null =>
-  root.querySelector<T>(selector);
-
-function requireElement<T extends Element = HTMLElement>(selector: string): T {
-  const result = $<T>(selector);
-  if (!result) throw new Error(`Pukka Gen: missing required element ${selector}`);
-  return result;
+/* Pukka Gen — fresh TypeScript interaction layer. No legacy UI code. */
+type Domain = "software"|"ai"|"cloud"|"security"|"design"|"strategy";
+type Step = "discover"|"architect"|"engineer"|"verify"|"evolve";
+type Kind = "project"|"service"|"sector"|"article";
+type Detail = {label:string;title:string;intro:string;points:readonly string[];disclaimer?:string};
+function byId<T extends HTMLElement>(id:string):T {
+ const node=document.getElementById(id);
+ if(!node)throw new Error("Missing application element: #"+id);
+ return node as T;
 }
-
-const escapeHtml = (value: string | number): string =>
-  String(value).replace(/[&<>"']/g, char =>
-    ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' })[char] ?? char);
-
-const listMarkup = (items: readonly string[]) => '<ul>' + items.map(item =>
-  '<li>' + escapeHtml(item) + '</li>').join('') + '</ul>';
-const chipMarkup = (items: readonly string[]) => '<div class="detail-chips">' +
-  items.map(item => '<span>' + escapeHtml(item) + '</span>').join('') + '</div>';
-
-function mount(id: string, markup: string): void {
-  requireElement('#' + id).innerHTML = markup;
+function escapeHtml(input:string):string{
+ const map:Record<string,string>={"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"};
+ return input.replace(/[&<>"']/g,character=>map[character] || character);
 }
-
-const dialog = requireElement<HTMLDialogElement>('#detail-dialog');
-const dialogBody = requireElement<HTMLElement>('#dialog-body');
-const dialogContact = requireElement<HTMLAnchorElement>('#dialog-contact');
-let previousFocus: HTMLElement | null = null;
-let focusContactAfterClose = false;
-let proposedService = '';
-
-function openDetail(markup: string, service = ''): void {
-  previousFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
-  proposedService = service;
-  dialogBody.innerHTML = markup;
-  dialogBody.scrollTop = 0;
-  if (!dialog.open) dialog.showModal();
-  document.body.classList.add('dialog-open');
-}
-
-function closeDetail(): void {
-  if (dialog.open) dialog.close();
-}
-requireElement<HTMLButtonElement>('#dialog-close').addEventListener('click', closeDetail);
-dialog.addEventListener('click', event => {
-  if (event.target === dialog) closeDetail();
-});
-dialog.addEventListener('close', () => {
-  document.body.classList.remove('dialog-open');
-  if (focusContactAfterClose) {
-    focusContactAfterClose = false;
-    window.requestAnimationFrame(() => document.querySelector<HTMLElement>('#project-name')?.focus({preventScroll:true}));
-  } else previousFocus?.focus({preventScroll:true});
-});
-dialogContact.addEventListener('click', () => {
-  const select = $<HTMLSelectElement>('#project-service');
-  if (select && proposedService) select.value = proposedService;
-  focusContactAfterClose = true;
-  closeDetail();
-});
-
-// Accessible compact navigation: no duplicate desktop and mobile menu destinations.
-const menuButton = requireElement<HTMLButtonElement>('#menu-toggle');
-const mobileNav = requireElement<HTMLElement>('#mobile-navigation');
-function setMenuOpen(open: boolean): void {
-  mobileNav.hidden = !open;
-  mobileNav.inert = !open;
-  menuButton.setAttribute('aria-expanded', String(open));
-  menuButton.setAttribute('aria-label', open ? 'Close navigation menu' : 'Open navigation menu');
-}
-menuButton.addEventListener('click', () => setMenuOpen(mobileNav.hidden));
-mobileNav.querySelectorAll<HTMLAnchorElement>('a').forEach(link =>
-  link.addEventListener('click', () => setMenuOpen(false)));
-document.addEventListener('pointerdown', event => {
-  const target = event.target;
-  if (target instanceof Node && !mobileNav.hidden &&
-      !mobileNav.contains(target) && !menuButton.contains(target)) setMenuOpen(false);
-});
-document.addEventListener('keydown', event => {
-  if (event.key === 'Escape' && !mobileNav.hidden) {
-    setMenuOpen(false);
-    menuButton.focus({preventScroll:true});
-  }
-});
-window.matchMedia('(min-width: 1101px)').addEventListener('change', event => {
-  if (event.matches) setMenuOpen(false);
-});
-setMenuOpen(false);
-
-// Service catalog: complete descriptive copy lives in the typed content model.
-mount('service-grid', serviceSummaries.map((service, i) => `
-  <button type="button" class="service-card" data-service="${escapeHtml(service.key)}"
-     >
-    <span class="service-card-top"><span class="service-number">SERVICE / ${String(i+1).padStart(2,'0')}</span><span class="service-icon" aria-hidden="true">${icon(service.key)}</span></span>
-    <h3>${escapeHtml(service.title)}</h3>
-    <p>${escapeHtml(service.body)}</p>
-    <span class="card-bottom"><span>${escapeHtml(service.category)}</span><span class="card-arrow" aria-hidden="true">${icon("arrowUp")}</span></span>
-  </button>`).join(''));
-
-const enquiryCategory: Record<keyof typeof serviceDetails,string> = {
-  software: 'dev', ai:'ai', cloud:'cloud', design:'design', security:'security', consultancy:'consultancy'
+const domains:Record<Domain,{index:string;title:string;copy:string;output:string}>={
+ software:{index:"01 / SOFTWARE ENGINEERING",title:"Software that earns its place.",copy:"Robust, maintainable applications that turn complicated workflows into straightforward experiences.",output:"OUTPUT / PRODUCTION-READY APPLICATIONS"},
+ ai:{index:"02 / AI & AUTOMATION",title:"Useful intelligence. Human control.",copy:"Assistive systems designed with evaluation, accountable decisions and a practical route to measurable usefulness.",output:"OUTPUT / EVALUATED INTELLIGENT WORKFLOWS"},
+ cloud:{index:"03 / CLOUD & OPERATIONS",title:"Built to run. Ready to recover.",copy:"Observable infrastructure, disciplined releases and recovery-minded operations beneath every digital product.",output:"OUTPUT / RELIABLE CLOUD FOUNDATIONS"},
+ security:{index:"04 / SECURITY & ASSURANCE",title:"Trust starts in the architecture.",copy:"Authorization boundaries, threat-aware design and repeatable verification before systems go live.",output:"OUTPUT / REVIEWABLE SECURITY CONTROLS"},
+ design:{index:"05 / PRODUCT EXPERIENCE",title:"Clarity is a competitive advantage.",copy:"Thoughtful journeys, inclusive interfaces and systems people can navigate without second-guessing.",output:"OUTPUT / ACCESSIBLE PRODUCT EXPERIENCES"},
+ strategy:{index:"06 / ENGINEERING DIRECTION",title:"Decide well before you build.",copy:"Discovery, constraints and transparent technical trade-offs that focus investment on the real problem.",output:"OUTPUT / ACTIONABLE DELIVERY ROADMAP"}
 };
-function showService(key: keyof typeof serviceDetails): void {
-  const data = serviceDetails[key];
-  openDetail(`
-    <span class="detail-service-icon" aria-hidden="true">${icon(key)}</span>
-    <span class="detail-kicker">SERVICE / PUKKA GEN</span>
-    <h2 id="dialog-title">${escapeHtml(data.title)}</h2>
-    <p class="detail-description">${escapeHtml(data.description)}</p>
-    <div class="detail-section"><h3>What we deliver</h3>${listMarkup(data.features)}</div>
-    <div class="detail-section"><h3>Technology & methods</h3>${chipMarkup(data.technologies.map(t => t.name))}</div>
-  `, enquiryCategory[key]);
+const atlasPanel=byId<HTMLElement>("system-panel");
+const atlasControls=Array.from(document.querySelectorAll<HTMLButtonElement>("[data-system-select]"));
+const atlasNodes=Array.from(document.querySelectorAll<SVGGElement>("[data-node]"));
+const atlasLinks=Array.from(document.querySelectorAll<SVGPathElement>("[data-link]"));
+function setDomain(key:Domain):void{
+ const data=domains[key];
+ atlasPanel.dataset.active=key;
+ byId("system-index").textContent=data.index;
+ byId("system-title").textContent=data.title;
+ byId("system-copy").textContent=data.copy;
+ byId("system-deliverable").textContent=data.output;
+ atlasControls.forEach(button=>button.setAttribute("aria-pressed",String(button.dataset.systemSelect===key)));
+ atlasNodes.forEach(node=>node.dataset.active=String(node.dataset.node===key));
+ atlasLinks.forEach(link=>link.dataset.active=String(link.dataset.link===key));
 }
+byId("system-tabs").addEventListener("click",event=>{
+ const origin=event.target;
+ if(!(origin instanceof Element))return;
+ const button=origin.closest<HTMLButtonElement>("[data-system-select]");
+ if(button && (button.dataset.systemSelect || "") in domains)setDomain(button.dataset.systemSelect as Domain);
+});
+byId("system-tabs").addEventListener("keydown",event=>{
+ if(!(event instanceof KeyboardEvent))return;
+ if(!["ArrowLeft","ArrowRight","ArrowUp","ArrowDown","Home","End"].includes(event.key))return;
+ const element=event.target;
+ const button=element instanceof Element?element.closest<HTMLButtonElement>("[data-system-select]"):null;
+ if(!button)return;
+ const index=atlasControls.indexOf(button);
+ if(index<0)return;
+ event.preventDefault();
+ const next=event.key==="Home"?0:event.key==="End"?atlasControls.length-1:(index+(event.key==="ArrowLeft"||event.key==="ArrowUp"?-1:1)+atlasControls.length)%atlasControls.length;
+ const target=atlasControls[next];
+ if(target && (target.dataset.systemSelect || "") in domains){setDomain(target.dataset.systemSelect as Domain);target.focus();}
+});
+setDomain("software");
 
-mount('values-grid', values.map(value => `
-  <article class="value-item"><span class="value-number">${escapeHtml(value.number)}</span><div>
-    <h3>${escapeHtml(value.title)}</h3><p>${escapeHtml(value.body)}</p>
-  </div></article>`).join(''));
-const processIcons: readonly IconName[] = ['target','layout','layers','shield','rocket'];
-mount('process-list', delivery.map((stage, index) => `
-  <article class="process-row">
-    <div class="process-number"><span class="process-step">${escapeHtml(stage.number)}</span><span class="process-step-icon" aria-hidden="true">${icon(processIcons[index] ?? "target")}</span></div>
-    <div class="process-head"><h3>${escapeHtml(stage.title)}</h3><p>${escapeHtml(stage.subtitle)}</p></div>
-    <div class="process-text"><p class="process-quote">“${escapeHtml(stage.quote)}”</p>
-      <p>${escapeHtml(stage.body)}</p><div class="process-output">Output: ${escapeHtml(stage.output)}</div>
-    </div>
-  </article>`).join(''));
-
-const audienceIcons: readonly IconName[] = ['sparkles','briefcase','server'];
-mount('audience-grid', audiences.map((a, index) => `
-  <article class="audience-card"><span class="audience-category">${escapeHtml(a.tag)}</span><span class="audience-icon" aria-hidden="true">${icon(audienceIcons[index] ?? "briefcase")}</span>
-    <h3>${escapeHtml(a.title)}</h3><p>${escapeHtml(a.body)}</p>
-    <div class="tag-list">${a.tags.map(t=>'<span>'+escapeHtml(t)+'</span>').join('')}</div>
-  </article>`).join(''));
-mount('sector-list', sectors.map(s => '<span>'+escapeHtml(s)+'</span>').join(''));
-
-// Selected projects: real source content, not invented case-study metrics.
-const caseEntries = Object.entries(portfolioDetails) as [keyof typeof portfolioDetails, (typeof portfolioDetails)[keyof typeof portfolioDetails]][];
-const categories: Record<keyof typeof portfolioDetails,string> = {
-  ops:'AI',finance:'Security',health:'AI',learning:'Design',
-  cloudops:'Cloud',support:'AI',field:'Software',commerce:'Software'
+// Outcome-first solution explorer: technical choices are shown as proposed
+// architecture patterns, never as verified client deployments.
+type SolutionKey="operations"|"knowledge"|"trust"|"products";
+const solutionData:Record<SolutionKey,{
+  kicker:string;title:string;description:string;input:string;engineer:string;output:string;proof:string
+}>={
+  operations:{kicker:"OPERATIONS / PROCESS INTELLIGENCE",title:"Less handoff. More progress.",description:"Model the work, simplify the approvals and give teams a reliable view of what needs attention—without replacing control with guesswork.",input:"Fragmented work",engineer:"Workflow platform",output:"Reviewable outcome",proof:"Workflow regression · permission tests · operational usability"},
+  knowledge:{kicker:"KNOWLEDGE / CONTROLLED AI",title:"Useful intelligence. Human oversight.",description:"Connect internal knowledge to practical tasks through permission-aware retrieval, evaluated responses and explicit review paths.",input:"Disconnected knowledge",engineer:"Governed retrieval",output:"Assisted decisions",proof:"Retrieval evaluation · data boundaries · human review"},
+  trust:{kicker:"TRUST / SYSTEM ASSURANCE",title:"Security designed in, not bolted on.",description:"Start with identity, sensitive data and trust boundaries. Design authorization, verification and recovery into the system from day one.",input:"Security exposure",engineer:"Assurance model",output:"Clear controls",proof:"Threat modeling · access isolation · release review"},
+  products:{kicker:"PRODUCTS / DIGITAL EXPERIENCE",title:"Build the right thing, beautifully.",description:"Turn a business problem into an accessible software experience supported by thoughtful architecture, reliable delivery and maintainable systems.",input:"Unclear requirements",engineer:"Product engineering",output:"Usable software",proof:"Usability review · cross-device QA · release evidence"}
 };
-const categoryIcons: Record<string, IconName> = {AI:'ai',Security:'shield',Cloud:'cloud',Software:'software',Design:'design'};
-const workFilters = ['All work','AI','Software','Cloud','Security','Design'] as const;
-let currentFilter: string = 'All work';
-const filterNode = requireElement<HTMLElement>('#work-filters');
-function renderFilters(): void {
-  filterNode.innerHTML = workFilters.map(filter =>
-    `<button type="button" class="filter-button" data-filter="${escapeHtml(filter)}"
-      aria-pressed="${filter===currentFilter}">${escapeHtml(filter)}</button>`).join('');
+const solutionIconMap:Record<SolutionKey,readonly [string,string,string]>={
+ operations:["input","flow","release"],
+ knowledge:["input","insight","release"],
+ trust:["security","system","release"],
+ products:["requirements","code","observe"]
+};
+const solutionRoot=byId<HTMLElement>("solution-explorer");
+const solutionControls=Array.from(document.querySelectorAll<HTMLButtonElement>("[data-solution-select]"));
+function selectSolution(key:SolutionKey):void{
+ const item=solutionData[key];
+ solutionRoot.dataset.solution=key;
+ const artwork=solutionIconMap[key];
+ document.querySelectorAll<SVGUseElement>("[data-solution-icon]").forEach((item,index)=>{
+   const symbol=artwork[index];
+   if(symbol)item.setAttribute("href","/icons/pukka-symbols.svg#pg-"+symbol);
+ });
+ byId("solution-kicker").textContent=item.kicker;
+ byId("solution-title").textContent=item.title;
+ byId("solution-description").textContent=item.description;
+ byId("solution-input").textContent=item.input;
+ byId("solution-engineer").textContent=item.engineer;
+ byId("solution-output").textContent=item.output;
+ byId("solution-proof").textContent=item.proof;
+ solutionControls.forEach(button=>button.setAttribute("aria-pressed",String(button.dataset.solutionSelect===key)));
 }
-function renderWork(): void {
-  const visible = caseEntries.filter(([key]) =>
-    currentFilter === 'All work' || categories[key] === currentFilter);
-  mount('portfolio-grid', visible.map(([key,info]) => `
-    <article class="portfolio-card${currentFilter === 'All work' && key === 'ops' ? ' portfolio-card-featured' : ''}"><button type="button" data-case="${escapeHtml(key)}"
-      >
-      <div class="portfolio-image"><img loading="lazy" decoding="async" src="${escapeHtml(info.image)}" alt="Conceptual illustration for ${escapeHtml(info.title)}">
-        <span class="portfolio-index">${escapeHtml(info.index)} / 08</span></div>
-      <div class="portfolio-information">
-        <span class="portfolio-tag"><span class="portfolio-category-symbol" aria-hidden="true">${icon(categoryIcons[categories[key]] ?? "code")}</span>${escapeHtml(info.eyebrow)}</span>
-        <div class="portfolio-title-row"><h3>${escapeHtml(info.title)}</h3><span class="portfolio-arrow" aria-hidden="true">${icon("arrowUp")}</span></div>
-        <p>${escapeHtml(info.description)}</p>
-        <div class="portfolio-metrics">${info.metrics.slice(0,2).map(metric =>
-          '<span><strong>'+escapeHtml(metric.value)+'</strong>'+escapeHtml(metric.label)+'</span>').join('')}</div>
-      </div></button></article>`).join(''));
-  requireElement('#work-count').textContent =
-    `Showing ${visible.length} of ${caseEntries.length} projects`;
-  renderFilters();
-}
-renderWork();
-filterNode.addEventListener('click', event => {
-  if (!(event.target instanceof Element)) return;
-  const button = event.target.closest<HTMLButtonElement>('[data-filter]');
-  if (!button) return;
-  const requested = button.dataset.filter || 'All work';
-  if (!workFilters.some(value => value === requested)) return;
-  const restoreKeyboardFocus = document.activeElement === button;
-  currentFilter = requested;
-  renderWork();
-  if (restoreKeyboardFocus) {
-    const selected = Array.from(filterNode.querySelectorAll<HTMLButtonElement>('[data-filter]'))
-      .find(item => item.dataset.filter === requested);
-    selected?.focus({preventScroll:true});
-  }
+const solutionSelector=byId<HTMLElement>("solution-selector");
+solutionSelector.addEventListener("click",event=>{
+ const origin=event.target;
+ const button=origin instanceof Element?origin.closest<HTMLButtonElement>("[data-solution-select]"):null;
+ const key=button?.dataset.solutionSelect;
+ if(key && Object.hasOwn(solutionData,key))selectSolution(key as SolutionKey);
 });
-function showCase(key: keyof typeof portfolioDetails): void {
-  const data = portfolioDetails[key];
-  const metrics = data.metrics.map(metric =>
-    '<span><strong>'+escapeHtml(metric.value)+'</strong>'+escapeHtml(metric.label)+'</span>').join('');
-  openDetail(`
-    <span class="detail-kicker">SELECTED WORK / ${escapeHtml(data.eyebrow)}</span>
-    <h2 id="dialog-title">${escapeHtml(data.title)}</h2>
-    <p class="detail-description">${escapeHtml(data.description)}</p>
-    <img class="detail-hero-image" src="${escapeHtml(data.image)}" alt="Conceptual illustration for ${escapeHtml(data.title)}" loading="lazy">
-    <div class="detail-metrics">${metrics}</div>
-    <div class="detail-section"><h3>The context</h3><p>${escapeHtml(data.context)}</p></div>
-    <div class="detail-section"><h3>Our role</h3><p>${escapeHtml(data.role)}</p></div>
-    <div class="detail-section"><h3>Work delivered</h3>${listMarkup(data.outcomes)}</div>
-    <div class="detail-section"><h3>Technology</h3>${chipMarkup(data.stack)}</div>
-    <p class="note-line">Portfolio outcomes and measurements are carried over from the previous site and await independent verification.</p>
-  `);
-}
-
-// Insight library: preserve full legacy article copy; remove old presentational classes.
-const articleCatalog = [
-  {key:'mvp_trap',category:'Product strategy'},
-  {key:'scope',category:'Scope & budgets'},
-  {key:'cheap_code',category:'Engineering quality'},
-  {key:'bluffing',category:'Choosing a partner'},
-  {key:'ai_business',category:'AI & automation'},
-  {key:'pwa',category:'Mobile products'},
-  {key:'cloud_security',category:'Cybersecurity'},
-  {key:'serverless',category:'Cloud architecture'}
-] as const;
-const articleIcons: Record<(typeof articleCatalog)[number]['key'], IconName> = {mvp_trap:'target',scope:'layers',cheap_code:'code',bluffing:'users',ai_business:'ai',pwa:'phone',cloud_security:'shield',serverless:'server'};
-mount('article-grid', articleCatalog.map((article,index) => {
-  const data = blogDetails[article.key];
-  return `<button type="button" class="article-card" data-article="${article.key}">
-      <span class="article-topline"><span class="article-category"><span class="article-index">${String(index+1).padStart(2,"0")} / </span>${escapeHtml(article.category)}</span><span class="article-symbol" aria-hidden="true">${icon(articleIcons[article.key])}</span></span>
-      <h3>${escapeHtml(data.title)}</h3><p>${escapeHtml(data.description)}</p>
-      <span class="article-read">Read insight <span aria-hidden="true">${icon("arrowUp")}</span></span>
-    </button>`;
-}).join(''));
-function cleanStaticArticle(content: string): string {
-  // Source is bundled, authored studio copy, never user-supplied HTML.
-  // Remove legacy CSS hooks and any executable/embedded content from the archive.
-  const template = document.createElement('template');
-  template.innerHTML = content;
-  template.content.querySelectorAll('script,style,iframe,object,embed,form').forEach(el => el.remove());
-  template.content.querySelectorAll('*').forEach(element => {
-    for (const attribute of Array.from(element.attributes)) {
-      if (attribute.name === 'class' || attribute.name === 'style' ||
-          attribute.name.startsWith('on') || attribute.name === 'id' ||
-          attribute.name.startsWith('data-')) element.removeAttribute(attribute.name);
-      if ((attribute.name === 'href' || attribute.name === 'src') &&
-          !/^(https:\/\/|mailto:|\/|#)/i.test(attribute.value)) {
-        element.removeAttribute(attribute.name);
-      }
-    }
-  });
-  return template.innerHTML;
-}
-function showArticle(key: keyof typeof blogDetails): void {
-  const entry = blogDetails[key];
-  openDetail(`
-    <span class="detail-kicker">THE PUKKA JOURNAL</span>
-    <h2 id="dialog-title">${escapeHtml(entry.title)}</h2>
-    <p class="detail-description">${escapeHtml(entry.description)}</p>
-    <div class="detail-section article-body">${cleanStaticArticle(entry.content)}</div>
-  `);
-}
-requireElement<HTMLButtonElement>('#view-checklist').addEventListener('click', () => showArticle('checklist'));
-requireElement<HTMLButtonElement>('#download-checklist').addEventListener('click', () => {
-  const text = [ 'PUKKA GEN — THE NO-DUFF CHECKLIST', '', ...checklist.map((q,i) => `${i+1}. ${q}`),
-    '', 'If more than three answers are unclear, start with discovery before development.',
-    'Pukka Gen — Authentic Engineering. Next-Gen Solutions.', 'https://www.pukkagennoduff.com/' ].join('\n');
-  const objectUrl = URL.createObjectURL(new Blob([text], {type:'text/plain;charset=utf-8'}));
-  const link = document.createElement('a');
-  link.href = objectUrl;
-  link.download = 'pukka-gen-no-duff-checklist.txt';
-  document.body.appendChild(link);
-  link.click();
-  link.remove();
-  setTimeout(() => URL.revokeObjectURL(objectUrl), 1000);
+solutionSelector.addEventListener("keydown",event=>{
+ if(!(event instanceof KeyboardEvent)||!["ArrowDown","ArrowUp","ArrowRight","ArrowLeft","Home","End"].includes(event.key))return;
+ const origin=event.target;
+ const button=origin instanceof Element?origin.closest<HTMLButtonElement>("[data-solution-select]"):null;
+ if(!button)return;
+ const index=solutionControls.indexOf(button);
+ if(index<0)return;
+ event.preventDefault();
+ const newIndex=event.key==="Home"?0:event.key==="End"?solutionControls.length-1:
+  (index+(event.key==="ArrowLeft"||event.key==="ArrowUp"?-1:1)+solutionControls.length)%solutionControls.length;
+ const target=solutionControls[newIndex];
+ const key=target?.dataset.solutionSelect;
+ if(key && Object.hasOwn(solutionData,key)){selectSolution(key as SolutionKey);target.focus();}
 });
+selectSolution("operations");
 
-// Technology inventory: descriptions imported from the original experience.
-const techEntries = Object.entries(techDetails) as [keyof typeof techDetails,(typeof techDetails)[keyof typeof techDetails]][];
-const normalize = (value:string) => value.toLowerCase().replace(/[^a-z0-9]/g,'');
-const aliases: Record<string,string> = {postgresql:'postgres',googlecloud:'gcp',kubernetes:'kubernetes',adobexd:'adobexd',jira:'jira',openai:'openai'};
-function findTech(label: string): keyof typeof techDetails | null {
-  const query = normalize(label);
-  const mapped = aliases[query] || query;
-  const match = techEntries.find(([key,info]) =>
-    normalize(String(key)) === mapped || normalize(info.title) === query);
-  return match?.[0] || null;
+const steps:Record<Step,{label:string;title:string;copy:string;result:string}>={
+ discover:{label:"STAGE 01 / FIND THE REAL PROBLEM",title:"Understand before building.",copy:"Define the people, constraints, intended outcomes and genuine business problem before proposing a solution.",result:"Problem statement · scope boundaries · success measures"},
+ architect:{label:"STAGE 02 / DESIGN THE SYSTEM",title:"Make the hard decisions early.",copy:"Choose system boundaries, data flows, technology trade-offs and security controls with long-term ownership in mind.",result:"Architecture blueprint · risk register · product experience model"},
+ engineer:{label:"STAGE 03 / BUILD THE PRODUCT",title:"Write for people and production.",copy:"Deliver maintainable code, coherent interfaces and observable systems in useful increments with clear review points.",result:"Working increments · documented decisions · integration evidence"},
+ verify:{label:"STAGE 04 / PROVE IT WORKS",title:"Tests before promises.",copy:"Review accessibility, authorization, regression behavior, deployment integrity and recovery paths before approving a release.",result:"QA results · security review · release acceptance evidence"},
+ evolve:{label:"STAGE 05 / KEEP IT HEALTHY",title:"Make the next step easier.",copy:"Measure behavior, learn from users, review incidents and improve the system without unnecessary complexity.",result:"Operations handover · improvement priorities · sustainable ownership"}
+};
+const stageIconMap:Record<Step,readonly [string,string,string]>={
+ discover:["scope","roadmap","requirements"],
+ architect:["strategy","system","security"],
+ engineer:["code","flow","cloud"],
+ verify:["security","release","observe"],
+ evolve:["observe","roadmap","insight"]
+};
+const processButtons=Array.from(document.querySelectorAll<HTMLButtonElement>("[data-step]"));
+function selectStep(key:Step):void{
+ const item=steps[key];
+ byId("process-index").textContent=item.label;
+ const artwork=stageIconMap[key];
+ document.querySelectorAll<SVGUseElement>("[data-stage-icon]").forEach((node,index)=>{
+   const symbol=artwork[index];
+   if(symbol)node.setAttribute("href","/icons/pukka-symbols.svg#pg-"+symbol);
+ });
+ byId("process-title").textContent=item.title;
+ byId("process-copy").textContent=item.copy;
+ byId("process-result").textContent=item.result;
+ processButtons.forEach(button=>button.setAttribute("aria-pressed",String(button.dataset.step===key)));
 }
-const technologyGroupIcons: readonly IconName[] = ['layout','ai','server'];
-mount('technology-groups', techGroups.map((group, index) => `
-  <section class="technology-group">
-    <div class="technology-heading"><span class="technology-group-icon" aria-hidden="true">${icon(technologyGroupIcons[index] ?? "layers")}</span><h3>${escapeHtml(group.title)}</h3><span class="technology-item-count">${String(group.items.length).padStart(2,"0")} TOOLS</span></div><div class="technology-pills">
-      ${group.items.map(label => {
-        const key = findTech(label);
-        return key
-          ? `<button type="button" data-tech="${escapeHtml(key)}" aria-label="About ${escapeHtml(label)}">${technologyMark(label)}<span class="technology-name">${escapeHtml(label)}</span></button>`
-          : `<span class="technology-static">${technologyMark(label)}<span class="technology-name">${escapeHtml(label)}</span></span>`;
-      }).join('')}
-    </div>
-  </section>`).join(''));
-function showTech(key: keyof typeof techDetails): void {
-  const item = techDetails[key];
-  const knownBrand = techGroups.flatMap(group => group.items).find(label => findTech(label) === key) ?? item.title;
-  openDetail(`<div class="detail-tech-mark">${technologyMark(knownBrand)}</div><span class="detail-kicker">TECHNOLOGY / OUR TOOLKIT</span>
-    <h2 id="dialog-title">${escapeHtml(item.title)}</h2>
-    <p class="detail-description">${escapeHtml(item.description)}</p>
-    <div class="detail-section"><h3>Where it fits</h3>${listMarkup(item.uses)}</div>`);
+byId("process-controls").addEventListener("click",event=>{
+ const origin=event.target;
+ if(!(origin instanceof Element))return;
+ const button=origin.closest<HTMLButtonElement>("[data-step]");
+ if(button && (button.dataset.step || "") in steps)selectStep(button.dataset.step as Step);
+});
+byId("process-controls").addEventListener("keydown",event=>{
+ if(!(event instanceof KeyboardEvent))return;
+ if(!["ArrowDown","ArrowUp","ArrowRight","ArrowLeft","Home","End"].includes(event.key))return;
+ const origin=event.target;
+ const button=origin instanceof Element?origin.closest<HTMLButtonElement>("[data-step]"):null;
+ if(!button)return;
+ const current=processButtons.indexOf(button);
+ if(current<0)return;
+ event.preventDefault();
+ const index=event.key==="Home"?0:event.key==="End"?processButtons.length-1:(current+(event.key==="ArrowUp"||event.key==="ArrowLeft"?-1:1)+processButtons.length)%processButtons.length;
+ const target=processButtons[index];
+ if(target&&(target.dataset.step || "") in steps){selectStep(target.dataset.step as Step);target.focus();}
+});
+selectStep("discover");
+
+const details:Record<Kind,Record<string,Detail>>={
+ project:{
+  operations:{label:"CONCEPT 01 / PLATFORM ARCHITECTURE",title:"Operations, under control.",intro:"A conceptual operational command workspace connecting approvals, workflows and accountable oversight.",points:["Challenge: fragmented operational data and approval steps slow down teams and obscure accountability.","Architecture: role-based permissions, clearly modeled workflows, event-driven status changes and audit-aware review.","Experience: concise dashboards that surface exceptions instead of overwhelming people with raw data.","Acceptance: signed-in access tests, workflow regression, performance checks and useful operational documentation."],disclaimer:"Illustrative product concept and UI study. Mock interface figures are demonstration data—not customer deployment outcomes."},
+  intelligence:{label:"CONCEPT 02 / INTELLIGENT WORKFLOWS",title:"Intelligence with intent.",intro:"An assisted workflow model that evaluates inputs, helps people make decisions and records human approvals.",points:["Challenge: repetitive information routing and inconsistent decisions across busy teams.","Architecture: bounded orchestration, human review points, defined model inputs and observable outcomes.","Experience: transparent status, clear confidence limits, editable suggestions and explicit approvals.","Acceptance: evaluation cases, failure-mode review, data-handling safeguards and measurable user utility."],disclaimer:"Illustrative AI workflow pattern. No claims of model accuracy, customer adoption or production-scale deployment."},
+  security:{label:"CONCEPT 03 / TRUST & ASSURANCE",title:"Trust is engineered.",intro:"A security-first application gateway blueprint with documented boundaries and repeatable verification.",points:["Challenge: sensitive access paths that are difficult to audit or secure after launch.","Architecture: identity-based authorization, least-privilege roles, secure defaults and threat-informed interfaces.","Operations: auditable events, incident visibility and controlled recovery procedures.","Acceptance: cross-account isolation tests, independent security review and remediation evidence."],disclaimer:"Illustrative security architecture model. The concept is not a certification or statement of deployed security effectiveness."}
+ },
+ service:{
+  software:{label:"CAPABILITY 01 / SOFTWARE",title:"Software engineering",intro:"Purposeful web and mobile application engineering with maintainability, usability and dependable operations in view.",points:["Architecture and application design","Responsive platforms and connected workflows","API integrations and data modeling","Automated checks and production handover"]},
+  ai:{label:"CAPABILITY 02 / INTELLIGENCE",title:"AI & automation",intro:"Intelligent assistance designed around real tasks, measurable value and clear human oversight.",points:["AI integration and workflow orchestration","Responsible prompt and evaluation design","Useful reporting and operational assistance","Reviewable automation and safety controls"]},
+  cloud:{label:"CAPABILITY 03 / INFRASTRUCTURE",title:"Cloud & DevOps",intro:"Infrastructure choices that favor reliability, observability, security and controlled operational cost.",points:["Cloud architecture and migration planning","CI/CD and repeatable deployments","Monitoring, backup and recovery design","Infrastructure automation and cost review"]},
+  security:{label:"CAPABILITY 04 / ASSURANCE",title:"Security & QA",intro:"Practical security and quality disciplines embedded into the system lifecycle.",points:["Threat-informed architecture and access boundaries","Security assessment and remediation","Automated test strategies and release gates","Accessible, verifiable production readiness"]},
+  design:{label:"CAPABILITY 05 / PRODUCT UX",title:"Product design",intro:"Human-centred interfaces that express complex engineering through clarity, trust and intuitive interactions.",points:["Research-led information architecture","Accessible and responsive user experiences","Design systems, prototypes and usability review","Polished interface components with purpose"]},
+  strategy:{label:"CAPABILITY 06 / DIRECTION",title:"Technical strategy",intro:"Clear choices at the beginning save teams from expensive and unnecessary implementation later.",points:["Problem discovery and feasibility","Architecture and technology trade-off analysis","Phased delivery and ownership planning","Quality, security and maintenance requirements"]}
+ },
+ sector:{
+  maritime:{label:"SECTOR PLAYBOOK / MARITIME & LOGISTICS",title:"Maritime & logistics",intro:"An engineering use-case model for operational coordination, asset status and exception-handling in complex maritime and logistics workflows.",points:["Problem pattern: disconnected shipping, cargo or equipment updates that slow operational coordination.","Proposed system: role-scoped workflow tracking, structured event updates and a clear operational dashboard.","Assurance: data-integrity checks, resilient connectivity, audit visibility and device-aware interface acceptance.","First step: map the actual operations and applicable access boundaries with the responsible team."],disclaimer:"Sector application pattern only. It does not represent an existing maritime customer or completed deployment."},
+  property:{label:"SECTOR PLAYBOOK / PROPERTY SYSTEMS",title:"Real estate & property",intro:"A conceptual property information and operations platform for structured records and accountable service workflows.",points:["Problem pattern: scattered property documents, inquiries and service updates.","Proposed system: searchable asset records, permissions, approval tracking and clear owner/tenant interactions.","Assurance: secure document access, record integrity and tenant isolation as applicable.","First step: agree on the exact property-management process and stakeholder access rules."],disclaimer:"Illustrative sector scenario, not a claim about a client or launched product."},
+  finance:{label:"SECTOR PLAYBOOK / FINANCIAL WORKFLOWS",title:"Finance & operations",intro:"A proposed operations workflow with transparent approvals, reconciliation and traceable decision paths.",points:["Problem pattern: complex approvals, inconsistent handoffs and hard-to-reconcile reporting.","Proposed system: permissioned financial workflows, status history, reconciliation support and exportable records.","Assurance: least privilege, separation of duties, transaction integrity and independent acceptance where needed.","First step: define financial controls, required audit evidence and applicable regulations."],disclaimer:"No regulated-services certifications or production customer outcomes are asserted."},
+  education:{label:"SECTOR PLAYBOOK / DIGITAL LEARNING",title:"Education & learning",intro:"A conceptual learning platform designed around clear learning journeys and trustworthy academic evidence.",points:["Problem pattern: fragmented lessons, unclear progress and confusing feedback.","Proposed system: syllabus-first navigation, structured practice and reviewable completion records.","Assurance: learner data protection, accessible interfaces and integrity-aware assessment paths.","First step: map the actual teaching outcomes, learner roles and evidence requirements."],disclaimer:"A design reference, not a claim that a deployed institution uses this platform."},
+  health:{label:"SECTOR PLAYBOOK / HEALTH ADMINISTRATION",title:"Healthcare administration",intro:"A non-clinical operational application pattern for staffing, scheduling and secure information flow.",points:["Problem pattern: hard-to-coordinate staffing and administrative workflows.","Proposed system: staff scheduling, administrative approvals and operational visibility with role boundaries.","Assurance: privacy-by-design, data minimization and independent clinical review if scope ever becomes clinical.","First step: document the non-clinical intended use and applicable data-protection obligations."],disclaimer:"Administrative use cases only. No diagnosis, treatment claims or certified healthcare deployments."},
+  workforce:{label:"SECTOR PLAYBOOK / PERSONNEL OPERATIONS",title:"Enterprise workforce",intro:"A conceptual people-operations workspace with permission-aware records and accountable approvals.",points:["Problem pattern: scattered personnel information, inconsistent leave routing and unclear workforce availability.","Proposed system: role-based workforce workflows, self-service requests and status-aware oversight.","Assurance: cross-user isolation, privacy controls, approval history and organization-scoped permissions.","First step: determine the target organization, data retention needs and valid HR rules."],disclaimer:"Illustrative system design. It is not a statement of an active HR customer deployment."}
+ },
+ article:{
+  discovery:{label:"FIELD NOTE 01 / PRODUCT STRATEGY",title:"Before the first line of code.",intro:"Shipping software faster is not useful if the team never defined the problem properly.",points:["Describe the user and the expensive friction in their day—not a list of fashionable features.","Choose a small, meaningful first release and define what success would look like.","Make ownership, security and recovery expectations explicit before implementation.","The most valuable design decision is often a feature you decide not to build."]},
+  security:{label:"FIELD NOTE 02 / SYSTEM SECURITY",title:"Security is not a launch checklist.",intro:"Security is stronger when it shapes architecture rather than appearing after the product is complete.",points:["Identify data boundaries, trust relationships and high-risk workflows from the start.","Design authorization separately from visible interface permissions.","Test failure paths and cross-account access, not only happy-path screens.","Independent review and documented remediation remain necessary for high-risk systems."]},
+  ai:{label:"FIELD NOTE 03 / RESPONSIBLE AI",title:"Make AI earn its place.",intro:"A sophisticated model is not a product outcome. Useful intelligence must serve a known workflow.",points:["Identify a specific task, human reviewer and measurable success criterion.","Define the limits of the model's authority and its permitted inputs.","Measure failure cases and record when humans reject or correct suggestions.","Integrate monitoring and improvement into the real workflow rather than staging a static demo."]}
+ }
+};
+const dialog=byId<HTMLDialogElement>("detail-dialog");
+const dialogBody=byId<HTMLElement>("dialog-content");
+const closeButton=byId<HTMLButtonElement>("dialog-close");
+let focusBeforeDialog:HTMLElement|null=null;
+function showDetail(kind:Kind,key:string):void{
+ const item=details[kind][key];
+ if(!item)return;
+ focusBeforeDialog=document.activeElement instanceof HTMLElement?document.activeElement:null;
+ let markup='<span class="dialog-label">'+escapeHtml(item.label)+'</span>';
+ markup+='<h2 id="dialog-title">'+escapeHtml(item.title)+'</h2>';
+ markup+='<p>'+escapeHtml(item.intro)+'</p>';
+ markup+='<ul class="detail-list">'+item.points.map(point=>'<li>'+escapeHtml(point)+'</li>').join("")+'</ul>';
+ if(item.disclaimer)markup+='<p class="detail-disclaimer">'+escapeHtml(item.disclaimer)+'</p>';
+ dialogBody.innerHTML=markup;
+ dialog.showModal();
+ document.body.classList.add("dialog-open");
+ closeButton.focus();
 }
-
-mount('team-grid', team.map(person => `
-  <article class="team-card">
-    <div class="team-initials" aria-hidden="true">${person.name.split(' ').slice(0,2).map(part=>escapeHtml(part[0]||'')).join('')}</div>
-    <h3>${escapeHtml(person.name)}</h3>
-    <p class="team-role">${escapeHtml(person.role)}</p>
-    <p class="team-focus">${escapeHtml(person.focus)}</p>
-    <p>${escapeHtml(person.bio)}</p>
-    <div class="tag-list">${person.tags.map(tag=>'<span>'+escapeHtml(tag)+'</span>').join('')}</div>
-    <a class="team-email" href="mailto:${escapeHtml(person.email)}">Contact ${escapeHtml(person.name.split(' ')[0])} ↗</a>
-  </article>`).join(''));
-mount('disciplines', disciplines.map(item => `
-  <article><h3>${escapeHtml(item.title)}</h3><strong>${escapeHtml(item.subtitle)}</strong><p>${escapeHtml(item.body)}</p></article>`).join(''));
-mount('testimonial-grid', testimonials.map(item => `
-  <article class="testimonial-card"><div class="testimonial-heading"><span class="metric">${escapeHtml(item.metric)}</span><span class="testimonial-icon" aria-hidden="true">${icon("quote")}</span></div>
-  <blockquote>“${escapeHtml(item.quote)}”</blockquote>
-  <footer>${escapeHtml(item.name)}<span>${escapeHtml(item.role)}</span></footer>
-  </article>`).join(''));
-mount('faq-list', allFaqs.map((item,index) => `
-  <details name="pukka-faq"><summary>${escapeHtml(item.question)}</summary>
-    <p>${escapeHtml(item.answer)}</p>
-  </details>`).join(''));
-
-// One delegated listener for static, typed source-content actions.
-document.addEventListener('click', event => {
-  if (!(event.target instanceof Element)) return;
-  const serviceEl = event.target.closest<HTMLElement>('[data-service]');
-  if (serviceEl) {
-    const key = serviceEl.dataset.service;
-    if (key && Object.prototype.hasOwnProperty.call(serviceDetails, key)) showService(key as keyof typeof serviceDetails);
-    return;
-  }
-  const caseEl = event.target.closest<HTMLElement>('[data-case]');
-  if (caseEl) {
-    const key = caseEl.dataset.case;
-    if (key && Object.prototype.hasOwnProperty.call(portfolioDetails, key)) showCase(key as keyof typeof portfolioDetails);
-    return;
-  }
-  const articleEl = event.target.closest<HTMLElement>('[data-article]');
-  if (articleEl) {
-    const key = articleEl.dataset.article;
-    if (key && Object.prototype.hasOwnProperty.call(blogDetails, key)) showArticle(key as keyof typeof blogDetails);
-    return;
-  }
-  const techEl = event.target.closest<HTMLElement>('[data-tech]');
-  if (techEl) {
-    const key = techEl.dataset.tech;
-    if (key && Object.prototype.hasOwnProperty.call(techDetails, key)) showTech(key as keyof typeof techDetails);
-  }
+document.addEventListener("click",event=>{
+ if(!(event.target instanceof Element))return;
+ for(const kind of ["project","service","sector","article"] as const){
+  const button=event.target.closest<HTMLButtonElement>("[data-"+kind+"]");
+  if(button){const key=button.dataset[kind];if(key)showDetail(kind,key);return;}
+ }
+});
+closeButton.addEventListener("click",()=>dialog.close());
+byId<HTMLAnchorElement>("dialog-contact").addEventListener("click",()=>dialog.close());
+dialog.addEventListener("click",event=>{
+ if(event.target!==dialog)return;
+ const rect=dialog.getBoundingClientRect();
+ if(event.clientX<rect.left||event.clientX>rect.right||event.clientY<rect.top||event.clientY>rect.bottom)dialog.close();
+});
+dialog.addEventListener("close",()=>{document.body.classList.remove("dialog-open");focusBeforeDialog?.focus({preventScroll:true});});
+const filterButtons=Array.from(document.querySelectorAll<HTMLButtonElement>("[data-filter]"));
+const projects=Array.from(document.querySelectorAll<HTMLElement>(".project[data-category]"));
+byId("work-filters").addEventListener("click",event=>{
+ if(!(event.target instanceof Element))return;
+ const button=event.target.closest<HTMLButtonElement>("[data-filter]");
+ if(!button)return;
+ const filter=button.dataset.filter || "all";
+ filterButtons.forEach(candidate=>candidate.setAttribute("aria-pressed",String(candidate.dataset.filter===filter)));
+ projects.forEach(card=>{card.hidden=filter!=="all"&&card.dataset.category!==filter;});
 });
 
-const year = $('#copyright-year');
-if (year) year.textContent = String(new Date().getFullYear());
-
-// Contact: authenticated delivery is server-only, with explicit fallback on error.
-const contactForm = requireElement<HTMLFormElement>('#project-form');
-const formStatus = requireElement<HTMLElement>('#form-status');
-const fallback = requireElement<HTMLAnchorElement>('#email-fallback');
-const submitButton = requireElement<HTMLButtonElement>('#project-form button[type="submit"]');
-function setFormStatus(message: string, state: 'error' | 'pending' | 'success'): void {
-  formStatus.textContent = message;
-  formStatus.dataset.state = state;
+const menuButton=byId<HTMLButtonElement>("menu-toggle");
+const mobileNav=byId<HTMLElement>("mobile-nav");
+function setMenu(open:boolean):void{
+ menuButton.setAttribute("aria-expanded",String(open));
+ menuButton.setAttribute("aria-label",open?"Close menu":"Open menu");
+ mobileNav.hidden=!open;
+ mobileNav.inert=!open;
 }
-const formFields = Array.from(contactForm.querySelectorAll<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>('input:not([name="website"]),select,textarea'));
-formFields.forEach(field => {
-  const syncState = () => field.setAttribute('aria-invalid', String(!field.validity.valid && field.dataset.touched === 'true'));
-  field.addEventListener('blur', () => { field.dataset.touched = 'true'; syncState(); });
-  field.addEventListener('input', () => { syncState(); if(formStatus.dataset.state === 'error') formStatus.textContent=''; });
-  field.addEventListener('change', () => { syncState(); });
+menuButton.addEventListener("click",()=>setMenu(menuButton.getAttribute("aria-expanded")!=="true"));
+mobileNav.querySelectorAll("a").forEach(link=>link.addEventListener("click",()=>setMenu(false)));
+window.addEventListener("resize",()=>{if(window.innerWidth>980)setMenu(false);},{passive:true});
+document.addEventListener("click",event=>{
+ if(menuButton.getAttribute("aria-expanded")!=="true")return;
+ if(!(event.target instanceof Node))return;
+ if(!mobileNav.contains(event.target)&&!menuButton.contains(event.target))setMenu(false);
 });
-function readBrief(): Record<'name'|'email'|'phone'|'service'|'message'|'website',string> {
-  const data = new FormData(contactForm);
-  const get = (key:string) => String(data.get(key) ?? '').trim();
-  return {name:get('name'),email:get('email'),phone:get('phone'),service:get('service'),message:get('message'),website:get('website')};
-}
-contactForm.addEventListener('submit', async event => {
-  event.preventDefault();
-  formFields.forEach(field => { field.dataset.touched = 'true'; field.setAttribute('aria-invalid', String(!field.validity.valid)); });
-  if (!contactForm.checkValidity()) {
-    setFormStatus('Please complete the required fields and check the highlighted information.', 'error');
-    formFields.find(field => !field.validity.valid)?.focus();
-    return;
-  }
-  if (submitButton.disabled) return;
-  const brief = readBrief();
-  fallback.hidden = true;
-  submitButton.disabled = true;
-  contactForm.setAttribute('aria-busy', 'true');
-  setFormStatus('Submitting your project brief…','pending');
-  try {
-    const response = await fetch('/api/project-brief', {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body:JSON.stringify(brief)
-    });
-    const result: {ok?:boolean;error?:string} | null = await response.json().catch(()=>null);
-    if (!response.ok || result?.ok !== true) throw new Error(result?.error || 'Online enquiries are unavailable right now.');
-    contactForm.reset();
-    formFields.forEach(field => {field.dataset.touched = 'false';field.setAttribute('aria-invalid','false');});
-    setFormStatus('Your project brief has been accepted by our delivery service. Thank you for contacting Pukka Gen.', 'success');
-  } catch (error) {
-    const message = error instanceof Error ? error.message : 'Online submission failed.';
-    setFormStatus(message + ' Please use the direct email option below.', 'error');
-    const text = [`Name: ${brief.name}`,`Email: ${brief.email}`,
-      `Phone: ${brief.phone || 'Not provided'}`,`Service: ${brief.service}`,'',brief.message].join('\n');
-    fallback.href = 'mailto:' + studio.email + '?subject=' +
-      encodeURIComponent('Pukka Gen project enquiry — ' + brief.service) + '&body=' + encodeURIComponent(text);
-    fallback.hidden = false;
-  } finally {
-    submitButton.disabled = false;
-    contactForm.removeAttribute('aria-busy');
-  }
+document.addEventListener("keydown",event=>{
+ if(event.key==="Escape"&&menuButton.getAttribute("aria-expanded")==="true"){setMenu(false);menuButton.focus();}
 });
+setMenu(false);
 
-/** v2.1 presentation improvements: progressive enhancement only. */
-const header = requireElement<HTMLElement>('#site-header');
-const progressBar = requireElement<HTMLElement>('#reading-progress-bar');
-let scrollFrame = 0;
-function updateScrollVisuals(): void {
-  scrollFrame = 0;
-  const total = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
-  const progress = total ? Math.min(100, Math.max(0, (window.scrollY / total) * 100)) : 0;
-  progressBar.style.width = progress.toFixed(1) + '%';
-  header.classList.toggle('is-scrolled', window.scrollY > 16);
-}
-window.addEventListener('scroll', () => {
-  if (!scrollFrame) scrollFrame = requestAnimationFrame(updateScrollVisuals);
-}, {passive:true});
-window.addEventListener('resize', updateScrollVisuals, {passive:true});
-updateScrollVisuals();
 
-// Section location stays accurate in both desktop and keyboard navigation.
-const sectionLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>(
-  '.desktop-navigation a[href^="#"], .mobile-navigation a[href^="#"]'
-));
-const sections = sectionLinks
-  .map(link => document.getElementById(link.hash.slice(1)))
-  .filter((section): section is HTMLElement => section instanceof HTMLElement);
-function setCurrentSection(id: string): void {
-  sectionLinks.forEach(link => {
-    if (link.hash === '#' + id) link.setAttribute('aria-current', 'location');
-    else link.removeAttribute('aria-current');
-  });
-}
-if ('IntersectionObserver' in window) {
-  const currentObserver = new IntersectionObserver(entries => {
-    for (const entry of entries) {
-      if (entry.isIntersecting) setCurrentSection(entry.target.id);
-    }
-  }, {rootMargin:'-22% 0px -62% 0px',threshold:0});
-  sections.forEach(section => currentObserver.observe(section));
-}
-
-// Content is visible by default; animation is enabled only when supported and wanted.
-if ('IntersectionObserver' in window &&
-    !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-  const revealTargets = Array.from(document.querySelectorAll<HTMLElement>(
-    '.service-card, .portfolio-card, .article-card, .audience-card, .team-card, .process-row, .value-item, .testimonial-card'
+// Pukka premium interaction layer: progressive enhancement, no motion dependence.
+// The content remains fully readable when JavaScript or motion support is absent.
+const reduceAnimations=window.matchMedia("(prefers-reduced-motion: reduce)");
+if(!reduceAnimations.matches && "IntersectionObserver" in window){
+  const sections=Array.from(document.querySelectorAll<HTMLElement>(
+    ".section-head,.expertise-card,.project,.sector-card,.journal-card,.proof-preview,.solution-stage,.studio-wordmark,.contact-heading,.project-form"
   ));
-  const revealObserver = new IntersectionObserver(entries => {
-    for (const entry of entries) {
-      if (!entry.isIntersecting) continue;
-      entry.target.classList.add('is-visible');
-      revealObserver.unobserve(entry.target);
+  const observer=new IntersectionObserver(entries=>{
+    for(const entry of entries){
+      if(!entry.isIntersecting)continue;
+      const node=entry.target as HTMLElement;
+      node.dataset.reveal="shown";
+      observer.unobserve(node);
     }
-  }, {threshold:0.07,rootMargin:'0px 0px 30px 0px'});
-  revealTargets.forEach(target => {
-    target.classList.add('reveal-item');
-    if (target.getBoundingClientRect().top < window.innerHeight * .94) target.classList.add('is-visible');
-    else revealObserver.observe(target);
+  },{threshold:.06,rootMargin:"0px 0px -24px 0px"});
+  sections.forEach((node,index)=>{
+    node.dataset.reveal="pending";
+    node.style.setProperty("--reveal-delay",String((index%3)*65)+"ms");
+    observer.observe(node);
   });
-  document.documentElement.classList.add('reveal-ready');
+  document.documentElement.classList.add("motion-enabled");
 }
+
+const header=byId<HTMLElement>("site-header");
+let scrollScheduled=false;
+function reflectScroll():void{header.classList.toggle("is-scrolled",window.scrollY>20);scrollScheduled=false;}
+window.addEventListener("scroll",()=>{if(!scrollScheduled){scrollScheduled=true;requestAnimationFrame(reflectScroll);}},{passive:true});
+reflectScroll();
+byId("year").textContent=String(new Date().getFullYear());
+
+// Real contact delivery is server-only. If mail is not configured the site
+// explicitly offers a direct-email fallback instead of claiming success.
+type Brief={name:string;email:string;service:string;message:string;website:string};
+const form=byId<HTMLFormElement>("project-form");
+const formStatus=byId<HTMLElement>("form-status");
+const fallback=byId<HTMLAnchorElement>("email-fallback");
+const submit=form.querySelector<HTMLButtonElement>('button[type="submit"]');
+if(!submit)throw new Error("Project enquiry submit button missing");
+function formMessage(text:string,state:"error"|"pending"|"success"):void{
+ formStatus.textContent=text;formStatus.dataset.state=state;
+}
+form.addEventListener("submit",async event=>{
+ event.preventDefault();
+ fallback.hidden=true;
+ if(!form.checkValidity()){
+  const first=form.querySelector<HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement>(":invalid");
+  first?.focus();
+  form.reportValidity();
+  formMessage("Please complete the required fields with valid information.","error");
+  return;
+ }
+ const data=new FormData(form);
+ const get=(field:string)=>String(data.get(field)||"").trim();
+ const brief:Brief={name:get("name"),email:get("email"),service:get("service"),message:get("message"),website:get("website")};
+ const mailSubject="Project enquiry — "+brief.service;
+ const mailBody=["Name: "+brief.name,"Email: "+brief.email,"Service: "+brief.service,"","Project brief:",brief.message].join("\n");
+ fallback.href="mailto:mail@pukkagennoduff.com?subject="+encodeURIComponent(mailSubject)+"&body="+encodeURIComponent(mailBody);
+ submit.disabled=true;form.setAttribute("aria-busy","true");
+ formMessage("Submitting your project brief…","pending");
+ try{
+  const response=await fetch("/api/project-brief",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(brief)});
+  const result:unknown=await response.json().catch(()=>null);
+  const record=result&&typeof result==="object"?result as Record<string,unknown>:null;
+  if(!response.ok||record?.ok!==true)throw new Error(typeof record?.error==="string"?record.error:"Online delivery is unavailable.");
+  form.reset();
+  formMessage("Your brief was accepted by the mail delivery service. Thank you for reaching out.","success");
+ }catch(error){
+  const message=error instanceof Error?error.message:"Online delivery is unavailable.";
+  formMessage(message+" Use the direct email option below so your enquiry is not lost.","error");
+  fallback.hidden=false;
+ }finally{
+  submit.disabled=false;form.removeAttribute("aria-busy");
+ }
+});
