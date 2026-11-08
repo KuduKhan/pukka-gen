@@ -1,5 +1,5 @@
 /**
- * Pukka Gen v2.2 visual iconography.
+ * Pukka Gen v3 consistent first-party SVG iconography.
  * Self-contained line SVGs for interface actions and verified, self-hosted
  * technology marks sourced from Simple Icons and Devicon public collections.
  * Fallbacks for unavailable brand assets are purposefully neutral monograms,
@@ -39,7 +39,7 @@ export type IconName = keyof typeof paths;
 export function icon(name: IconName, className = 'ui-icon'): string {
   return '<svg class="' + className +
     '" viewBox="0 0 24 24" width="24" height="24" fill="none" ' +
-    'stroke="currentColor" stroke-width="1.65" stroke-linecap="round" ' +
+    'stroke="currentColor" stroke-width="1.8" stroke-linecap="round" ' +
     'stroke-linejoin="round" aria-hidden="true" focusable="false">' +
     paths[name] + '</svg>';
 }
@@ -64,8 +64,8 @@ export function technologyMark(label: string): string {
   // Neutral, non-textual glyph; visible adjacent label identifies the technology.
   return '<span class="tech-mark tech-mark-generic" aria-hidden="true">' +
     '<svg viewBox="0 0 36 36" width="28" height="28" focusable="false" aria-hidden="true">' +
-    '<rect x="2" y="2" width="32" height="32" rx="9" fill="#1E3A4A" />' +
-    '<rect x="2.5" y="2.5" width="31" height="31" rx="8.5" fill="none" stroke="#86DCCF" stroke-opacity=".7" />' +
-    '<path d="M9 17h5l4-6 4 12 4-5h2" fill="none" stroke="#BCFFF1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />' +
-    '<circle cx="9" cy="17" r="2" fill="#B6FFF2"/><circle cx="28" cy="18" r="2" fill="#B6FFF2"/></svg></span>';
+    '<rect x="2" y="2" width="32" height="32" rx="9" fill="#0C2B57" />' +
+    '<rect x="2.5" y="2.5" width="31" height="31" rx="8.5" fill="none" stroke="#66D8F6" stroke-opacity=".7" />' +
+    '<path d="M9 17h5l4-6 4 12 4-5h2" fill="none" stroke="#B4EEFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />' +
+    '<circle cx="9" cy="17" r="2" fill="#8CE9FF"/><circle cx="28" cy="18" r="2" fill="#8CE9FF"/></svg></span>';
 }
