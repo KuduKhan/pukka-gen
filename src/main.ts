@@ -39,7 +39,7 @@ byId("system-tabs").addEventListener("click",event=>{
  const origin=event.target;
  if(!(origin instanceof Element))return;
  const button=origin.closest<HTMLButtonElement>("[data-system-select]");
- if(button && button.dataset.systemSelect in domains)setDomain(button.dataset.systemSelect as Domain);
+ if(button && (button.dataset.systemSelect || "") in domains)setDomain(button.dataset.systemSelect as Domain);
 });
 byId("system-tabs").addEventListener("keydown",event=>{
  if(!(event instanceof KeyboardEvent))return;
@@ -52,7 +52,7 @@ byId("system-tabs").addEventListener("keydown",event=>{
  event.preventDefault();
  const next=event.key==="Home"?0:event.key==="End"?atlasControls.length-1:(index+(event.key==="ArrowLeft"||event.key==="ArrowUp"?-1:1)+atlasControls.length)%atlasControls.length;
  const target=atlasControls[next];
- if(target && target.dataset.systemSelect in domains){setDomain(target.dataset.systemSelect as Domain);target.focus();}
+ if(target && (target.dataset.systemSelect || "") in domains){setDomain(target.dataset.systemSelect as Domain);target.focus();}
 });
 setDomain("software");
 
@@ -76,7 +76,7 @@ byId("process-controls").addEventListener("click",event=>{
  const origin=event.target;
  if(!(origin instanceof Element))return;
  const button=origin.closest<HTMLButtonElement>("[data-step]");
- if(button && button.dataset.step in steps)selectStep(button.dataset.step as Step);
+ if(button && (button.dataset.step || "") in steps)selectStep(button.dataset.step as Step);
 });
 byId("process-controls").addEventListener("keydown",event=>{
  if(!(event instanceof KeyboardEvent))return;
@@ -89,7 +89,7 @@ byId("process-controls").addEventListener("keydown",event=>{
  event.preventDefault();
  const index=event.key==="Home"?0:event.key==="End"?processButtons.length-1:(current+(event.key==="ArrowUp"||event.key==="ArrowLeft"?-1:1)+processButtons.length)%processButtons.length;
  const target=processButtons[index];
- if(target&&target.dataset.step in steps){selectStep(target.dataset.step as Step);target.focus();}
+ if(target&&(target.dataset.step || "") in steps){selectStep(target.dataset.step as Step);target.focus();}
 });
 selectStep("discover");
 
@@ -188,12 +188,12 @@ byId("year").textContent=String(new Date().getFullYear());
 // explicitly offers a direct-email fallback instead of claiming success.
 type Brief={name:string;email:string;service:string;message:string;website:string};
 const form=byId<HTMLFormElement>("project-form");
-const status=byId<HTMLElement>("form-status");
+const formStatus=byId<HTMLElement>("form-status");
 const fallback=byId<HTMLAnchorElement>("email-fallback");
-const submit=byId<HTMLButtonElement>("project-form").querySelector<HTMLButtonElement>('button[type="submit"]');
+const submit=form.querySelector<HTMLButtonElement>('button[type="submit"]');
 if(!submit)throw new Error("Project enquiry submit button missing");
 function formMessage(text:string,state:"error"|"pending"|"success"):void{
- status.textContent=text;status.dataset.state=state;
+ formStatus.textContent=text;formStatus.dataset.state=state;
 }
 form.addEventListener("submit",async event=>{
  event.preventDefault();
