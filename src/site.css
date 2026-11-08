@@ -2130,3 +2130,10 @@ h1,h2,h3,h4 {font-family:var(--pg-font-display);letter-spacing:-.055em}
   .bp-control,.pg-concept-indicator,#work .portfolio-card {border-width:2px}
   .site-header {-webkit-backdrop-filter:none;backdrop-filter:none}
 }
+
+
+/* Blueprint pictograms use the same hand-crafted 24px geometric SVG grammar
+   as the public-facing service icon system. No emoji glyph dependencies. */
+.bp-node-icon {stroke:#c3d9f3;transition:stroke .2s var(--p3-ease)}
+.bp-node[data-active="true"] .bp-node-icon {stroke:#c4f6ff}
+.bp-node-icon rect,.bp-node-icon path,.bp-node-icon circle {vector-effect:non-scaling-stroke}
