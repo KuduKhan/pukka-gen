@@ -1,7 +1,7 @@
 import {
   allFaqs, audiences, blogDetails, checklist, delivery, disciplines,
   portfolioDetails, sectors, serviceDetails, serviceSummaries,
-  studio, team, techDetails, techGroups, testimonials, values
+  studio, team, techDetails, techGroups, values
 } from './content';
 import { icon, technologyMark, type IconName } from './icons';
 
@@ -391,10 +391,19 @@ mount('team-grid', team.map(person => `
   </article>`).join(''));
 mount('disciplines', disciplines.map(item => `
   <article><h3>${escapeHtml(item.title)}</h3><strong>${escapeHtml(item.subtitle)}</strong><p>${escapeHtml(item.body)}</p></article>`).join(''));
-mount('testimonial-grid', testimonials.map(item => `
-  <article class="testimonial-card"><div class="testimonial-heading"><span class="metric">${escapeHtml(item.metric)}</span><span class="testimonial-icon" aria-hidden="true">${icon("quote")}</span></div>
-  <blockquote>“${escapeHtml(item.quote)}”</blockquote>
-  <footer>${escapeHtml(item.name)}<span>${escapeHtml(item.role)}</span></footer>
+// Source testimonials are retained in the archive but are intentionally not
+// displayed without permission and independent verification of their claims.
+const proofStandards = [
+  {number:'01',icon:'layers' as IconName,title:'Explain the architecture',body:'Describe the problem, technical trade-offs and system boundaries before calling a concept a finished product.'},
+  {number:'02',icon:'shield' as IconName,title:'Test what matters',body:'Source checks, regression tests, cross-browser QA and accessibility analysis are evidence to review—not guarantees to invent.'},
+  {number:'03',icon:'check' as IconName,title:'Publish only what is verified',body:'Concept visuals stay labelled. Customer endorsements and performance figures remain unpublished until independently substantiated.'}
+] as const;
+mount('testimonial-grid', proofStandards.map(item=>`
+  <article class="testimonial-card pg-proof-card">
+    <div class="pg-proof-top"><span>${escapeHtml(item.number)} / OUR STANDARD</span><span class="pg-proof-icon" aria-hidden="true">${icon(item.icon)}</span></div>
+    <h3>${escapeHtml(item.title)}</h3>
+    <p>${escapeHtml(item.body)}</p>
+    <span class="pg-proof-bottom">NO DUFF / VERIFIABLE BY DESIGN</span>
   </article>`).join(''));
 mount('faq-list', allFaqs.map((item,index) => `
   <details name="pukka-faq"><summary>${escapeHtml(item.question)}</summary>
