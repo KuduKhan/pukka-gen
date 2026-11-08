@@ -47,6 +47,18 @@ for(const [name,engine] of Object.entries(browserTypes)){
      data.techCount=await page.locator('.technology-pills button, .technology-pills .technology-static').count();
      if(data.serviceCount!==6 || data.portfolioCount!==8 || data.articleCount!==8 || data.techCount!==33)
        throw new Error('Unexpected content counts '+JSON.stringify(data));
+     if(await page.locator('.portfolio-card:visible').count()!==3 ||
+        await page.locator('.article-card:visible').count()!==4)
+       throw new Error('Homepage progressive disclosure initial state invalid');
+     await page.locator('#work-expand').click();
+     if(await page.locator('.portfolio-card:visible').count()!==8 ||
+        await page.locator('#work-expand').getAttribute('aria-expanded')!=='true')
+       throw new Error('Portfolio expansion failed');
+     await page.locator('#work-expand').click();
+     await page.locator('#insights-expand').click();
+     if(await page.locator('.article-card:visible').count()!==8)
+       throw new Error('Journal expansion failed');
+     await page.locator('#insights-expand').click();
      const layout=await page.evaluate(()=>{
        const vw=window.innerWidth;
        const doc=document.documentElement;
