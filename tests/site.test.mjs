@@ -5,7 +5,7 @@ const read=path=>readFileSync(new URL("../"+path,import.meta.url),"utf8");
 const html=read("index.html"),main=read("src/main.ts"),style=read("src/styles.css");
 test("fresh source uses only new architecture and original brand assets",()=>{
  assert.match(html,/Pukka Gen — Engineered to Matter/);
- assert.match(html,/No noise\. No shortcuts/);
+ assert.match(html,/No jargon\. No shortcuts/);
  assert.match(html,/src="\/pukka-gen-wordmark\.png"/);
  assert.ok(existsSync(new URL("../public/pukka-gen-wordmark.png",import.meta.url)));
  assert.ok(existsSync(new URL("../public/pukka-gen-favicon.png",import.meta.url)));
@@ -92,4 +92,42 @@ test("design system supports smallest mobile width and accessible contrast modes
  }
  const open=(style.match(/\{/g)||[]).length,close=(style.match(/\}/g)||[]).length;
  assert.equal(open,close,"CSS braces unbalanced");
+});
+
+
+test("outcome-led No Duff 4.1 includes four keyboard-accessible problem-to-solution paths",()=>{
+ for(const key of ["operations","knowledge","trust","products"]){
+  assert.ok(html.includes('data-solution-select="'+key+'"'),key+" outcome missing");
+  assert.match(main,new RegExp("\\b"+key+":\\{kicker:"));
+ }
+ for(const id of ["solutions","solution-selector","solution-explorer","solution-title","solution-description","solution-proof"]){
+  assert.ok(html.includes('id="'+id+'"'),id+" missing");
+ }
+ assert.match(html,/id="solution-description" aria-live="polite"/);
+ assert.match(main,/function selectSolution/);
+ assert.match(main,/solutionSelector\.addEventListener\("keydown"/);
+ assert.match(main,/setAttribute\("aria-pressed"/);
+ assert.match(style,/\.solution-explorer\[data-solution="knowledge"\]/);
+});
+test("industry playbooks are illustrative rather than claims about actual customers",()=>{
+ const sectorKeys=["maritime","property","finance","education","health","workforce"];
+ for(const key of sectorKeys){
+  assert.ok(html.includes('data-sector="'+key+'"'),key+" sector absent");
+  assert.match(main,new RegExp("\\b"+key+":\\{label:\\"SECTOR PLAYBOOK"));
+ }
+ assert.match(html,/id="sector-grid"/);
+ assert.match(html,/not unverified claims about our clients/i);
+ assert.match(main,/sector application pattern/i);
+ assert.match(main,/for\(const kind of \["project","service","sector","article"\]/);
+ assert.match(style,/\.sector-grid/);
+});
+test("No Duff assurance is explicit, inspectable and provides direct FAQ answers",()=>{
+ assert.match(html,/id="proof-accordion"/);
+ assert.match(html,/id="faq-title"/);
+ assert.match(html,/Good engineering begins with the problem/);
+ assert.match(html,/independent evidence/i);
+ assert.match(style,/\.proof-accordion details/);
+ assert.match(style,/\.faq-list details/);
+ assert.equal((html.match(/class="sector-card/g)||[]).length,6);
+ assert.equal((html.match(/class="solution-choice/g)||[]).length,4);
 });
