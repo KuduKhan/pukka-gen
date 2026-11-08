@@ -1,0 +1,180 @@
+/* PUKKA GEN | Enterprise Editorial visual direction
+   Reference: contemporary AI/security studio site hierarchy.
+   Identity: original Pukka navy/cyan/violet; no third-party CSS or assets. */
+:root{--pe-paper:#f6f9fd;--pe-ink:#112e4d;--pe-line:rgba(125,158,199,.36);--pe-cyan:#6ee3ff;--pe-contrast:#0b2d57}
+.pg-studio-strip{height:28px;display:flex;align-items:center;border-bottom:1px solid rgba(126,187,227,.22);background:rgba(4,18,43,.94)}
+.pg-studio-strip-inner{display:flex;align-items:center;justify-content:space-between;gap:10px;height:100%;color:#a7c7e7;font:760 .58rem/1.3 ui-monospace,Consolas,monospace;letter-spacing:.1em}
+.pg-studio-strip-inner>span{display:flex;align-items:center;gap:7px;white-space:nowrap}
+.pg-strip-dot{width:6px;height:6px;border-radius:50%;background:#69ddf5;box-shadow:0 0 0 3px rgba(90,216,242,.12)}
+.pg-strip-div{color:#78e2fa;font-weight:850}
+.navigation{min-height:66px}
+.site-header,.site-header.is-scrolled{border-color:rgba(144,201,245,.18);background:rgba(5,20,42,.91)}
+.desktop-nav{gap:clamp(14px,2.1vw,33px)}
+.desktop-nav a{font-weight:720}
+.header-cta{border-radius:8px}
+html{scroll-padding-top:96px}
+.hero{padding-top:clamp(151px,12.8vw,180px);padding-bottom:clamp(55px,6vw,82px)}
+.hero-grid{grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);gap:clamp(27px,4vw,66px);align-items:center}
+.hero-index{margin-top:clamp(28px,3.4vw,43px);color:#9dcff9}
+.hero h1{max-width:13ch;font-size:clamp(3.5rem,5.7vw,6.1rem);letter-spacing:-.077em;line-height:1.035;margin:23px 0 18px}
+.hero h1 em{font-family:var(--display);font-style:normal;font-weight:770;letter-spacing:-.07em;font-size:1em;line-height:1;background:linear-gradient(110deg,#7ce5ff,#b5eeff 55%,#a38ffc);background-clip:text;-webkit-background-clip:text;color:transparent}
+.hero h1 .pg-hero-signoff{font-family:"Pukka Hand","Segoe Print",cursive;font-size:.87em;font-weight:640;line-height:1.05;letter-spacing:-.05em;color:#a7eefe;white-space:nowrap;display:inline-block;transform:rotate(-2deg)}
+.hero h1 .full-stop{color:#8e8ef1}
+.hero-desc{max-width:53ch;color:#c7d9ea;font-size:.99rem;line-height:1.82}
+.hero-lead{color:#deebf8}
+.ink-note-hero{display:none}
+.hero-actions{margin-top:30px}
+.hero-actions .button{border-radius:9px}
+.system-panel{border-radius:19px;box-shadow:0 24px 62px rgba(1,9,34,.34),inset 0 1px rgba(255,255,255,.12)}
+.system-visual{background:radial-gradient(ellipse at 51% 50%,rgba(54,142,210,.12),transparent 70%)}
+.system-panel:before{opacity:.7}
+.system-intro{padding:20px 23px}
+.system-tabs button{border-radius:8px}
+.proof-ribbon{background:#0b274c}
+.proof-content{justify-content:space-between;gap:10px}
+.proof-content .proof-title{color:#91e8ff}
+.proof-content>span:not(.proof-title){background:none;border:none;backdrop-filter:none;-webkit-backdrop-filter:none;box-shadow:none;padding:7px 6px;font-size:.66rem;color:#d1e4f5}
+.proof-content>span:not(.proof-title):before{content:"+";color:#6ee0fc;margin-right:9px;font-weight:900}
+.section{padding-block:clamp(75px,7.9vw,120px)}
+.section-head{align-items:end;gap:30px;margin-bottom:37px}
+.section-head h2,.studio-text h2,.contact-heading h2{font-family:var(--display);letter-spacing:-.067em;line-height:1.08;font-size:clamp(2.45rem,4.1vw,4.4rem)}
+.section-head h2 em,.studio-text h2 em,.contact-heading h2 em{font-family:var(--display);font-weight:760;font-style:normal;letter-spacing:-.062em}
+.section-head>p{font-size:.92rem;line-height:1.73}
+.kicker{font:800 .68rem/1.5 ui-monospace,Consolas,monospace;letter-spacing:.11em}
+.ink-note-light{font-size:clamp(1.18rem,1.5vw,1.4rem);margin-top:10px}
+/* Service architecture: enterprise-first composition and one flagship technical card. */
+.expertise-section{background:var(--pe-paper)}
+.expertise-section .section-head h2 em{color:#12699d}
+.pg-capabilities-band{display:flex;align-items:center;gap:18px;justify-content:space-between;margin:-2px 0 19px;padding:17px 21px;border:1px solid #d2e3f0;border-radius:11px;background:#fff}
+.pg-capabilities-label{color:#0e6395;font:790 .64rem/1.5 ui-monospace,Consolas,monospace;letter-spacing:.06em;white-space:nowrap}
+.pg-capabilities-band p{flex:1;color:#526f86;font-size:.8rem;line-height:1.55}
+.pg-capabilities-band a{white-space:nowrap;color:#0e679e;font-size:.76rem;font-weight:820}
+.pg-capabilities-band a:hover{text-decoration:underline;text-underline-offset:4px}
+.expertise-grid{gap:14px}
+.expertise-card{min-height:287px;border-radius:14px;background:linear-gradient(145deg,#fff,#f9fcff);border:1px solid #d6e2ef;box-shadow:0 8px 22px rgba(12,47,94,.045);padding:27px}
+.expertise-card:hover{transform:translateY(-3px);box-shadow:0 17px 32px rgba(5,59,112,.09)}
+.expertise-card .expertise-icon{width:57px;height:57px;border-radius:13px;margin:17px 0 19px}
+.expertise-card .expertise-icon>.pg-icon{width:35px;height:35px}
+.expertise-card h3{font-size:1.35rem}
+.expertise-card p{font-size:.84rem;line-height:1.7}
+.expertise-card .expertise-number{font-size:.58rem}
+.expertise-card.pg-featured-capability{background:linear-gradient(140deg,#153b72,#0a284f 92%);border-color:#266299;color:#e8f8ff;box-shadow:0 17px 42px rgba(10,47,98,.19)}
+.expertise-card.pg-featured-capability .expertise-number{color:#a3d9f6}
+.expertise-card.pg-featured-capability h3{color:#fff}
+.expertise-card.pg-featured-capability p{color:#cee2f5}
+.expertise-card.pg-featured-capability .expertise-icon{background:linear-gradient(145deg,#2770b1,#173d80);border-color:#65bce7}
+.expertise-card.pg-featured-capability .expertise-icon .pg-icon{color:#d3f6ff}
+.expertise-card.pg-featured-capability .expertise-link{color:#8feaff;border-top-color:#335d8a}
+/* Outcome selector and original visual storytelling. */
+.solution-section{background:#fff}
+.solution-choice{border-radius:11px;min-height:116px;box-shadow:none;background:#f9fcff}
+.solution-choice[aria-pressed="true"]{background:linear-gradient(145deg,#133a71,#0c2c58);border-color:#2275b5}
+.solution-stage{border-radius:14px}
+.solution-stage-top{background:#081f43}
+.solution-stage .pipeline-step{border-radius:12px}
+.solution-stage .pipeline-center:before{border-radius:15px}
+.pg-cinematic{position:relative;overflow:hidden;isolation:isolate;min-height:480px;display:flex;align-items:center;color:#f7fbff;background:#061a37}
+.pg-cinematic-art{position:absolute;z-index:-2;inset:0;width:100%;height:100%;object-fit:cover;object-position:center}
+.pg-cinematic:after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(3,15,34,.91) 1%,rgba(5,21,46,.86) 39%,rgba(4,20,42,.28) 75%,rgba(4,22,46,.19))}
+.pg-cinematic-inner{padding-block:82px;position:relative}
+.pg-cinematic-eyebrow{display:flex;align-items:center;gap:11px;color:#93dff7;font:800 .67rem/1.4 ui-monospace,Consolas,monospace;letter-spacing:.12em}
+.pg-cinematic h2{font-size:clamp(3.2rem,6vw,6.3rem);max-width:12ch;margin:20px 0 18px}
+.pg-cinematic h2 em{font-family:var(--display);font-style:normal;font-weight:790;letter-spacing:-.07em;color:#91e9ff}
+.pg-cinematic p{max-width:49ch;color:#d1e5f4;font-size:1rem;line-height:1.8}
+.pg-cinematic-link{display:inline-flex;gap:28px;align-items:center;margin-top:27px;padding:13px 0;border-bottom:1px solid #78e6ff;color:#b0f4ff;font-size:.87rem;font-weight:820}
+.pg-cinematic-link:hover{color:#fff}
+.pg-cinematic-foot{display:block;font:730 .58rem/1.5 ui-monospace,Consolas,monospace;color:#a2c2dc;letter-spacing:.12em;margin-top:56px}
+.work-section{background:#eff5fc}
+.project{border-radius:14px;box-shadow:0 12px 30px rgba(6,44,89,.055)}
+.project-visual{height:295px}
+.project-featured .project-visual{min-height:390px}
+.project-description{padding:clamp(23px,2.5vw,31px)}
+.project-description h3{font-size:clamp(1.5rem,2.1vw,2.1rem)}
+.project-tech>span{border-radius:5px}
+/* Industries use original line illustrations instead of borrowed photography. */
+.sector-section{background:#fff}
+.sector-grid{gap:14px}
+.sector-card{min-height:320px;border-radius:14px;overflow:hidden;background:linear-gradient(160deg,#113a70 1%,#071c3b 94%);box-shadow:0 16px 34px rgba(9,44,91,.15)}
+.sector-card:before{background:radial-gradient(ellipse at 92% 9%,rgba(81,181,237,.23),transparent 52%),linear-gradient(135deg,rgba(102,174,241,.055) 1px,transparent 1px);background-size:100% 100%,29px 29px}
+.sector-card .pg-sector-watermark{position:absolute;z-index:-1;right:-24px;top:24px;width:180px;height:180px;display:grid;place-items:center;color:rgba(128,202,246,.23);transform:rotate(-13deg);pointer-events:none}
+.pg-sector-watermark svg{width:100%;height:100%}
+.sector-card[data-sector="property"]{background:linear-gradient(148deg,#123a5d,#0b2347)}
+.sector-card[data-sector="finance"]{background:linear-gradient(150deg,#17345e,#091c3d)}
+.sector-card[data-sector="education"]{background:linear-gradient(148deg,#233866,#101f44)}
+.sector-card[data-sector="health"]{background:linear-gradient(148deg,#0b4c60,#08243f)}
+.sector-card[data-sector="workforce"]{background:linear-gradient(148deg,#18385d,#091f43)}
+.sector-card .sector-symbol{width:74px;height:74px;border-radius:15px}
+.sector-card .sector-symbol .pg-icon{width:46px;height:46px}
+.sector-card strong{font-size:1.43rem}
+.sector-card>p{max-width:34ch;font-size:.87rem}
+.sector-outro{border-radius:10px}
+.approach-section{background:radial-gradient(ellipse 50% 45% at 100% 0%,rgba(29,86,143,.38),transparent 80%),#071b38}
+.process-controls button{min-height:64px;border-radius:10px}
+.process-display{border-radius:15px}
+.proof-section{background:var(--pe-paper)}
+.proof-preview{border-radius:15px}
+.proof-accordion details,.faq-list details{border-radius:10px;box-shadow:none}
+.studio-section{background:#eaf3fc}
+.studio-wordmark{border-radius:15px}
+.studio-text h2 em{color:#1266a0}
+.journal-section{background:#fff}
+.journal-card{border-radius:14px;min-height:304px;box-shadow:0 10px 27px rgba(9,46,91,.04)}
+.faq-section{background:var(--pe-paper)}
+.contact-section{background:radial-gradient(ellipse at 87% 5%,rgba(33,101,171,.29),transparent 55%),#071a37}
+.contact-heading h2 em{font-family:var(--display);font-size:1em;font-weight:770;letter-spacing:-.06em;color:#98e9ff}
+.project-form{border-radius:16px;box-shadow:0 26px 62px rgba(1,10,31,.26)}
+.project-form input,.project-form select,.project-form textarea{border-radius:8px}
+.footer{background:#030d20}
+@media(max-width:1150px){
+ .hero-grid{grid-template-columns:minmax(0,.88fr) minmax(0,1.12fr);gap:26px}
+ .hero h1{font-size:clamp(3.2rem,5.6vw,5.6rem)}
+ .pg-capabilities-band{flex-wrap:wrap}
+ .pg-capabilities-band p{flex-basis:50%}
+}
+@media(max-width:980px){
+ .pg-studio-strip{height:27px}
+ .hero-grid{grid-template-columns:minmax(0,1fr)}
+ .hero{padding-top:133px}
+ .hero h1{max-width:none;font-size:clamp(3.7rem,8vw,6rem)}
+ .system-panel{width:min(810px,100%);justify-self:center}
+ .pg-cinematic{min-height:410px}
+ .pg-cinematic-inner{padding-block:65px}
+}
+@media(max-width:700px){
+ .pg-studio-strip{display:none}
+ .navigation{min-height:64px}
+ html{scroll-padding-top:70px}
+ .hero{padding-top:112px}
+ .hero h1{font-size:clamp(3.1rem,9vw,4.8rem)}
+ .section-head{align-items:start}
+ .pg-capabilities-band{display:grid;gap:7px;padding:16px}
+ .pg-capabilities-band p{flex-basis:auto}
+ .pg-cinematic{min-height:400px}
+ .pg-cinematic h2{font-size:clamp(3.1rem,8vw,5rem)}
+ .pg-cinematic:after{background:linear-gradient(90deg,rgba(4,16,36,.92),rgba(4,20,45,.73) 70%,rgba(6,27,55,.47))}
+}
+@media(max-width:600px){
+ .hero h1{font-size:clamp(3rem,10.1vw,4.2rem);letter-spacing:-.076em}
+ .hero h1 .pg-hero-signoff{font-size:.93em}
+ .hero-desc{font-size:.92rem}
+ .pg-cinematic{min-height:380px}
+ .pg-cinematic-inner{padding-block:58px}
+ .pg-cinematic h2{font-size:clamp(2.8rem,10vw,4.4rem)}
+ .pg-cinematic p{font-size:.87rem}
+ .pg-cinematic-foot{margin-top:40px}
+ .expertise-card{border-radius:12px;min-height:0}
+ .expertise-card.pg-featured-capability{background:linear-gradient(144deg,#154071,#09254c)}
+ .sector-card{min-height:280px;border-radius:12px}
+ .sector-card .pg-sector-watermark{width:136px;height:136px;right:-12px;top:45px}
+ .sector-card .sector-symbol{width:68px;height:68px}
+ .sector-card .sector-symbol .pg-icon{width:43px;height:43px}
+ .project{border-radius:12px}
+}
+@media(max-width:375px){
+ .hero h1{font-size:clamp(2.72rem,10.5vw,3.4rem)}
+ .hero h1 .pg-hero-signoff{font-size:.9em}
+ .pg-cinematic h2{font-size:2.85rem}
+ .pg-cinematic-link{gap:12px;font-size:.78rem}
+ .pg-cinematic-foot{font-size:.52rem}
+}
+@media(prefers-reduced-motion:reduce){.pg-cinematic-art,.pg-sector-watermark{animation:none!important;transform:none!important}}
