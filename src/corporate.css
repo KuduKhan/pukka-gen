@@ -33,6 +33,8 @@ h1,h2,h3,p{margin-top:0}
 .corp-section{padding:clamp(65px,8vw,106px) 0;border-bottom:1px solid rgba(112,170,208,.14);background:#f4f8fd;color:#132b48}
 .corp-section-tint{background:#0a2443;color:#f0f7ff}
 .corp-section .corp-kicker{color:#126b91}
+.corp-section .corp-card-label,.corp-section .corp-small-label{color:#0b668f}
+.corp-section-tint .corp-card-label{color:#8bdff7}
 .corp-section-tint .corp-kicker{color:#78d9f1}
 .corp-section-heading{display:flex;justify-content:space-between;align-items:end;gap:28px;margin-bottom:32px}
 .corp-section-heading h2{font-size:clamp(2.15rem,4.4vw,3.8rem);letter-spacing:-.065em;line-height:1.14;max-width:670px;margin:6px 0}
