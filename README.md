@@ -52,3 +52,14 @@ Nocturnals Intellisoft provided a *high-level* reference for business-first pres
 ## Production release authorization — November 8, 2026
 
 The owner explicitly authorized promotion to **production** after inspection of the Enterprise Editorial redesign preview. Homepage indexing and `robots.txt` preview restrictions were removed accordingly. This does **not** constitute independent verification of the third-party email provider, device-specific behavior, or legal notices; those remain operational follow-ups. The code history remains preserved in Git.
+
+## Pukka Gen 4.0 — Corporate Authority & Enterprise Trust (review branch)
+
+The `feat/pukka-gen-4-corporate-authority` review branch introduces clear standalone Company, Partnerships, Investors and Trust pages, adds stakeholder journeys to the homepage and strengthens founder/brand-positioning clarity.
+
+- Claims policy: no invented clients, traction, financing, certifications or company registration identifiers
+- External links to published automated tests and CI are evidence of the website checks only, **not** claims about external client delivery
+- The company attribution and founder role follow the owner's statements; contracting entity and jurisdiction require separate document verification
+- Privacy and website-use statements no longer imply the **whole website** is merely a prelaunch preview, while retaining explicit legal-completeness cautions
+- The changes require an independent legal review, real email delivery check, real-device and assistive-technology acceptance, and an approved production rebuild
+- Branch review and GitHub CI do not authorize deployment or merge to `main`
