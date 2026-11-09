@@ -52,7 +52,7 @@ h1,h2,h3,p{margin-top:0}
 .corp-initial{background:linear-gradient(150deg,#0c3459,#077bb5);color:#d8faff;border-radius:16px;width:100%;aspect-ratio:1;display:grid;place-items:center;font-size:3.5rem;font-weight:850;letter-spacing:-.06em}
 .corp-feature h3{font-size:2rem;letter-spacing:-.04em;margin-bottom:8px}
 .corp-feature p{color:#435e79;line-height:1.75}
-.corp-feature .corp-small{font-size:.83rem;color:#647c92}
+.corp-feature .corp-small{font-size:.83rem;color:#3e5872}
 .corp-evidence{display:flex;gap:13px;flex-wrap:wrap;margin-top:24px}
 .corp-link{display:inline-flex;align-items:center;gap:8px;border:1px solid #7eafca;border-radius:10px;padding:12px 15px;text-decoration:none;font-size:.85rem;font-weight:750;color:inherit}
 .corp-link:hover{background:rgba(51,174,212,.13);border-color:#2ab5df}
