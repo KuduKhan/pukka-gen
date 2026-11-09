@@ -216,6 +216,30 @@ test("original enterprise editorial direction is organized for decision-makers",
  assert.match(enterprise,/@media\(max-width:375px\)/);
  assert.match(enterprise,/@media\(prefers-reduced-motion:reduce\)/);
  assert.match(art,/<svg xmlns="http:\/\/www\.w3\.org\/2000\/svg"/);
- assert.doesNotMatch(html,/nocturnals|intellisoft|https:\/\/images/i);
+ assert.doesNotMatch(html,/nocturnalsintellisoft\.com|https:\/\/images/i);
+ assert.match(html,/AN INTELLISOFT COMPANY/);
  assert.doesNotMatch(enterprise,/nocturnalsintellisoft\.com/);
+});
+
+test("corporate authority routes are honest, linked and accessible",()=>{
+ const pages=["company","partners","investors","trust"];
+ for(const name of pages){
+  const page=read(name+".html");
+  assert.match(html,new RegExp('href="/'+name+'\\.html"'),name+" must be discoverable");
+  assert.match(page,/href="#main"/);
+  assert.match(page,/id="main"/);
+  assert.match(page,/aria-label="Corporate pages"/);
+  assert.match(page,/href="\/src\/corporate\.css"/);
+  assert.match(page,/href="\/privacy\.html"/);
+  assert.doesNotMatch(page,/99\.99%|certified by ISO|guaranteed returns/i);
+ }
+ assert.match(read("company.html"),/Mufasa Khan/);
+ assert.match(read("partners.html"),/Propose a partnership/);
+ assert.match(read("investors.html"),/not an offer of securities/i);
+ assert.match(read("trust.html"),/not ISO 27001 certification/i);
+ assert.match(html,/pg-corporate-grid/);
+ assert.match(read("src/corporate-home.css"),/@media\(max-width:600px\)/);
+ assert.match(read("src/corporate.css"),/prefers-reduced-motion:reduce/);
+ const inputs=read("vite.config.mjs");
+ for(const name of pages)assert.match(inputs,new RegExp(name+':page\\("\\./'+name+'\\.html"\\)'));
 });

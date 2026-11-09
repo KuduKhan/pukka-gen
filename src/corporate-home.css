@@ -1,0 +1,19 @@
+/* Corporate pathways extension for Pukka Gen's original enterprise layout */
+.pg-corporate-section{background:linear-gradient(160deg,#eff8fd,#f5f8fe);color:#102b4b}
+.pg-corporate-section .section-head h2{color:#102b4b}
+.pg-corporate-section .section-head h2 em{color:#116d99}
+.pg-corporate-section .section-head>p{color:#486786}
+.pg-corporate-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.pg-corporate-card{display:flex;flex-direction:column;align-items:flex-start;min-width:0;padding:clamp(19px,2.3vw,30px);border-radius:17px;background:rgba(255,255,255,.9);border:1px solid #cbdced;box-shadow:0 18px 40px rgba(19,61,99,.055)}
+.pg-corporate-card>span{color:#0e719b;font:800 .68rem/1.5 ui-monospace,Consolas,monospace;letter-spacing:.09em}
+.pg-corporate-card h3{color:#0a284a;letter-spacing:-.05em;line-height:1.18;font-size:clamp(1.34rem,1.7vw,1.8rem);margin:21px 0 11px}
+.pg-corporate-card p{color:#496886;font-size:.9rem;line-height:1.72;margin:0 0 25px}
+.pg-corporate-card a{margin-top:auto;min-height:44px;display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:800;color:#0a648b;font-size:.84rem}
+.pg-corporate-card a:hover{color:#063c5a}
+.pg-corporate-card a:focus-visible{outline:3px solid #177aa2;outline-offset:4px;border-radius:5px}
+.pg-founder{padding:14px 0;margin:15px 0!important;border-top:1px solid #bbd5ea;font-size:.88rem!important}
+.pg-founder strong{color:#123c60}
+.pg-founder a{display:inline-block;margin-left:8px;font-weight:780;color:#096b99;text-underline-offset:3px}
+@media(max-width:1120px){.pg-corporate-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.pg-corporate-grid{grid-template-columns:1fr}.pg-corporate-card{padding:23px}.pg-corporate-card h3{font-size:1.55rem}.pg-founder a{display:block;margin:8px 0 0}}
+@media(prefers-reduced-motion:reduce){.pg-corporate-card{transition:none}}
