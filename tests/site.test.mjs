@@ -240,6 +240,7 @@ test("corporate authority routes are honest, linked and accessible",()=>{
  assert.match(html,/pg-corporate-grid/);
  assert.match(read("src/corporate-home.css"),/@media\(max-width:600px\)/);
  assert.match(read("src/corporate.css"),/prefers-reduced-motion:reduce/);
+ assert.match(read("scripts/browser-qa.mjs"),/corporate-.*route/);
  const inputs=read("vite.config.mjs");
  for(const name of pages)assert.match(inputs,new RegExp(name+':page\\("\\./'+name+'\\.html"\\)'));
 });

@@ -154,6 +154,32 @@ for(const [browserName,engine] of Object.entries({chromium,firefox,webkit})){
       });
     }finally{await motionContext.close();}
    }
+
+   // Corporate pages: actual page loads, cross-browser/viewport overflow,
+   // keyboard landmarks and axe checks beyond the homepage-only suite.
+   if((browserName==="chromium" && [320,375,768,1440].includes(width)) ||
+      (browserName!=="chromium" && width===375)){
+     for(const route of ["company","partners","investors","trust"]){
+       const routeUrl=new URL("/"+route+".html",url).toString();
+       const routeResponse=await page.goto(routeUrl,{waitUntil:"domcontentloaded"});
+       if(!routeResponse?.ok())throw new Error(route+" page failed HTTP");
+       if(await page.locator('main h1').count()!==1)throw new Error(route+" heading missing");
+       if(await page.locator('a.corp-skip[href="#main"]').count()!==1)throw new Error(route+" skip link absent");
+       if(await page.locator('nav.corp-nav a[aria-current="page"]').count()!==1)throw new Error(route+" current page not marked");
+       const routeOverflow=await page.evaluate(()=>Math.max(0,document.documentElement.scrollWidth-window.innerWidth));
+       if(routeOverflow>2)throw new Error(route+" horizontal overflow at "+width+"px: "+routeOverflow);
+       const routeLogo=await page.locator(".corp-brand img").evaluate(img=>img.complete&&img.naturalWidth>0);
+       if(!routeLogo)throw new Error(route+" original brand logo did not load");
+       if(browserName==="chromium"){
+         await page.screenshot({path:"artifacts/qa/corporate-"+route+"-"+width+".png",fullPage:true,animations:"disabled"});
+         if([375,1440].includes(width)){
+           const a11y=await new AxeBuilder({page}).withTags(["wcag2a","wcag2aa","wcag21a","wcag21aa"]).analyze();
+           const serious=a11y.violations.filter(v=>["serious","critical"].includes(v.impact||""));
+           if(serious.length)throw new Error(route+" accessibility: "+JSON.stringify(serious.map(v=>({id:v.id,target:v.nodes[0]?.target}))));
+         }
+       }
+     }
+   }
    results.push({browser:browserName,width,ok:true});
   }catch(error){
    const reason=error instanceof Error?error.message:String(error);
