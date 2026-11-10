@@ -24,6 +24,19 @@ for(const [browserName,engine] of Object.entries({chromium,firefox,webkit})){
    const response=await page.goto(url,{waitUntil:"domcontentloaded"});
    if(!response?.ok())throw new Error("Page HTTP failure");
    await page.locator("[data-service]").first().waitFor({timeout:12000});
+   
+   const chosenFonts=await page.evaluate(async()=>{
+    await document.fonts.load('700 24px "Sora"');
+    await document.fonts.load('400 16px "Manrope"');
+    return {
+     sora:document.fonts.check('700 24px "Sora"'),
+     manrope:document.fonts.check('400 16px "Manrope"'),
+     heading:getComputedStyle(document.querySelector("h1")).fontFamily,
+     body:getComputedStyle(document.body).fontFamily
+    };
+   });
+   if(!chosenFonts.sora||!chosenFonts.manrope||!chosenFonts.heading.includes("Sora")||!chosenFonts.body.includes("Manrope"))
+    throw new Error("Homepage typography mismatch: "+JSON.stringify(chosenFonts));
    if((await page.locator("[data-service]").count())!==6)throw new Error("Six service cards missing");
    if(await page.evaluate(()=>document.documentElement.classList.contains("motion-enabled")))
     throw new Error("Reduced-motion preference should suppress scroll effects");
@@ -164,6 +177,19 @@ for(const [browserName,engine] of Object.entries({chromium,firefox,webkit})){
        const routeResponse=await page.goto(routeUrl,{waitUntil:"domcontentloaded"});
        if(!routeResponse?.ok())throw new Error(route+" page failed HTTP");
        if(await page.locator('main h1').count()!==1)throw new Error(route+" heading missing");
+       const corporateFonts=await page.evaluate(async()=>{
+        await document.fonts.load('700 24px "Sora"');
+        await document.fonts.load('400 16px "Manrope"');
+        return {
+         sora:document.fonts.check('700 24px "Sora"'),
+         manrope:document.fonts.check('400 16px "Manrope"'),
+         title:getComputedStyle(document.querySelector("main h1")).fontFamily,
+         body:getComputedStyle(document.body).fontFamily
+        };
+       });
+       if(!corporateFonts.sora||!corporateFonts.manrope||!corporateFonts.title.includes("Sora")||!corporateFonts.body.includes("Manrope"))
+        throw new Error(route+" typography mismatch: "+JSON.stringify(corporateFonts));
+
        if(await page.locator('a.corp-skip[href="#main"]').count()!==1)throw new Error(route+" skip link absent");
        if(await page.locator('nav.corp-nav a[aria-current="page"]').count()!==1)throw new Error(route+" current page not marked");
        const routeOverflow=await page.evaluate(()=>Math.max(0,document.documentElement.scrollWidth-window.innerWidth));

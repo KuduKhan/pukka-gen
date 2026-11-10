@@ -63,3 +63,12 @@ The `feat/pukka-gen-4-corporate-authority` review branch introduces clear standa
 - Privacy and website-use statements no longer imply the **whole website** is merely a prelaunch preview, while retaining explicit legal-completeness cautions
 - The changes require an independent legal review, real email delivery check, real-device and assistive-technology acceptance, and an approved production rebuild
 - Branch review and GitHub CI do not authorize deployment or merge to `main`
+
+## Brand typography — Sora + Manrope (November 2026)
+
+- **Sora Variable**: headings on the homepage, company, partnerships, investors and trust pages
+- **Manrope Variable**: body copy, navigation, buttons and forms across all routes
+- Retain system monospace for technical diagrams and labels
+- **Pukka Hand / Caveat is preserved exactly**, including all handwritten No Duff lettering
+- Font software is self-hosted under SIL OFL 1.1; license text in `public/fonts/OFL-Sora.txt` and `public/fonts/OFL-Manrope.txt`
+- Verify build, font loading, responsive layout, accessibility and real-device review before production
