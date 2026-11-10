@@ -64,11 +64,19 @@ The `feat/pukka-gen-4-corporate-authority` review branch introduces clear standa
 - The changes require an independent legal review, real email delivery check, real-device and assistive-technology acceptance, and an approved production rebuild
 - Branch review and GitHub CI do not authorize deployment or merge to `main`
 
-## Brand typography — Sora + Manrope (November 2026)
+## Brand typography — Space Grotesk + Plus Jakarta Sans (November 2026)
 
-- **Sora Variable**: headings on the homepage, company, partnerships, investors and trust pages
-- **Manrope Variable**: body copy, navigation, buttons and forms across all routes
-- Retain system monospace for technical diagrams and labels
-- **Pukka Hand / Caveat is preserved exactly**, including all handwritten No Duff lettering
-- Font software is self-hosted under SIL OFL 1.1; license text in `public/fonts/OFL-Sora.txt` and `public/fonts/OFL-Manrope.txt`
-- Verify build, font loading, responsive layout, accessibility and real-device review before production
+- **Space Grotesk Variable** (300–700) replaces Sora for display headings; balanced tracking, deliberate 700 maximum weight and responsive heading treatment
+- **Plus Jakarta Sans Variable** (200–800) replaces Manrope for body text, navigation, CTA labels, forms and corporate content
+- The previous pairing was superseded after visual review; typography now uses consistent weights, tracking and line-height across existing cards and pages
+- **Pukka Hand / Caveat stays exactly unchanged**, including the handwritten “No Duff” lettering and annotations. No modifications to the handwritten font file or source styling
+- Both typefaces are self-hosted with SIL OFL 1.1 license texts in `public/fonts/OFL-*.txt`. Neither requires third-party font requests
+- The final shared typography stylesheet loads after base and glass components, so intended sizing and tracking are actually applied
+- Responsive regression, manual device review and production approval remain required
+
+
+## Precision Glass v4.1 / Micro-interactions — November 2026
+
+Preserves the entire original brand identity and **unchanged Pukka Hand / Caveat handwriting** while refining the existing homepage, four corporate routes, cards, glass surfaces, buttons, icons and responsive feel. The new `src/precision.css` layer aligns light and dark glass, framing, depth, hover/focus behavior and compact corporate navigation. Four original SVG symbols are added to the local icon sprite (clients, partners, growth and assurance), with no external icon requests or extra routes. `src/precision-motion.ts` adds requestAnimationFrame-throttled card highlights for precise mouse pointers only, with reduced-motion and touch fallbacks. Animations and effects are progressive enhancement; content and interactive controls remain operational without them.
+
+Release gate: CI, Chromium/Firefox/WebKit viewport QA at 320–1440px, axe accessibility, keyboard checks, font and SVG preservation, Vercel preview and owner review before production.

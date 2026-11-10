@@ -26,16 +26,16 @@ for(const [browserName,engine] of Object.entries({chromium,firefox,webkit})){
    await page.locator("[data-service]").first().waitFor({timeout:12000});
    
    const chosenFonts=await page.evaluate(async()=>{
-    await document.fonts.load('700 24px "Sora"');
-    await document.fonts.load('400 16px "Manrope"');
+    await document.fonts.load('700 24px "Space Grotesk"');
+    await document.fonts.load('400 16px "Plus Jakarta Sans"');
     return {
-     sora:document.fonts.check('700 24px "Sora"'),
-     manrope:document.fonts.check('400 16px "Manrope"'),
+     display:document.fonts.check('700 24px "Space Grotesk"'),
+     bodyFont:document.fonts.check('400 16px "Plus Jakarta Sans"'),
      heading:getComputedStyle(document.querySelector("h1")).fontFamily,
      body:getComputedStyle(document.body).fontFamily
     };
    });
-   if(!chosenFonts.sora||!chosenFonts.manrope||!chosenFonts.heading.includes("Sora")||!chosenFonts.body.includes("Manrope"))
+   if(!chosenFonts.display||!chosenFonts.bodyFont||!chosenFonts.heading.includes("Space Grotesk")||!chosenFonts.body.includes("Plus Jakarta Sans"))
     throw new Error("Homepage typography mismatch: "+JSON.stringify(chosenFonts));
    if((await page.locator("[data-service]").count())!==6)throw new Error("Six service cards missing");
    if(await page.evaluate(()=>document.documentElement.classList.contains("motion-enabled")))
@@ -88,6 +88,10 @@ for(const [browserName,engine] of Object.entries({chromium,firefox,webkit})){
      filter:getComputedStyle(node).backdropFilter || getComputedStyle(node).webkitBackdropFilter
    }));
    if(!glass.filter.includes('blur'))throw new Error("Frosted system panel style missing: "+JSON.stringify(glass));
+   if((await page.locator(".pg-corporate-glyph svg use").count())!==4)
+     throw new Error("Premium corporate SVG gateway icons missing");
+   if(!(await responseIcons.text()).includes('<symbol id="pg-assurance"'))
+     throw new Error("New Pukka icon vocabulary failed to ship");
    if(await page.locator(".pg-hero-signoff").isVisible()!==true)throw new Error("No Duff handwritten brand signoff missing");
    const logo=await page.locator(".brand img").evaluate(img=>img.complete&&img.naturalWidth>0);
    if(!logo)throw new Error("Original logo is missing");
@@ -161,6 +165,22 @@ for(const [browserName,engine] of Object.entries({chromium,firefox,webkit})){
         ()=>document.querySelector("#work .section-head")?.getAttribute("data-reveal")==="shown",
         null,{timeout:7000}
       );
+      if(width===1440){
+       const surface=motionPage.locator(".system-panel");
+       await surface.scrollIntoViewIfNeeded();
+       const bounds=await surface.boundingBox();
+       if(!bounds)throw new Error("Spotlight surface missing");
+       await motionPage.mouse.move(bounds.x+Math.min(110,bounds.width/2),bounds.y+Math.min(110,bounds.height/2));
+       await motionPage.waitForFunction(
+        ()=>Boolean(document.querySelector(".system-panel")?.getAttribute("style")?.includes("--pg-spot-x")),
+        null,{timeout:3500}
+       );
+       await motionPage.mouse.move(0,0);
+       await motionPage.waitForFunction(
+        ()=>!document.querySelector(".system-panel")?.getAttribute("style")?.includes("--pg-spot-x"),
+        null,{timeout:3500}
+       );
+      }
       if(motionErrors.length)throw new Error("Normal-motion runtime error: "+motionErrors.join(" | "));
       await motionPage.screenshot({
         path:"artifacts/qa/motion-work-"+width+".png",animations:"disabled"
@@ -178,18 +198,20 @@ for(const [browserName,engine] of Object.entries({chromium,firefox,webkit})){
        if(!routeResponse?.ok())throw new Error(route+" page failed HTTP");
        if(await page.locator('main h1').count()!==1)throw new Error(route+" heading missing");
        const corporateFonts=await page.evaluate(async()=>{
-        await document.fonts.load('700 24px "Sora"');
-        await document.fonts.load('400 16px "Manrope"');
+        await document.fonts.load('700 24px "Space Grotesk"');
+        await document.fonts.load('400 16px "Plus Jakarta Sans"');
         return {
-         sora:document.fonts.check('700 24px "Sora"'),
-         manrope:document.fonts.check('400 16px "Manrope"'),
+         display:document.fonts.check('700 24px "Space Grotesk"'),
+         bodyFont:document.fonts.check('400 16px "Plus Jakarta Sans"'),
          title:getComputedStyle(document.querySelector("main h1")).fontFamily,
          body:getComputedStyle(document.body).fontFamily
         };
        });
-       if(!corporateFonts.sora||!corporateFonts.manrope||!corporateFonts.title.includes("Sora")||!corporateFonts.body.includes("Manrope"))
+       if(!corporateFonts.display||!corporateFonts.bodyFont||!corporateFonts.title.includes("Space Grotesk")||!corporateFonts.body.includes("Plus Jakarta Sans"))
         throw new Error(route+" typography mismatch: "+JSON.stringify(corporateFonts));
 
+       if((await page.locator(".corp-card-icon svg use").count())<4)
+        throw new Error(route+" premium SVG card icon placements missing");
        if(await page.locator('a.corp-skip[href="#main"]').count()!==1)throw new Error(route+" skip link absent");
        if(await page.locator('nav.corp-nav a[aria-current="page"]').count()!==1)throw new Error(route+" current page not marked");
        const routeOverflow=await page.evaluate(()=>Math.max(0,document.documentElement.scrollWidth-window.innerWidth));

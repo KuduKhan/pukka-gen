@@ -1,16 +1,32 @@
-/* Pukka Gen 4.0 · Self-hosted Sora + Manrope variable type system.
-   SIL Open Font License v1.1; Caveat / Pukka Hand is deliberately unchanged. */
+/* Pukka Gen 4.1 — Engineering Editorial Typography.
+   Self-hosted Space Grotesk (display) + Plus Jakarta Sans (interface/body).
+   Both licensed under SIL OFL 1.1. Pukka Hand / Caveat is unchanged. */
 @font-face{
- font-family:"Sora";
- src:url("/fonts/Sora-variable.ttf") format("truetype");
- font-style:normal;font-weight:100 800;font-display:swap;
+ font-family:"Space Grotesk";
+ src:url("/fonts/SpaceGrotesk-variable.ttf") format("truetype");
+ font-style:normal;font-weight:300 700;font-display:swap;
 }
 @font-face{
- font-family:"Manrope";
- src:url("/fonts/Manrope-variable.ttf") format("truetype");
+ font-family:"Plus Jakarta Sans";
+ src:url("/fonts/PlusJakartaSans-variable.ttf") format("truetype");
  font-style:normal;font-weight:200 800;font-display:swap;
 }
 :root{
- --display:"Sora","Segoe UI",system-ui,sans-serif;
- --body:"Manrope","Segoe UI",system-ui,sans-serif;
+ --display:"Space Grotesk","Segoe UI",system-ui,sans-serif;
+ --body:"Plus Jakarta Sans","Segoe UI",system-ui,sans-serif;
+}
+/* Final cascade layer for consistent hierarchy; never overrides handwritten styles. */
+h1,h2,h3,h4{font-family:var(--display);font-weight:700;letter-spacing:-.037em}
+.hero h1{letter-spacing:-.053em;line-height:1.045}
+.section-head h2,.studio-text h2,.contact-heading h2{letter-spacing:-.04em;line-height:1.095}
+.section-head h2 em,.studio-text h2 em,.contact-heading h2 em{letter-spacing:-.04em}
+.project-description h3,.expertise-card h3,.pg-corporate-card h3{letter-spacing:-.026em}
+.corp-hero h1{letter-spacing:-.045em;line-height:1.065;overflow-wrap:break-word}
+.corp-section-heading h2{letter-spacing:-.038em;line-height:1.16}
+.corp-card h3,.corp-feature h3,.corp-note h3{letter-spacing:-.025em}
+.corp-contact,.corp-button,.corp-nav a,.header-cta,.button{font-family:var(--body)}
+.corp-nav a,.desktop-nav a,.header-cta,.corp-button,.button{font-weight:700}
+@media(max-width:620px){
+ .corp-hero h1{font-size:clamp(2.35rem,10.4vw,4.35rem)}
+ .corp-card h3,.pg-corporate-card h3{letter-spacing:-.015em}
 }

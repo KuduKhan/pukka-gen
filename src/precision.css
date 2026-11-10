@@ -1,0 +1,232 @@
+/* PUKKA GEN / PRECISION GLASS v4.1
+   Refines existing components; no brand, copy or handwritten typography changes. */
+:root{
+ --pg-ease:cubic-bezier(.22,.8,.24,1);
+ --pg-glass-rim:rgba(148,217,251,.43);
+ --pg-glass-shadow:0 27px 65px rgba(0,12,42,.33),inset 0 1px rgba(242,251,255,.17);
+ --pg-paper-shadow:0 17px 43px rgba(9,49,99,.09),inset 0 1px rgba(255,255,255,.92);
+}
+.site-header,.corp-header{
+ border-bottom-color:rgba(152,217,247,.26);
+ box-shadow:0 13px 37px rgba(0,13,38,.2),inset 0 1px rgba(244,253,255,.07);
+ -webkit-backdrop-filter:blur(19px) saturate(155%);
+ backdrop-filter:blur(19px) saturate(155%);
+}
+.corp-head-inner{min-height:72px}
+.corp-header{background:linear-gradient(108deg,rgba(5,20,42,.95),rgba(10,37,74,.93))}
+.corp-nav a{position:relative;transition:color .2s var(--pg-ease)}
+.corp-nav a::after{
+ content:"";position:absolute;left:3px;right:3px;bottom:1px;height:2px;
+ border-radius:3px;background:linear-gradient(90deg,#51d3f4,#a6a2f4);
+ transform:scaleX(0);transition:transform .25s var(--pg-ease);
+}
+.corp-nav a:is(:hover,:focus-visible,[aria-current="page"])::after{transform:scaleX(1)}
+.header-cta,.button,.corp-button,.corp-contact{
+ transition:transform .23s var(--pg-ease),box-shadow .24s var(--pg-ease),border-color .2s,background-color .2s;
+}
+.header-cta:is(:hover,:focus-visible),.button:is(:hover,:focus-visible),
+.corp-button:is(:hover,:focus-visible),.corp-contact:is(:hover,:focus-visible){
+ box-shadow:0 10px 30px rgba(42,184,236,.22),inset 0 1px rgba(255,255,255,.35);
+}
+.corp-button:is(:hover,:focus-visible),.corp-contact:is(:hover,:focus-visible){transform:translateY(-2px)}
+.corp-button:active,.corp-contact:active{transform:translateY(0)}
+/* Cinematic depth is achieved by layered surfaces, not scrolling video or canvas. */
+.system-panel,.solution-stage,.process-display,.proof-preview,.studio-wordmark,.project-form{
+ border-color:var(--pg-glass-rim);
+ background:
+  radial-gradient(330px circle at var(--pg-spot-x,72%) var(--pg-spot-y,0%),rgba(104,213,255,.17),transparent 73%),
+  radial-gradient(ellipse at 8% 100%,rgba(108,90,204,.1),transparent 68%),
+  linear-gradient(145deg,rgba(20,62,111,.93),rgba(5,24,54,.97) 80%);
+ box-shadow:var(--pg-glass-shadow);
+ -webkit-backdrop-filter:blur(19px) saturate(145%);
+ backdrop-filter:blur(19px) saturate(145%);
+ transition:border-color .28s var(--pg-ease),box-shadow .3s var(--pg-ease);
+}
+.system-panel:is(:hover,:focus-within),.solution-stage:is(:hover,:focus-within),
+.process-display:is(:hover,:focus-within),.proof-preview:is(:hover,:focus-within){
+ border-color:rgba(178,238,255,.62);
+ box-shadow:0 30px 75px rgba(0,11,37,.35),inset 0 1px rgba(242,253,255,.19);
+}
+.system-tabs button[aria-pressed="true"]{
+ box-shadow:inset 0 1px rgba(245,253,255,.2),0 8px 23px rgba(33,145,217,.17);
+}
+.project-visual{isolation:isolate}
+.visual-label,.visual-stamp{
+ border-color:rgba(176,229,255,.45);
+ -webkit-backdrop-filter:blur(17px) saturate(150%);
+ backdrop-filter:blur(17px) saturate(150%);
+}
+.mock-window{
+ box-shadow:0 24px 64px rgba(0,10,34,.32),inset 0 1px rgba(238,252,255,.15);
+}
+.pg-stage-plate,.expertise-icon,.sector-symbol,.journal-symbol,.pg-corporate-glyph,.corp-card-icon{
+ transition:transform .31s var(--pg-ease),box-shadow .3s var(--pg-ease),border-color .24s var(--pg-ease);
+}
+.pg-stage-plate-center{
+ border-color:rgba(193,243,255,.7);
+ box-shadow:0 16px 36px rgba(12,110,210,.25),inset 0 1px rgba(251,255,255,.23);
+}
+/* Refined readable white-glass surfaces. */
+.expertise-card:not(.pg-featured-capability),.project,.journal-card,.pg-corporate-card,
+.corp-section:not(.corp-section-tint) .corp-card,.corp-feature,.corp-note,.corp-action-strip{
+ border-color:rgba(154,192,225,.67);
+ background:
+  radial-gradient(320px circle at var(--pg-spot-x,80%) var(--pg-spot-y,0%),rgba(123,206,247,.13),transparent 75%),
+  linear-gradient(151deg,rgba(255,255,255,.98),rgba(240,247,255,.97));
+ box-shadow:var(--pg-paper-shadow);
+}
+.expertise-card:not(.pg-featured-capability),.project,.journal-card,.pg-corporate-card,
+.corp-card,.corp-feature,.corp-note,.corp-action-strip{
+ transition:transform .3s var(--pg-ease),box-shadow .32s var(--pg-ease),border-color .26s var(--pg-ease);
+}
+.expertise-card:not(.pg-featured-capability):is(:hover,:focus-visible),.project:is(:hover,:focus-within),
+.journal-card:is(:hover,:focus-visible),.pg-corporate-card:is(:hover,:focus-within),
+.corp-section:not(.corp-section-tint) .corp-card:hover{
+ transform:translateY(-4px);border-color:rgba(80,164,211,.72);
+ box-shadow:0 25px 50px rgba(11,57,104,.14),inset 0 1px rgba(255,255,255,.98);
+}
+/* Dark cards retain intentionally high-contrast content. */
+.pg-featured-capability,.sector-card,.corp-section-tint .corp-card,
+.corp-section-tint .corp-note,.corp-steps li{
+ border-color:rgba(143,207,249,.41);
+ background:
+  radial-gradient(340px circle at var(--pg-spot-x,83%) var(--pg-spot-y,9%),rgba(74,176,253,.2),transparent 72%),
+  linear-gradient(146deg,rgba(18,58,108,.94),rgba(5,27,57,.98));
+ box-shadow:0 22px 46px rgba(0,16,49,.24),inset 0 1px rgba(231,253,255,.13);
+}
+.pg-featured-capability:is(:hover,:focus-visible),.sector-card:is(:hover,:focus-visible),
+.corp-section-tint .corp-card:hover{
+ transform:translateY(-3px);border-color:rgba(141,226,251,.71);
+ box-shadow:0 28px 56px rgba(1,19,54,.29),inset 0 1px rgba(231,253,255,.18);
+}
+.expertise-card:is(:hover,:focus-visible) .expertise-icon,
+.sector-card:is(:hover,:focus-visible) .sector-symbol,
+.journal-card:is(:hover,:focus-visible) .journal-symbol{
+ transform:translateY(-3px) scale(1.035);border-color:rgba(94,195,239,.73);
+ box-shadow:0 15px 30px rgba(24,112,184,.16),inset 0 1px rgba(255,255,255,.65);
+}
+.expertise-icon svg,.sector-symbol svg,.journal-symbol svg{
+ transition:transform .29s var(--pg-ease),filter .29s var(--pg-ease);
+}
+.expertise-card:is(:hover,:focus-visible) .expertise-icon svg,
+.sector-card:is(:hover,:focus-visible) .sector-symbol svg,
+.journal-card:is(:hover,:focus-visible) .journal-symbol svg{
+ transform:scale(1.07);filter:drop-shadow(0 5px 10px rgba(47,165,231,.2));
+}
+.project-read>span,.sector-action>span,.pg-corporate-card a>span[aria-hidden="true"]{
+ display:inline-block;transition:transform .23s var(--pg-ease);
+}
+.project-open:is(:hover,:focus-visible) .project-read>span,
+.sector-card:is(:hover,:focus-visible) .sector-action>span,
+.pg-corporate-card a:is(:hover,:focus-visible)>span[aria-hidden="true"]{transform:translate(3px,-2px)}
+/* Client / partner / investor / trust gateways: new SVG language with no new routes. */
+.pg-corporate-section{background:linear-gradient(151deg,#edf7fd,#f7faff 53%,#ecf4fc)}
+.pg-corporate-card{position:relative;overflow:hidden;border-radius:19px;padding-top:clamp(23px,2.6vw,34px)}
+.pg-corporate-card::before{
+ content:"";position:absolute;top:0;left:19px;right:19px;height:2px;
+ background:linear-gradient(90deg,transparent,#55bce2 44%,#b6aaf4 72%,transparent);
+ opacity:.62;transform:scaleX(.75);transition:opacity .3s,transform .3s var(--pg-ease);
+ pointer-events:none;
+}
+.pg-corporate-card:is(:hover,:focus-within)::before{opacity:1;transform:scaleX(1)}
+.pg-corporate-card>span:first-child{padding-right:44px}
+.pg-corporate-glyph{
+ position:absolute;top:20px;right:19px;width:41px;height:41px;
+ display:grid;place-items:center;border-radius:12px;color:#126b94;
+ background:linear-gradient(145deg,#e5f6ff,#e9ecff);
+ border:1px solid #b5d7e9;box-shadow:inset 0 1px #fff;
+}
+.pg-corporate-glyph svg{width:27px;height:27px;fill:none}
+.pg-corporate-card:is(:hover,:focus-within) .pg-corporate-glyph{
+ transform:translateY(-2px);border-color:#65c5e6;
+ box-shadow:0 9px 20px rgba(20,121,184,.15),inset 0 1px #fff;
+}
+.pg-corporate-card a{position:relative;z-index:2}
+.pg-corporate-card h3{max-width:21ch}
+/* Corporate editorial pages share a single futuristic, calm design vocabulary. */
+.corp-hero{
+ background:
+  radial-gradient(ellipse at 77% 25%,rgba(43,120,190,.33),transparent 48%),
+  radial-gradient(ellipse at 10% 88%,rgba(98,80,193,.16),transparent 56%),
+  linear-gradient(143deg,#06182f,#0a284d 66%,#06182f);
+}
+.corp-hero::before{
+ content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+ background-image:linear-gradient(90deg,rgba(132,204,247,.13) 1px,transparent 1px),
+ linear-gradient(rgba(132,204,247,.13) 1px,transparent 1px);
+ background-size:80px 80px;opacity:.24;
+ -webkit-mask-image:linear-gradient(90deg,transparent,black 43%,transparent);
+ mask-image:linear-gradient(90deg,transparent,black 43%,transparent);
+}
+.corp-hero h1{letter-spacing:-.067em}
+.corp-grid{gap:clamp(14px,2vw,21px)}
+.corp-card{position:relative;isolation:isolate;overflow:hidden;border-radius:18px}
+.corp-card-icon{
+ position:absolute;top:clamp(18px,2.5vw,29px);right:clamp(18px,2.5vw,29px);
+ display:grid;place-items:center;width:44px;height:44px;border-radius:13px;
+ color:#116b96;background:linear-gradient(146deg,#e7f7ff,#e9edff);
+ border:1px solid #bfddeb;box-shadow:inset 0 1px #fff;
+}
+.corp-card-icon svg{width:28px;height:28px;fill:none;transition:transform .28s var(--pg-ease)}
+.corp-card:hover .corp-card-icon svg{transform:scale(1.08)}
+.corp-card-label{padding-right:53px;overflow-wrap:anywhere;max-width:100%}
+.corp-section-tint .corp-card-icon{
+ background:linear-gradient(143deg,#173d71,#10365f);
+ border-color:#467ca4;color:#a5eaff;
+}
+.corp-section-tint .corp-card-label{color:#93e6fb}
+.corp-feature{border-radius:19px}
+.corp-initial{box-shadow:inset 0 1px rgba(255,255,255,.3),0 15px 30px rgba(5,55,112,.14)}
+.corp-link{transition:transform .23s var(--pg-ease),background-color .22s,border-color .22s}
+.corp-link:is(:hover,:focus-visible){transform:translateY(-2px)}
+.corp-steps li,.corp-note,.corp-action-strip{border-radius:17px}
+.corp-hero-actions .corp-button span[aria-hidden="true"]{
+ display:inline-block;transition:transform .23s var(--pg-ease);
+}
+.corp-hero-actions .corp-button:is(:hover,:focus-visible) span[aria-hidden="true"]{
+ transform:translate(3px,-2px);
+}
+@media (prefers-reduced-motion:no-preference){
+ .pg-strip-dot{animation:pg-status-pulse 3.9s ease-in-out infinite}
+ @keyframes pg-status-pulse{
+  0%,100%{opacity:1;transform:scale(1)}
+  50%{opacity:.65;transform:scale(.88)}
+ }
+ .corp-hero .corp-kicker,.corp-hero h1,.corp-hero .corp-lede,.corp-hero .corp-hero-actions{
+  animation:pg-hero-arrive .62s var(--pg-ease) both;
+ }
+ .corp-hero h1{animation-delay:60ms}
+ .corp-hero .corp-lede{animation-delay:120ms}
+ .corp-hero .corp-hero-actions{animation-delay:180ms}
+ @keyframes pg-hero-arrive{from{opacity:.5;transform:translateY(9px)}to{opacity:1;transform:translateY(0)}}
+}
+@media(max-width:980px){.corp-head-inner{min-height:68px}}
+@media(max-width:620px){
+ .corp-head-inner{min-height:74px}
+ .corp-card-icon{top:20px;right:20px;width:39px;height:39px}
+ .corp-card-icon svg{width:25px;height:25px}
+ .pg-corporate-glyph{top:18px;right:19px;width:38px;height:38px}
+ .pg-corporate-glyph svg{width:25px;height:25px}
+ .pg-corporate-card{border-radius:16px}
+ .pg-corporate-card h3{max-width:none}
+}
+@media(hover:none){
+ .project:hover,.expertise-card:hover,.journal-card:hover,.sector-card:hover,
+ .pg-corporate-card:hover,.corp-card:hover{transform:none}
+ .expertise-card:hover .expertise-icon,.sector-card:hover .sector-symbol,
+ .journal-card:hover .journal-symbol,.corp-card:hover .corp-card-icon svg{transform:none}
+}
+@media(prefers-reduced-motion:reduce){
+ .pg-strip-dot,.corp-hero .corp-kicker,.corp-hero h1,.corp-hero .corp-lede,.corp-hero .corp-hero-actions{animation:none!important}
+ .pg-corporate-card,.corp-card,.corp-card-icon,.pg-corporate-glyph,.corp-button,.corp-link,
+ .project,.expertise-card,.journal-card,.sector-card{transition:none!important}
+ .pg-corporate-card:is(:hover,:focus-within),.corp-card:is(:hover,:focus-within){transform:none}
+ .pg-corporate-card::before{transition:none}
+ .corp-hero .corp-kicker,.corp-hero h1,.corp-hero .corp-lede,.corp-hero .corp-hero-actions{opacity:1;transform:none}
+}
+@media(prefers-contrast:more),(forced-colors:active){
+ .corp-card,.pg-corporate-card,.project,.expertise-card,.journal-card,
+ .sector-card,.system-panel,.corp-button,.corp-link{border-width:2px}
+ .corp-card-icon,.pg-corporate-glyph{border-width:2px}
+ .corp-nav a::after,.pg-corporate-card::before{display:none}
+}

@@ -245,27 +245,67 @@ test("corporate authority routes are honest, linked and accessible",()=>{
  for(const name of pages)assert.match(inputs,new RegExp(name+':page\\("\\./'+name+'\\.html"\\)'));
 });
 
-test("selected variable fonts are local, licensed and shared across routes without replacing handwriting",()=>{
+test("new premium variable fonts are local, licensed, well ordered and preserve handwriting",()=>{
  const typography=read("src/typography.css");
- assert.match(typography,/font-family:"Sora"/);
- assert.match(typography,/font-family:"Manrope"/);
+ assert.match(typography,/font-family:"Space Grotesk"/);
+ assert.match(typography,/font-family:"Plus Jakarta Sans"/);
  assert.match(typography,/font-display:swap/);
- assert.match(typography,/--display:"Sora"/);
- assert.match(typography,/--body:"Manrope"/);
+ assert.match(typography,/font-weight:300 700/);
+ assert.match(typography,/--display:"Space Grotesk"/);
+ assert.match(typography,/--body:"Plus Jakarta Sans"/);
+ assert.match(typography,/\.hero h1\{letter-spacing:-\.053em/);
+ assert.match(typography,/\.corp-hero h1\{letter-spacing:-\.045em/);
  assert.doesNotMatch(typography,/fonts\.googleapis|fonts\.gstatic|@import/i);
- assert.match(read("src/styles.css"),/--display:"Sora"/);
- assert.match(read("src/styles.css"),/--body:"Manrope"/);
+ assert.doesNotMatch(typography,/font-family:"Pukka Hand"/,"Do not redefine handwriting");
+ assert.match(read("src/styles.css"),/--display:"Space Grotesk"/);
+ assert.match(read("src/styles.css"),/--body:"Plus Jakarta Sans"/);
  assert.match(read("src/corporate.css"),/font:400 16px\/1\.65 var\(--body\)/);
  assert.match(read("src/corporate.css"),/h1,h2,h3\{font-family:var\(--display\)/);
  for(const route of ["index","company","partners","investors","trust","privacy","terms"]){
-  assert.match(read(route+".html"),/href="\/src\/typography\.css"/);
+   const page=read(route+".html");
+   assert.match(page,/href="\/src\/typography\.css"/);
+   const order=page.indexOf('href="/src/typography.css"');
+   assert.ok(order>page.indexOf('href="/src/'),route+" typography override must load after base");
  }
- for(const font of ["Sora","Manrope"]){
-  assert.ok(existsSync(new URL("../public/fonts/"+font+"-variable.ttf",import.meta.url)));
-  assert.match(read("public/fonts/OFL-"+font+".txt"),/SIL OPEN FONT LICENSE/i);
+ for(const font of ["SpaceGrotesk","PlusJakartaSans"]){
+   assert.ok(existsSync(new URL("../public/fonts/"+font+"-variable.ttf",import.meta.url)));
+   assert.match(read("public/fonts/OFL-"+font+".txt"),/SIL OPEN FONT LICENSE/i);
  }
  assert.match(read("src/premium.css"),/font-family:"Pukka Hand"/);
  assert.match(read("src/premium.css"),/\/fonts\/Caveat-variable\.ttf/);
  assert.match(read("src/enterprise.css"),/\.pg-hero-signoff\{font-family:"Pukka Hand"/);
- assert.match(read("scripts/browser-qa.mjs"),/document\.fonts\.load\('700 24px "Sora"'\)/);
+ assert.match(read("scripts/browser-qa.mjs"),/document\.fonts\.load\('700 24px "Space Grotesk"'\)/);
+ assert.match(read("scripts/browser-qa.mjs"),/document\.fonts\.load\('400 16px "Plus Jakarta Sans"'\)/);
+});
+
+test("precision glass refinement uses original brand fonts, distinct SVG symbols and accessible motion",()=>{
+ const visual=read("src/precision.css"), motion=read("src/precision-motion.ts");
+ const sprite=read("public/icons/pukka-symbols.svg");
+ for(const id of ["pg-engagement","pg-alliance","pg-growth","pg-assurance"]){
+  assert.match(sprite,new RegExp('<symbol id="'+id+'"'));
+ }
+ const symbols=[...sprite.matchAll(/<symbol id="([^"]+)"/g)].map(match=>match[1]);
+ assert.equal(new Set(symbols).size,symbols.length,"Sprite symbol IDs must be unique");
+ assert.doesNotMatch(sprite,/<script|<foreignObject/i);
+ assert.match(visual,/--pg-ease/);
+ assert.match(visual,/backdrop-filter:blur/);
+ assert.match(visual,/prefers-reduced-motion:reduce/);
+ assert.match(visual,/forced-colors:active/);
+ assert.match(visual,/\.pg-corporate-glyph/);
+ assert.match(visual,/\.corp-card-icon/);
+ assert.doesNotMatch(visual,/font-family:|Caveat-variable|Pukka Hand/i);
+ assert.match(motion,/prefers-reduced-motion: no-preference/);
+ assert.match(motion,/requestAnimationFrame/);
+ assert.match(motion,/pointerType==="touch"/);
+ assert.match(motion,/pointerleave/);
+ assert.match(motion,/removeProperty/);
+ assert.equal((html.match(/class="pg-corporate-glyph"/g)||[]).length,4);
+ for(const route of ["index","company","partners","investors","trust"]){
+  const page=read(route+".html");
+  assert.match(page,/href="\/src\/precision\.css"/);
+  assert.match(page,/src="\/src\/precision-motion\.ts"/);
+  if(route!=="index")assert.ok((page.match(/class="corp-card-icon"/g)||[]).length>=4,route+" card icon count");
+ }
+ assert.match(read("src/premium.css"),/font-family:"Pukka Hand"/);
+ assert.match(read("src/enterprise.css"),/\.pg-hero-signoff\{font-family:"Pukka Hand"/);
 });
