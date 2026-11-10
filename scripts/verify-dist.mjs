@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import {existsSync,readFileSync,readdirSync,statSync} from "node:fs";
-const must=["dist/index.html","dist/privacy.html","dist/terms.html","dist/company.html","dist/partners.html","dist/investors.html","dist/trust.html","dist/pukka-gen-wordmark.png","dist/pukka-gen-favicon.png","dist/fonts/Caveat-variable.ttf","dist/fonts/Sora-variable.ttf","dist/fonts/Manrope-variable.ttf","dist/fonts/OFL-Sora.txt","dist/fonts/OFL-Manrope.txt","dist/fonts/OFL-Caveat.txt","dist/robots.txt"];
+const must=["dist/index.html","dist/privacy.html","dist/terms.html","dist/company.html","dist/partners.html","dist/investors.html","dist/trust.html","dist/pukka-gen-wordmark.png","dist/pukka-gen-favicon.png","dist/fonts/Caveat-variable.ttf","dist/fonts/SpaceGrotesk-variable.ttf","dist/fonts/PlusJakartaSans-variable.ttf","dist/fonts/OFL-SpaceGrotesk.txt","dist/fonts/OFL-PlusJakartaSans.txt","dist/fonts/OFL-Caveat.txt","dist/robots.txt"];
 for(const file of must)assert.ok(existsSync(file),"Build output absent: "+file);
 const assets=readdirSync("dist/assets");
 assert.ok(assets.some(f=>f.endsWith(".js")),"No compiled JS bundle");

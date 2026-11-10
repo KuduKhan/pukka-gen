@@ -4,8 +4,8 @@
  --night:#07182e;--night-2:#0c2547;--deep:#0a1b36;--blue:#185c9c;
  --cyan:#52d8f6;--violet:#925ef3;--ice:#eef6ff;--paper:#fff;
  --ink:#132844;--ink-soft:#4e6581;--line:#dae6f3;
- --display:"Sora","Segoe UI",system-ui,sans-serif;
- --body:"Manrope","Segoe UI",system-ui,sans-serif;
+ --display:"Space Grotesk","Segoe UI",system-ui,sans-serif;
+ --body:"Plus Jakarta Sans","Segoe UI",system-ui,sans-serif;
  --ease:cubic-bezier(.2,.75,.23,1);
 }
 *,:before,:after{box-sizing:border-box}
@@ -14,7 +14,7 @@ body{margin:0;background:var(--night);color:#f2f7ff;font:400 16px/1.7 var(--body
 body.dialog-open{overflow:hidden}
 ::selection{color:#052342;background:#89eaff}
 h1,h2,h3,h4,p,figure{margin:0}
-h1,h2,h3,h4{line-height:1.13;font-family:var(--display);font-weight:760;letter-spacing:-.055em;text-wrap:balance}
+h1,h2,h3,h4{line-height:1.13;font-family:var(--display);font-weight:700;letter-spacing:-.037em;text-wrap:balance}
 a{text-decoration:none;color:inherit}
 button,input,select,textarea{font:inherit}
 button{cursor:pointer}

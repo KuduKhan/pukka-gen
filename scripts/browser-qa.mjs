@@ -26,16 +26,16 @@ for(const [browserName,engine] of Object.entries({chromium,firefox,webkit})){
    await page.locator("[data-service]").first().waitFor({timeout:12000});
    
    const chosenFonts=await page.evaluate(async()=>{
-    await document.fonts.load('700 24px "Sora"');
-    await document.fonts.load('400 16px "Manrope"');
+    await document.fonts.load('700 24px "Space Grotesk"');
+    await document.fonts.load('400 16px "Plus Jakarta Sans"');
     return {
-     sora:document.fonts.check('700 24px "Sora"'),
-     manrope:document.fonts.check('400 16px "Manrope"'),
+     display:document.fonts.check('700 24px "Space Grotesk"'),
+     bodyFont:document.fonts.check('400 16px "Plus Jakarta Sans"'),
      heading:getComputedStyle(document.querySelector("h1")).fontFamily,
      body:getComputedStyle(document.body).fontFamily
     };
    });
-   if(!chosenFonts.sora||!chosenFonts.manrope||!chosenFonts.heading.includes("Sora")||!chosenFonts.body.includes("Manrope"))
+   if(!chosenFonts.display||!chosenFonts.bodyFont||!chosenFonts.heading.includes("Space Grotesk")||!chosenFonts.body.includes("Plus Jakarta Sans"))
     throw new Error("Homepage typography mismatch: "+JSON.stringify(chosenFonts));
    if((await page.locator("[data-service]").count())!==6)throw new Error("Six service cards missing");
    if(await page.evaluate(()=>document.documentElement.classList.contains("motion-enabled")))
@@ -198,16 +198,16 @@ for(const [browserName,engine] of Object.entries({chromium,firefox,webkit})){
        if(!routeResponse?.ok())throw new Error(route+" page failed HTTP");
        if(await page.locator('main h1').count()!==1)throw new Error(route+" heading missing");
        const corporateFonts=await page.evaluate(async()=>{
-        await document.fonts.load('700 24px "Sora"');
-        await document.fonts.load('400 16px "Manrope"');
+        await document.fonts.load('700 24px "Space Grotesk"');
+        await document.fonts.load('400 16px "Plus Jakarta Sans"');
         return {
-         sora:document.fonts.check('700 24px "Sora"'),
-         manrope:document.fonts.check('400 16px "Manrope"'),
+         display:document.fonts.check('700 24px "Space Grotesk"'),
+         bodyFont:document.fonts.check('400 16px "Plus Jakarta Sans"'),
          title:getComputedStyle(document.querySelector("main h1")).fontFamily,
          body:getComputedStyle(document.body).fontFamily
         };
        });
-       if(!corporateFonts.sora||!corporateFonts.manrope||!corporateFonts.title.includes("Sora")||!corporateFonts.body.includes("Manrope"))
+       if(!corporateFonts.display||!corporateFonts.bodyFont||!corporateFonts.title.includes("Space Grotesk")||!corporateFonts.body.includes("Plus Jakarta Sans"))
         throw new Error(route+" typography mismatch: "+JSON.stringify(corporateFonts));
 
        if((await page.locator(".corp-card-icon svg use").count())<4)
