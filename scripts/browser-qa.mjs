@@ -88,6 +88,10 @@ for(const [browserName,engine] of Object.entries({chromium,firefox,webkit})){
      filter:getComputedStyle(node).backdropFilter || getComputedStyle(node).webkitBackdropFilter
    }));
    if(!glass.filter.includes('blur'))throw new Error("Frosted system panel style missing: "+JSON.stringify(glass));
+   if((await page.locator(".pg-corporate-glyph svg use").count())!==4)
+     throw new Error("Premium corporate SVG gateway icons missing");
+   if(!(await responseIcons.text()).includes('<symbol id="pg-assurance"'))
+     throw new Error("New Pukka icon vocabulary failed to ship");
    if(await page.locator(".pg-hero-signoff").isVisible()!==true)throw new Error("No Duff handwritten brand signoff missing");
    const logo=await page.locator(".brand img").evaluate(img=>img.complete&&img.naturalWidth>0);
    if(!logo)throw new Error("Original logo is missing");
@@ -161,6 +165,22 @@ for(const [browserName,engine] of Object.entries({chromium,firefox,webkit})){
         ()=>document.querySelector("#work .section-head")?.getAttribute("data-reveal")==="shown",
         null,{timeout:7000}
       );
+      if(width===1440){
+       const surface=motionPage.locator(".system-panel");
+       await surface.scrollIntoViewIfNeeded();
+       const bounds=await surface.boundingBox();
+       if(!bounds)throw new Error("Spotlight surface missing");
+       await motionPage.mouse.move(bounds.x+Math.min(110,bounds.width/2),bounds.y+Math.min(110,bounds.height/2));
+       await motionPage.waitForFunction(
+        ()=>Boolean(document.querySelector(".system-panel")?.getAttribute("style")?.includes("--pg-spot-x")),
+        null,{timeout:3500}
+       );
+       await motionPage.mouse.move(0,0);
+       await motionPage.waitForFunction(
+        ()=>!document.querySelector(".system-panel")?.getAttribute("style")?.includes("--pg-spot-x"),
+        null,{timeout:3500}
+       );
+      }
       if(motionErrors.length)throw new Error("Normal-motion runtime error: "+motionErrors.join(" | "));
       await motionPage.screenshot({
         path:"artifacts/qa/motion-work-"+width+".png",animations:"disabled"
@@ -190,6 +210,8 @@ for(const [browserName,engine] of Object.entries({chromium,firefox,webkit})){
        if(!corporateFonts.sora||!corporateFonts.manrope||!corporateFonts.title.includes("Sora")||!corporateFonts.body.includes("Manrope"))
         throw new Error(route+" typography mismatch: "+JSON.stringify(corporateFonts));
 
+       if((await page.locator(".corp-card-icon svg use").count())<4)
+        throw new Error(route+" premium SVG card icon placements missing");
        if(await page.locator('a.corp-skip[href="#main"]').count()!==1)throw new Error(route+" skip link absent");
        if(await page.locator('nav.corp-nav a[aria-current="page"]').count()!==1)throw new Error(route+" current page not marked");
        const routeOverflow=await page.evaluate(()=>Math.max(0,document.documentElement.scrollWidth-window.innerWidth));

@@ -269,3 +269,35 @@ test("selected variable fonts are local, licensed and shared across routes witho
  assert.match(read("src/enterprise.css"),/\.pg-hero-signoff\{font-family:"Pukka Hand"/);
  assert.match(read("scripts/browser-qa.mjs"),/document\.fonts\.load\('700 24px "Sora"'\)/);
 });
+
+test("precision glass refinement uses original brand fonts, distinct SVG symbols and accessible motion",()=>{
+ const visual=read("src/precision.css"), motion=read("src/precision-motion.ts");
+ const sprite=read("public/icons/pukka-symbols.svg");
+ for(const id of ["pg-engagement","pg-alliance","pg-growth","pg-assurance"]){
+  assert.match(sprite,new RegExp('<symbol id="'+id+'"'));
+ }
+ const symbols=[...sprite.matchAll(/<symbol id="([^"]+)"/g)].map(match=>match[1]);
+ assert.equal(new Set(symbols).size,symbols.length,"Sprite symbol IDs must be unique");
+ assert.doesNotMatch(sprite,/<script|<foreignObject/i);
+ assert.match(visual,/--pg-ease/);
+ assert.match(visual,/backdrop-filter:blur/);
+ assert.match(visual,/prefers-reduced-motion:reduce/);
+ assert.match(visual,/forced-colors:active/);
+ assert.match(visual,/\.pg-corporate-glyph/);
+ assert.match(visual,/\.corp-card-icon/);
+ assert.doesNotMatch(visual,/font-family:|Caveat-variable|Pukka Hand/i);
+ assert.match(motion,/prefers-reduced-motion: no-preference/);
+ assert.match(motion,/requestAnimationFrame/);
+ assert.match(motion,/pointerType==="touch"/);
+ assert.match(motion,/pointerleave/);
+ assert.match(motion,/removeProperty/);
+ assert.equal((html.match(/class="pg-corporate-glyph"/g)||[]).length,4);
+ for(const route of ["index","company","partners","investors","trust"]){
+  const page=read(route+".html");
+  assert.match(page,/href="\/src\/precision\.css"/);
+  assert.match(page,/src="\/src\/precision-motion\.ts"/);
+  if(route!=="index")assert.ok((page.match(/class="corp-card-icon"/g)||[]).length>=4,route+" card icon count");
+ }
+ assert.match(read("src/premium.css"),/font-family:"Pukka Hand"/);
+ assert.match(read("src/enterprise.css"),/\.pg-hero-signoff\{font-family:"Pukka Hand"/);
+});

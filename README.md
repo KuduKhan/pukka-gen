@@ -72,3 +72,9 @@ The `feat/pukka-gen-4-corporate-authority` review branch introduces clear standa
 - **Pukka Hand / Caveat is preserved exactly**, including all handwritten No Duff lettering
 - Font software is self-hosted under SIL OFL 1.1; license text in `public/fonts/OFL-Sora.txt` and `public/fonts/OFL-Manrope.txt`
 - Verify build, font loading, responsive layout, accessibility and real-device review before production
+
+## Precision Glass v4.1 / Micro-interactions — November 2026
+
+Preserves the entire original brand identity and **unchanged Pukka Hand / Caveat handwriting** while refining the existing homepage, four corporate routes, cards, glass surfaces, buttons, icons and responsive feel. The new `src/precision.css` layer aligns light and dark glass, framing, depth, hover/focus behavior and compact corporate navigation. Four original SVG symbols are added to the local icon sprite (clients, partners, growth and assurance), with no external icon requests or extra routes. `src/precision-motion.ts` adds requestAnimationFrame-throttled card highlights for precise mouse pointers only, with reduced-motion and touch fallbacks. Animations and effects are progressive enhancement; content and interactive controls remain operational without them.
+
+Release gate: CI, Chromium/Firefox/WebKit viewport QA at 320–1440px, axe accessibility, keyboard checks, font and SVG preservation, Vercel preview and owner review before production.
