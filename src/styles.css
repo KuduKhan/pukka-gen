@@ -4,8 +4,8 @@
  --night:#07182e;--night-2:#0c2547;--deep:#0a1b36;--blue:#185c9c;
  --cyan:#52d8f6;--violet:#925ef3;--ice:#eef6ff;--paper:#fff;
  --ink:#132844;--ink-soft:#4e6581;--line:#dae6f3;
- --display:"Segoe UI Variable Display","Segoe UI",system-ui,sans-serif;
- --body:"Segoe UI Variable Text","Segoe UI",system-ui,sans-serif;
+ --display:"Sora","Segoe UI",system-ui,sans-serif;
+ --body:"Manrope","Segoe UI",system-ui,sans-serif;
  --ease:cubic-bezier(.2,.75,.23,1);
 }
 *,:before,:after{box-sizing:border-box}

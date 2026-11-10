@@ -2,10 +2,11 @@
 :root{color-scheme:dark;--night:#07182e;--line:#31516f;--white:#f4f9ff;--soft:#bdd0e4;--cyan:#79e3fa;--navy:#0d2949;--violet:#a8a0fa}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{margin:0;min-width:0;background:#07182e;color:var(--white);font:400 16px/1.65 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;overflow-wrap:anywhere}
+body{margin:0;min-width:0;background:#07182e;color:var(--white);font:400 16px/1.65 var(--body);overflow-wrap:anywhere}
 a{color:inherit;text-underline-offset:4px}
 a:focus-visible{outline:3px solid #86efff;outline-offset:4px;border-radius:5px}
 h1,h2,h3,p{margin-top:0}
+h1,h2,h3{font-family:var(--display);font-weight:700;text-wrap:balance}
 .corp-shell{width:min(1170px,calc(100% - 40px));margin-inline:auto}
 .corp-skip{position:absolute;left:12px;top:-200px;z-index:20;background:#fff;color:#09264a;padding:8px 12px}
 .corp-skip:focus{top:12px}

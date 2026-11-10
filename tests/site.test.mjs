@@ -244,3 +244,28 @@ test("corporate authority routes are honest, linked and accessible",()=>{
  const inputs=read("vite.config.mjs");
  for(const name of pages)assert.match(inputs,new RegExp(name+':page\\("\\./'+name+'\\.html"\\)'));
 });
+
+test("selected variable fonts are local, licensed and shared across routes without replacing handwriting",()=>{
+ const typography=read("src/typography.css");
+ assert.match(typography,/font-family:"Sora"/);
+ assert.match(typography,/font-family:"Manrope"/);
+ assert.match(typography,/font-display:swap/);
+ assert.match(typography,/--display:"Sora"/);
+ assert.match(typography,/--body:"Manrope"/);
+ assert.doesNotMatch(typography,/fonts\.googleapis|fonts\.gstatic|@import/i);
+ assert.match(read("src/styles.css"),/--display:"Sora"/);
+ assert.match(read("src/styles.css"),/--body:"Manrope"/);
+ assert.match(read("src/corporate.css"),/font:400 16px\/1\.65 var\(--body\)/);
+ assert.match(read("src/corporate.css"),/h1,h2,h3\{font-family:var\(--display\)/);
+ for(const route of ["index","company","partners","investors","trust","privacy","terms"]){
+  assert.match(read(route+".html"),/href="\/src\/typography\.css"/);
+ }
+ for(const font of ["Sora","Manrope"]){
+  assert.ok(existsSync(new URL("../public/fonts/"+font+"-variable.ttf",import.meta.url)));
+  assert.match(read("public/fonts/OFL-"+font+".txt"),/SIL OPEN FONT LICENSE/i);
+ }
+ assert.match(read("src/premium.css"),/font-family:"Pukka Hand"/);
+ assert.match(read("src/premium.css"),/\/fonts\/Caveat-variable\.ttf/);
+ assert.match(read("src/enterprise.css"),/\.pg-hero-signoff\{font-family:"Pukka Hand"/);
+ assert.match(read("scripts/browser-qa.mjs"),/document\.fonts\.load\('700 24px "Sora"'\)/);
+});
