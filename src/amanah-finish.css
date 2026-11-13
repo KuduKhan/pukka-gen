@@ -1,0 +1,247 @@
+/* PUKKA GEN / NO DUFF — Amanah finish v3
+ * Explicit final polish layer: typography, line icons, handwritten flourishes,
+ * compact interaction surfaces, viewport-safe navigation and card grids.
+ * Local fonts only. Brand marks, content, and application logic remain unchanged.
+ */
+:root{
+ --pg-finish-ink:#122f3d;
+ --pg-finish-muted:#485f69;
+ --pg-finish-accent:#156f79;
+ --pg-finish-sky:#cbe8e5;
+ --pg-finish-paper:#fbfcfa;
+ --pg-finish-border:#dbe7e0;
+ --pg-finish-radius:20px;
+ --pg-finish-shadow:0 2px 7px rgba(12,48,55,.035),0 12px 29px rgba(12,48,55,.05);
+ --pg-finish-ease:cubic-bezier(.18,.72,.2,1);
+}
+body.pg-amanah-studio-v2{
+  font-family:"Manrope","Segoe UI",Arial,sans-serif;
+  font-size:15.5px;line-height:1.65;letter-spacing:-.012em;
+  font-weight:480;font-feature-settings:"kern" 1,"liga" 1;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+}
+.pg-amanah-studio-v2 :is(p,li,small){overflow-wrap:break-word}
+.pg-amanah-studio-v2 :is(.section-head h2,.hero h1,.corp-hero h1,.corp-section-heading h2,.legal-main h1,.studio-text h2,.contact-heading h2,.faq-layout h2){
+  font-family:Georgia,"Iowan Old Style","Times New Roman",serif;
+  font-weight:500;letter-spacing:-.045em;
+  font-kerning:normal;text-wrap:balance;
+}
+.pg-amanah-studio-v2 :is(.expertise-card h3,.project-description h3,.journal-card h3,.pg-corporate-card h3,.corp-card h3,.pg-corp-at-glance-head strong){
+  font-family:Georgia,"Iowan Old Style","Times New Roman",serif;
+  font-weight:500;letter-spacing:-.027em;line-height:1.19;
+}
+.pg-amanah-studio-v2 :is(.section-head p,.expertise-card p,.project-description p,.journal-card p,.sector-card>p,.corp-card p,.pg-corporate-card p){
+  font-size:clamp(.87rem,.94vw,.95rem);line-height:1.7;letter-spacing:-.009em;
+}
+.pg-amanah-studio-v2 :is(.desktop-nav a,.corp-nav a,.mobile-nav a){
+  font-family:"Manrope","Segoe UI",sans-serif;font-size:.83rem;font-weight:670;letter-spacing:-.014em;
+}
+.pg-amanah-studio-v2 :is(.button,.header-cta,.corp-button,.corp-contact,.submit-button,.work-filters button){
+  font-family:"Manrope","Segoe UI",sans-serif;font-weight:690;letter-spacing:-.015em;
+}
+.pg-amanah-studio-v2 :is(.kicker,.eyebrow,.corp-kicker,.journal-label,.sector-meta,.proof-mini,.pg-corporate-card>span){
+  font-family:"Manrope","Segoe UI",sans-serif;letter-spacing:.105em;font-weight:790;
+}
+.pg-amanah-studio-v2 .container{max-width:1240px}
+.pg-amanah-studio-v2 .section{padding-block:clamp(70px,7vw,106px)}
+.pg-amanah-studio-v2 :is(.hero-grid,.section-head,.expertise-grid,.projects,.sector-grid,.journal-grid,.contact-layout,.studio-layout,.pg-corporate-grid,.corp-grid)>*{min-width:0}
+.pg-amanah-studio-v2 .section-head{align-items:end}
+.pg-amanah-studio-v2 .section-head>div{min-width:0}
+.pg-amanah-studio-v2 .section-head>p{color:#4f6772;max-width:48ch}
+.pg-amanah-studio-v2 .section-head h2{font-size:clamp(2.25rem,4vw,4rem)}
+.pg-amanah-studio-v2 .hero h1{font-size:clamp(3rem,5vw,5.6rem);line-height:1.04;letter-spacing:-.051em}
+.pg-amanah-studio-v2 .hero h1 em{font-style:italic}
+.pg-amanah-studio-v2 .hero-desc{max-width:55ch;font-size:.96rem;line-height:1.72}
+.pg-amanah-studio-v2 .hero-lead{font-size:clamp(1.05rem,1.5vw,1.3rem)}
+.pg-amanah-studio-v2 .pg-hero-tag{letter-spacing:.06em;max-width:100%}
+
+/* Hand-drawn signature underlines. These are decorative and don't add
+ * text or alter the self-hosted Pukka Hand/Caveat variable font. */
+.pg-amanah-studio-v2 .hero h1 .pg-hero-signoff{
+  font-family:"Pukka Hand","Segoe Print",cursive;
+  display:inline-block;position:relative;isolation:isolate;
+  padding:0 5px .12em 0;white-space:nowrap;
+  line-height:.92;letter-spacing:-.056em;
+}
+.pg-amanah-studio-v2 .hero h1 .pg-hero-signoff::after{
+  content:"";position:absolute;left:5%;right:5%;height:12px;
+  bottom:0;z-index:-1;pointer-events:none;
+  border-bottom:3px solid #c59b53;border-radius:0 0 70% 43%;
+  transform:rotate(-2.1deg);opacity:.86;
+}
+.pg-amanah-studio-v2 .pg-hand-swash{position:relative;display:inline}
+.pg-amanah-studio-v2 .pg-hand-swash::after{
+  content:"";position:absolute;left:8%;right:3%;bottom:-.11em;
+  height:.16em;border-bottom:2px solid currentColor;
+  border-radius:0 0 75% 35%;transform:rotate(-1.1deg);
+  opacity:.38;pointer-events:none;
+}
+.pg-amanah-studio-v2 .ink-note{
+  font-family:"Pukka Hand","Segoe Print",cursive;font-weight:570;
+  letter-spacing:-.025em;line-height:1.05;
+  filter:none;text-shadow:none;
+}
+.pg-amanah-studio-v2 .ink-note::after{
+  left:5%;width:91%;bottom:-.27em;height:.37em;
+  border-bottom:2px solid currentColor;border-radius:0 0 86% 38%;
+  transform:rotate(-1.7deg);opacity:.76
+}
+.pg-amanah-studio-v2 .studio-wordmark>div em{
+  font-family:"Pukka Hand","Segoe Print",cursive;
+  display:inline-block;position:relative;padding:0 .08em .09em 0;
+  font-weight:590;letter-spacing:-.095em
+}
+.pg-amanah-studio-v2 .studio-wordmark>div em::after{
+  content:"";position:absolute;bottom:.01em;left:6%;right:3%;height:9px;
+  border-bottom:3px solid #a5dcd5;border-radius:0 0 70% 35%;
+  transform:rotate(-2deg);opacity:.72
+}
+.pg-amanah-studio-v2 .footer-main p strong{font-family:"Pukka Hand","Segoe Print",cursive;font-size:1.5em;font-weight:620;position:relative;display:inline-block}
+.pg-amanah-studio-v2 .footer-main p strong::after{content:"";position:absolute;left:7%;right:4%;bottom:-.05em;border-bottom:2px solid #b0e6dd;transform:rotate(-2deg);border-radius:0 0 90% 30%;opacity:.67}
+.pg-amanah-studio-v2 .pg-brand-caption small{font-family:"Pukka Hand","Segoe Print",cursive;font-weight:620}
+.pg-amanah-studio-v2 .contact-big em{font-family:"Pukka Hand","Segoe Print",cursive;font-style:normal;font-weight:590;white-space:normal}
+
+/* One line-icon vocabulary, inspired by Amanah's compact 1.8px Lucide shapes. */
+.pg-amanah-studio-v2 .pg-nav-icon{display:inline-block;flex:0 0 17px;width:17px;height:17px;color:#217b86;stroke-width:1.8}
+.pg-amanah-studio-v2 .desktop-nav a,.pg-amanah-studio-v2 .corp-nav a{display:inline-flex;align-items:center;justify-content:center;gap:7px;white-space:nowrap}
+.pg-amanah-studio-v2 .desktop-nav a:is(:hover,:focus-visible) .pg-nav-icon,
+.pg-amanah-studio-v2 .corp-nav a:is(:hover,:focus-visible) .pg-nav-icon{color:#0a6578}
+.pg-amanah-studio-v2 .mobile-nav .pg-nav-icon{width:20px;height:20px;flex-basis:20px;margin-right:4px;color:#217984}
+.pg-amanah-studio-v2 :is(.expertise-icon,.sector-symbol,.journal-symbol,.pg-rail-icon){
+  transform:none;border-radius:15px;box-shadow:inset 0 1px 0 rgba(255,255,255,.2);
+}
+.pg-amanah-studio-v2 .pg-rail-icon{width:43px;height:43px}
+.pg-amanah-studio-v2 .pg-rail-icon svg{height:26px;width:26px}
+.pg-amanah-studio-v2 .pg-rail-links>a{min-height:102px}
+.pg-amanah-studio-v2 :is(.expertise-icon,.journal-symbol) svg{display:block;width:min(64%,42px);height:min(64%,42px);max-width:none}
+.pg-amanah-studio-v2 .expertise-icon{width:67px;height:67px}
+.pg-amanah-studio-v2 .journal-symbol{width:61px;height:61px}
+.pg-amanah-studio-v2 .sector-symbol{transform:none!important;border-radius:19px}
+.pg-amanah-studio-v2 .sector-symbol svg{transform:none!important;max-height:61px}
+.pg-amanah-studio-v2 .expertise-card[data-service="software"] .expertise-icon{color:#c7eff0}
+.pg-amanah-studio-v2 .expertise-card[data-service="ai"] .expertise-icon{color:#7464ae;background:#f2edf9;border-color:#e6dcf2}
+.pg-amanah-studio-v2 .expertise-card[data-service="cloud"] .expertise-icon{color:#266eab;background:#e9f2fc;border-color:#d4e3f3}
+.pg-amanah-studio-v2 .expertise-card[data-service="security"] .expertise-icon{color:#126f62;background:#eaf5ef;border-color:#cce6d9}
+.pg-amanah-studio-v2 .expertise-card[data-service="design"] .expertise-icon{color:#a17a28;background:#fcf5e6;border-color:#ecdfbf}
+.pg-amanah-studio-v2 .expertise-card[data-service="strategy"] .expertise-icon{color:#1e7185;background:#eaf4f5;border-color:#d5e5e7}
+.pg-amanah-studio-v2 .pg-rail-links>a:nth-child(2) .pg-rail-icon{color:#7666a5;background:#f2eff9}
+.pg-amanah-studio-v2 .pg-rail-links>a:nth-child(3) .pg-rail-icon{color:#236da4;background:#eaf3fc}
+.pg-amanah-studio-v2 .pg-rail-links>a:nth-child(4) .pg-rail-icon{color:#126f60;background:#e9f5ee}
+.pg-amanah-studio-v2 .pg-rail-links>a:nth-child(5) .pg-rail-icon{color:#99742d;background:#fcf5e8}
+.pg-amanah-studio-v2 .pg-rail-links>a:nth-child(6) .pg-rail-icon{color:#266e81;background:#eaf4f5}
+
+/* Flatten superfluous visual noise, keep focal lift, and preserve CTA actions. */
+.pg-amanah-studio-v2 :is(.expertise-card,.project,.journal-card,.pg-corporate-card,.corp-card){
+  border-radius:var(--pg-finish-radius);box-shadow:var(--pg-finish-shadow);
+  transition:border-color .2s ease,box-shadow .22s var(--pg-finish-ease),transform .22s var(--pg-finish-ease)
+}
+.pg-amanah-studio-v2 :is(.expertise-card,.project,.journal-card,.pg-corporate-card,.corp-card):is(:hover,:focus-within){
+  box-shadow:0 7px 16px rgba(10,45,55,.06),0 22px 40px rgba(10,45,55,.10)
+}
+.pg-amanah-studio-v2 .expertise-grid{gap:16px}
+.pg-amanah-studio-v2 .expertise-card{min-height:292px;padding:clamp(21px,2vw,28px)}
+.pg-amanah-studio-v2 .expertise-card h3{font-size:clamp(1.35rem,1.7vw,1.66rem)}
+.pg-amanah-studio-v2 .expertise-card p{margin-bottom:19px}
+.pg-amanah-studio-v2 .journal-card{min-height:295px;padding:clamp(22px,2.2vw,28px)}
+.pg-amanah-studio-v2 .journal-card h3{font-size:clamp(1.32rem,1.8vw,1.65rem)}
+.pg-amanah-studio-v2 .pg-corporate-card h3{font-size:clamp(1.35rem,1.8vw,1.6rem)}
+.pg-amanah-studio-v2 .sector-card{min-height:308px}
+.pg-amanah-studio-v2 .sector-card strong{font-size:clamp(1.35rem,1.9vw,1.55rem)}
+.pg-amanah-studio-v2 .work-filters button{padding:9px 15px;min-height:42px}
+.pg-amanah-studio-v2 .work-filters button[aria-pressed="true"]{font-weight:730}
+.pg-amanah-studio-v2 .process-controls button,.pg-amanah-studio-v2 .solution-choice{transition:background .18s,border-color .18s,box-shadow .18s,transform .2s}
+.pg-amanah-studio-v2 .process-controls button:active,.pg-amanah-studio-v2 .solution-choice:active{transform:translateY(1px)}
+.pg-amanah-studio-v2 .pg-corporate-card a,.pg-amanah-studio-v2 .expertise-link,.pg-amanah-studio-v2 .journal-action{
+  text-underline-offset:4px
+}
+.pg-amanah-studio-v2 .pg-corporate-card a:hover,.pg-amanah-studio-v2 .pg-hero-editorial-note a:hover{text-decoration:underline}
+
+/* Header and mobile-menu placement: header fixed on homepage, sticky on
+   corporate routes. Neither should trap links below the viewport edge. */
+.pg-amanah-studio-v2 .site-header .navigation{min-width:0}
+.pg-amanah-studio-v2 .desktop-nav{min-width:0}
+.pg-amanah-studio-v2 .mobile-nav{
+  max-height:calc(100vh - 95px);max-height:calc(100dvh - 95px);
+  overflow-y:auto;overscroll-behavior:contain;
+  padding:14px 16px 20px;scrollbar-width:thin;
+  border-bottom:1px solid #d9e6df;
+}
+.pg-amanah-studio-v2 .mobile-nav a{min-height:46px;padding:9px 12px;gap:10px}
+.pg-amanah-studio-v2 .mobile-nav a:focus-visible{background:#e9f3ee}
+.pg-corporate-v2 .corp-head-inner{min-width:0}
+.pg-corporate-v2 .corp-nav{min-width:0;gap:clamp(8px,1.4vw,20px)}
+.pg-corporate-v2 .corp-nav a{white-space:nowrap}
+.pg-corporate-v2 .pg-corp-at-glance{min-width:0}
+.pg-corporate-v2 .pg-corp-principles p{line-height:1.55}
+.pg-legal-v2 .legal-main{max-width:770px}
+
+/* Truly fluid layouts — no fixed-content clipping or side-scrolling. */
+@media(max-width:1180px) {
+  .pg-amanah-studio-v2 .desktop-nav .pg-nav-icon{display:none}
+  .pg-corporate-v2 .corp-nav .pg-nav-icon{display:none}
+}
+@media(max-width:1050px) {
+  .pg-amanah-studio-v2 .pg-editorial-hero .hero-grid{grid-template-columns:minmax(0,1fr);gap:27px}
+  .pg-amanah-studio-v2 .pg-hero-showcase{max-width:800px}
+  .pg-amanah-studio-v2 .projects{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .pg-amanah-studio-v2 .studio-layout{grid-template-columns:1fr;gap:30px}
+  .pg-amanah-studio-v2 .studio-wordmark{min-height:340px}
+}
+@media(max-width:900px) {
+  .pg-amanah-studio-v2 .expertise-grid,.pg-amanah-studio-v2 .sector-grid,.pg-amanah-studio-v2 .journal-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .pg-amanah-studio-v2 .contact-layout{grid-template-columns:1fr;gap:27px}
+  .pg-amanah-studio-v2 .contact-details{padding:0}
+  .pg-amanah-studio-v2 .project-form{width:100%;max-width:740px}
+  .pg-amanah-studio-v2 .section-head{display:block}
+  .pg-amanah-studio-v2 .section-head>p{margin-top:16px;max-width:64ch}
+  .pg-amanah-studio-v2 .pg-corporate-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .pg-corporate-v2 .corp-nav{gap:13px}
+}
+@media(max-width:680px) {
+  .pg-amanah-studio-v2 .hero h1{font-size:clamp(2.75rem,10.4vw,4.25rem)}
+  .pg-amanah-studio-v2 .pg-editorial-hero{padding-top:clamp(121px,23vw,146px)}
+  .pg-amanah-studio-v2 .hero-lead{font-size:1.08rem}
+  .pg-amanah-studio-v2 .hero-desc{font-size:.92rem;line-height:1.7}
+  .pg-amanah-studio-v2 .pg-hero-tag{font-size:.59rem;line-height:1.5}
+  .pg-amanah-studio-v2 .expertise-grid,.pg-amanah-studio-v2 .sector-grid,.pg-amanah-studio-v2 .journal-grid,.pg-amanah-studio-v2 .projects,.pg-amanah-studio-v2 .pg-corporate-grid{grid-template-columns:1fr}
+  .pg-amanah-studio-v2 .expertise-card,.pg-amanah-studio-v2 .journal-card,.pg-amanah-studio-v2 .sector-card{min-height:unset}
+  .pg-amanah-studio-v2 .sector-card{padding:24px}
+  .pg-amanah-studio-v2 .sector-symbol{width:68px;height:68px;margin:14px 0 17px}
+  .pg-amanah-studio-v2 .sector-symbol svg{width:44px;height:44px}
+  .pg-amanah-studio-v2 .proof-ribbon{margin-top:-18px}
+  .pg-amanah-studio-v2 .pg-rail-links>a{min-height:94px}
+  .pg-amanah-studio-v2 .pg-rail-icon{height:40px;width:40px}
+  .pg-amanah-studio-v2 .project-form .fields{grid-template-columns:1fr}
+  .pg-amanah-studio-v2 :is(input,select,textarea){min-width:0;max-width:100%}
+  .pg-amanah-studio-v2 .footer-main{flex-direction:column;align-items:flex-start;gap:24px}
+  .pg-amanah-studio-v2 .footer-nav{width:100%}
+  .pg-amanah-studio-v2 .hero-signature{gap:5px 12px}
+  .pg-amanah-studio-v2 .hero-signature span{font-size:.68rem}
+  .pg-amanah-studio-v2 .hero-foot{font-size:.59rem}
+  .pg-corporate-v2 .corp-head-inner{gap:8px;padding:9px 0}
+  .pg-corporate-v2 .corp-nav{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));width:100%;gap:4px}
+  .pg-corporate-v2 .corp-nav a{white-space:normal;min-height:40px;padding:8px 4px;text-align:center;font-size:.74rem}
+  .pg-corporate-v2 .corp-nav .pg-nav-icon{display:none}
+  .pg-corporate-v2 .pg-corp-at-glance{padding:21px 18px}
+  .pg-legal-v2 .pg-legal-nav{gap:10px}
+}
+@media(max-width:380px) {
+  .pg-amanah-studio-v2 .hero h1{font-size:clamp(2.52rem,10.1vw,2.9rem)}
+  .pg-amanah-studio-v2 .pg-hero-showcase{padding:7px}
+  .pg-amanah-studio-v2 .system-panel{border-radius:12px}
+  .pg-amanah-studio-v2 .pg-service-rail{width:calc(100% - 20px)}
+  .pg-amanah-studio-v2 .pg-rail-links>a{font-size:.68rem;padding:12px 5px}
+  .pg-amanah-studio-v2 .pg-showcase-caption strong{font-size:.98rem}
+  .pg-amanah-studio-v2 .proof-content{justify-content:flex-start}
+  .pg-amanah-studio-v2 .contact-big{font-size:clamp(2.1rem,9vw,2.8rem)}
+  .pg-corporate-v2 .corp-hero h1{font-size:clamp(2.5rem,10vw,3.2rem)}
+}
+@media(prefers-reduced-motion:reduce) {
+  .pg-amanah-studio-v2 .pg-hand-swash::after,
+  .pg-amanah-studio-v2 .pg-hero-signoff::after,
+  .pg-amanah-studio-v2 .ink-note::after{animation:none;transition:none}
+}
+@media(prefers-contrast:more) {
+  .pg-amanah-studio-v2 .pg-hand-swash::after{opacity:.9}
+  .pg-amanah-studio-v2 :is(.expertise-card,.project,.journal-card,.pg-corporate-card,.corp-card){border-color:#34555e}
+}
