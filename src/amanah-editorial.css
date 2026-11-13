@@ -761,3 +761,8 @@ body.pg-amanah-studio-v2{background:var(--pg2-paper);color:var(--pg2-ink)}
 .pg-amanah-studio-v2 .solution-choice[aria-pressed="true"] small,
 .pg-amanah-studio-v2 .solution-choice[aria-pressed="true"] small span{color:#174e5e}
 .pg-amanah-studio-v2 .process-controls button[aria-pressed="true"] span{color:#095564}
+
+
+/* Accessibility QA: compact corporate overview kicker must meet WCAG AA
+   on a white paper card at both 375px and 1440px. */
+.pg-corporate-v2 .pg-corp-at-glance-head small{color:#435f64}
