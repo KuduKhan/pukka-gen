@@ -753,3 +753,11 @@ body.pg-amanah-studio-v2{background:var(--pg2-paper);color:var(--pg2-ink)}
   .pg-amanah-studio-v2 .hero-desc,.pg-amanah-studio-v2 .corp-lede{color:#233c46}
   .pg-amanah-studio-v2 .project-form label{color:#163443}
 }
+
+
+/* QA-backed refinements — text contrast, accessible selected states,
+   and a single, quieter Amanah-style hero eyebrow. */
+.pg-amanah-studio-v2 .pg-editorial-hero .hero-copy>.eyebrow{display:none}
+.pg-amanah-studio-v2 .solution-choice[aria-pressed="true"] small,
+.pg-amanah-studio-v2 .solution-choice[aria-pressed="true"] small span{color:#174e5e}
+.pg-amanah-studio-v2 .process-controls button[aria-pressed="true"] span{color:#095564}
