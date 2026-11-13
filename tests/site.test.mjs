@@ -5,7 +5,7 @@ const read=path=>readFileSync(new URL("../"+path,import.meta.url),"utf8");
 const html=read("index.html"),main=read("src/main.ts"),style=read("src/styles.css");
 test("fresh source uses only new architecture and original brand assets",()=>{
  assert.match(html,/Pukka Gen — Engineered to Matter/);
- assert.match(html,/No jargon\. No shortcuts/);
+ assert.match(html,/Beautifully considered\. <strong>Seriously engineered\.<\/strong>/);
  assert.match(html,/src="\/pukka-gen-wordmark\.png"/);
  assert.ok(existsSync(new URL("../public/pukka-gen-wordmark.png",import.meta.url)));
  assert.ok(existsSync(new URL("../public/pukka-gen-favicon.png",import.meta.url)));
@@ -208,7 +208,7 @@ test("original enterprise editorial direction is organized for decision-makers",
  assert.match(html,/class="pg-studio-strip"/);
  assert.match(html,/class="pg-capabilities-band"/);
  assert.match(html,/class="pg-cinematic-art"/);
- assert.match(html,/Technology<br>built to <em>matter/);
+ assert.match(html,/Technology<br>built to <em class="pg-hand-swash">matter/);
  assert.match(html,/No Duff<span class="full-stop">/);
  assert.match(html,/pukka-gen-wordmark\.png/);
  assert.equal((html.match(/class="pg-sector-watermark"/g)||[]).length,6);
