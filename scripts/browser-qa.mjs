@@ -194,6 +194,17 @@ for(const [browserName,engine] of Object.entries({chromium,firefox,webkit})){
 
        if(await page.locator('a.corp-skip[href="#main"]').count()!==1)throw new Error(route+" skip link absent");
        if(await page.locator('nav.corp-nav a[aria-current="page"]').count()!==1)throw new Error(route+" current page not marked");
+       if(width<=375){
+        const navGeometry=await page.locator("nav.corp-nav").evaluate(nav=>{
+          const links=Array.from(nav.querySelectorAll("a"));
+          return {
+            overflow:Math.max(0,nav.scrollWidth-nav.clientWidth),
+            wrapped:links.filter(a=>getComputedStyle(a).whiteSpace!=="nowrap" || a.scrollWidth>a.clientWidth+1).map(a=>a.textContent?.trim())
+          };
+        });
+        if(navGeometry.overflow>1||navGeometry.wrapped.length)
+         throw new Error(route+" mobile navigation labels clipped or wrapped: "+JSON.stringify(navGeometry));
+       }
        const routeOverflow=await page.evaluate(()=>Math.max(0,document.documentElement.scrollWidth-window.innerWidth));
        if(routeOverflow>2)throw new Error(route+" horizontal overflow at "+width+"px: "+routeOverflow);
        const routeLogo=await page.locator(".corp-brand img").evaluate(img=>img.complete&&img.naturalWidth>0);
