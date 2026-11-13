@@ -208,7 +208,7 @@ test("original enterprise editorial direction is organized for decision-makers",
  assert.match(html,/class="pg-studio-strip"/);
  assert.match(html,/class="pg-capabilities-band"/);
  assert.match(html,/class="pg-cinematic-art"/);
- assert.match(html,/Technology<br>built to <em>matter/);
+ assert.match(html,/Technology<br>built to <em class="pg-hand-swash">matter/);
  assert.match(html,/No Duff<span class="full-stop">/);
  assert.match(html,/pukka-gen-wordmark\.png/);
  assert.equal((html.match(/class="pg-sector-watermark"/g)||[]).length,6);
