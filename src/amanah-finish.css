@@ -245,3 +245,19 @@ body.pg-amanah-studio-v2{
   .pg-amanah-studio-v2 .pg-hand-swash::after{opacity:.9}
   .pg-amanah-studio-v2 :is(.expertise-card,.project,.journal-card,.pg-corporate-card,.corp-card){border-color:#34555e}
 }
+
+
+/* Screenshot acceptance: prevent small-screen corporate nav labels from
+ * splitting inside words; restore comfortable Geist-like word spacing. */
+.pg-amanah-studio-v2 :is(.hero-lead,.hero-desc,.section-head>p,.corp-lede,.legal-main p){
+  word-spacing:.035em;letter-spacing:0
+}
+@media(max-width:680px){
+  .pg-corporate-v2 .corp-nav{gap:3px}
+  .pg-corporate-v2 .corp-nav a{
+    font-size:clamp(.64rem,2.75vw,.76rem);
+    font-weight:680;letter-spacing:-.025em;
+    white-space:nowrap;overflow-wrap:normal;word-break:normal;
+    padding:8px 2px;line-height:1.25
+  }
+}
