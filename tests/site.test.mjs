@@ -5,7 +5,7 @@ const read=path=>readFileSync(new URL("../"+path,import.meta.url),"utf8");
 const html=read("index.html"),main=read("src/main.ts"),style=read("src/styles.css");
 test("fresh source uses only new architecture and original brand assets",()=>{
  assert.match(html,/Pukka Gen — Engineered to Matter/);
- assert.match(html,/No jargon\. No shortcuts/);
+ assert.match(html,/Beautifully considered\. <strong>Seriously engineered\.<\/strong>/);
  assert.match(html,/src="\/pukka-gen-wordmark\.png"/);
  assert.ok(existsSync(new URL("../public/pukka-gen-wordmark.png",import.meta.url)));
  assert.ok(existsSync(new URL("../public/pukka-gen-favicon.png",import.meta.url)));
