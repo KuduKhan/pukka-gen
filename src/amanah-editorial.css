@@ -1,0 +1,276 @@
+/* PUKKA GEN / Amanah Giving editorial parity
+ * Source inspiration: KuduKhan/amanah-giving-Frontend/app/globals.css
+ * Faithful treatment of its soft sand surfaces, trust-strip hierarchy,
+ * editorial headlines, lifted proof bar, pill actions and elevated cards.
+ * Pukka's native navy/cyan identity, original marks and technical UI remain.
+ * CSS only: no copied data, functionality or third-party assets.
+ */
+:root {
+  --pg-a-navy:#071a2c;
+  --pg-a-ink:#132c44;
+  --pg-a-muted:#526879;
+  --pg-a-sand:#f3eee4;
+  --pg-a-sand-deep:#e8ddca;
+  --pg-a-paper:#fbfcfa;
+  --pg-a-line:#dce4e3;
+  --pg-a-teal:#126d83;
+  --pg-a-teal-deep:#0b526b;
+  --pg-a-gold:#c69a45;
+  --pg-a-radius:22px;
+  --pg-a-shadow:0 12px 36px rgba(11,44,55,.075),0 1px 0 rgba(255,255,255,.95) inset;
+  --pg-a-shadow-hover:0 20px 52px rgba(11,44,55,.14),0 1px 0 rgba(255,255,255,.96) inset;
+}
+html {scroll-behavior:smooth;scroll-padding-top:106px}
+::selection {background:#d4e8e3;color:var(--pg-a-navy)}
+:focus-visible {outline:3px solid #1996ae;outline-offset:3px}
+body {text-rendering:optimizeLegibility}
+:is(a,button,input,select,textarea):focus-visible {outline:3px solid #168ca5;outline-offset:3px}
+
+/* Amanah's quiet, two-level masthead translated to Pukka's original logo. */
+.site-header,.site-header.is-scrolled,.corp-header {
+  -webkit-backdrop-filter:blur(20px) saturate(1.35);
+  backdrop-filter:blur(20px) saturate(1.35);
+  box-shadow:0 8px 28px rgba(5,20,43,.09);
+}
+.pg-studio-strip {background:linear-gradient(110deg,#061827,#0b2635 52%,#071a2c)}
+.pg-studio-strip-inner {letter-spacing:.105em}
+.navigation {min-height:68px}
+.desktop-nav a {font-weight:690;transition:color .2s ease}
+.header-cta,.button,.corp-button,.corp-contact {
+  border-radius:999px;
+  transition:transform .22s ease,box-shadow .22s ease,background .22s ease,border-color .22s ease;
+}
+.header-cta,.button-primary,.corp-button:not(.corp-button-muted),.corp-contact {
+  background:linear-gradient(120deg,#146f87,#0d5b7a);
+  border:1px solid rgba(104,195,217,.5);
+  color:#fff;
+  box-shadow:0 10px 27px rgba(12,91,116,.16);
+}
+.header-cta:hover,.button-primary:hover,.corp-button:not(.corp-button-muted):hover,.corp-contact:hover {
+  background:linear-gradient(120deg,#0c5a73,#0b4865);
+  color:#fff;transform:translateY(-2px);box-shadow:0 15px 32px rgba(12,91,116,.22);
+}
+.button-outline {background:transparent;border-color:#91acb6;color:var(--pg-a-navy)}
+.button-outline:hover {background:rgba(18,109,131,.07);border-color:#126d83;color:var(--pg-a-teal-deep)}
+.button:active,.header-cta:active,.corp-button:active {transform:translateY(0)}
+
+/* The Amanah editorial split hero: warm paper + dark interactive visual. */
+.hero {
+  background:
+    radial-gradient(circle at 11% 15%,rgba(255,255,255,.85),transparent 35%),
+    radial-gradient(circle at 85% 90%,rgba(231,210,177,.17),transparent 43%),
+    linear-gradient(137deg,#f9f6ef 0%,var(--pg-a-sand) 64%,#e9e0d1 100%);
+  color:var(--pg-a-ink);
+  padding-top:clamp(138px,12vw,175px);
+  padding-bottom:clamp(86px,9vw,124px);
+}
+.hero:before {opacity:.38;background-image:linear-gradient(to right,rgba(158,135,106,.09) 1px,transparent 1px),linear-gradient(to bottom,rgba(158,135,106,.09) 1px,transparent 1px)}
+.hero:after {background:rgba(198,154,69,.12);filter:blur(85px)}
+.hero-orbit {border-color:rgba(198,154,69,.16);box-shadow:0 0 0 45px rgba(198,154,69,.035),0 0 0 90px rgba(198,154,69,.02)}
+.hero-grid {grid-template-columns:minmax(0,1.02fr) minmax(0,.98fr);gap:clamp(30px,4vw,66px)}
+.hero .eyebrow,.hero .hero-index {color:#356275}
+.hero .eyebrow-location,.hero .hero-index span {color:#75848b}
+.hero .signal {background:#1596ab;box-shadow:0 0 0 4px rgba(21,150,171,.13)}
+.hero h1 {
+  font-family:Georgia,"Iowan Old Style","Times New Roman",serif;
+  font-weight:500;letter-spacing:-.052em;line-height:1.02;
+  font-size:clamp(3.45rem,5.55vw,5.9rem);color:var(--pg-a-navy);
+  max-width:14ch;
+}
+.hero h1 em {
+  font-family:Georgia,"Iowan Old Style","Times New Roman",serif;
+  font-size:1em;font-weight:500;font-style:italic;letter-spacing:-.055em;
+  background:none;color:var(--pg-a-teal);
+  -webkit-text-fill-color:var(--pg-a-teal);
+  text-shadow:none;
+}
+.hero h1 .pg-hero-signoff {font-family:"Pukka Hand","Segoe Print",cursive;color:#126d83;-webkit-text-fill-color:#126d83;font-weight:640}
+.hero h1 .full-stop {-webkit-text-fill-color:var(--pg-a-gold);color:var(--pg-a-gold)}
+.hero-lead,.hero-lead strong {color:var(--pg-a-ink)}
+.hero-desc {color:#4b5f6b;line-height:1.8;max-width:57ch}
+.hero-actions {gap:12px;flex-wrap:wrap}
+.hero-actions .button {min-height:49px;border-radius:999px;padding-inline:23px}
+.hero-signature {border-top:1px solid rgba(155,138,112,.23);padding-top:17px;margin-top:30px}
+.hero .hero-signature span {color:#4a6470;background:rgba(255,255,255,.5);border:1px solid rgba(157,176,172,.33);box-shadow:none}
+.hero .hero-signature i {background:#16869a}
+.hero-foot,.hero-foot>span:last-child {color:#697b7e}
+.system-panel {
+  border-radius:24px;border:1px solid rgba(113,185,219,.47);
+  box-shadow:0 25px 72px rgba(5,29,44,.23),0 5px 17px rgba(6,23,45,.08);
+  transform:translateZ(0);
+}
+
+/* Raised trust/proof bar across the hero's lower edge. */
+.proof-ribbon {
+  position:relative;z-index:4;
+  width:min(1180px,calc(100% - 48px));margin:-34px auto 0;
+  border:1px solid rgba(212,226,222,.91);border-radius:19px;
+  background:rgba(255,255,255,.97);
+  box-shadow:0 20px 58px rgba(15,46,47,.14);
+}
+.proof-content {width:100%;padding:13px 20px;gap:12px 18px}
+.proof-content .proof-title {color:var(--pg-a-navy);font-weight:850}
+.proof-content>span:not(.proof-title) {color:#3e5864;font-size:.72rem}
+.proof-content>span:not(.proof-title):before {color:var(--pg-a-teal);margin-right:6px}
+
+/* Editorial hierarchy, airy section rhythm, restrained dual accents. */
+.section {padding-block:clamp(78px,8.2vw,120px)}
+.section-head h2,.studio-text h2,.contact-heading h2 {
+  font-family:Georgia,"Iowan Old Style","Times New Roman",serif;
+  font-weight:500;letter-spacing:-.04em;line-height:1.105;
+}
+.section-head h2 em,.studio-text h2 em,.contact-heading h2 em {
+  font-family:Georgia,"Iowan Old Style","Times New Roman",serif;
+  font-weight:500;font-style:italic;letter-spacing:-.04em;
+}
+.kicker,.eyebrow {letter-spacing:.16em}
+.expertise-section,.journal-section,.sector-section {background:var(--pg-a-paper)}
+.work-section,.studio-section,.pg-corporate-section {
+  background:linear-gradient(145deg,#f8f6f1,#f1ede5 80%,#f7f8f6);
+}
+.solution-section {background:#fff}
+.pg-capabilities-band {
+  border-radius:16px;border-color:var(--pg-a-line);background:rgba(255,255,255,.86);
+  box-shadow:0 10px 28px rgba(14,50,57,.045);
+}
+.pg-capabilities-band a,.pg-capabilities-label,.pg-corporate-card>span {color:var(--pg-a-teal)}
+.expertise-section .section-head h2 em,.pg-corporate-section .section-head h2 em {color:var(--pg-a-teal)}
+.section-head>p {color:#536b77}
+
+/* Campaign-card pattern reused for engineering capabilities and editorial work. */
+.expertise-card:not(.pg-featured-capability),.project,.journal-card,.pg-corporate-card {
+  border:1px solid var(--pg-a-line);border-radius:var(--pg-a-radius);
+  background:#fff;box-shadow:var(--pg-a-shadow);
+}
+.expertise-card,.project,.journal-card,.sector-card,.pg-corporate-card {
+  transition:transform .23s ease,box-shadow .23s ease,border-color .23s ease;
+}
+.expertise-card:hover,.project:hover,.journal-card:hover,.sector-card:hover,.pg-corporate-card:hover {
+  transform:translateY(-4px);box-shadow:var(--pg-a-shadow-hover);
+  border-color:#b7d6d5;
+}
+.expertise-card.pg-featured-capability {
+  border-radius:var(--pg-a-radius);
+  background:linear-gradient(145deg,#103c58,#09273e 95%);
+  box-shadow:0 18px 45px rgba(8,48,73,.2);
+}
+.expertise-card .expertise-icon,.journal-symbol,.sector-symbol {border-radius:17px}
+.expertise-card:not(.pg-featured-capability) .expertise-icon {
+  background:linear-gradient(145deg,#e9f5f4,#eff7f9);
+  border-color:#cae4e5;
+}
+.expertise-card h3,.project-description h3,.journal-card h3,.pg-corporate-card h3 {
+  font-family:Georgia,"Iowan Old Style","Times New Roman",serif;
+  font-weight:600;letter-spacing:-.025em;
+}
+.expertise-card:not(.pg-featured-capability) p,.pg-corporate-card p {color:#566d78}
+.expertise-link,.pg-corporate-card a {color:var(--pg-a-teal-deep)}
+.project-visual img,.journal-card img {transition:transform .55s ease}
+.project:hover .project-visual img,.journal-card:hover img {transform:scale(1.035)}
+.work-filters button,.project-tech>span {border-radius:999px}
+.work-filters button[aria-pressed="true"] {background:var(--pg-a-navy);color:#fff}
+.pg-corporate-card a {font-weight:800}
+.pg-corporate-card h3 {color:var(--pg-a-navy)}
+.solution-choice {border-radius:14px;border-color:#dce6e6;background:#fcfdfc}
+.solution-choice[aria-pressed="true"] {border-color:#28899c;box-shadow:0 12px 27px rgba(12,77,94,.13)}
+.solution-stage,.process-display,.proof-preview,.project-form {border-radius:24px}
+.pg-cinematic {box-shadow:inset 0 1px 0 rgba(255,255,255,.09)}
+
+/* Corporate routes get the same editorial visual DNA. */
+.corp-hero {
+  background:radial-gradient(circle at 13% 11%,rgba(255,255,255,.88),transparent 38%),linear-gradient(140deg,#f9f6ef,var(--pg-a-sand));
+  color:var(--pg-a-navy);border-color:#dfded6;
+}
+.corp-hero:after {border-color:rgba(198,154,69,.19);box-shadow:0 0 0 55px rgba(198,154,69,.04),0 0 0 125px rgba(198,154,69,.025)}
+.corp-hero h1 {
+  font-family:Georgia,"Iowan Old Style","Times New Roman",serif;
+  font-size:clamp(3rem,6.8vw,6rem);font-weight:500;
+  letter-spacing:-.048em;line-height:1.045;max-width:980px;
+}
+.corp-hero h1 em {font-family:inherit;font-weight:500;font-style:italic;color:var(--pg-a-teal)}
+.corp-hero .corp-kicker {color:var(--pg-a-teal)}
+.corp-lede {color:#4d626e;max-width:760px}
+.corp-hero-note {color:#62747a;border-top:1px solid #d7cdbd;padding-top:17px;max-width:760px}
+.corp-button-muted {background:rgba(255,255,255,.56);border:1px solid #a9bdc4;color:var(--pg-a-navy)}
+.corp-button-muted:hover {background:#fff;color:var(--pg-a-teal-deep)}
+.corp-section {background:var(--pg-a-paper);border-color:#e3e9e6}
+.corp-section-tint {background:linear-gradient(135deg,#0d2d43,#071b30);color:#f5f9fb}
+.corp-section-heading h2 {
+  font-family:Georgia,"Iowan Old Style","Times New Roman",serif;
+  font-weight:500;letter-spacing:-.035em;line-height:1.12;
+}
+.corp-section-heading p {color:#526877}
+.corp-section-tint .corp-section-heading p {color:#bbd3dc}
+.corp-card,.corp-feature,.corp-note,.corp-action-strip {
+  border-radius:var(--pg-a-radius);border-color:var(--pg-a-line);
+  box-shadow:var(--pg-a-shadow);background:#fff;
+}
+.corp-card {transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease}
+.corp-card:hover {transform:translateY(-4px);box-shadow:var(--pg-a-shadow-hover);border-color:#b7d6d5}
+.corp-card h3,.corp-feature h3,.corp-note h3 {
+  font-family:Georgia,"Iowan Old Style","Times New Roman",serif;
+  font-weight:600;letter-spacing:-.025em;
+}
+.corp-card-label,.corp-small-label,.corp-section .corp-kicker {color:var(--pg-a-teal)}
+.corp-card>p:not(.corp-card-label),.corp-feature p,.corp-note p,.corp-action-strip p {color:#526978}
+.corp-section-tint .corp-card,.corp-section-tint .corp-note {
+  background:rgba(255,255,255,.075);
+  border-color:rgba(160,207,222,.25);box-shadow:none;
+}
+.corp-section-tint .corp-card>p:not(.corp-card-label),.corp-section-tint .corp-note p {color:#c8dbe4}
+.corp-section-tint .corp-card-label {color:#81d4e1}
+.corp-initial {border-radius:19px;background:linear-gradient(145deg,#10415d,#0c7590)}
+.corp-link {border-radius:999px;border-color:#a9c8d1}
+.corp-link:hover {background:#e9f5f3;border-color:#15849b}
+.corp-steps li {border-radius:18px}
+.corp-steps li:before {color:#a5e4eb}
+.corp-footer {background:#071a2c}
+
+/* Defensive layout + input / focus treatment. */
+img,svg {max-width:100%}
+:is(.expertise-card,.project,.journal-card,.sector-card,.pg-corporate-card,.corp-card,.corp-feature) {min-width:0}
+.project-form :is(input,select,textarea):focus-visible {outline:3px solid #5bcde0;outline-offset:2px}
+@media (max-width:1050px) {
+  .hero-grid {grid-template-columns:1fr}
+  .hero-copy {max-width:780px}
+  .system-panel {max-width:860px;width:100%;margin-inline:auto}
+  .proof-ribbon {width:min(92%,840px)}
+  .proof-content {justify-content:center}
+}
+@media (max-width:700px) {
+  html {scroll-padding-top:101px}
+  .hero {padding-top:132px;padding-bottom:92px}
+  .hero h1 {font-size:clamp(2.9rem,10vw,4.25rem)}
+  .hero h1 .pg-hero-signoff {white-space:normal}
+  .hero-desc {font-size:.94rem}
+  .hero-actions {display:flex;flex-wrap:wrap;align-items:stretch}
+  .hero-actions .button {min-width:0;flex:1 1 190px;justify-content:center}
+  .hero-signature {gap:8px}
+  .proof-ribbon {margin-top:-26px;width:calc(100% - 26px);border-radius:17px}
+  .proof-content {gap:7px 10px;padding:14px 12px}
+  .proof-content>span:not(.proof-title) {font-size:.64rem}
+  .section {padding-block:70px}
+  .section-head h2 {font-size:clamp(2.3rem,9vw,3.35rem)}
+  .expertise-card:not(.pg-featured-capability),.project,.journal-card,.pg-corporate-card,.corp-card {border-radius:18px}
+  .corp-hero {padding-block:70px 66px}
+  .corp-hero h1 {font-size:clamp(2.75rem,10vw,4.1rem)}
+  .corp-hero-actions {gap:11px}
+  .corp-button {min-height:46px}
+}
+@media (max-width:380px) {
+  .hero h1 {font-size:clamp(2.65rem,10.5vw,3.35rem)}
+  .hero-actions .button {width:100%;flex-basis:100%}
+  .proof-content {justify-content:flex-start}
+  .corp-hero h1 {font-size:clamp(2.55rem,10.5vw,3.25rem)}
+}
+@media (prefers-reduced-motion:reduce) {
+  html {scroll-behavior:auto}
+  .site-header,.corp-header,.button,.header-cta,.corp-button,
+  .expertise-card,.project,.journal-card,.sector-card,.pg-corporate-card,.corp-card,
+  .project-visual img,.journal-card img {transition:none!important;animation:none!important;transform:none!important}
+}
+@media (prefers-contrast:more) {
+  .proof-ribbon,.expertise-card,.project,.journal-card,.pg-corporate-card,.corp-card {border:2px solid #344f60}
+  .hero-desc,.corp-lede {color:#243c4b}
+  .button-primary,.corp-button:not(.corp-button-muted) {background:#064e65}
+}
