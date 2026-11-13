@@ -772,3 +772,9 @@ body.pg-amanah-studio-v2{background:var(--pg2-paper);color:var(--pg2-ink)}
 .pg-corporate-v2 .pg-corp-principles p{color:#435c62}
 .pg-corporate-v2 .pg-corp-at-glance-head small{color:#40585f}
 .pg-corporate-v2 .pg-corp-hero-main .corp-hero-note{color:#465c65}
+
+
+/* Dark corporate editorial chapters: restore light metadata in tinted panels. */
+.pg-corporate-v2 .corp-section-tint :is(.corp-kicker,.corp-card-label,.corp-small-label){color:#9bdfde}
+.pg-corporate-v2 .corp-section-tint :is(.corp-card h3,.corp-feature h3,.corp-note h3,.corp-steps strong){color:#f5fbf9}
+.pg-corporate-v2 .corp-section-tint :is(.corp-section-heading p,.corp-card>p:not(.corp-card-label),.corp-note p,.corp-steps span){color:#d6e6e6}
