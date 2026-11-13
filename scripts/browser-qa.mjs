@@ -3,6 +3,8 @@ import AxeBuilder from "@axe-core/playwright";
 import {mkdir,writeFile} from "node:fs/promises";
 const url=process.env.PUKKA_BASE_URL||"http://127.0.0.1:4173/";
 const widths=[320,375,768,1024,1280,1440];
+// Editorial Amanah-parity pages use Georgia display headings, while Sora remains
+// available for technical typography and Manrope remains the body font.
 const results=[],failures=[];
 await mkdir("artifacts/qa",{recursive:true});
 async function ready(){
@@ -35,7 +37,7 @@ for(const [browserName,engine] of Object.entries({chromium,firefox,webkit})){
      body:getComputedStyle(document.body).fontFamily
     };
    });
-   if(!chosenFonts.sora||!chosenFonts.manrope||!chosenFonts.heading.includes("Sora")||!chosenFonts.body.includes("Manrope"))
+   if(!chosenFonts.sora||!chosenFonts.manrope||!chosenFonts.heading.includes("Georgia")||!chosenFonts.body.includes("Manrope"))
     throw new Error("Homepage typography mismatch: "+JSON.stringify(chosenFonts));
    if((await page.locator("[data-service]").count())!==6)throw new Error("Six service cards missing");
    if(await page.evaluate(()=>document.documentElement.classList.contains("motion-enabled")))
@@ -187,7 +189,7 @@ for(const [browserName,engine] of Object.entries({chromium,firefox,webkit})){
          body:getComputedStyle(document.body).fontFamily
         };
        });
-       if(!corporateFonts.sora||!corporateFonts.manrope||!corporateFonts.title.includes("Sora")||!corporateFonts.body.includes("Manrope"))
+       if(!corporateFonts.sora||!corporateFonts.manrope||!corporateFonts.title.includes("Georgia")||!corporateFonts.body.includes("Manrope"))
         throw new Error(route+" typography mismatch: "+JSON.stringify(corporateFonts));
 
        if(await page.locator('a.corp-skip[href="#main"]').count()!==1)throw new Error(route+" skip link absent");
