@@ -394,3 +394,18 @@
   .pg-amanah-studio-v2 .pg-lustre-surface::after{display:none}
   .pg-amanah-studio-v2 :is(.expertise-card,.sector-card,.journal-card,.project,.button,.corp-card){border:1px solid CanvasText}
 }
+
+
+/* Screenshot acceptance: the dark contact chapter must keep its opening
+   headline legible (its text previously inherited dark ink). */
+.pg-amanah-studio-v2 .contact-section .contact-big{
+  color:#f3fbfa;
+  text-shadow:0 1px 18px rgba(5,30,43,.14);
+}
+.pg-amanah-studio-v2 .contact-section .contact-big em{
+  color:#b5ece4;
+  text-shadow:none;
+}
+.pg-amanah-studio-v2 .contact-section .contact-promise{
+  color:#d6e8e8;
+}
