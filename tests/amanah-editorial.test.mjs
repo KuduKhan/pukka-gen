@@ -114,7 +114,7 @@ test("enterprise identity stays consistent across homepage and corporate routes"
   const home = read("index.html");
   assert.match(home, /class="pg-enterprise-signature"/);
   assert.match(home, /AN INTELLISOFT COMPANY/);
-  assert.match(home, /font/); // Existing branding and its stylesheet links stay present
+  assert.match(home, /href="\/src\/typography\.css"/); // Existing locally licensed type system remains
   assert.equal((home.match(/class="pg-corporate-card pg-route-card"/g)||[]).length,4);
   assert.equal((home.match(/class="pg-route-icon"/g)||[]).length,4);
   assert.equal((home.match(/class="pg-route-index"/g)||[]).length,4);
