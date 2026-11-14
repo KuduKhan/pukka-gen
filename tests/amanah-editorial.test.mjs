@@ -108,3 +108,33 @@ test("visual excellence layer is structurally sound, local and motion aware", ()
   assert.doesNotMatch(interactivity, /\bfetch\s*\(/);
   assert.doesNotMatch(interactivity, /localStorage|sessionStorage|navigator\.sendBeacon/);
 });
+
+
+test("enterprise identity stays consistent across homepage and corporate routes", () => {
+  const home = read("index.html");
+  assert.match(home, /class="pg-enterprise-signature"/);
+  assert.match(home, /AN INTELLISOFT COMPANY/);
+  assert.match(home, /font/); // Existing branding and its stylesheet links stay present
+  assert.equal((home.match(/class="pg-corporate-card pg-route-card"/g)||[]).length,4);
+  assert.equal((home.match(/class="pg-route-icon"/g)||[]).length,4);
+  assert.equal((home.match(/class="pg-route-index"/g)||[]).length,4);
+  for(const route of ["company.html","partners.html","investors.html","trust.html"]){
+    const page=read(route);
+    assert.equal((page.match(/class="corp-card pg-corp-elevated"/g)||[]).length,4,route);
+    assert.equal((page.match(/class="pg-corp-card-icon"/g)||[]).length,4,route);
+    assert.equal((page.match(/class="pg-corp-card-top"/g)||[]).length,4,route);
+    assert.match(page,/pukka-gen-wordmark\.png/);
+    assert.match(page,/pg-corp-at-glance/);
+  }
+  const sprite=read("public/icons/pukka-symbols.svg");
+  const IDs=new Set([...sprite.matchAll(/<symbol id="([^"]+)"/g)].map(match=>match[1]));
+  for(const route of ["index.html","company.html","partners.html","investors.html","trust.html"]){
+    const page=read(route);
+    for(const [_,id] of page.matchAll(/href="\/icons\/pukka-symbols\.svg#([^"]+)"/g)){
+      assert.ok(IDs.has(id),route+" has missing SVG symbol "+id);
+    }
+  }
+  assert.match(lustre,/pg-enterprise-affiliation/);
+  assert.match(lustre,/pg-route-card/);
+  assert.match(lustre,/pg-corp-elevated/);
+});
