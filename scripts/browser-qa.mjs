@@ -36,6 +36,11 @@ for(const [browserName,engine] of Object.entries({chromium,firefox,webkit})){
    }));
    if(!glassFinish.filter.includes("blur")||!glassFinish.border)
      throw new Error("Hero glass finish missing: "+JSON.stringify(glassFinish));
+   const contactInk=await page.locator(".contact-big").evaluate(node=>getComputedStyle(node).color);
+   const channels=(contactInk.match(/[\d.]+/g)||[]).slice(0,3).map(Number);
+   if(channels.length<3||Math.min(...channels)<190)
+     throw new Error("Dark contact heading must use light, accessible ink: "+contactInk);
+
    if(await page.locator(".pg-lustre-surface").count()!==0)
      throw new Error("Reduced-motion scenario must not activate pointer spotlight effects");
 
