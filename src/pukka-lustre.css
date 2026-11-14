@@ -409,3 +409,254 @@
 .pg-amanah-studio-v2 .contact-section .contact-promise{
   color:#d6e8e8;
 }
+
+
+/* PUKKA GEN ENTERPRISE FINISH · Company-wide visual identity
+   Added on the real corporate pathways rather than ornamental filler.
+   Four repeatable icon-led routes; one restrained company signature. */
+.pg-amanah-studio-v2 .pg-enterprise-signature{
+  display:flex;align-items:center;gap:16px;min-width:0;
+  margin:0 0 clamp(24px,3.4vw,34px);
+  padding:15px clamp(16px,2.3vw,25px);
+  border:1px solid #d4e3df;border-radius:19px;
+  background:linear-gradient(115deg,#fff 0%,#f7faf7 56%,#eaf3ed 100%);
+  box-shadow:0 4px 10px rgba(8,45,51,.045),0 15px 33px rgba(8,45,51,.035),inset 0 1px 0 #fff;
+}
+.pg-amanah-studio-v2 .pg-enterprise-seal{
+  flex:0 0 52px;width:52px;height:52px;display:grid;place-items:center;
+  border:1px solid #517e88;border-radius:16px;
+  color:#b8eaf0;
+  background:linear-gradient(145deg,#173c50,#0b2336 85%);
+  box-shadow:0 7px 15px rgba(4,37,55,.16),inset 0 1px 0 rgba(255,255,255,.12);
+}
+.pg-amanah-studio-v2 .pg-enterprise-seal svg{width:28px;height:28px;display:block}
+.pg-amanah-studio-v2 .pg-enterprise-signature-text{
+  display:flex;flex-direction:column;gap:2px;min-width:0
+}
+.pg-amanah-studio-v2 .pg-enterprise-signature-text strong{
+  font-family:Georgia,"Iowan Old Style","Times New Roman",serif;
+  color:#183843;font-weight:500;font-size:clamp(1.06rem,1.5vw,1.36rem);
+  letter-spacing:-.034em;line-height:1.24;
+}
+.pg-amanah-studio-v2 .pg-enterprise-signature-text em{
+  font-family:"Pukka Hand","Segoe Print",cursive;
+  color:#0d7280;font-size:1.36em;font-weight:630;
+  letter-spacing:-.035em;font-style:normal;white-space:nowrap;
+}
+.pg-amanah-studio-v2 .pg-enterprise-signature-text small{
+  font-family:"Manrope","Segoe UI",sans-serif;
+  color:#48676b;font-size:.61rem;letter-spacing:.105em;font-weight:790;
+}
+.pg-amanah-studio-v2 .pg-enterprise-affiliation{
+  margin-left:auto;flex:0 0 auto;white-space:nowrap;
+  padding:9px 14px;border:1px solid #cbdedb;border-radius:999px;
+  background:rgba(239,248,244,.92);color:#205865;
+  font-family:"Manrope","Segoe UI",sans-serif;
+  font-weight:790;letter-spacing:.095em;font-size:.62rem;
+}
+.pg-amanah-studio-v2 .pg-corporate-grid{align-items:stretch}
+.pg-amanah-studio-v2 .pg-route-card{
+  overflow:hidden;isolation:isolate;
+  background:linear-gradient(151deg,#ffffff 0%,#fbfdfb 71%,#f3f8f3 100%);
+  box-shadow:0 5px 16px rgba(5,51,58,.04),0 18px 38px rgba(5,51,58,.045);
+}
+.pg-amanah-studio-v2 .pg-route-card::before{
+  content:"";position:absolute;inset:0 auto auto 0;height:3px;width:100%;
+  background:linear-gradient(90deg,#155b72,#35969a 54%,#c4a263);
+  opacity:.8;pointer-events:none;
+}
+.pg-amanah-studio-v2 .pg-route-top{
+  display:flex;align-items:center;justify-content:space-between;
+  min-height:62px;gap:12px;margin:0 0 14px;width:100%;
+}
+.pg-amanah-studio-v2 .pg-route-index{
+  color:#315d68;font:790 .64rem/1.45 "Manrope","Segoe UI",sans-serif;
+  letter-spacing:.105em;text-align:right;
+}
+.pg-amanah-studio-v2 :is(.pg-route-icon,.pg-corp-card-icon){
+  width:54px;height:54px;flex:0 0 54px;display:grid;place-items:center;
+  border:1px solid #d0e2de;border-radius:16px;
+  background:linear-gradient(142deg,#e8f3ef,#f6faf8);
+  color:#185e6f;
+  box-shadow:0 5px 13px rgba(5,64,70,.065),inset 0 1px 0 #fff;
+  transition:border-color .23s ease,background .23s ease,transform .3s var(--pgx-ease),box-shadow .3s ease;
+}
+.pg-amanah-studio-v2 :is(.pg-route-icon,.pg-corp-card-icon) svg{
+  width:31px;height:31px;display:block;shape-rendering:geometricPrecision
+}
+.pg-amanah-studio-v2 :is(.pg-route-card,.pg-corp-elevated):is(:hover,:focus-within) :is(.pg-route-icon,.pg-corp-card-icon){
+  transform:translateY(-3px);
+  border-color:#8cbbb4;
+  background:linear-gradient(140deg,#d8f0e8,#eff7f2);
+  box-shadow:0 9px 20px rgba(5,64,70,.105),inset 0 1px 0 #fff;
+}
+.pg-amanah-studio-v2 .pg-route-card h3{
+  margin-top:2px;line-height:1.18;
+}
+.pg-amanah-studio-v2 .pg-route-card p{
+  font-size:.88rem;line-height:1.74;
+}
+.pg-amanah-studio-v2 .pg-route-card a{
+  border-top:1px solid #e6efea;
+  width:100%;padding-top:15px;min-height:46px;
+}
+.pg-amanah-studio-v2 .pg-route-card a:is(:hover,:focus-visible){
+  text-decoration:underline;text-underline-offset:5px;
+}
+/* Corporate page surface — coherent from hero through proof and action strips. */
+.pg-corporate-v2 .corp-header{
+  border-bottom:1px solid rgba(192,214,205,.87);
+  background:rgba(252,253,250,.96);
+  -webkit-backdrop-filter:blur(18px) saturate(138%);
+  backdrop-filter:blur(18px) saturate(138%);
+  box-shadow:0 10px 32px rgba(9,52,57,.05);
+}
+.pg-corporate-v2 .corp-hero .pg-corp-at-glance{
+  position:relative;isolation:isolate;overflow:hidden;
+  border-radius:24px;
+  background:linear-gradient(145deg,rgba(255,255,255,.985),rgba(238,248,243,.95));
+  border:1px solid #cadfd7;
+  box-shadow:0 10px 24px rgba(10,54,63,.06),0 28px 65px rgba(10,54,63,.13),inset 0 1px 0 #fff;
+}
+.pg-corporate-v2 .corp-hero .pg-corp-at-glance::before{
+  content:"";position:absolute;inset:-85px -80px auto auto;
+  width:225px;height:225px;border-radius:50%;
+  border:1px solid rgba(41,129,136,.13);
+  box-shadow:0 0 0 36px rgba(41,129,136,.035),0 0 0 74px rgba(41,129,136,.02);
+  z-index:-1;pointer-events:none;
+}
+.pg-corporate-v2 .pg-card-emblem{
+  border-radius:15px;
+  box-shadow:0 10px 24px rgba(8,58,65,.14),inset 0 1px 0 rgba(255,255,255,.2)
+}
+.pg-corporate-v2 .pg-corp-principles>div{
+  border-top-color:#dce9e2
+}
+.pg-corporate-v2 .pg-corp-principles strong{
+  font-family:"Manrope","Segoe UI",sans-serif;
+  letter-spacing:.06em;font-weight:770
+}
+.pg-corporate-v2 .corp-kicker{
+  font-family:"Manrope","Segoe UI",sans-serif;
+  letter-spacing:.115em
+}
+.pg-corporate-v2 .corp-grid{align-items:stretch}
+.pg-corporate-v2 .corp-card.pg-corp-elevated{
+  position:relative;isolation:isolate;overflow:hidden;
+  border:1px solid #d6e5de;border-radius:21px;
+  background:linear-gradient(150deg,#fff,#fbfdfb);
+  padding:clamp(22px,2.7vw,33px);
+  box-shadow:var(--pgx-shadow);
+  transition:transform .3s var(--pgx-ease),border-color .25s ease,box-shadow .3s var(--pgx-ease);
+}
+.pg-corporate-v2 .corp-card.pg-corp-elevated::before{
+  content:"";position:absolute;left:0;top:0;right:0;height:3px;
+  background:linear-gradient(90deg,#1a6279,#398f9a 61%,#c0a46f);
+  opacity:.75;pointer-events:none;
+}
+.pg-corporate-v2 .corp-card.pg-corp-elevated:is(:hover,:focus-within){
+  border-color:#a7d0c5;box-shadow:var(--pgx-shadow-hover);
+  transform:translateY(-3px)
+}
+.pg-corporate-v2 .pg-corp-card-top{
+  display:flex;align-items:center;gap:14px;min-height:54px;
+  margin-bottom:16px;
+}
+.pg-corporate-v2 .pg-corp-card-top .corp-card-label{
+  font-family:"Manrope","Segoe UI",sans-serif;
+  letter-spacing:.105em;font-weight:770;
+  margin:0;max-width:100%;line-height:1.5;
+  color:#286271
+}
+.pg-corporate-v2 .corp-card.pg-corp-elevated h3{
+  font-family:Georgia,"Iowan Old Style","Times New Roman",serif;
+  letter-spacing:-.033em;font-weight:500;
+  font-size:clamp(1.38rem,2vw,1.73rem);line-height:1.2;margin:0 0 12px;
+}
+.pg-corporate-v2 .corp-card.pg-corp-elevated p:not(.corp-card-label){
+  color:#475f68;line-height:1.75;font-size:.91rem
+}
+.pg-corporate-v2 .corp-section-tint .corp-card.pg-corp-elevated{
+  background:linear-gradient(150deg,rgba(255,255,255,.085),rgba(255,255,255,.045));
+  border-color:rgba(173,220,216,.25);
+  box-shadow:0 16px 33px rgba(1,15,29,.08),inset 0 1px 0 rgba(255,255,255,.05)
+}
+.pg-corporate-v2 .corp-section-tint .corp-card.pg-corp-elevated:is(:hover,:focus-within){
+  background:linear-gradient(145deg,rgba(255,255,255,.12),rgba(255,255,255,.06));
+  border-color:rgba(160,220,215,.48);
+}
+.pg-corporate-v2 .corp-section-tint .pg-corp-card-top .corp-card-label{color:#aedfdc}
+.pg-corporate-v2 .corp-section-tint .corp-card.pg-corp-elevated h3{color:#f7fbfa}
+.pg-corporate-v2 .corp-section-tint .corp-card.pg-corp-elevated p:not(.corp-card-label){color:#d2e5e4}
+.pg-corporate-v2 .corp-section-tint .pg-corp-card-icon{
+  background:rgba(91,169,171,.14);
+  border-color:rgba(174,218,213,.28);
+  color:#b9f2eb;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.11)
+}
+.pg-corporate-v2 .corp-section-tint .pg-corp-elevated:is(:hover,:focus-within) .pg-corp-card-icon{
+  background:rgba(91,169,171,.2);border-color:rgba(174,218,213,.48)
+}
+.pg-corporate-v2 :is(.corp-note,.corp-action-strip,.corp-feature){
+  border-radius:21px;
+  box-shadow:var(--pgx-shadow),inset 0 1px 0 rgba(255,255,255,.75)
+}
+.pg-corporate-v2 .corp-action-strip{gap:24px}
+.pg-corporate-v2 .corp-link{
+  border-radius:999px;min-height:46px;
+  display:inline-flex;align-items:center;
+  transition:background .2s,border-color .2s,box-shadow .2s,transform .2s var(--pgx-ease)
+}
+.pg-corporate-v2 .corp-link:is(:hover,:focus-visible){
+  transform:translateY(-2px);
+  box-shadow:0 8px 21px rgba(7,51,64,.095);
+}
+.pg-corporate-v2 .corp-footer{
+  background:linear-gradient(160deg,#061a2b,#091f31 70%,#061b2b)
+}
+@media(max-width:980px){
+  .pg-amanah-studio-v2 .pg-enterprise-signature{gap:12px}
+  .pg-amanah-studio-v2 .pg-enterprise-affiliation{
+    font-size:.58rem;letter-spacing:.06em
+  }
+}
+@media(max-width:680px){
+  .pg-amanah-studio-v2 .pg-enterprise-signature{
+    flex-wrap:wrap;gap:12px;padding:16px;border-radius:17px
+  }
+  .pg-amanah-studio-v2 .pg-enterprise-seal{
+    flex-basis:44px;width:44px;height:44px;border-radius:13px
+  }
+  .pg-amanah-studio-v2 .pg-enterprise-seal svg{width:25px;height:25px}
+  .pg-amanah-studio-v2 .pg-enterprise-signature-text{flex:1;min-width:0}
+  .pg-amanah-studio-v2 .pg-enterprise-affiliation{
+    margin:0;width:100%;text-align:center;font-size:.58rem;padding:8px 12px
+  }
+  .pg-amanah-studio-v2 .pg-route-top{min-height:52px;margin-bottom:12px}
+  .pg-amanah-studio-v2 :is(.pg-route-icon,.pg-corp-card-icon){
+    flex-basis:48px;width:48px;height:48px;border-radius:14px
+  }
+  .pg-amanah-studio-v2 :is(.pg-route-icon,.pg-corp-card-icon) svg{
+    width:29px;height:29px
+  }
+  .pg-corporate-v2 .pg-corp-card-top{min-height:48px;margin-bottom:13px}
+  .pg-corporate-v2 .corp-card.pg-corp-elevated{padding:22px}
+  .pg-corporate-v2 .corp-card.pg-corp-elevated:is(:hover,:focus-within){transform:none}
+  .pg-corporate-v2 .pg-corp-at-glance{border-radius:18px}
+}
+@media(hover:none),(pointer:coarse),(prefers-reduced-motion:reduce){
+  .pg-amanah-studio-v2 :is(.pg-route-card,.pg-corp-elevated):is(:hover,:focus-within) :is(.pg-route-icon,.pg-corp-card-icon){
+    transform:none
+  }
+  .pg-corporate-v2 .corp-card.pg-corp-elevated:is(:hover,:focus-within){transform:none}
+}
+@media(prefers-reduced-motion:reduce){
+  .pg-amanah-studio-v2 :is(.pg-route-icon,.pg-corp-card-icon,.pg-corp-elevated,.pg-route-card)::before{
+    transition:none!important;animation:none!important
+  }
+}
+@media(prefers-contrast:more){
+  .pg-amanah-studio-v2 :is(.pg-enterprise-signature,.pg-route-card,.pg-corp-elevated){
+    border:2px solid #29505a
+  }
+}
