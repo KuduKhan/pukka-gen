@@ -61,6 +61,14 @@ for(const [browserName,engine] of Object.entries({chromium,firefox,webkit})){
    if(await page.evaluate(()=>document.documentElement.classList.contains("motion-enabled")))
     throw new Error("Reduced-motion preference should suppress scroll effects");
    if((await page.locator("[data-project]").count())!==3)throw new Error("Three concept cases missing");
+   if(await page.locator(".pg-enterprise-signature").count()!==1 ||
+      await page.locator(".pg-route-card").count()!==4 ||
+      await page.locator(".pg-route-icon svg use").count()!==4)
+     throw new Error("Pukka enterprise identity or four icon-led corporate pathways missing");
+   if(width<=375){
+     const signatureOverflow=await page.locator(".pg-enterprise-signature").evaluate(el=>el.scrollWidth-el.clientWidth);
+     if(signatureOverflow>2)throw new Error("Company signature clips on mobile: "+signatureOverflow);
+   }
    const overflow=await page.evaluate(()=>Math.max(0,document.documentElement.scrollWidth-window.innerWidth));
    if(overflow>2)throw new Error("Horizontal overflow: "+overflow+"px");
    if(await page.locator('[data-solution-select]').count()!==4)throw new Error("Four outcome paths missing");
@@ -215,6 +223,9 @@ for(const [browserName,engine] of Object.entries({chromium,firefox,webkit})){
        const routeResponse=await page.goto(routeUrl,{waitUntil:"domcontentloaded"});
        if(!routeResponse?.ok())throw new Error(route+" page failed HTTP");
        if(await page.locator('main h1').count()!==1)throw new Error(route+" heading missing");
+        if(await page.locator(".corp-card.pg-corp-elevated").count()!==4 ||
+           await page.locator(".pg-corp-card-top .pg-corp-card-icon svg use").count()!==4)
+          throw new Error(route+" has missing enterprise-level icon-led cards");
        const corporateFonts=await page.evaluate(async()=>{
         await document.fonts.load('700 24px "Sora"');
         await document.fonts.load('400 16px "Manrope"');
