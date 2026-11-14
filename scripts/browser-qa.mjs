@@ -26,6 +26,24 @@ for(const [browserName,engine] of Object.entries({chromium,firefox,webkit})){
    const response=await page.goto(url,{waitUntil:"domcontentloaded"});
    if(!response?.ok())throw new Error("Page HTTP failure");
    await page.locator("[data-service]").first().waitFor({timeout:12000});
+   if(await page.locator('link[href="/src/pukka-lustre.css"]').count()!==1)
+     throw new Error("Premium visual layer did not load");
+   if(await page.locator('script[src="/src/pukka-lustre.ts"]').count()!==1)
+     throw new Error("Progressive enhancement script missing");
+   const glassFinish=await page.locator(".pg-hero-showcase").evaluate(node=>({
+     filter:getComputedStyle(node).backdropFilter||getComputedStyle(node).webkitBackdropFilter,
+     border:getComputedStyle(node).borderRadius
+   }));
+   if(!glassFinish.filter.includes("blur")||!glassFinish.border)
+     throw new Error("Hero glass finish missing: "+JSON.stringify(glassFinish));
+   const contactInk=await page.locator(".contact-big").evaluate(node=>getComputedStyle(node).color);
+   const channels=(contactInk.match(/[\d.]+/g)||[]).slice(0,3).map(Number);
+   if(channels.length<3||Math.min(...channels)<190)
+     throw new Error("Dark contact heading must use light, accessible ink: "+contactInk);
+
+   if(await page.locator(".pg-lustre-surface").count()!==0)
+     throw new Error("Reduced-motion scenario must not activate pointer spotlight effects");
+
    
    const chosenFonts=await page.evaluate(async()=>{
     await document.fonts.load('700 24px "Sora"');
@@ -43,6 +61,14 @@ for(const [browserName,engine] of Object.entries({chromium,firefox,webkit})){
    if(await page.evaluate(()=>document.documentElement.classList.contains("motion-enabled")))
     throw new Error("Reduced-motion preference should suppress scroll effects");
    if((await page.locator("[data-project]").count())!==3)throw new Error("Three concept cases missing");
+   if(await page.locator(".pg-enterprise-signature").count()!==1 ||
+      await page.locator(".pg-route-card").count()!==4 ||
+      await page.locator(".pg-route-icon svg use").count()!==4)
+     throw new Error("Pukka enterprise identity or four icon-led corporate pathways missing");
+   if(width<=375){
+     const signatureOverflow=await page.locator(".pg-enterprise-signature").evaluate(el=>el.scrollWidth-el.clientWidth);
+     if(signatureOverflow>2)throw new Error("Company signature clips on mobile: "+signatureOverflow);
+   }
    const overflow=await page.evaluate(()=>Math.max(0,document.documentElement.scrollWidth-window.innerWidth));
    if(overflow>2)throw new Error("Horizontal overflow: "+overflow+"px");
    if(await page.locator('[data-solution-select]').count()!==4)throw new Error("Four outcome paths missing");
@@ -158,6 +184,24 @@ for(const [browserName,engine] of Object.entries({chromium,firefox,webkit})){
         return document.fonts.check('600 22px "Pukka Hand"');
       });
       if(!fontLoaded)throw new Error("Self-hosted Caveat handwriting font did not load");
+       const litCard=motionPage.locator(".expertise-card").first();
+       await litCard.hover();
+       await motionPage.waitForTimeout(420);
+       const highlight=await litCard.evaluate(node=>{
+         const surface=getComputedStyle(node,"::after");
+         return {
+           enabled:node.classList.contains("pg-lustre-surface"),
+           opacity:Number.parseFloat(surface.opacity),
+           spotX:node.style.getPropertyValue("--pg-spot-x"),
+           spotY:node.style.getPropertyValue("--pg-spot-y")
+         };
+       });
+       if(!highlight.enabled||highlight.opacity<.8||!highlight.spotX||!highlight.spotY)
+         throw new Error("Pointer-aware card highlight failed: "+JSON.stringify(highlight));
+       await motionPage.locator('[data-solution-select="knowledge"]').click();
+       if(!(await motionPage.locator("#solution-title").innerText()).includes("intelligence"))
+         throw new Error("Animated solution explorer no longer responds");
+
       await motionPage.locator("#work .section-head").scrollIntoViewIfNeeded();
       await motionPage.waitForFunction(
         ()=>document.querySelector("#work .section-head")?.getAttribute("data-reveal")==="shown",
@@ -179,6 +223,9 @@ for(const [browserName,engine] of Object.entries({chromium,firefox,webkit})){
        const routeResponse=await page.goto(routeUrl,{waitUntil:"domcontentloaded"});
        if(!routeResponse?.ok())throw new Error(route+" page failed HTTP");
        if(await page.locator('main h1').count()!==1)throw new Error(route+" heading missing");
+        if(await page.locator(".corp-card.pg-corp-elevated").count()!==4 ||
+           await page.locator(".pg-corp-card-top .pg-corp-card-icon svg use").count()!==4)
+          throw new Error(route+" has missing enterprise-level icon-led cards");
        const corporateFonts=await page.evaluate(async()=>{
         await document.fonts.load('700 24px "Sora"');
         await document.fonts.load('400 16px "Manrope"');
