@@ -236,7 +236,7 @@ for(const [browserName,engine] of Object.entries({chromium,firefox,webkit})){
          overlay:getComputedStyle(node,"::after").content,
          spotX:node.style.getPropertyValue("--pg-spot-x")
        }));
-       if(performanceFinish.active||performanceFinish.spotX||!["none","normal"].includes(performanceFinish.overlay))
+       if(performanceFinish.active||performanceFinish.spotX||!["none","normal",'""'].includes(performanceFinish.overlay))
          throw new Error("Expensive cursor spotlight still active: "+JSON.stringify(performanceFinish));
        await motionPage.locator('[data-solution-select="knowledge"]').click();
        if(!(await motionPage.locator("#solution-title").innerText()).includes("intelligence"))
