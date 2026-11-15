@@ -61,6 +61,32 @@ for(const [browserName,engine] of Object.entries({chromium,firefox,webkit})){
    if(await page.evaluate(()=>document.documentElement.classList.contains("motion-enabled")))
     throw new Error("Reduced-motion preference should suppress scroll effects");
    if((await page.locator("[data-project]").count())!==3)throw new Error("Three concept cases missing");
+   if(await page.locator("nav.footer-nav").count()!==1)
+     throw new Error("Three-column footer navigation landmark missing");
+   const footerColumns=await page.locator("nav.footer-nav").evaluate(nav=>{
+     const groups=Array.from(nav.children);
+     const bounds=groups.map(group=>group.getBoundingClientRect());
+     const styles=getComputedStyle(nav);
+     return{
+       count:groups.length,
+       columns:styles.gridTemplateColumns.trim().split(/\s+/).length,
+       oneRow:bounds.every(x=>Math.abs(x.top-bounds[0].top)<2),
+       overflow:Math.max(0,nav.scrollWidth-nav.clientWidth),
+       labels:groups.map(group=>group.querySelector("span")?.textContent?.trim()),
+       groups:groups.map(group=>Array.from(group.querySelectorAll("a")).length)
+     };
+   });
+   if(footerColumns.count!==3||footerColumns.columns!==3||!footerColumns.oneRow||
+      footerColumns.overflow>2||JSON.stringify(footerColumns.labels)!=='["EXPLORE","STUDIO","CONNECT"]'||
+      JSON.stringify(footerColumns.groups)!=="[5,5,3]")
+     throw new Error("Footer three-column layout broken at "+width+"px: "+JSON.stringify(footerColumns));
+   const heroTones=await page.locator(".hero h1").evaluate(node=>{
+     const color=x=>(getComputedStyle(x).color.match(/[\d.]+/g)||[]).slice(0,3).map(Number);
+     return{heading:color(node),matter:color(node.querySelector("em")),noDuff:color(node.querySelector(".pg-hero-signoff"))};
+   });
+   if(Object.values(heroTones).some(rgb=>rgb.length!==3||(rgb[2]>rgb[0]+8&&rgb[2]>rgb[1]+8)))
+     throw new Error("Hero ink unexpectedly reverted to blue: "+JSON.stringify(heroTones));
+
    if(await page.locator(".pg-enterprise-signature").count()!==1 ||
       await page.locator(".pg-route-card").count()!==4 ||
       await page.locator(".pg-route-icon svg use").count()!==4)
