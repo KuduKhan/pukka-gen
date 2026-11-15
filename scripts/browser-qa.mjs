@@ -86,7 +86,7 @@ for(const [browserName,engine] of Object.entries({chromium,firefox,webkit})){
    });
    if(Object.values(heroTones).some(rgb=>rgb.length!==3||rgb[2]<=rgb[0]+18||rgb[2]<=rgb[1]+8))
      throw new Error("Pukka navy/electric-blue hero ink missing: "+JSON.stringify(heroTones));
-   const footerHeadingInk=await page.locator("nav.footer-nav>div:first-child>span").evaluate(node=>(getComputedStyle(node).color.match(/[\\d.]+/g)||[]).slice(0,3).map(Number));
+   const footerHeadingInk=await page.locator("nav.footer-nav>div:first-child>span").evaluate(node=>(getComputedStyle(node).color.match(/[0-9.]+/g)||[]).slice(0,3).map(Number));
    if(footerHeadingInk.length!==3||footerHeadingInk[2]<=footerHeadingInk[0]+20)
      throw new Error("Pukka blue footer heading accent missing: "+JSON.stringify(footerHeadingInk));
 
