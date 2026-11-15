@@ -97,6 +97,7 @@ test("visual excellence layer is structurally sound, local and motion aware", ()
   assert.match(lustre,/forced-colors:active/);
   assert.match(lustre,/pointer:coarse/);
   assert.match(lustre,/\.pg-lustre-surface::after/);
+  assert.match(lustre,/content:none!important/);
   assert.match(lustre, /backdrop-filter:blur/);
   assert.match(lustre,/focus-visible/);
   assert.match(lustre,/pgx-content-in/);
@@ -104,7 +105,7 @@ test("visual excellence layer is structurally sound, local and motion aware", ()
   assert.match(interactivity,/requestAnimationFrame/);
   assert.match(interactivity,/prefers-reduced-motion: reduce/);
   assert.match(interactivity,/IntersectionObserver/);
-  assert.match(interactivity,/pointermove/);
+  assert.doesNotMatch(interactivity,/pointermove|pg-spot-x|pg-lustre-surface/);
   assert.doesNotMatch(interactivity, /\bfetch\s*\(/);
   assert.doesNotMatch(interactivity, /localStorage|sessionStorage|navigator\.sendBeacon/);
 });
@@ -173,4 +174,37 @@ test("Pukka Gen blue hero preserves No Duff and the three-column footer",()=>{
   assert.match(lustre,/\.pg-editorial-hero \.button-primary/);
   assert.match(lustre,/\.footer-nav>div\+div/);
   assert.doesNotMatch(lustre,/Warm parchment, forest-charcoal ink and brushed brass/);
+});
+
+
+test("v4.3 mobile corporate navigation is a real vertical collapsible menu",()=>{
+  for(const route of ["company.html","partners.html","investors.html","trust.html"]){
+    const html=read(route);
+    assert.match(html,/class="pg-corp-menu-toggle" aria-expanded="false" aria-controls="pg-corp-nav"/,route);
+    assert.match(html,/class="corp-nav" id="pg-corp-nav"/,route);
+    assert.match(html,/class="pg-corp-mobile-cta"/,route);
+    assert.equal((html.match(/id="pg-corp-nav"/g)||[]).length,1,route);
+  }
+  assert.match(interactivity,/corporateToggle\.addEventListener\("click"/);
+  assert.match(interactivity,/corporateNav\.classList\.toggle\("pg-corp-nav-open"/);
+  assert.match(lustre,/\.corp-header \.corp-nav\.pg-corp-nav-open/);
+  assert.match(lustre,/\.mobile-nav:not\(\[hidden\]\)/);
+  assert.match(lustre,/flex-direction:column/);
+  assert.match(lustre,/overflow-x:hidden/);
+});
+
+test("v4.3 keeps cards static, compact and locally fonted",()=>{
+  assert.doesNotMatch(interactivity,/pointermove|pointerleave|pg-spot-x|pg-spot-y/);
+  assert.match(lustre,/--pg43-glass/);
+  assert.match(lustre,/\.pg-hero-showcase/);
+  assert.match(lustre,/font-family:"Sora","Manrope"/);
+  assert.match(lustre,/\.section\{/);
+  assert.match(lustre,/\.pg-editorial-hero\{/);
+  assert.match(lustre,/\.pg-lustre-surface::after/);
+  assert.match(lustre,/content:none!important/);
+  assert.match(read("src/typography.css"),/Sora-variable\.ttf/);
+  const sprite=read("public/icons/pukka-symbols.svg");
+  assert.equal((sprite.match(/<symbol id="/g)||[]).length,28);
+  assert.match(sprite,/stroke="#248DE3"/);
+  assert.doesNotMatch(sprite,/stroke="#A[0-9A-F]{5}"/i);
 });
