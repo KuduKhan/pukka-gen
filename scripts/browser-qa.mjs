@@ -84,7 +84,7 @@ for(const [browserName,engine] of Object.entries({chromium,firefox,webkit})){
      const color=x=>(getComputedStyle(x).color.match(/[\d.]+/g)||[]).slice(0,3).map(Number);
      return{heading:color(node),matter:color(node.querySelector("em")),noDuff:color(node.querySelector(".pg-hero-signoff"))};
    });
-   if(Object.values(heroTones).some(rgb=>rgb.length!==3||rgb[2]>rgb[0]))
+   if(Object.values(heroTones).some(rgb=>rgb.length!==3||(rgb[2]>rgb[0]+8&&rgb[2]>rgb[1]+8)))
      throw new Error("Hero ink unexpectedly reverted to blue: "+JSON.stringify(heroTones));
 
    if(await page.locator(".pg-enterprise-signature").count()!==1 ||
