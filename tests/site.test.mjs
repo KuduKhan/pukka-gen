@@ -158,8 +158,6 @@ test("illustrative icon scenes use consistent semantic SVG instead of platform-d
   assert.equal((html.match(/class="ai-ic"><svg/g)||[]).length,3);
   assert.match(read("src/premium.css"),/prefers-reduced-motion:reduce/);
   assert.match(read("src/premium.css"),/prefers-contrast:more/);
-  assert.match(main,/IntersectionObserver/);
-  assert.match(main,/document\.documentElement\.classList\.add\("motion-enabled"\)/);
   assert.doesNotMatch(read("src/premium.css"),/https?:\/\//);
 });
 
@@ -169,8 +167,9 @@ test("motion QA exercises both reduced and normal motion modes without runtime f
   assert.match(browserSuite,/reducedMotion:"reduce"/);
   assert.match(browserSuite,/reducedMotion:"no-preference"/);
   assert.match(browserSuite,/document\.fonts\.check/);
-  assert.match(browserSuite,/motion-enabled/);
-  assert.match(browserSuite,/data-reveal/);
+  assert.match(browserSuite,/Work heading is hidden before scrolling/);
+  assert.doesNotMatch(main,/data\.reveal|dataset\.reveal/);
+  assert.doesNotMatch(read("src/premium.css"),/data-reveal/);
   assert.match(browserSuite,/motion-work-/);
 });
 
