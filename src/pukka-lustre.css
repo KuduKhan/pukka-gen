@@ -941,3 +941,131 @@
   .pg-amanah-studio-v2 .footer-nav a{color:#fff}
   .pg-amanah-studio-v2 .footer-nav>div>span{color:#d8ecff}
 }
+
+
+/* BRAND COHERENCE — Pukka Gen electric blue + deep navy across all routes.
+   Replaces teal/forest emphasis without changing component geometry or
+   the enterprise three-column footer. Respect readability and motion. */
+.pg-amanah-studio-v2{
+  --pgx-ink:#102b4b;
+  --pgx-teal:#197bd2;
+  --pgx-teal-strong:#125d9f;
+  --pgx-mist:#e3f3ff;
+  --pgx-hairline:#cbdff1;
+  --pgx-gold:#3396e6;
+  --pgx-spot-x:50%;
+  --pgx-spot-y:25%;
+}
+.pg-amanah-studio-v2 :is(.site-header,.corp-header){
+  border-bottom-color:rgba(138,186,233,.43);
+}
+.pg-amanah-studio-v2 .site-header.is-scrolled{
+  border-bottom-color:#c9dff3;
+  box-shadow:0 14px 35px rgba(8,47,105,.075);
+}
+.pg-amanah-studio-v2 :is(.desktop-nav a,.corp-nav a):is(:hover,:focus-visible),
+.pg-amanah-studio-v2 .desktop-nav a[aria-current="location"],
+.pg-corporate-v2 .corp-nav a[aria-current="page"]{
+  color:#115d9d;background:rgba(221,238,255,.73);
+}
+.pg-amanah-studio-v2 :is(.header-cta,.corp-contact,.button-primary,.corp-button:not(.corp-button-muted)){
+  color:#fff;border-color:#1765ac;
+  background:linear-gradient(125deg,#207fd5,#1669b9 55%,#0b3b78);
+  box-shadow:0 9px 25px rgba(15,93,173,.18),inset 0 1px 0 rgba(255,255,255,.22);
+}
+.pg-amanah-studio-v2 :is(.header-cta,.corp-contact,.button-primary,.corp-button:not(.corp-button-muted)):is(:hover,:focus-visible){
+  color:#fff;border-color:#13538f;
+  background:linear-gradient(125deg,#186abb,#0b3b78);
+  box-shadow:0 13px 29px rgba(9,68,138,.23);
+}
+.pg-amanah-studio-v2 .pg-editorial-hero .button-primary{
+  background:linear-gradient(125deg,#174e91,#0c326a 80%);
+  border-color:#15447d;
+}
+.pg-amanah-studio-v2 .pg-editorial-hero .button-primary:is(:hover,:focus-visible){
+  background:linear-gradient(125deg,#1d69b8,#0b3a75);
+  border-color:#12549c;
+}
+.pg-amanah-studio-v2 :is(.button-outline,.corp-button-muted):is(:hover,:focus-visible){
+  border-color:#76addf;color:#154c81;background:#f7fbff;
+}
+.pg-amanah-studio-v2 .pg-service-rail{
+  border-color:#c9dff0;box-shadow:0 18px 42px rgba(16,72,131,.085),inset 0 1px 0 #fff;
+}
+.pg-amanah-studio-v2 .pg-rail-links>a:is(:hover,:focus-visible){
+  background:#eaf4ff;color:#145e9d;
+}
+.pg-amanah-studio-v2 :is(.expertise-icon,.journal-symbol){
+  color:#145eab;border-color:#c8e0f4;
+  background:linear-gradient(140deg,#edf6ff,#f7fbff);
+}
+.pg-amanah-studio-v2 :is(.expertise-card,.journal-card):is(:hover,:focus-visible) :is(.expertise-icon,.journal-symbol){
+  border-color:#84b7e6;box-shadow:0 9px 19px rgba(18,98,174,.1);
+}
+.pg-amanah-studio-v2 .pg-lustre-surface::after{
+  background:radial-gradient(330px circle at var(--pg-spot-x) var(--pg-spot-y),rgba(114,184,245,.22),transparent 70%);
+}
+.pg-amanah-studio-v2 :is(.expertise-card,.journal-card,.project,.pg-corporate-card,.corp-card):is(:hover,:focus-within){
+  border-color:#aacbe9;
+}
+.pg-amanah-studio-v2 .solution-choice[aria-pressed="true"]{
+  border-color:#4b9cdd;background:linear-gradient(145deg,#edf6ff,#ddebfb);
+  box-shadow:0 6px 19px rgba(20,102,175,.09),inset 3px 0 0 #1879cc;
+  color:#153e66;
+}
+.pg-amanah-studio-v2 .solution-choice[aria-pressed="true"]>span{color:#175f9d}
+.pg-amanah-studio-v2 .process-controls button[aria-pressed="true"]{
+  box-shadow:inset 3px 0 0 #278bdb,0 7px 19px rgba(20,102,175,.09);
+}
+.pg-amanah-studio-v2 .pg-enterprise-seal{
+  color:#adddff;border-color:#5186b9;
+  background:linear-gradient(145deg,#164271,#092345 90%);
+  box-shadow:0 7px 15px rgba(4,37,89,.17),inset 0 1px 0 rgba(255,255,255,.13);
+}
+.pg-amanah-studio-v2 .pg-enterprise-signature-text em{color:#1976bd}
+.pg-amanah-studio-v2 .pg-enterprise-affiliation{
+  border-color:#c1daef;background:#edf6ff;color:#215782;
+}
+.pg-amanah-studio-v2 :is(.pg-route-card,.pg-corp-elevated)::before{
+  background:linear-gradient(90deg,#10477f,#2484d3 57%,#75baf2);
+}
+.pg-amanah-studio-v2 :is(.pg-route-icon,.pg-corp-card-icon){
+  color:#1464ab;border-color:#c7dff3;
+  background:linear-gradient(142deg,#e6f3ff,#f8fbff);
+}
+.pg-amanah-studio-v2 :is(.pg-route-card,.pg-corp-elevated):is(:hover,:focus-within) :is(.pg-route-icon,.pg-corp-card-icon){
+  background:linear-gradient(140deg,#dceeff,#f2f8ff);
+  border-color:#91bce4;
+}
+.pg-corporate-v2 .corp-section-tint .pg-corp-card-icon{
+  background:rgba(62,136,211,.16);
+  border-color:rgba(173,216,252,.32);
+  color:#bfe7ff;
+}
+.pg-corporate-v2 .corp-hero{
+  background:radial-gradient(circle at 77% 15%,rgba(186,218,253,.39),transparent 43%),linear-gradient(139deg,#fbfcff,#edf5ff);
+}
+.pg-corporate-v2 .corp-hero h1 em{color:#1969ad}
+.pg-corporate-v2 .corp-hero .pg-corp-at-glance{
+  border-color:#cbdff3;
+  background:linear-gradient(145deg,rgba(255,255,255,.985),rgba(239,247,255,.95));
+}
+.pg-corporate-v2 .corp-card.pg-corp-elevated{border-color:#d5e5f3}
+.pg-corporate-v2 .pg-corp-card-top .corp-card-label{color:#1e639e}
+.pg-corporate-v2 .corp-card.pg-corp-elevated:is(:hover,:focus-within){border-color:#9dc5e7}
+.pg-amanah-studio-v2 :is(a,button,summary,input,select,textarea):focus-visible{
+  outline-color:#2688d8;
+}
+.pg-amanah-studio-v2 .mobile-nav a[aria-current="location"],
+.pg-amanah-studio-v2 .mobile-nav a:is(:hover,:focus-visible){
+  color:#0b568f;background:#eaf4ff;
+}
+.pg-amanah-studio-v2 .mobile-nav a[aria-current="location"]{
+  box-shadow:inset 3px 0 0 #2486d8;
+}
+@media(prefers-contrast:more){
+  .pg-amanah-studio-v2 :is(.pg-hero-tag,.pg-enterprise-signature,.pg-route-card,.corp-card){
+    border-color:#244b7b;
+  }
+  .pg-amanah-studio-v2 .hero-desc{color:#173d66}
+}
