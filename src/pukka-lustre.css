@@ -1362,3 +1362,18 @@
   }
   .pg-amanah-studio-v2 :is(.expertise-card,.journal-card,.corp-card,.project){background:#fff}
 }
+
+
+/* v4.3 screenshot acceptance: align hero introduction with the showcase
+   instead of vertically centering a short text block in a tall visual row. */
+@media(min-width:981px){
+  .pg-amanah-studio-v2 .pg-editorial-hero .hero-grid{
+    align-items:start
+  }
+  .pg-amanah-studio-v2 .pg-editorial-hero .hero-copy{
+    padding-top:clamp(8px,1.3vw,19px)
+  }
+}
+.pg-corporate-v2 .corp-hero::after{
+  content:none;display:none
+}
