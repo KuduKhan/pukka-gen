@@ -37,9 +37,10 @@ img,svg{max-width:100%;display:block}
 .header-cta{display:inline-flex;align-items:center;gap:15px;white-space:nowrap;font-weight:830;font-size:.79rem;background:#78ddf5;color:#05223e;padding:11px 16px;border:1px solid #b5f5ff;border-radius:11px;min-height:43px;transition:background .2s,transform .2s}
 .header-cta:hover{background:#bdf4ff;transform:translateY(-1px)}
 .menu-toggle{display:none;flex-direction:column;align-items:center;justify-content:center;gap:6px;width:44px;height:44px;margin-left:auto;background:#13345c;border:1px solid #35638e;border-radius:11px;color:#fff}
-.menu-toggle span{width:19px;height:2px;border-radius:3px;background:#c9ebfa;transition:transform .2s}
-.menu-toggle[aria-expanded="true"] span:first-child{transform:translateY(4px) rotate(45deg)}
-.menu-toggle[aria-expanded="true"] span:last-child{transform:translateY(-4px) rotate(-45deg)}
+.menu-glyph{display:grid;gap:4px}
+.menu-glyph i{width:17px;height:2px;border-radius:2px;background:currentColor}
+.menu-toggle[aria-expanded="true"] .menu-glyph i:first-child{transform:translateY(3px) rotate(45deg)}
+.menu-toggle[aria-expanded="true"] .menu-glyph i:last-child{transform:translateY(-3px) rotate(-45deg)}
 .mobile-nav{display:none}
 .button{min-height:49px;display:inline-flex;justify-content:center;align-items:center;gap:18px;padding:12px 19px;font-weight:820;font-size:.85rem;border:1px solid transparent;border-radius:13px;line-height:1.45;transition:background .2s,transform .22s var(--ease),border-color .2s,color .2s}
 .button:hover{transform:translateY(-2px)}

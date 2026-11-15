@@ -238,15 +238,17 @@ byId("work-filters").addEventListener("click",event=>{
 
 const menuButton=byId<HTMLButtonElement>("menu-toggle");
 const mobileNav=byId<HTMLElement>("mobile-nav");
+const menuLabel=menuButton.querySelector<HTMLElement>(".menu-label");
+const mobileLayout=window.matchMedia("(max-width: 980px)");
 function setMenu(open:boolean):void{
  menuButton.setAttribute("aria-expanded",String(open));
- menuButton.setAttribute("aria-label",open?"Close menu":"Open menu");
+ if(menuLabel)menuLabel.textContent=open?"Close":"Menu";
  mobileNav.hidden=!open;
  mobileNav.inert=!open;
 }
 menuButton.addEventListener("click",()=>setMenu(menuButton.getAttribute("aria-expanded")!=="true"));
 mobileNav.querySelectorAll("a").forEach(link=>link.addEventListener("click",()=>setMenu(false)));
-window.addEventListener("resize",()=>{if(window.innerWidth>980)setMenu(false);},{passive:true});
+mobileLayout.addEventListener("change",()=>setMenu(false));
 document.addEventListener("click",event=>{
  if(menuButton.getAttribute("aria-expanded")!=="true")return;
  if(!(event.target instanceof Node))return;
@@ -257,29 +259,6 @@ document.addEventListener("keydown",event=>{
 });
 setMenu(false);
 
-
-// Pukka premium interaction layer: progressive enhancement, no motion dependence.
-// The content remains fully readable when JavaScript or motion support is absent.
-const reduceAnimations=window.matchMedia("(prefers-reduced-motion: reduce)");
-if(!reduceAnimations.matches && "IntersectionObserver" in window){
-  const sections=Array.from(document.querySelectorAll<HTMLElement>(
-    ".section-head,.expertise-card,.project,.sector-card,.journal-card,.proof-preview,.solution-stage,.studio-wordmark,.contact-heading,.project-form"
-  ));
-  const observer=new IntersectionObserver(entries=>{
-    for(const entry of entries){
-      if(!entry.isIntersecting)continue;
-      const node=entry.target as HTMLElement;
-      node.dataset.reveal="shown";
-      observer.unobserve(node);
-    }
-  },{threshold:.06,rootMargin:"0px 0px -24px 0px"});
-  sections.forEach((node,index)=>{
-    node.dataset.reveal="pending";
-    node.style.setProperty("--reveal-delay",String((index%3)*65)+"ms");
-    observer.observe(node);
-  });
-  document.documentElement.classList.add("motion-enabled");
-}
 
 const header=byId<HTMLElement>("site-header");
 let scrollScheduled=false;

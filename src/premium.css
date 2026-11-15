@@ -340,17 +340,6 @@ section {isolation:isolate}
   background:rgba(0,8,23,.7);
   -webkit-backdrop-filter:blur(9px);backdrop-filter:blur(9px);
 }
-/* Motion only after intersection observation is active. Never hide content without JS. */
-.motion-enabled [data-reveal="pending"] {
-  opacity:0;filter:blur(4px);transform:translate3d(0,16px,0);
-  transition:opacity .58s var(--lux-ease),transform .58s var(--lux-ease),filter .58s var(--lux-ease);
-  transition-delay:var(--reveal-delay,0ms);
-}
-.motion-enabled [data-reveal="shown"] {
-  opacity:1;filter:none;transform:translate3d(0,0,0);
-  transition:opacity .58s var(--lux-ease),transform .58s var(--lux-ease),filter .58s var(--lux-ease);
-  transition-delay:var(--reveal-delay,0ms);
-}
 @media(max-width:980px) {
   .mobile-nav {
     background:linear-gradient(160deg,rgba(13,49,100,.96),rgba(7,30,70,.96));
@@ -395,9 +384,6 @@ section {isolation:isolate}
 }
 @media(prefers-reduced-motion:reduce) {
   *,*:before,*:after {scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
-  .motion-enabled [data-reveal="pending"],.motion-enabled [data-reveal="shown"] {
-    opacity:1!important;filter:none!important;transform:none!important;
-  }
   .hero:after,.atlas-node[data-active="true"] .node-outer {animation:none!important}
 }
 @media(prefers-contrast:more) {
