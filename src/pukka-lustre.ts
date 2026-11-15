@@ -3,37 +3,37 @@
 const site=document.body;
 if(site.classList.contains("pg-amanah-studio-v2")){
   const reducedMotion=window.matchMedia("(prefers-reduced-motion: reduce)");
-  const finePointer=window.matchMedia("(hover: hover) and (pointer: fine)");
+  /* Performance: no pointer-following surfaces, per-card listeners,
+     continuous highlight repaints, or hover-glow overlays. */
 
-  /* Gentle positional highlights on interactive cards, never on text or
-     touch devices. JS-disabled pages retain the original solid card finish. */
-  if(finePointer.matches&&!reducedMotion.matches){
-    const cards=document.querySelectorAll<HTMLElement>(
-      ".expertise-card,.journal-card,.project,.pg-corporate-card,.corp-card,.pg-corp-at-glance"
-    );
-    cards.forEach(card=>{
-      card.classList.add("pg-lustre-surface");
-      let frame=0;
-      let x=50,y=25;
-      const paint=()=>{
-        card.style.setProperty("--pg-spot-x",x.toFixed(2)+"%");
-        card.style.setProperty("--pg-spot-y",y.toFixed(2)+"%");
-        frame=0;
-      };
-      card.addEventListener("pointermove",event=>{
-        if(event.pointerType==="touch"||reducedMotion.matches)return;
-        const rect=card.getBoundingClientRect();
-        if(!rect.width||!rect.height)return;
-        x=Math.max(0,Math.min(100,(event.clientX-rect.left)/rect.width*100));
-        y=Math.max(0,Math.min(100,(event.clientY-rect.top)/rect.height*100));
-        if(frame===0)frame=requestAnimationFrame(paint);
-      },{passive:true});
-      card.addEventListener("pointerleave",()=>{
-        if(frame!==0){cancelAnimationFrame(frame);frame=0;}
-        card.style.removeProperty("--pg-spot-x");
-        card.style.removeProperty("--pg-spot-y");
-      },{passive:true});
+
+  /* Corporate mobile navigation: one vertical panel, no horizontal scroller.
+     This is separate from the homepage mobile menu, which has its own handler. */
+  const corporateToggle=document.querySelector<HTMLButtonElement>(".pg-corp-menu-toggle");
+  const corporateNav=document.querySelector<HTMLElement>("#pg-corp-nav");
+  if(corporateToggle&&corporateNav){
+    const mobile=window.matchMedia("(max-width: 980px)");
+    const setOpen=(open:boolean)=>{
+      const shouldOpen=mobile.matches&&open;
+      corporateToggle.setAttribute("aria-expanded",String(shouldOpen));
+      corporateToggle.setAttribute("aria-label",shouldOpen?"Close company menu":"Open company menu");
+      const text=corporateToggle.querySelector(".pg-menu-text");
+      if(text)text.textContent=shouldOpen?"Close":"Menu";
+      corporateNav.classList.toggle("pg-corp-nav-open",shouldOpen);
+    };
+    corporateToggle.addEventListener("click",()=>setOpen(corporateToggle.getAttribute("aria-expanded")!=="true"));
+    corporateNav.querySelectorAll("a").forEach(link=>link.addEventListener("click",()=>setOpen(false)));
+    document.addEventListener("keydown",event=>{
+      if(event.key==="Escape"&&corporateToggle.getAttribute("aria-expanded")==="true"){
+        setOpen(false);corporateToggle.focus();
+      }
     });
+    document.addEventListener("pointerdown",event=>{
+      if(corporateToggle.getAttribute("aria-expanded")!=="true")return;
+      if(event.target instanceof Node&&!corporateToggle.contains(event.target)&&!corporateNav.contains(event.target))setOpen(false);
+    },{passive:true});
+    mobile.addEventListener("change",()=>setOpen(false));
+    setOpen(false);
   }
 
   /* Spatial location in the homepage menu. Only internal section anchors

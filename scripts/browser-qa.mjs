@@ -80,6 +80,22 @@ for(const [browserName,engine] of Object.entries({chromium,firefox,webkit})){
       footerColumns.overflow>2||JSON.stringify(footerColumns.labels)!=='["EXPLORE","STUDIO","CONNECT"]'||
       JSON.stringify(footerColumns.groups)!=="[5,5,3]")
      throw new Error("Footer three-column layout broken at "+width+"px: "+JSON.stringify(footerColumns));
+   if(width<=980){
+     const toggle=page.locator("#menu-toggle");
+     await toggle.click();
+     if(await toggle.getAttribute("aria-expanded")!=="true")throw new Error("Homepage mobile menu did not open");
+     const geometry=await page.locator("#mobile-nav").evaluate(nav=>{
+       const links=Array.from(nav.querySelectorAll("a"));
+       const boxes=links.map(a=>a.getBoundingClientRect());
+       return{direction:getComputedStyle(nav).flexDirection,
+         vertical:boxes.every((box,i)=>i===0||box.top>=boxes[i-1].bottom-2),
+         overflow:Math.max(0,nav.scrollWidth-nav.clientWidth)};
+     });
+     if(geometry.direction!=="column"||!geometry.vertical||geometry.overflow>2)
+       throw new Error("Homepage mobile menu must be vertical: "+JSON.stringify(geometry));
+     await page.keyboard.press("Escape");
+     if(await toggle.getAttribute("aria-expanded")!=="false")throw new Error("Homepage mobile menu did not close");
+   }
    const heroTones=await page.locator(".hero h1").evaluate(node=>{
      const color=x=>(getComputedStyle(x).color.match(/[\d.]+/g)||[]).slice(0,3).map(Number);
      return{heading:color(node),matter:color(node.querySelector("em")),noDuff:color(node.querySelector(".pg-hero-signoff"))};
@@ -144,7 +160,7 @@ for(const [browserName,engine] of Object.entries({chromium,firefox,webkit})){
      background:getComputedStyle(node).backgroundColor,
      filter:getComputedStyle(node).backdropFilter || getComputedStyle(node).webkitBackdropFilter
    }));
-   if(!glass.filter.includes('blur'))throw new Error("Frosted system panel style missing: "+JSON.stringify(glass));
+   if(glass.filter.includes('blur'))throw new Error("Technical panel should not use costly backdrop blur: "+JSON.stringify(glass));
    if(await page.locator(".pg-hero-signoff").isVisible()!==true)throw new Error("No Duff handwritten brand signoff missing");
    const logo=await page.locator(".brand img").evaluate(img=>img.complete&&img.naturalWidth>0);
    if(!logo)throw new Error("Original logo is missing");
@@ -213,20 +229,15 @@ for(const [browserName,engine] of Object.entries({chromium,firefox,webkit})){
         return document.fonts.check('600 22px "Pukka Hand"');
       });
       if(!fontLoaded)throw new Error("Self-hosted Caveat handwriting font did not load");
-       const litCard=motionPage.locator(".expertise-card").first();
-       await litCard.hover();
-       await motionPage.waitForTimeout(420);
-       const highlight=await litCard.evaluate(node=>{
-         const surface=getComputedStyle(node,"::after");
-         return {
-           enabled:node.classList.contains("pg-lustre-surface"),
-           opacity:Number.parseFloat(surface.opacity),
-           spotX:node.style.getPropertyValue("--pg-spot-x"),
-           spotY:node.style.getPropertyValue("--pg-spot-y")
-         };
-       });
-       if(!highlight.enabled||highlight.opacity<.8||!highlight.spotX||!highlight.spotY)
-         throw new Error("Pointer-aware card highlight failed: "+JSON.stringify(highlight));
+       const card=motionPage.locator(".expertise-card").first();
+       await card.hover();
+       const performanceFinish=await card.evaluate(node=>({
+         active:node.classList.contains("pg-lustre-surface"),
+         overlay:getComputedStyle(node,"::after").content,
+         spotX:node.style.getPropertyValue("--pg-spot-x")
+       }));
+       if(performanceFinish.active||performanceFinish.spotX||!["none","normal",'""'].includes(performanceFinish.overlay))
+         throw new Error("Expensive cursor spotlight still active: "+JSON.stringify(performanceFinish));
        await motionPage.locator('[data-solution-select="knowledge"]').click();
        if(!(await motionPage.locator("#solution-title").innerText()).includes("intelligence"))
          throw new Error("Animated solution explorer no longer responds");
@@ -270,16 +281,27 @@ for(const [browserName,engine] of Object.entries({chromium,firefox,webkit})){
 
        if(await page.locator('a.corp-skip[href="#main"]').count()!==1)throw new Error(route+" skip link absent");
        if(await page.locator('nav.corp-nav a[aria-current="page"]').count()!==1)throw new Error(route+" current page not marked");
-       if(width<=375){
-        const navGeometry=await page.locator("nav.corp-nav").evaluate(nav=>{
-          const links=Array.from(nav.querySelectorAll("a"));
-          return {
-            overflow:Math.max(0,nav.scrollWidth-nav.clientWidth),
-            wrapped:links.filter(a=>getComputedStyle(a).whiteSpace!=="nowrap" || a.scrollWidth>a.clientWidth+1).map(a=>a.textContent?.trim())
-          };
-        });
-        if(navGeometry.overflow>1||navGeometry.wrapped.length)
-         throw new Error(route+" mobile navigation labels clipped or wrapped: "+JSON.stringify(navGeometry));
+       const companyToggle=page.locator(".pg-corp-menu-toggle");
+       if(width<=980){
+         if(!await companyToggle.isVisible())throw new Error(route+" vertical menu toggle missing");
+         if(await page.locator("#pg-corp-nav").isVisible())throw new Error(route+" closed menu is initially exposed");
+         await companyToggle.click();
+         if(await companyToggle.getAttribute("aria-expanded")!=="true")throw new Error(route+" menu did not open");
+         const geometry=await page.locator("#pg-corp-nav").evaluate(nav=>{
+           const links=Array.from(nav.querySelectorAll("a"));
+           const boxes=links.map(a=>a.getBoundingClientRect());
+           return{display:getComputedStyle(nav).display,
+             columns:getComputedStyle(nav).gridTemplateColumns.trim().split(/\\s+/).length,
+             vertical:boxes.every((box,i)=>i===0||box.top>=boxes[i-1].bottom-2),
+             overflow:Math.max(0,nav.scrollWidth-nav.clientWidth),count:links.length};
+         });
+         if(geometry.display!=="grid"||geometry.columns!==1||!geometry.vertical||geometry.overflow>2||geometry.count!==5)
+           throw new Error(route+" mobile menu is not vertical: "+JSON.stringify(geometry));
+         await page.keyboard.press("Escape");
+         if(await companyToggle.getAttribute("aria-expanded")!=="false"||await page.locator("#pg-corp-nav").isVisible())
+           throw new Error(route+" menu did not close on Escape");
+       }else if(await companyToggle.isVisible()){
+         throw new Error(route+" desktop should not show mobile menu toggle");
        }
        const routeOverflow=await page.evaluate(()=>Math.max(0,document.documentElement.scrollWidth-window.innerWidth));
        if(routeOverflow>2)throw new Error(route+" horizontal overflow at "+width+"px: "+routeOverflow);
