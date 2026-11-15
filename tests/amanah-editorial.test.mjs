@@ -157,7 +157,7 @@ test("footer navigation stays exactly three labeled columns with live routes",()
   assert.match(lustre,/@media\(max-width:680px\)/);
 });
 
-test("warm Pukka hero keeps No Duff branding and avoids blue accent ink",()=>{
+test("Pukka Gen blue hero preserves No Duff and the three-column footer",()=>{
   const home=read("index.html");
   assert.match(home,/class="pg-hero-tag-label">ENGINEERING THAT EARNS YOUR TRUST/);
   assert.match(home,/class="pg-hero-tag-signature">NO DUFF\./);
@@ -165,8 +165,12 @@ test("warm Pukka hero keeps No Duff branding and avoids blue accent ink",()=>{
   assert.match(home,/class="hero-index-descriptor">ARCHITECTURE · EXPERIENCE · ASSURANCE/);
   assert.match(home,/class="pg-hero-signoff">No Duff/);
   assert.match(home,/pukka-gen-wordmark\.png/);
-  assert.match(lustre,/#f7f3e9/);
-  assert.match(lustre,/#956b3c/);
+  assert.match(lustre,/--pg-brand-ink:#102b4b/);
+  assert.match(lustre,/--pg-brand-navy:#133d69/);
+  assert.match(lustre,/--pg-brand-blue:#1676cd/);
+  assert.match(lustre,/--pg-brand-ice:#eef6ff/);
+  assert.match(lustre,/#071930/);
   assert.match(lustre,/\.pg-editorial-hero \.button-primary/);
   assert.match(lustre,/\.footer-nav>div\+div/);
+  assert.doesNotMatch(lustre,/Warm parchment, forest-charcoal ink and brushed brass/);
 });
