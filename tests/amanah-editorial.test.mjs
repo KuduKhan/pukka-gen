@@ -138,3 +138,35 @@ test("enterprise identity stays consistent across homepage and corporate routes"
   assert.match(lustre,/pg-route-card/);
   assert.match(lustre,/pg-corp-elevated/);
 });
+
+
+test("footer navigation stays exactly three labeled columns with live routes",()=>{
+  const home=read("index.html");
+  assert.match(home,/<nav class="footer-nav" aria-label="Footer navigation">/);
+  const nav=home.match(/<nav class="footer-nav"[\s\S]+?<\/nav>/)?.[0]||"";
+  for(const label of ["EXPLORE","STUDIO","CONNECT"])
+    assert.match(nav,new RegExp(">"+label+"<"));
+  assert.equal((nav.match(/<div>/g)||[]).length,3);
+  for(const href of [
+    "#solutions","#work","#expertise","#sectors","#approach",
+    "/company.html","/partners.html","/investors.html","/trust.html","#contact",
+    "mailto:mail@pukkagennoduff.com","https://www.linkedin.com/company/pukkagennoduff/",
+    "https://wa.me/254757885101"
+  ])assert.ok(nav.includes('href="'+href+'"'),"Footer missing "+href);
+  assert.match(lustre,/\.footer-nav\s*\{[\s\S]*?grid-template-columns:repeat\(3,minmax\(0,1fr\)\)/);
+  assert.match(lustre,/@media\(max-width:680px\)/);
+});
+
+test("warm Pukka hero keeps No Duff branding and avoids blue accent ink",()=>{
+  const home=read("index.html");
+  assert.match(home,/class="pg-hero-tag-label">ENGINEERING THAT EARNS YOUR TRUST/);
+  assert.match(home,/class="pg-hero-tag-signature">NO DUFF\./);
+  assert.match(home,/class="hero-index-brand">PUKKA GEN/);
+  assert.match(home,/class="hero-index-descriptor">ARCHITECTURE · EXPERIENCE · ASSURANCE/);
+  assert.match(home,/class="pg-hero-signoff">No Duff/);
+  assert.match(home,/pukka-gen-wordmark\.png/);
+  assert.match(lustre,/#f7f3e9/);
+  assert.match(lustre,/#956b3c/);
+  assert.match(lustre,/\.pg-editorial-hero \.button-primary/);
+  assert.match(lustre,/\.footer-nav>div\+div/);
+});
