@@ -32,10 +32,15 @@ for(const [browserName,engine] of Object.entries({chromium,firefox,webkit})){
      throw new Error("Progressive enhancement script missing");
    const glassFinish=await page.locator(".pg-hero-showcase").evaluate(node=>({
      filter:getComputedStyle(node).backdropFilter||getComputedStyle(node).webkitBackdropFilter,
-     border:getComputedStyle(node).borderRadius
+     border:getComputedStyle(node).borderRadius,
+     background:getComputedStyle(node).backgroundImage
    }));
-   if(!glassFinish.filter.includes("blur")||!glassFinish.border)
-     throw new Error("Hero glass finish missing: "+JSON.stringify(glassFinish));
+   if(glassFinish.filter!=="none"||parseFloat(glassFinish.border)<=0||!glassFinish.background.includes("gradient"))
+     throw new Error("Hero glass must use a static layered surface: "+JSON.stringify(glassFinish));
+   const heroGap=await page.locator(".pg-hero-tag").evaluate(tag=>
+     tag.getBoundingClientRect().top-document.querySelector("#site-header").getBoundingClientRect().bottom
+   );
+   if(heroGap<8||heroGap>40)throw new Error("Header-to-hero spacing: "+heroGap+"px");
    const contactInk=await page.locator(".contact-big").evaluate(node=>getComputedStyle(node).color);
    const channels=(contactInk.match(/[\d.]+/g)||[]).slice(0,3).map(Number);
    if(channels.length<3||Math.min(...channels)<190)
@@ -58,8 +63,6 @@ for(const [browserName,engine] of Object.entries({chromium,firefox,webkit})){
    if(!chosenFonts.sora||!chosenFonts.manrope||!chosenFonts.heading.includes("Georgia")||!chosenFonts.body.includes("Manrope"))
     throw new Error("Homepage typography mismatch: "+JSON.stringify(chosenFonts));
    if((await page.locator("[data-service]").count())!==6)throw new Error("Six service cards missing");
-   if(await page.evaluate(()=>document.documentElement.classList.contains("motion-enabled")))
-    throw new Error("Reduced-motion preference should suppress scroll effects");
    if((await page.locator("[data-project]").count())!==3)throw new Error("Three concept cases missing");
    if(await page.locator("nav.footer-nav").count()!==1)
      throw new Error("Three-column footer navigation landmark missing");
@@ -82,8 +85,10 @@ for(const [browserName,engine] of Object.entries({chromium,firefox,webkit})){
      throw new Error("Footer three-column layout broken at "+width+"px: "+JSON.stringify(footerColumns));
    if(width<=980){
      const toggle=page.locator("#menu-toggle");
+     if((await toggle.innerText()).trim()!=="Menu")throw new Error("Homepage mobile menu label missing");
      await toggle.click();
-     if(await toggle.getAttribute("aria-expanded")!=="true")throw new Error("Homepage mobile menu did not open");
+     if(await toggle.getAttribute("aria-expanded")!=="true"||(await toggle.innerText()).trim()!=="Close")
+       throw new Error("Homepage mobile menu did not open with a Close label");
      const geometry=await page.locator("#mobile-nav").evaluate(nav=>{
        const links=Array.from(nav.querySelectorAll("a"));
        const boxes=links.map(a=>a.getBoundingClientRect());
@@ -222,8 +227,12 @@ for(const [browserName,engine] of Object.entries({chromium,firefox,webkit})){
       motionPage.on("pageerror",error=>motionErrors.push(error.message));
       await motionPage.goto(url,{waitUntil:"domcontentloaded"});
       await motionPage.locator(".pg-hero-signoff").waitFor();
-      if(!await motionPage.evaluate(()=>document.documentElement.classList.contains("motion-enabled")))
-        throw new Error("Normal-motion progressive enhancement did not start");
+      const sectionHead=motionPage.locator("#work .section-head");
+      const sectionVisible=await sectionHead.evaluate(node=>{
+        const style=getComputedStyle(node);
+        return style.opacity==="1"&&style.filter==="none";
+      });
+      if(!sectionVisible)throw new Error("Work heading is hidden before scrolling");
       const fontLoaded=await motionPage.evaluate(async()=>{
         await document.fonts.ready;
         return document.fonts.check('600 22px "Pukka Hand"');
@@ -242,11 +251,7 @@ for(const [browserName,engine] of Object.entries({chromium,firefox,webkit})){
        if(!(await motionPage.locator("#solution-title").innerText()).includes("intelligence"))
          throw new Error("Animated solution explorer no longer responds");
 
-      await motionPage.locator("#work .section-head").scrollIntoViewIfNeeded();
-      await motionPage.waitForFunction(
-        ()=>document.querySelector("#work .section-head")?.getAttribute("data-reveal")==="shown",
-        null,{timeout:7000}
-      );
+      await sectionHead.scrollIntoViewIfNeeded();
       if(motionErrors.length)throw new Error("Normal-motion runtime error: "+motionErrors.join(" | "));
       await motionPage.screenshot({
         path:"artifacts/qa/motion-work-"+width+".png",animations:"disabled"

@@ -1,2 +1,3 @@
 User-agent: *
 Allow: /
+Sitemap: https://pukkagennoduff.vercel.app/sitemap.xml

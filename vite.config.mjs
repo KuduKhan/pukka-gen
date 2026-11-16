@@ -9,6 +9,8 @@ export default defineConfig({
     company:page("./company.html"),
     partners:page("./partners.html"),
     investors:page("./investors.html"),
-    trust:page("./trust.html")
+    trust:page("./trust.html"),
+    services:page("./services.html"),
+    studio:page("./studio.html")
   }}}
 });
