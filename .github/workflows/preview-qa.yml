@@ -39,6 +39,8 @@ jobs:
           npm run dev -- --host 127.0.0.1 --port 4173 > /tmp/pukka-fresh-vite.log 2>&1 &
       - name: Run browser QA
         run: node scripts/browser-qa.mjs
+      - name: Run original-brand heritage browser QA
+        run: node scripts/heritage-browser-qa.mjs
       - name: Upload responsive QA
         if: always()
         uses: actions/upload-artifact@v4

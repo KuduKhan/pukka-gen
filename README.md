@@ -76,3 +76,7 @@ The `feat/pukka-gen-4-corporate-authority` review branch introduces clear standa
 ## v5.0 release overview
 
 See [docs/RELEASE-v5.md](docs/RELEASE-v5.md) for the delivered v4.4–v5.0 website features and outstanding independent acceptance gates. Project Studio is rules-based, not a live LLM agent or an authenticated client portal.
+
+## Pukka Gen 5.1 — Original Brand Heritage Alignment
+
+The owner-supplied original Pukka Gen No Duff posters inform the new About, Services, Industries, Careers, FAQs and Contact pages. Original official mark and wordmark remain intact. The homepage now links to these sections, and the contact page offers a QR pointing to the verified live domain. Refer to [docs/HERITAGE-BRAND-RELEASE.md](docs/HERITAGE-BRAND-RELEASE.md) for evidence and publication safeguards.

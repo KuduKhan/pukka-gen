@@ -1,15 +1,16 @@
 {
   "name": "pukka-gen",
-  "version": "5.0.0",
+  "version": "5.1.0",
   "private": true,
   "type": "module",
-  "description": "Pukka Gen \u2014 a brand-new, preview-first engineering studio experience",
+  "description": "Pukka Gen — a brand-new, preview-first engineering studio experience",
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
     "test": "node --test tests/*.test.mjs",
     "check": "npm run test && npm run build && npm run verify:dist",
-    "verify:dist": "node scripts/verify-dist.mjs"
+    "verify:dist": "node scripts/verify-dist.mjs",
+    "browser:heritage": "node scripts/heritage-browser-qa.mjs"
   },
   "devDependencies": {
     "typescript": "^5.6.3",

@@ -22,7 +22,7 @@ test("v5 routes are built and public index metadata is complete",()=>{
  const vite=read("vite.config.mjs"),map=read("public/sitemap.xml");
  assert.match(vite,/services:page\("\.\/services\.html"\)/);
  assert.match(vite,/studio:page\("\.\/studio\.html"\)/);
- assert.equal((map.match(/<url>/g)||[]).length,9);
+ assert.equal((map.match(/<url>/g)||[]).length,14);
  assert.match(read("public/robots.txt"),/Sitemap: https:\/\/pukkagennoduff\.vercel\.app\/sitemap.xml/);
  for(const file of ["index.html","studio.html","services.html","company.html","partners.html","investors.html","trust.html","privacy.html","terms.html"])assert.ok(read(file).includes('rel="canonical"'),file+" canonical");
 });
@@ -31,6 +31,6 @@ test("v5 preserves client confidentiality and release honesty",()=>{
  assert.match(doc,/NOT an autonomous AI agent/);
  assert.match(doc,/No authenticated client workspace/);
  assert.match(doc,/provider acceptance/);
- assert.equal(JSON.parse(read("package.json")).version,"5.0.0");
+ assert.equal(JSON.parse(read("package.json")).version,"5.1.0");
 });
 

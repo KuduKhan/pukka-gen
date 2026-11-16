@@ -11,6 +11,11 @@ export default defineConfig({
     investors:page("./investors.html"),
     trust:page("./trust.html"),
     services:page("./services.html"),
-    studio:page("./studio.html")
+    studio:page("./studio.html"),
+    about:page("./about.html"),
+    industries:page("./industries.html"),
+    careers:page("./careers.html"),
+    faqs:page("./faqs.html"),
+    contact:page("./contact.html")
   }}}
 });

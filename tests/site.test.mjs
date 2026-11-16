@@ -72,7 +72,7 @@ test("services, process and articles retain accessible interactions",()=>{
 });
 test("TypeScript, Vite and Vercel preview config are intentionally lean",()=>{
  const pkg=JSON.parse(read("package.json"));
- assert.equal(pkg.version,"5.0.0");
+ assert.equal(pkg.version,"5.1.0");
  assert.equal(Object.keys(pkg.dependencies||{}).length,0);
  assert.equal(pkg.scripts.build,"tsc --noEmit && vite build");
  const lock=JSON.parse(read("package-lock.json"));
