@@ -72,3 +72,7 @@ The `feat/pukka-gen-4-corporate-authority` review branch introduces clear standa
 - **Pukka Hand / Caveat is preserved exactly**, including all handwritten No Duff lettering
 - Font software is self-hosted under SIL OFL 1.1; license text in `public/fonts/OFL-Sora.txt` and `public/fonts/OFL-Manrope.txt`
 - Verify build, font loading, responsive layout, accessibility and real-device review before production
+
+## v5.0 release overview
+
+See [docs/RELEASE-v5.md](docs/RELEASE-v5.md) for the delivered v4.4–v5.0 website features and outstanding independent acceptance gates. Project Studio is rules-based, not a live LLM agent or an authenticated client portal.

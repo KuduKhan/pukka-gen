@@ -1,9 +1,9 @@
 {
   "name": "pukka-gen",
-  "version": "4.0.0-preview.1",
+  "version": "5.0.0",
   "private": true,
   "type": "module",
-  "description": "Pukka Gen — a brand-new, preview-first engineering studio experience",
+  "description": "Pukka Gen \u2014 a brand-new, preview-first engineering studio experience",
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
