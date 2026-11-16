@@ -1,14 +1,20 @@
 import assert from "node:assert/strict";
 import {existsSync,readFileSync,readdirSync,statSync} from "node:fs";
-const must=["dist/index.html","dist/privacy.html","dist/terms.html","dist/company.html","dist/partners.html","dist/investors.html","dist/trust.html","dist/pukka-gen-wordmark.png","dist/pukka-gen-favicon.png","dist/fonts/Caveat-variable.ttf","dist/fonts/Sora-variable.ttf","dist/fonts/Manrope-variable.ttf","dist/fonts/OFL-Sora.txt","dist/fonts/OFL-Manrope.txt","dist/fonts/OFL-Caveat.txt","dist/robots.txt"];
-for(const file of must)assert.ok(existsSync(file),"Build output absent: "+file);
-const assets=readdirSync("dist/assets");
-assert.ok(assets.some(f=>f.endsWith(".js")),"No compiled JS bundle");
-assert.ok(assets.some(f=>f.endsWith(".css")),"No compiled CSS bundle");
-const content=readFileSync("dist/index.html","utf8");
-assert.ok(content.includes("Pukka Gen"));
-assert.ok(!content.includes("src/main.ts"),"Source entrypoint was not compiled");
-const count=(dir)=>readdirSync(dir).reduce((total,name)=>{const path=dir+"/"+name;return total+(statSync(path).isDirectory()?count(path):statSync(path).size);},0);
-const bytes=count("dist");
-assert.ok(bytes<3*1024*1024,"Build exceeds 3MB asset budget: "+bytes);
-console.log("Built multipage site verified; dist bytes:",bytes);
+const required=[
+ "dist/index.html","dist/privacy.html","dist/terms.html",
+ "dist/original-site.js","dist/original-site.css","dist/tailwind-original.css",
+ "dist/pukka-gen-mark.png","dist/pukka-gen-wordmark.png","dist/pukka-gen-favicon.png"
+];
+for(const file of required)assert.ok(existsSync(file),"Missing build artifact: "+file);
+for(const page of ["services.html","studio.html","company.html","investors.html","partners.html","trust.html"])assert.ok(!existsSync("dist/"+page),"Superseded page leaked into production: "+page);
+const html=readFileSync("dist/index.html","utf8");
+assert.ok(html.includes("Authentic Engineering."),"Original Pukka Gen content not deployed");
+assert.ok(html.includes("src=\"/original-site.js\""),"Original interactive source not included");
+assert.ok(!html.includes("cdn.tailwindcss.com"),"Development Tailwind CDN still used");
+const css=statSync("dist/tailwind-original.css").size;
+assert.ok(css>20000&&css<220000,"Original Tailwind output size unexpected: "+css);
+const count=dir=>readdirSync(dir).reduce((sum,name)=>{const file=dir+"/"+name;return sum+(statSync(file).isDirectory()?count(file):statSync(file).size)},0);
+const size=count("dist");
+assert.ok(size<3*1024*1024,"Build asset budget exceeded: "+size);
+console.log("Original Pukka Gen site verified; built bytes:",size,"Tailwind bytes:",css);
+

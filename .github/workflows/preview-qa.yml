@@ -38,11 +38,11 @@ jobs:
         run: |
           npm run dev -- --host 127.0.0.1 --port 4173 > /tmp/pukka-fresh-vite.log 2>&1 &
       - name: Run browser QA
-        run: node scripts/browser-qa.mjs
+        run: node scripts/original-browser-qa.mjs
       - name: Upload responsive QA
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: pukka-fresh-responsive-qa
+          name: pukka-original-responsive-qa
           path: artifacts/qa/
           retention-days: 14
