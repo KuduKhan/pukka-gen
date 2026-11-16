@@ -6,3 +6,6 @@ artifacts/
 !.env.example
 .vercel/
 .DS_Store
+
+# Generated styling compiled from owner-provided original HTML
+public/tailwind-original.css

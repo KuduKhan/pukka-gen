@@ -1,17 +1,19 @@
 {
   "name": "pukka-gen",
-  "version": "5.0.0",
+  "version": "5.2.0",
   "private": true,
   "type": "module",
-  "description": "Pukka Gen \u2014 a brand-new, preview-first engineering studio experience",
+  "description": "Pukka Gen No Duff — original single-page website restored from owner-provided HTML",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc --noEmit && vite build",
-    "test": "node --test tests/*.test.mjs",
+    "dev": "npm run build:styles && vite",
+    "build": "npm run build:styles && tsc --noEmit && vite build",
+    "test": "node --test tests/original-source.test.mjs tests/api.test.mjs",
     "check": "npm run test && npm run build && npm run verify:dist",
-    "verify:dist": "node scripts/verify-dist.mjs"
+    "verify:dist": "node scripts/verify-dist.mjs",
+    "build:styles": "tailwindcss -i ./src/tailwind-original.css -o ./public/tailwind-original.css --minify"
   },
   "devDependencies": {
+    "tailwindcss": "^3.4.17",
     "typescript": "^5.6.3",
     "vite": "^6.0.0"
   }
