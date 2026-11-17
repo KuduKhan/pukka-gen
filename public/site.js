@@ -1093,7 +1093,7 @@
                 title: "Cloud Migration Map",
                 eyebrow: "Cloud + Security",
                 theme: "blue",
-                image: "https://images.unsplash.com/photo-1558494949-ef526b0042a0?auto=format&fit=crop&w=1400&q=80",
+                image: "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=1400&q=80",
                 description: "A phased migration program with release gates, observability, failover planning, cost visibility, and clear cutover discipline.",
                 metrics: [
                     { value: "58%", label: "lower deploy risk" },
