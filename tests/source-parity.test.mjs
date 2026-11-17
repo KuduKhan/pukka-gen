@@ -17,7 +17,12 @@ test("All uploaded design sections and imagery remain in the production page",()
   assert.ok(page.includes('id="'+id+'"'),id+" missing from production");
  }
  const photos=[...source.matchAll(/https:\/\/images\.unsplash\.com\/photo-[a-z0-9-]+/g)].map(x=>x[0]);
- for(const photo of new Set(photos))assert.ok(page.includes(photo),"Original photo missing: "+photo);
+ for(const photo of new Set(photos)){
+  if(photo.includes("photo-1558494949-ef526b0042a0"))continue; // Supplied source image now returns HTTP 404.
+  assert.ok(page.includes(photo),"Original photo missing: "+photo);
+ }
+ assert.ok(page.includes("photo-1544197150-b99a580bb7a8"),"Working server-rack image missing");
+ assert.ok(!page.includes("photo-1558494949-ef526b0042a0"),"Broken original image still in production");
  for(const title of ["Authentic Engineering.","Next-Gen Solutions.","Redefining Tech Partnerships","Radical Authenticity","Meet The Team","The Pukka Protocol"]){
   assert.ok(source.includes(title),"Original source heading missing: "+title);
   assert.ok(page.includes(title),"Current page heading missing: "+title);

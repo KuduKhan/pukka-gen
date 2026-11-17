@@ -41,3 +41,10 @@ html{scroll-padding-top:100px}
 .hover\:shadow-yellow-500\/50:hover{box-shadow:0 12px 28px rgba(234,179,8,.5)!important}
 .hover\:border-yellow-400\/30:hover{border-color:rgba(234,179,8,.30)!important}
 .group:hover .group-hover\:text-yellow-400{color:#facc15!important}
+
+/* Original source's tiny muted labels need reliable readable contrast. */
+.tracking-widest.text-gray-500,.tracking-widest.text-gray-600,
+#portfolio .text-gray-500,#portfolio .text-gray-600,
+#portfolio .mt-1.font-semibold.tracking-wide{
+ color:#b6c4d6!important;
+}
