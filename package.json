@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "test": "node --test tests/replacement.test.mjs",
+    "test": "node --test tests/replacement.test.mjs tests/source-parity.test.mjs",
     "check": "npm run test && npm run build && npm run verify:dist",
     "verify:dist": "node scripts/replacement-dist-check.mjs"
   },

@@ -18,7 +18,7 @@ test("All uploaded design sections and imagery remain in the production page",()
  }
  const photos=[...source.matchAll(/https:\/\/images\.unsplash\.com\/photo-[a-z0-9-]+/g)].map(x=>x[0]);
  for(const photo of new Set(photos))assert.ok(page.includes(photo),"Original photo missing: "+photo);
- for(const title of ["Authentic Engineering.","Next-Gen Solutions.","Redefining Tech Partnerships","The Pukka Standard","Meet The Team","The Pukka Protocol"]){
+ for(const title of ["Authentic Engineering.","Next-Gen Solutions.","Redefining Tech Partnerships","Radical Authenticity","Meet The Team","The Pukka Protocol"]){
   assert.ok(source.includes(title),"Original source heading missing: "+title);
   assert.ok(page.includes(title),"Current page heading missing: "+title);
  }
