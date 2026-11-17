@@ -20,7 +20,7 @@ for(const [browserName,engine] of Object.entries({chromium,firefox,webkit})){
     const naturalWidth=await logo.evaluate(img=>img.complete?img.naturalWidth:0);
     if(!naturalWidth)throw Error("Official Pukka Gen wordmark failed to load");
     const geometry=await page.evaluate(()=>({scroll:document.documentElement.scrollWidth,width:innerWidth}));
-    if(geometry.scroll>geometry.width+2)throw Error("Horizontal overflow "+JSON.stringify(geometry));
+    if(geometry.scroll>geometry.width+2){const offenders=await page.evaluate(()=>[...document.querySelectorAll("*")].filter(e=>{const r=e.getBoundingClientRect();return r.right>innerWidth+5||r.left< -5}).slice(0,16).map(e=>({tag:e.tagName,id:e.id,cls:String(e.className).slice(0,70),x:Math.round(e.getBoundingClientRect().x),right:Math.round(e.getBoundingClientRect().right)})));throw Error("Horizontal overflow "+JSON.stringify(geometry)+" offenders "+JSON.stringify(offenders));}
     if(width<=768){
      await page.locator("#mobileMenuBtn").click();
      const mobile=page.locator("#mobile-menu");
@@ -42,7 +42,7 @@ for(const [browserName,engine] of Object.entries({chromium,firefox,webkit})){
     if((browserName==="chromium"&&[375,1280].includes(width))){
      const a11y=await new AxeBuilder({page}).withTags(["wcag2a","wcag2aa","wcag21a","wcag21aa"]).analyze();
      const severe=a11y.violations.filter(v=>["critical","serious"].includes(v.impact));
-     if(severe.length)throw Error("Accessibility: "+severe.map(v=>v.id+"("+v.nodes.length+")").join(", "));
+     if(severe.length)throw Error("Accessibility: "+severe.map(v=>v.id+":"+v.nodes.slice(0,6).map(n=>n.target.join("/")).join("|")).join(", "));
      await page.screenshot({path:"artifacts/qa/replacement-"+width+".png",fullPage:true,animations:"disabled"});
     }
     results.push({browser:browserName,width,passed:true});
