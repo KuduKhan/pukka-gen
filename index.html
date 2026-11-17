@@ -70,7 +70,7 @@
     </div>
 
     <!-- Back to Top -->
-    <button type="button" id="backToTop" class="hover-trigger" data-action="back-to-top">
+    <button type="button" id="backToTop" aria-label="Back to top" class="hover-trigger" data-action="back-to-top">
         <i class="fas fa-arrow-up"></i>
     </button>
 
@@ -98,7 +98,7 @@
             </div>
 
             <!-- Mobile Menu Button -->
-            <button type="button" id="mobileMenuBtn" class="lg:hidden text-white focus:outline-none hover:text-cyan-400 transition-colors transform active:scale-90 duration-200 hover-trigger">
+            <button type="button" id="mobileMenuBtn" aria-label="Open mobile navigation" class="lg:hidden text-white focus:outline-none hover:text-cyan-400 transition-colors transform active:scale-90 duration-200 hover-trigger">
                 <i class="fas fa-bars text-xl"></i>
             </button>
         </div>
@@ -252,8 +252,8 @@
 
     <!-- About & Mission Section -->
     <section id="about" class="py-32 px-6 relative">
-        <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-20 items-center">
-            <div class="stagger-container">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+            <div class="stagger-container min-w-0">
                 <h2 class="animate-item text-4xl md:text-5xl font-bold mb-8 section-title">Redefining Tech Partnerships</h2>
                 <p class="animate-item delay-100 text-gray-300 text-lg mb-8 leading-relaxed">
                     At <strong class="text-white">Pukka Gen</strong>, we blend decades of enterprise experience with cutting-edge innovation. In an industry crowded with buzzwords, we stand for something permanent: <span class="text-cyan-400 font-bold">Quality</span>.
@@ -2220,10 +2220,10 @@
                             <span class="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[10px] text-gray-400 font-medium hover:border-cyan-500/30 hover:text-cyan-400 transition-colors cursor-default">Cloud Native</span>
                         </div>
                         <div class="flex gap-3 text-lg">
-                            <a href="#" class="text-gray-500 hover:text-cyan-400 transition-colors hover:scale-110 duration-200"><i class="fab fa-linkedin"></i></a>
-                            <a href="#" class="text-gray-500 hover:text-cyan-400 transition-colors hover:scale-110 duration-200"><i class="fab fa-twitter"></i></a>
-                            <a href="#" class="text-gray-500 hover:text-cyan-400 transition-colors hover:scale-110 duration-200"><i class="fab fa-github"></i></a>
-                            <a href="mailto:karim@pukkagennoduff.com" class="text-gray-500 hover:text-cyan-400 transition-colors hover:scale-110 duration-200"><i class="fas fa-envelope"></i></a>
+                            <a href="#contact" class="text-gray-500 hover:text-cyan-400 transition-colors hover:scale-110 duration-200" aria-label="Contact Pukka Gen about social channels"><i class="fab fa-linkedin"></i></a>
+                            <a href="#contact" class="text-gray-500 hover:text-cyan-400 transition-colors hover:scale-110 duration-200" aria-label="Contact Pukka Gen about social channels"><i class="fab fa-twitter"></i></a>
+                            <a href="#contact" class="text-gray-500 hover:text-cyan-400 transition-colors hover:scale-110 duration-200" aria-label="Contact Pukka Gen about social channels"><i class="fab fa-github"></i></a>
+                            <a href="mailto:karim@pukkagennoduff.com" class="text-gray-500 hover:text-cyan-400 transition-colors hover:scale-110 duration-200" aria-label="Email Pukka Gen team member"><i class="fas fa-envelope"></i></a>
                         </div>
                     </div>
                 </div>
@@ -2260,10 +2260,10 @@
                             <span class="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[10px] text-gray-400 font-medium hover:border-red-500/30 hover:text-red-400 transition-colors cursor-default">Threat Intel</span>
                         </div>
                         <div class="flex gap-3 text-lg">
-                            <a href="#" class="text-gray-500 hover:text-red-400 transition-colors hover:scale-110 duration-200"><i class="fab fa-linkedin"></i></a>
-                            <a href="#" class="text-gray-500 hover:text-red-400 transition-colors hover:scale-110 duration-200"><i class="fab fa-twitter"></i></a>
-                            <a href="#" class="text-gray-500 hover:text-red-400 transition-colors hover:scale-110 duration-200"><i class="fab fa-github"></i></a>
-                            <a href="mailto:mufasa@pukkagennoduff.com" class="text-gray-500 hover:text-red-400 transition-colors hover:scale-110 duration-200"><i class="fas fa-envelope"></i></a>
+                            <a href="#contact" class="text-gray-500 hover:text-red-400 transition-colors hover:scale-110 duration-200" aria-label="Contact Pukka Gen about social channels"><i class="fab fa-linkedin"></i></a>
+                            <a href="#contact" class="text-gray-500 hover:text-red-400 transition-colors hover:scale-110 duration-200" aria-label="Contact Pukka Gen about social channels"><i class="fab fa-twitter"></i></a>
+                            <a href="#contact" class="text-gray-500 hover:text-red-400 transition-colors hover:scale-110 duration-200" aria-label="Contact Pukka Gen about social channels"><i class="fab fa-github"></i></a>
+                            <a href="mailto:mufasa@pukkagennoduff.com" class="text-gray-500 hover:text-red-400 transition-colors hover:scale-110 duration-200" aria-label="Email Pukka Gen team member"><i class="fas fa-envelope"></i></a>
                         </div>
                     </div>
                 </div>
@@ -2640,9 +2640,9 @@
             </div>
             
             <div class="flex gap-4 text-gray-600 text-xl">
-                <a href="#" class="hover:text-cyan-400 transition-colors hover:scale-110 duration-200 hover-trigger hover-pop"><i class="fab fa-linkedin"></i></a>
-                <a href="#" class="hover:text-cyan-400 transition-colors hover:scale-110 duration-200 hover-trigger hover-pop"><i class="fab fa-twitter"></i></a>
-                <a href="#" class="hover:text-cyan-400 transition-colors hover:scale-110 duration-200 hover-trigger hover-pop"><i class="fab fa-github"></i></a>
+                <a href="#contact" class="hover:text-cyan-400 transition-colors hover:scale-110 duration-200 hover-trigger hover-pop" aria-label="Contact Pukka Gen about social channels"><i class="fab fa-linkedin"></i></a>
+                <a href="#contact" class="hover:text-cyan-400 transition-colors hover:scale-110 duration-200 hover-trigger hover-pop" aria-label="Contact Pukka Gen about social channels"><i class="fab fa-twitter"></i></a>
+                <a href="#contact" class="hover:text-cyan-400 transition-colors hover:scale-110 duration-200 hover-trigger hover-pop" aria-label="Contact Pukka Gen about social channels"><i class="fab fa-github"></i></a>
             </div>
         </div>
     </footer>
@@ -2650,7 +2650,7 @@
     <!-- Service Modal -->
     <div class="service-modal" id="serviceModal">
         <div class="modal-content">
-            <button type="button" class="modal-close" id="modalClose"><i class="fas fa-times"></i></button>
+            <button type="button" class="modal-close" id="modalClose" aria-label="Close services dialog"><i class="fas fa-times"></i></button>
             <div id="modalContent"></div>
         </div>
     </div>
@@ -2658,7 +2658,7 @@
     <!-- FAQ Modal (New) -->
     <div class="service-modal" id="faqModal">
         <div class="modal-content">
-            <button type="button" class="modal-close" id="faqModalClose"><i class="fas fa-times"></i></button>
+            <button type="button" class="modal-close" id="faqModalClose" aria-label="Close FAQ dialog"><i class="fas fa-times"></i></button>
             <div class="text-center mb-8">
                 <h2 class="text-3xl font-bold text-white mb-2">Frequently Asked Questions</h2>
                 <p class="text-gray-400">Detailed answers to your most common queries.</p>
@@ -2681,7 +2681,7 @@
             <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-32 bg-gradient-to-b from-green-500/10 to-transparent blur-2xl pointer-events-none"></div>
             
             <div class="relative p-6 text-center pt-10">
-                <button type="button" class="modal-close absolute top-4 right-4 z-50 hover:bg-white/10 hover:text-white transition-colors" id="contactModalClose" style="position: absolute;"><i class="fas fa-times"></i></button>
+                <button type="button" class="modal-close absolute top-4 right-4 z-50 hover:bg-white/10 hover:text-white transition-colors" id="contactModalClose" aria-label="Close contact dialog" style="position: absolute;"><i class="fas fa-times"></i></button>
                 
                 <div class="w-20 h-20 rounded-full bg-[#050505] flex items-center justify-center border border-white/10 mx-auto mb-6 shadow-xl relative group">
                     <div class="absolute inset-0 bg-green-500/20 blur-xl rounded-full opacity-50 group-hover:opacity-100 transition-opacity duration-500"></div>
@@ -2734,7 +2734,7 @@
                     <h2 class="text-xl font-bold text-white">Global HQ</h2>
                     <p class="text-sm text-gray-400">Mombasa, Kenya</p>
                 </div>
-                <button type="button" class="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white flex items-center justify-center transition-colors" id="mapModalClose">
+                <button type="button" class="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white flex items-center justify-center transition-colors" id="mapModalClose" aria-label="Close map dialog">
                     <i class="fas fa-times"></i>
                 </button>
             </div>

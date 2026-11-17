@@ -1406,8 +1406,10 @@
 
         blogCards.forEach(card => {
             if (card.tagName !== 'BUTTON') {
-                card.setAttribute('role', 'button');
-                card.setAttribute('tabindex', '0');
+                if (!card.querySelector('button, a[href]')) {
+                    card.setAttribute('role', 'button');
+                    card.setAttribute('tabindex', '0');
+                }
                 card.classList.add('cursor-pointer');
             }
 

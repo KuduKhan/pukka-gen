@@ -971,3 +971,10 @@
                     text-shadow: 0 0 10px rgba(255,255,255,0.3);
                 }
             
+/* Responsive safeguards and readable footer controls */
+@media(max-width:1023px){
+  #about > .max-w-7xl{grid-template-columns:minmax(0,1fr)!important;}
+  #about .stagger-container, #about .spotlight-card{min-width:0;max-width:100%;}
+}
+footer .text-gray-600,footer .text-gray-500{color:#afbed1!important;}
+footer a[href="#contact"]{color:#b5c7da;}
