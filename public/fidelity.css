@@ -48,3 +48,6 @@ html{scroll-padding-top:100px}
 #portfolio .mt-1.font-semibold.tracking-wide{
  color:#b6c4d6!important;
 }
+
+/* Team-card role captions need adequate readable contrast on midnight panels. */
+#team .mt-1.font-semibold.tracking-wide{color:#c0cfdf!important}
