@@ -4,7 +4,7 @@ import {readFileSync} from "node:fs";
 const read=path=>readFileSync(new URL("../"+path,import.meta.url),"utf8");
 const html=read("index.html"),js=read("public/site.js"),css=read("public/site.css");
 test("The uploaded Pukka Gen design is the entire production landing page",()=>{
- for(const name of ["Authentic Engineering.","Next-Gen Solutions.","Redefining Tech Partnerships","The Pukka Standard","Selected builds with real product pressure.","Meet The Team","Frequently Asked Questions"]){
+ for(const name of ["Authentic Engineering.","Next-Gen Solutions.","Redefining Tech Partnerships","Radical Authenticity","Selected builds with real product pressure.","Meet The Team","Frequently Asked Questions"]){
   assert.ok(html.includes(name),name+" missing");
  }
  assert.match(html,/pukka-gen-wordmark\.png/);
