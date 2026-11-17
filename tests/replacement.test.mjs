@@ -7,7 +7,9 @@ test("The uploaded Pukka Gen design is the entire production landing page",()=>{
  for(const name of ["Authentic Engineering.","Next-Gen Solutions.","Redefining Tech Partnerships","Radical Authenticity","Selected builds with real product pressure.","Meet The Team","Frequently Asked Questions"]){
   assert.ok(html.includes(name),name+" missing");
  }
- assert.match(html,/pukka-gen-wordmark\.png/);
+ assert.match(html,/class="text-white logo-text-1">PUKKA<\/span>/);
+ assert.match(html,/class="text-cyan-400 logo-text-2">GEN<\/span>/);
+ assert.match(html,/\/fidelity\.css/);
  assert.match(html,/site\.css/);
  assert.match(html,/site\.js/);
  assert.doesNotMatch(html,/cdn\.tailwindcss\.com/);
