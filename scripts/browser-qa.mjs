@@ -7,7 +7,7 @@ await mkdir("artifacts/qa",{recursive:true});
 for(const [browserName,engine] of Object.entries({chromium,firefox,webkit})){
  const browser=await engine.launch({headless:true});
  try{
-  for(const width of [320,375,768,1280]){
+  for(const width of [320,375,414,768,1024,1280,1440]){
    const context=await browser.newContext({viewport:{width,height:900},deviceScaleFactor:1,reducedMotion:"reduce"});
    const page=await context.newPage(),errors=[];
    page.on("pageerror",error=>errors.push(error.message));
@@ -15,11 +15,10 @@ for(const [browserName,engine] of Object.entries({chromium,firefox,webkit})){
     const response=await page.goto(url,{waitUntil:"domcontentloaded",timeout:30000});
     if(!response?.ok())throw Error("Page HTTP status "+response?.status());
     await page.locator("#about").waitFor({timeout:15000});
-    const logo=page.locator('nav img[alt="Pukka Gen No Duff"]');
-    if(!(await logo.count()))throw Error("Official Pukka Gen wordmark missing");
-    const naturalWidth=await logo.evaluate(img=>img.complete?img.naturalWidth:0);
-    if(!naturalWidth)throw Error("Official Pukka Gen wordmark failed to load");
-    const geometry=await page.evaluate(()=>({scroll:document.documentElement.scrollWidth,width:innerWidth}));
+    const logo=page.locator('nav .logo-container .logo-text-1');
+    if(!(await logo.count()))throw Error("Original uploaded PUKKA wordmark not found");
+    if((await logo.textContent())?.trim()!=="PUKKA")throw Error("Wordmark text mismatch");
+    const geometry=await page.evaluate(()=>({scroll:document.documentElement.scrollWidth,width:innerWidth,navText:[...document.querySelectorAll('nav .logo-container span')].map(e=>e.textContent.trim()).join(' '),cssLoaded:[...document.styleSheets].some(s=>s.href?.includes('fidelity.css'))}));
     if(geometry.scroll>geometry.width+2){const offenders=await page.evaluate(()=>[...document.querySelectorAll("*")].filter(e=>{const r=e.getBoundingClientRect();return r.right>innerWidth+5||r.left< -5}).slice(0,16).map(e=>({tag:e.tagName,id:e.id,cls:String(e.className).slice(0,70),x:Math.round(e.getBoundingClientRect().x),right:Math.round(e.getBoundingClientRect().right)})));throw Error("Horizontal overflow "+JSON.stringify(geometry)+" offenders "+JSON.stringify(offenders));}
     if(width<=768){
      await page.locator("#mobileMenuBtn").click();

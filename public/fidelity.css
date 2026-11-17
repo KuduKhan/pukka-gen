@@ -1,0 +1,53 @@
+/* Upload-parity corrections: keep the original user-authored design intact. */
+@media(max-width:1023px){
+ #about>.max-w-7xl{grid-template-columns:minmax(0,1fr)!important}
+ #about .stagger-container,#about .spotlight-card{min-width:0;max-width:100%}
+}
+@media(max-width:600px){
+ #about :is(h2,p){overflow-wrap:break-word}
+ #about .stagger-container{width:100%;min-width:0}
+ .modal-content{max-width:min(100%,calc(100vw - 24px))}
+ #mobile-menu{max-height:min(75dvh,660px);overflow-y:auto}
+}
+html{scroll-padding-top:100px}
+@media(prefers-reduced-motion:reduce){.marquee-track{animation:none!important}.animate-item{opacity:1!important;transform:none!important}.reveal-text{clip-path:none!important;transform:none!important}}
+/* These theme variants are assembled by the uploaded JavaScript at runtime,
+   so a static Tailwind content scan would otherwise omit them. */
+.hover\:bg-red-400:hover{background-color:#f87171!important}
+.hover\:shadow-red-500\/50:hover{box-shadow:0 12px 28px rgba(239,68,68,.5)!important}
+.hover\:border-red-400\/30:hover{border-color:rgba(239,68,68,.30)!important}
+.group:hover .group-hover\:text-red-400{color:#f87171!important}
+.hover\:bg-cyan-400:hover{background-color:#22d3ee!important}
+.hover\:shadow-cyan-500\/50:hover{box-shadow:0 12px 28px rgba(6,182,212,.5)!important}
+.hover\:border-cyan-400\/30:hover{border-color:rgba(6,182,212,.30)!important}
+.group:hover .group-hover\:text-cyan-400{color:#22d3ee!important}
+.hover\:bg-green-400:hover{background-color:#4ade80!important}
+.hover\:shadow-green-500\/50:hover{box-shadow:0 12px 28px rgba(34,197,94,.5)!important}
+.hover\:border-green-400\/30:hover{border-color:rgba(34,197,94,.30)!important}
+.group:hover .group-hover\:text-green-400{color:#4ade80!important}
+.hover\:bg-pink-400:hover{background-color:#f472b6!important}
+.hover\:shadow-pink-500\/50:hover{box-shadow:0 12px 28px rgba(236,72,153,.5)!important}
+.hover\:border-pink-400\/30:hover{border-color:rgba(236,72,153,.30)!important}
+.group:hover .group-hover\:text-pink-400{color:#f472b6!important}
+.hover\:bg-purple-400:hover{background-color:#c084fc!important}
+.hover\:shadow-purple-500\/50:hover{box-shadow:0 12px 28px rgba(168,85,247,.5)!important}
+.hover\:border-purple-400\/30:hover{border-color:rgba(168,85,247,.30)!important}
+.group:hover .group-hover\:text-purple-400{color:#c084fc!important}
+.hover\:bg-blue-400:hover{background-color:#60a5fa!important}
+.hover\:shadow-blue-500\/50:hover{box-shadow:0 12px 28px rgba(59,130,246,.5)!important}
+.hover\:border-blue-400\/30:hover{border-color:rgba(59,130,246,.30)!important}
+.group:hover .group-hover\:text-blue-400{color:#60a5fa!important}
+.hover\:bg-yellow-400:hover{background-color:#facc15!important}
+.hover\:shadow-yellow-500\/50:hover{box-shadow:0 12px 28px rgba(234,179,8,.5)!important}
+.hover\:border-yellow-400\/30:hover{border-color:rgba(234,179,8,.30)!important}
+.group:hover .group-hover\:text-yellow-400{color:#facc15!important}
+
+/* Original source's tiny muted labels need reliable readable contrast. */
+.tracking-widest.text-gray-500,.tracking-widest.text-gray-600,
+#portfolio .text-gray-500,#portfolio .text-gray-600,
+#portfolio .mt-1.font-semibold.tracking-wide{
+ color:#b6c4d6!important;
+}
+
+/* Team-card role captions need adequate readable contrast on midnight panels. */
+#team .mt-1.font-semibold.tracking-wide{color:#c0cfdf!important}
