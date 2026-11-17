@@ -36,7 +36,7 @@ for(const [browserName,engine] of Object.entries({chromium,firefox,webkit})){
      await page.locator("#projectMessage").fill("A complete qualifying enquiry for verified form functionality.");
      await page.locator("#projectBriefForm button[type=submit]").click();
      const status=page.locator("#projectFormStatus");
-     await status.getByText(/provider accepted|accepted your enquiry/i).waitFor({timeout:12000});
+     await page.waitForFunction(()=>/provider accepted|accepted your enquiry/i.test(document.querySelector("#projectFormStatus")?.textContent||""),null,{timeout:12000});
     }
     if(errors.length)throw Error("Runtime errors: "+errors.slice(0,3).join("; "));
     if((browserName==="chromium"&&[375,1280].includes(width))){
