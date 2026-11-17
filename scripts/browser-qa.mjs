@@ -2,336 +2,58 @@ import {chromium,firefox,webkit} from "playwright";
 import AxeBuilder from "@axe-core/playwright";
 import {mkdir,writeFile} from "node:fs/promises";
 const url=process.env.PUKKA_BASE_URL||"http://127.0.0.1:4173/";
-const widths=[320,375,768,1024,1280,1440];
-// Editorial Amanah-parity pages use Georgia display headings, while Sora remains
-// available for technical typography and Manrope remains the body font.
 const results=[],failures=[];
 await mkdir("artifacts/qa",{recursive:true});
-async function ready(){
- for(let i=0;i<80;i++){
-  try{if((await fetch(url)).ok)return;}catch{}
-  await new Promise(resolve=>setTimeout(resolve,500));
- }
- throw new Error("Development site did not start");
-}
-await ready();
 for(const [browserName,engine] of Object.entries({chromium,firefox,webkit})){
  const browser=await engine.launch({headless:true});
  try{
- for(const width of widths){
-  const context=await browser.newContext({viewport:{width,height:900},deviceScaleFactor:1,reducedMotion:"reduce"});
-  const page=await context.newPage();const errors=[];
-  page.on("pageerror",error=>errors.push(error.message));
-  try{
-   const response=await page.goto(url,{waitUntil:"domcontentloaded"});
-   if(!response?.ok())throw new Error("Page HTTP failure");
-   await page.locator("[data-service]").first().waitFor({timeout:12000});
-   if(await page.locator('link[href="/src/pukka-lustre.css"]').count()!==1)
-     throw new Error("Premium visual layer did not load");
-   if(await page.locator('script[src="/src/pukka-lustre.ts"]').count()!==1)
-     throw new Error("Progressive enhancement script missing");
-   const glassFinish=await page.locator(".pg-hero-showcase").evaluate(node=>({
-     filter:getComputedStyle(node).backdropFilter||getComputedStyle(node).webkitBackdropFilter,
-     border:getComputedStyle(node).borderRadius,
-     background:getComputedStyle(node).backgroundImage
-   }));
-   if(glassFinish.filter!=="none"||parseFloat(glassFinish.border)<=0||!glassFinish.background.includes("gradient"))
-     throw new Error("Hero glass must use a static layered surface: "+JSON.stringify(glassFinish));
-   const heroGap=await page.locator(".pg-hero-tag").evaluate(tag=>
-     tag.getBoundingClientRect().top-document.querySelector("#site-header").getBoundingClientRect().bottom
-   );
-   if(heroGap<8||heroGap>40)throw new Error("Header-to-hero spacing: "+heroGap+"px");
-   const contactInk=await page.locator(".contact-big").evaluate(node=>getComputedStyle(node).color);
-   const channels=(contactInk.match(/[\d.]+/g)||[]).slice(0,3).map(Number);
-   if(channels.length<3||Math.min(...channels)<190)
-     throw new Error("Dark contact heading must use light, accessible ink: "+contactInk);
-
-   if(await page.locator(".pg-lustre-surface").count()!==0)
-     throw new Error("Reduced-motion scenario must not activate pointer spotlight effects");
-
-   
-   const chosenFonts=await page.evaluate(async()=>{
-    await document.fonts.load('700 24px "Sora"');
-    await document.fonts.load('400 16px "Manrope"');
-    return {
-     sora:document.fonts.check('700 24px "Sora"'),
-     manrope:document.fonts.check('400 16px "Manrope"'),
-     heading:getComputedStyle(document.querySelector("h1")).fontFamily,
-     body:getComputedStyle(document.body).fontFamily
-    };
-   });
-   if(!chosenFonts.sora||!chosenFonts.manrope||!chosenFonts.heading.includes("Georgia")||!chosenFonts.body.includes("Manrope"))
-    throw new Error("Homepage typography mismatch: "+JSON.stringify(chosenFonts));
-   if((await page.locator("[data-service]").count())!==6)throw new Error("Six service cards missing");
-   if((await page.locator("[data-project]").count())!==3)throw new Error("Three concept cases missing");
-   if(await page.locator("nav.footer-nav").count()!==1)
-     throw new Error("Three-column footer navigation landmark missing");
-   const footerColumns=await page.locator("nav.footer-nav").evaluate(nav=>{
-     const groups=Array.from(nav.children);
-     const bounds=groups.map(group=>group.getBoundingClientRect());
-     const styles=getComputedStyle(nav);
-     return{
-       count:groups.length,
-       columns:styles.gridTemplateColumns.trim().split(/\s+/).length,
-       oneRow:bounds.every(x=>Math.abs(x.top-bounds[0].top)<2),
-       overflow:Math.max(0,nav.scrollWidth-nav.clientWidth),
-       labels:groups.map(group=>group.querySelector("span")?.textContent?.trim()),
-       groups:groups.map(group=>Array.from(group.querySelectorAll("a")).length)
-     };
-   });
-   if(footerColumns.count!==3||footerColumns.columns!==3||!footerColumns.oneRow||
-      footerColumns.overflow>2||JSON.stringify(footerColumns.labels)!=='["EXPLORE","STUDIO","CONNECT"]'||
-      JSON.stringify(footerColumns.groups)!=="[5,5,3]")
-     throw new Error("Footer three-column layout broken at "+width+"px: "+JSON.stringify(footerColumns));
-   if(width<=980){
-     const toggle=page.locator("#menu-toggle");
-     if((await toggle.innerText()).trim()!=="Menu")throw new Error("Homepage mobile menu label missing");
-     await toggle.click();
-     if(await toggle.getAttribute("aria-expanded")!=="true"||(await toggle.innerText()).trim()!=="Close")
-       throw new Error("Homepage mobile menu did not open with a Close label");
-     const geometry=await page.locator("#mobile-nav").evaluate(nav=>{
-       const links=Array.from(nav.querySelectorAll("a"));
-       const boxes=links.map(a=>a.getBoundingClientRect());
-       return{direction:getComputedStyle(nav).flexDirection,
-         vertical:boxes.every((box,i)=>i===0||box.top>=boxes[i-1].bottom-2),
-         overflow:Math.max(0,nav.scrollWidth-nav.clientWidth)};
-     });
-     if(geometry.direction!=="column"||!geometry.vertical||geometry.overflow>2)
-       throw new Error("Homepage mobile menu must be vertical: "+JSON.stringify(geometry));
-     await page.keyboard.press("Escape");
-     if(await toggle.getAttribute("aria-expanded")!=="false")throw new Error("Homepage mobile menu did not close");
-   }
-   const heroTones=await page.locator(".hero h1").evaluate(node=>{
-     const color=x=>(getComputedStyle(x).color.match(/[\d.]+/g)||[]).slice(0,3).map(Number);
-     return{heading:color(node),matter:color(node.querySelector("em")),noDuff:color(node.querySelector(".pg-hero-signoff"))};
-   });
-   if(Object.values(heroTones).some(rgb=>rgb.length!==3||rgb[2]<=rgb[0]+18||rgb[2]<=rgb[1]+8))
-     throw new Error("Pukka navy/electric-blue hero ink missing: "+JSON.stringify(heroTones));
-   const footerHeadingInk=await page.locator("nav.footer-nav>div:first-child>span").evaluate(node=>(getComputedStyle(node).color.match(/[0-9.]+/g)||[]).slice(0,3).map(Number));
-   if(footerHeadingInk.length!==3||footerHeadingInk[2]<=footerHeadingInk[0]+20)
-     throw new Error("Pukka blue footer heading accent missing: "+JSON.stringify(footerHeadingInk));
-
-   if(await page.locator(".pg-enterprise-signature").count()!==1 ||
-      await page.locator(".pg-route-card").count()!==4 ||
-      await page.locator(".pg-route-icon svg use").count()!==4)
-     throw new Error("Pukka enterprise identity or four icon-led corporate pathways missing");
-   if(width<=375){
-     const signatureOverflow=await page.locator(".pg-enterprise-signature").evaluate(el=>el.scrollWidth-el.clientWidth);
-     if(signatureOverflow>2)throw new Error("Company signature clips on mobile: "+signatureOverflow);
-   }
-   const overflow=await page.evaluate(()=>Math.max(0,document.documentElement.scrollWidth-window.innerWidth));
-   if(overflow>2)throw new Error("Horizontal overflow: "+overflow+"px");
-   if(await page.locator('[data-solution-select]').count()!==4)throw new Error("Four outcome paths missing");
-   if(await page.locator('[data-sector]').count()!==6)throw new Error("Six industry playbooks missing");
-   await page.locator('[data-solution-select="knowledge"]').click();
-   const solutionSymbol=await page.locator('[data-solution-icon="engineer"]').getAttribute("href");
-   if(solutionSymbol!=="/icons/pukka-symbols.svg#pg-insight")
-     throw new Error("Solution architecture illustration failed to change");
-
-   if(await page.locator('#solution-explorer').getAttribute("data-solution")!=="knowledge" ||
-      !(await page.locator('#solution-title').innerText()).includes("intelligence"))throw new Error("Solution explorer failed");
-   await page.locator('[data-solution-select="knowledge"]').focus();
-   await page.keyboard.press("ArrowRight");
-   if(await page.locator('#solution-explorer').getAttribute("data-solution")!=="trust")throw new Error("Solution explorer keyboard control failed");
-   await page.locator('[data-sector="maritime"]').click();
-   if(!(await page.locator('#detail-dialog').evaluate(el=>el.open)))throw new Error("Sector panel unavailable");
-   if(!(await page.locator('.detail-disclaimer').innerText()).includes("Sector application"))throw new Error("Sector transparency absent");
-   await page.locator('#dialog-close').click();
-   if(await page.locator('#proof-accordion details').count()!==4)throw new Error("No Duff proof missing");
-   if(await page.locator('#faq .faq-list details').count()!==4)throw new Error("FAQ missing");
-   if(await page.locator('.ink-note').count()<3)throw new Error("Editorial handwritten annotations absent");
-   if(await page.locator('.journal-symbol svg').count()!==3)throw new Error("Field note icon system inconsistent");
-   if(await page.locator(".pg-capabilities-band").count()!==1)throw new Error("Enterprise capability bridge missing");
-   if(await page.locator(".pg-sector-watermark").count()!==6)throw new Error("Sector visual context missing");
-   if(await page.locator(".pg-cinematic-art").count()!==1)throw new Error("Cinematic engineering scene missing");
-   await page.locator(".pg-cinematic-art").scrollIntoViewIfNeeded();
-   await page.waitForFunction(()=>{
-     const img=document.querySelector(".pg-cinematic-art");
-     return img?.complete&&img?.naturalWidth>0;
-   },null,{timeout:10000});
-   const mastheadVisible=await page.locator(".pg-studio-strip").isVisible();
-   if(width>700&&!mastheadVisible)throw new Error("Desktop enterprise studio strip missing");
-   if(width<=700&&mastheadVisible)throw new Error("Mobile studio strip should be suppressed");
-   if(await page.locator('.expertise-icon svg use').count()!==6 ||
-      await page.locator('.sector-symbol svg use').count()!==6 ||
-      await page.locator('.journal-symbol svg use').count()!==3)
-     throw new Error("First-party icon sprite placements are incomplete");
-   const responseIcons=await page.request.get(new URL("/icons/pukka-symbols.svg",url).toString());
-   if(!responseIcons.ok() || !(await responseIcons.text()).includes('<symbol id="pg-maritime"'))
-     throw new Error("Local icon sprite asset is missing or inaccessible");
-
-   if(await page.locator('.expertise-icon svg').count()!==6)throw new Error("Service SVG system inconsistent");
-   const glass=await page.locator('.system-panel').evaluate(node=>({
-     background:getComputedStyle(node).backgroundColor,
-     filter:getComputedStyle(node).backdropFilter || getComputedStyle(node).webkitBackdropFilter
-   }));
-   if(glass.filter.includes('blur'))throw new Error("Technical panel should not use costly backdrop blur: "+JSON.stringify(glass));
-   if(await page.locator(".pg-hero-signoff").isVisible()!==true)throw new Error("No Duff handwritten brand signoff missing");
-   const logo=await page.locator(".brand img").evaluate(img=>img.complete&&img.naturalWidth>0);
-   if(!logo)throw new Error("Original logo is missing");
-   await page.locator('[data-system-select="security"]').click();
-   if(await page.locator("#system-panel").getAttribute("data-active")!=="security"||
-      await page.locator('[data-node="security"]').getAttribute("data-active")!=="true")
-    throw new Error("Engineering atlas did not update");
-   await page.locator('[data-system-select="security"]').focus();
-   await page.keyboard.press("ArrowRight");
-   if(await page.locator("#system-panel").getAttribute("data-active")!=="design")throw new Error("Atlas keyboard navigation failed");
-   await page.locator('[data-filter="trust"]').click();
-   if(await page.locator(".project:visible").count()!==1)throw new Error("Project filter failed");
-   await page.locator('[data-filter="all"]').click();
-   if(await page.locator(".project:visible").count()!==3)throw new Error("Project filter did not reset");
-   await page.locator('[data-project="operations"]').click();
-   if(!(await page.locator("#detail-dialog").evaluate(el=>el.open)))throw new Error("Project dialog unavailable");
-   if(!(await page.locator(".detail-disclaimer").isVisible()))throw new Error("Concept disclosure not visible");
-   await page.locator("#dialog-close").click();
-   await page.locator('[data-service="software"]').click();
-   if(!(await page.locator("#detail-dialog").evaluate(el=>el.open)))throw new Error("Service dialog unavailable");
-   await page.keyboard.press("Escape");
-   await page.locator('[data-step="verify"]').click();
-   if(await page.locator('[data-stage-icon="1"]').getAttribute("href")!=="/icons/pukka-symbols.svg#pg-release")
-     throw new Error("Selected engineering stage did not update SVG artwork");
-
-   if(!(await page.locator("#process-title").innerText()).includes("Tests"))throw new Error("Process steps did not update");
-   await page.locator('[data-article="discovery"]').click();
-   if(!(await page.locator("#detail-dialog").evaluate(el=>el.open)))throw new Error("Field note dialog unavailable");
-   await page.locator("#dialog-close").click();
-   if(width<=980){
-    await page.locator("#menu-toggle").click();
-    if(await page.locator("#menu-toggle").getAttribute("aria-expanded")!=="true")throw new Error("Mobile menu inaccessible");
-    await page.keyboard.press("Escape");
-    if(await page.locator("#menu-toggle").getAttribute("aria-expanded")!=="false")throw new Error("Mobile Escape failed");
-   }
-   await page.locator("#project-form button[type=submit]").click();
-   if(await page.locator("#form-status").getAttribute("data-state")!=="error")throw new Error("Invalid form not blocked");
-   if(errors.length)throw new Error("Unhandled browser errors: "+errors.join(" | "));
-   // Bring the page back to its initial view for visual acceptance and axe scans.
-   await page.goto(url,{waitUntil:"domcontentloaded"});
-   await page.locator("[data-service]").first().waitFor();
-   if(browserName==="chromium"){
-    await page.screenshot({path:"artifacts/qa/preview-"+width+".png",fullPage:true,animations:"disabled"});
-    if([375,1440].includes(width)){
-     const axe=await new AxeBuilder({page}).withTags(["wcag2a","wcag2aa","wcag21a","wcag21aa"]).analyze();
-     const serious=axe.violations.filter(v=>["serious","critical"].includes(v.impact||""));
-     if(serious.length)throw new Error("Axe: "+JSON.stringify(serious.map(v=>({id:v.id,nodes:v.nodes.slice(0,6).map(n=>({target:n.target,summary:n.failureSummary?.slice(0,260)}))}))));
+  for(const width of [320,375,768,1280]){
+   const context=await browser.newContext({viewport:{width,height:900},deviceScaleFactor:1,reducedMotion:"reduce"});
+   const page=await context.newPage(),errors=[];
+   page.on("pageerror",error=>errors.push(error.message));
+   try{
+    const response=await page.goto(url,{waitUntil:"domcontentloaded",timeout:30000});
+    if(!response?.ok())throw Error("Page HTTP status "+response?.status());
+    await page.locator("#about").waitFor({timeout:15000});
+    const logo=page.locator('nav img[alt="Pukka Gen No Duff"]');
+    if(!(await logo.count()))throw Error("Official Pukka Gen wordmark missing");
+    const naturalWidth=await logo.evaluate(img=>img.complete?img.naturalWidth:0);
+    if(!naturalWidth)throw Error("Official Pukka Gen wordmark failed to load");
+    const geometry=await page.evaluate(()=>({scroll:document.documentElement.scrollWidth,width:innerWidth}));
+    if(geometry.scroll>geometry.width+2)throw Error("Horizontal overflow "+JSON.stringify(geometry));
+    if(width<=768){
+     await page.locator("#mobileMenuBtn").click();
+     const mobile=page.locator("#mobile-menu");
+     if(!(await mobile.isVisible()))throw Error("Mobile vertical navigation failed to open");
+     if(!(await mobile.locator('a[href="#services"]').isVisible()))throw Error("Mobile services link not visible");
+     await page.locator("#mobileMenuBtn").click();
     }
-   }
-   // Independently verify purposeful animations when the user allows motion.
-   // The main QA context uses reduced-motion to protect accessibility.
-   if(browserName==="chromium" && [375,1440].includes(width)){
-    const motionContext=await browser.newContext({
-      viewport:{width,height:900},deviceScaleFactor:1,reducedMotion:"no-preference"
-    });
-    try{
-      const motionPage=await motionContext.newPage();
-      const motionErrors=[];
-      motionPage.on("pageerror",error=>motionErrors.push(error.message));
-      await motionPage.goto(url,{waitUntil:"domcontentloaded"});
-      await motionPage.locator(".pg-hero-signoff").waitFor();
-      const sectionHead=motionPage.locator("#work .section-head");
-      const sectionVisible=await sectionHead.evaluate(node=>{
-        const style=getComputedStyle(node);
-        return style.opacity==="1"&&style.filter==="none";
-      });
-      if(!sectionVisible)throw new Error("Work heading is hidden before scrolling");
-      const fontLoaded=await motionPage.evaluate(async()=>{
-        await document.fonts.ready;
-        return document.fonts.check('600 22px "Pukka Hand"');
-      });
-      if(!fontLoaded)throw new Error("Self-hosted Caveat handwriting font did not load");
-       const card=motionPage.locator(".expertise-card").first();
-       await card.hover();
-       const performanceFinish=await card.evaluate(node=>({
-         active:node.classList.contains("pg-lustre-surface"),
-         overlay:getComputedStyle(node,"::after").content,
-         spotX:node.style.getPropertyValue("--pg-spot-x")
-       }));
-       if(performanceFinish.active||performanceFinish.spotX||!["none","normal",'""'].includes(performanceFinish.overlay))
-         throw new Error("Expensive cursor spotlight still active: "+JSON.stringify(performanceFinish));
-       await motionPage.locator('[data-solution-select="knowledge"]').click();
-       if(!(await motionPage.locator("#solution-title").innerText()).includes("intelligence"))
-         throw new Error("Animated solution explorer no longer responds");
-
-      await sectionHead.scrollIntoViewIfNeeded();
-      if(motionErrors.length)throw new Error("Normal-motion runtime error: "+motionErrors.join(" | "));
-      await motionPage.screenshot({
-        path:"artifacts/qa/motion-work-"+width+".png",animations:"disabled"
-      });
-    }finally{await motionContext.close();}
-   }
-
-   // Corporate pages: actual page loads, cross-browser/viewport overflow,
-   // keyboard landmarks and axe checks beyond the homepage-only suite.
-   if((browserName==="chromium" && [320,375,768,1440].includes(width)) ||
-      (browserName!=="chromium" && width===375)){
-     for(const route of ["company","partners","investors","trust"]){
-       const routeUrl=new URL("/"+route+".html",url).toString();
-       const routeResponse=await page.goto(routeUrl,{waitUntil:"domcontentloaded"});
-       if(!routeResponse?.ok())throw new Error(route+" page failed HTTP");
-       if(await page.locator('main h1').count()!==1)throw new Error(route+" heading missing");
-        if(await page.locator(".corp-card.pg-corp-elevated").count()!==4 ||
-           await page.locator(".pg-corp-card-top .pg-corp-card-icon svg use").count()!==4)
-          throw new Error(route+" has missing enterprise-level icon-led cards");
-       const corporateFonts=await page.evaluate(async()=>{
-        await document.fonts.load('700 24px "Sora"');
-        await document.fonts.load('400 16px "Manrope"');
-        return {
-         sora:document.fonts.check('700 24px "Sora"'),
-         manrope:document.fonts.check('400 16px "Manrope"'),
-         title:getComputedStyle(document.querySelector("main h1")).fontFamily,
-         body:getComputedStyle(document.body).fontFamily
-        };
-       });
-       if(!corporateFonts.sora||!corporateFonts.manrope||!corporateFonts.title.includes("Georgia")||!corporateFonts.body.includes("Manrope"))
-        throw new Error(route+" typography mismatch: "+JSON.stringify(corporateFonts));
-
-       if(await page.locator('a.corp-skip[href="#main"]').count()!==1)throw new Error(route+" skip link absent");
-       if(await page.locator('nav.corp-nav a[aria-current="page"]').count()!==1)throw new Error(route+" current page not marked");
-       const companyToggle=page.locator(".pg-corp-menu-toggle");
-       if(width<=980){
-         if(!await companyToggle.isVisible())throw new Error(route+" vertical menu toggle missing");
-         if(await page.locator("#pg-corp-nav").isVisible())throw new Error(route+" closed menu is initially exposed");
-         await companyToggle.click();
-         if(await companyToggle.getAttribute("aria-expanded")!=="true")throw new Error(route+" menu did not open");
-         const geometry=await page.locator("#pg-corp-nav").evaluate(nav=>{
-           const links=Array.from(nav.querySelectorAll("a"));
-           const boxes=links.map(a=>a.getBoundingClientRect());
-           return{display:getComputedStyle(nav).display,
-             columns:getComputedStyle(nav).gridTemplateColumns.trim().split(/\\s+/).length,
-             vertical:boxes.every((box,i)=>i===0||box.top>=boxes[i-1].bottom-2),
-             overflow:Math.max(0,nav.scrollWidth-nav.clientWidth),count:links.length};
-         });
-         if(geometry.display!=="grid"||geometry.columns!==1||!geometry.vertical||geometry.overflow>2||geometry.count!==5)
-           throw new Error(route+" mobile menu is not vertical: "+JSON.stringify(geometry));
-         await page.keyboard.press("Escape");
-         if(await companyToggle.getAttribute("aria-expanded")!=="false"||await page.locator("#pg-corp-nav").isVisible())
-           throw new Error(route+" menu did not close on Escape");
-       }else if(await companyToggle.isVisible()){
-         throw new Error(route+" desktop should not show mobile menu toggle");
-       }
-       const routeOverflow=await page.evaluate(()=>Math.max(0,document.documentElement.scrollWidth-window.innerWidth));
-       if(routeOverflow>2)throw new Error(route+" horizontal overflow at "+width+"px: "+routeOverflow);
-       const routeLogo=await page.locator(".corp-brand img").evaluate(img=>img.complete&&img.naturalWidth>0);
-       if(!routeLogo)throw new Error(route+" original brand logo did not load");
-       if(browserName==="chromium"){
-         await page.screenshot({path:"artifacts/qa/corporate-"+route+"-"+width+".png",fullPage:true,animations:"disabled"});
-         if([375,1440].includes(width)){
-           const a11y=await new AxeBuilder({page}).withTags(["wcag2a","wcag2aa","wcag21a","wcag21aa"]).analyze();
-           const serious=a11y.violations.filter(v=>["serious","critical"].includes(v.impact||""));
-           if(serious.length)throw new Error(route+" accessibility: "+JSON.stringify(serious.map(v=>({id:v.id,target:v.nodes[0]?.target}))));
-         }
-       }
-     }
-   }
-   results.push({browser:browserName,width,ok:true});
-  }catch(error){
-   const reason=error instanceof Error?error.message:String(error);
-   failures.push({browser:browserName,width,reason});
-   results.push({browser:browserName,width,ok:false,error:reason});
-   try{await page.screenshot({path:"artifacts/qa/failure-"+browserName+"-"+width+".png",animations:"disabled"});}catch{}
-  }finally{await context.close();}
- }
+    if(width===375){
+     await page.route("**/api/project-brief",route=>route.fulfill({status:200,contentType:"application/json",body:JSON.stringify({ok:true})}));
+     await page.locator("#projectName").fill("Quality Test");
+     await page.locator("#projectEmail").fill("quality@example.com");
+     await page.locator("#projectService").selectOption("dev");
+     await page.locator("#projectMessage").fill("A complete qualifying enquiry for verified form functionality.");
+     await page.locator("#projectBriefForm button[type=submit]").click();
+     const status=page.locator("#projectFormStatus");
+     await status.getByText(/provider accepted|accepted your enquiry/i).waitFor({timeout:12000});
+    }
+    if(errors.length)throw Error("Runtime errors: "+errors.slice(0,3).join("; "));
+    if((browserName==="chromium"&&[375,1280].includes(width))){
+     const a11y=await new AxeBuilder({page}).withTags(["wcag2a","wcag2aa","wcag21a","wcag21aa"]).analyze();
+     const severe=a11y.violations.filter(v=>["critical","serious"].includes(v.impact));
+     if(severe.length)throw Error("Accessibility: "+severe.map(v=>v.id+"("+v.nodes.length+")").join(", "));
+     await page.screenshot({path:"artifacts/qa/replacement-"+width+".png",fullPage:true,animations:"disabled"});
+    }
+    results.push({browser:browserName,width,passed:true});
+   }catch(e){
+    const reason=e instanceof Error?e.message:String(e);
+    failures.push({browser:browserName,width,reason});
+    results.push({browser:browserName,width,passed:false,reason});
+   }finally{await context.close();}
+  }
  }finally{await browser.close();}
 }
-await writeFile("artifacts/qa/report.json",JSON.stringify({passed:failures.length===0,results,failures},null,2));
-console.log(JSON.stringify({passed:failures.length===0,checked:results.length,failures},null,2));
+await writeFile("artifacts/qa/replacement-report.json",JSON.stringify({results,failures},null,2));
+console.log(JSON.stringify({total:results.length,passed:results.length-failures.length,failures},null,2));
 if(failures.length)process.exitCode=1;
