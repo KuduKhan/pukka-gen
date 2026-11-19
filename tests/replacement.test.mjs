@@ -1,35 +1,52 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import {readFileSync} from "node:fs";
-const read=path=>readFileSync(new URL("../"+path,import.meta.url),"utf8");
-const html=read("index.html"),js=read("public/site.js"),css=read("public/site.css");
-test("The uploaded Pukka Gen design is the entire production landing page",()=>{
- for(const name of ["Authentic Engineering.","Next-Gen Solutions.","Redefining Tech Partnerships","Radical Authenticity","Selected builds with real product pressure.","Meet The Team","Frequently Asked Questions"]){
-  assert.ok(html.includes(name),name+" missing");
- }
- assert.match(html,/class="text-white logo-text-1">PUKKA<\/span>/);
- assert.match(html,/class="text-cyan-400 logo-text-2">GEN<\/span>/);
- assert.match(html,/\/fidelity\.css/);
- assert.match(html,/site\.css/);
- assert.match(html,/site\.js/);
- assert.doesNotMatch(html,/cdn\.tailwindcss\.com/);
+import {Script} from "node:vm";
+
+const read = path => readFileSync(new URL("../" + path, import.meta.url), "utf8");
+const html = read("index.html");
+
+test("Pukka Gen No Duff brand and core landing-page content are retained", () => {
+  for (const phrase of ["Authentic Engineering.", "Next-Gen Solutions.", "Redefining Tech Partnerships", "Radical Authenticity", "Meet The Team", "Frequently Asked Questions"]) {
+    assert.ok(html.includes(phrase), phrase + " is missing");
+  }
+  assert.match(html, /class="text-white logo-text-1">PUKKA<\/span>/);
+  assert.match(html, /class="text-cyan-400 logo-text-2">GEN<\/span>/);
+  assert.match(html, /<main id="main-content">/);
+  assert.match(html, /<meta name="description"/);
 });
-test("The replacement form performs real provider-gated submission rather than fake toast success",()=>{
- assert.match(html,/id="projectBriefForm"/);
- assert.match(js,/fetch\('\/api\/project-brief'/);
- assert.match(js,/provider accepted your enquiry/i);
- assert.match(js,/Delivery could not be confirmed/i);
- assert.doesNotMatch(js,/Brief captured\. The team will respond/);
+
+test("Mobile navigation, overlays, project form, and primary sections survive the refinement", () => {
+  for (const id of ["mobileMenuBtn", "mobile-menu", "commandPalette", "serviceModal", "faqModal", "contactModal", "projectBriefForm", "projectFormStatus"]) {
+    assert.ok(html.includes('id="' + id + '"'), id + " is missing");
+  }
+  for (const id of ["about", "values", "services", "portfolio", "process", "checklist", "testimonials", "insights", "team", "contact"]) {
+    assert.ok(html.includes('id="' + id + '"'), id + " section is missing");
+  }
+  assert.match(html, /aria-expanded/);
+  assert.match(html, /prefers-reduced-motion/);
 });
-test("Mobile menu, services, modals and source interaction code retained",()=>{
- for(const key of ["mobileMenuBtn","mobile-menu","serviceModal","faqModal","commandPalette","contactModal","portfolio"]){
-  assert.ok(html.includes(key),key+" missing");
- }
- assert.ok(js.length>120000);
- assert.match(css,/@media \(prefers-reduced-motion: reduce\)/);
+
+test("Contact form has honest fallback, never claims a message was already delivered", () => {
+  assert.match(html, /function initProjectBriefForm\(/);
+  assert.match(html, /mailto:mail@pukkagennoduff\.com/);
+  assert.match(html, /window\.location\.href = emailDraft/);
+  assert.match(html, /has not submitted the enquiry automatically/);
+  assert.doesNotMatch(html, /Brief captured\. The team will respond/);
 });
-test("Vite builds only new site and legal pages; no obsolete public product pages",()=>{
- const vite=read("vite.config.mjs");
- for(const page of ["index.html","privacy.html","terms.html"])assert.ok(vite.includes(page));
- for(const page of ["services.html","studio.html","company.html","trust.html"])assert.ok(!vite.includes('page("./'+page+'")'));
+
+test("Runtime CSS and complex decorative animation scripts are removed", () => {
+  assert.match(html, /id="pukka-tailwind-compiled"/);
+  assert.doesNotMatch(html, /cdn\.tailwindcss\.com/);
+  for (const id of ["particleCanvas", "rocket", "comet"]) {
+    assert.ok(!html.includes('id="' + id + '"'), id + " should not be running");
+  }
+  const scripts = [...html.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/g)];
+  assert.equal(scripts.length, 1, "Expected exactly one inline app script");
+  assert.doesNotThrow(() => new Script(scripts[0][1]), "Application JavaScript must parse");
+});
+
+test("Vite continues building legal pages alongside the landing page", () => {
+  const vite = read("vite.config.mjs");
+  for (const page of ["index.html", "privacy.html", "terms.html"]) assert.ok(vite.includes(page));
 });
