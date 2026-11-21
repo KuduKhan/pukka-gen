@@ -79,9 +79,13 @@ body section.min-h-screen {
     gap: clamp(.5rem, 2.4vw, 1rem);
   }
   #values .spotlight-card { padding: clamp(.7rem, 3vw, 1.1rem); }
-  #values .spotlight-card > .flex { flex-direction: column; align-items: flex-start; gap: .45rem; }
-  #insights .blog-card { aspect-ratio: auto; display: flex; flex-direction: column; justify-content: flex-end; }
-  #insights .blog-card > .bottom-0 { position: relative; padding: .45rem; margin-top: 3.5rem; transform: none; }
+  #values .spotlight-card > .flex { display: grid; grid-template-columns: 1.5rem minmax(0, 1fr); align-items: center; gap: .4rem; }
+  #values .spotlight-card > .flex > div { width: 1.5rem; height: 1.5rem; }
+  #values .spotlight-card h3 { font-size: clamp(.78rem, 3.3vw, .95rem); overflow-wrap: anywhere; }
+  #values .flex:has(> .text-left .uppercase) { width: 100%; justify-content: center; }
+  #values .text-left:has(> .uppercase) { text-align: center; }
+  #insights .blog-card { aspect-ratio: 1; min-height: 0; align-self: start; border-radius: 1rem; display: flex; flex-direction: column; justify-content: flex-end; }
+  #insights .blog-card > .bottom-0 { position: absolute; padding: .45rem; margin: 0; transform: none; }
   #insights .blog-card > .bottom-0 > .rounded-2xl { padding: .6rem; }
   #insights .blog-card h4 { overflow-wrap: anywhere; line-height: 1.3; }
 }
