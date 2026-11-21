@@ -44,7 +44,6 @@
   .service-modal .modal-content { max-width: 100%; max-height: calc(100dvh - 2rem); overflow-y: auto; }
 }
 @media (max-width: 479px) {
-  #values .grid-cols-2, #insights .grid-cols-2 { grid-template-columns: minmax(0, 1fr); }
   #contact .grid-cols-3 { grid-template-columns: minmax(0, 1fr); }
 }
 
@@ -73,3 +72,24 @@ body section.min-h-screen {
   body header.min-h-screen { padding-block: 6rem 4rem; }
   #mobile-menu { max-height: calc(100dvh - 6rem); overflow-y: auto; }
 }
+
+@media (max-width: 767px) {
+  :is(#values, #insights) .grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(.5rem, 2.4vw, 1rem);
+  }
+  #values .spotlight-card { padding: clamp(.7rem, 3vw, 1.1rem); }
+  #values .spotlight-card > .flex { flex-direction: column; align-items: flex-start; gap: .45rem; }
+  #insights .blog-card { aspect-ratio: auto; display: flex; flex-direction: column; justify-content: flex-end; }
+  #insights .blog-card > .bottom-0 { position: relative; padding: .45rem; margin-top: 3.5rem; transform: none; }
+  #insights .blog-card > .bottom-0 > .rounded-2xl { padding: .6rem; }
+  #insights .blog-card h4 { overflow-wrap: anywhere; line-height: 1.3; }
+}
+body section:has(.tech-marquee-item) { padding-block: clamp(1.5rem, 3vw, 3rem); }
+section:has(.tech-marquee-item) .mb-16 { margin-bottom: 1.25rem; }
+section:has(.tech-marquee-item) .marquee-container + .marquee-container { margin-top: .65rem; }
+#contact .max-w-6xl:has(.faq-item) { margin-bottom: 1.5rem; }
+#contact .max-w-6xl:has(.faq-item) .mb-10 { margin-bottom: 1rem; }
+#contact .max-w-6xl:has(.faq-item) .mt-10 { margin-top: 1rem; }
+#contact .grid:has(> .faq-item) { gap: .5rem; }
+#contact .faq-question { min-height: 44px; padding: .45rem .85rem; }
