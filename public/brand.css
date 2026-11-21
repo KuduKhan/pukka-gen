@@ -79,9 +79,7 @@ body section.min-h-screen {
     gap: clamp(.5rem, 2.4vw, 1rem);
   }
   #values .spotlight-card { padding: clamp(.7rem, 3vw, 1.1rem); }
-  #values .spotlight-card > .flex { flex-direction: row; align-items: center; gap: .4rem; }
-  #values .spotlight-card > .flex > div { width: 1.5rem; height: 1.5rem; flex: none; }
-  #values .spotlight-card h3 { min-width: 0; overflow-wrap: anywhere; }
+  #values .spotlight-card > .flex { flex-direction: column; align-items: flex-start; gap: .45rem; }
   #insights .blog-card { aspect-ratio: auto; display: flex; flex-direction: column; justify-content: flex-end; }
   #insights .blog-card > .bottom-0 { position: relative; padding: .45rem; margin-top: 3.5rem; transform: none; }
   #insights .blog-card > .bottom-0 > .rounded-2xl { padding: .6rem; }
@@ -95,6 +93,3 @@ section:has(.tech-marquee-item) .marquee-container + .marquee-container { margin
 #contact .max-w-6xl:has(.faq-item) .mt-10 { margin-top: 1rem; }
 #contact .grid:has(> .faq-item) { gap: .5rem; }
 #contact .faq-question { min-height: 44px; padding: .45rem .85rem; }
-
-.marquee-container .tech-marquee-item { padding-block: .375rem; }
-.marquee-container .tech-marquee-item i { font-size: 1.375rem; line-height: 1; }
