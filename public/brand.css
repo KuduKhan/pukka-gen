@@ -94,4 +94,18 @@ section:has(.tech-marquee-item) .marquee-container + .marquee-container { margin
 #contact .grid:has(> .faq-item) { gap: .5rem; }
 #contact .faq-question { min-height: 44px; padding: .45rem .85rem; }
 
-.marquee-container .tech-marquee-item { padding-block: calc(1rem - 2px); }
+.marquee-container .tech-marquee-item { padding-block: 10px; }
+
+#about .spotlight-card .liquid-bubble:has(.fa-bullseye, .fa-eye) {
+  width: 2.5rem;
+  height: 2.5rem;
+  flex-shrink: 0;
+  font-size: 1rem;
+}
+@media (min-width: 768px) {
+  #about .spotlight-card .liquid-bubble:has(.fa-bullseye, .fa-eye) {
+    width: 3rem;
+    height: 3rem;
+    font-size: 1.125rem;
+  }
+}
