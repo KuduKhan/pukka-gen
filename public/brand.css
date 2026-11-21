@@ -8,7 +8,7 @@
 }
 @media (min-width: 1024px) {
   .logo-container.hover-trigger .pukka-wordmark {
-    height: clamp(3rem, 4.3vw, 4rem);
+    height: clamp(36px, 2.8vw, 40px);
   }
 }
 .pukka-core-artwork {
