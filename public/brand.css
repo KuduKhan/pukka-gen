@@ -178,3 +178,8 @@ nav :is(a, button):focus-visible { outline: 2px solid #67e8f9; outline-offset: 2
 @media (max-width: 359px) {
   #values .grid-cols-2 { grid-template-columns: minmax(0, 14rem); justify-content: center; }
 }
+
+@media (max-width: 359px), (min-width: 768px) and (max-width: 850px) {
+  .spotlight-card:has(.stat-number) { padding-block: .25rem; }
+  .spotlight-card:has(.stat-number) .relative > div:first-child { width: 2.75rem; height: 2.75rem; }
+}
