@@ -6,6 +6,11 @@
 #contact .pukka-wordmark {
   height: 2.25rem;
 }
+@media (min-width: 1024px) {
+  .logo-container.hover-trigger .pukka-wordmark {
+    height: clamp(3rem, 4.3vw, 4rem);
+  }
+}
 .pukka-core-artwork {
   width: 2rem;
   height: auto;
