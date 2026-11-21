@@ -47,3 +47,29 @@
   #values .grid-cols-2, #insights .grid-cols-2 { grid-template-columns: minmax(0, 1fr); }
   #contact .grid-cols-3 { grid-template-columns: minmax(0, 1fr); }
 }
+
+/* Keep related sections close while allowing headings and cards to grow. */
+body section[class*="py-"] {
+  padding-block: clamp(2.25rem, 5vw, 4.5rem);
+}
+body section.min-h-screen {
+  min-height: auto;
+}
+#contact {
+  padding-top: clamp(2.5rem, 5vw, 4.5rem);
+  padding-bottom: clamp(1.5rem, 3vw, 2.5rem);
+}
+:is(section, #contact) :is(.mb-16, .mb-20, .mb-24) {
+  margin-bottom: clamp(1.75rem, 4vw, 3.5rem);
+}
+#about > .grid {
+  gap: clamp(1.75rem, 4vw, 3.5rem);
+}
+@media (min-width: 768px) {
+  html { scroll-padding-top: 6rem; }
+  nav .glass-pill { padding-block: .5rem; }
+}
+@media (max-height: 520px) and (orientation: landscape) {
+  body header.min-h-screen { padding-block: 6rem 4rem; }
+  #mobile-menu { max-height: calc(100dvh - 6rem); overflow-y: auto; }
+}
