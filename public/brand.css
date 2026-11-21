@@ -3,11 +3,8 @@
   width: auto;
   height: 2rem;
 }
-#contact .pukka-wordmark {
-  height: 2.25rem;
-}
 @media (min-width: 1024px) {
-  .logo-container.hover-trigger .pukka-wordmark {
+  .logo-container .pukka-wordmark {
     height: clamp(36px, 2.8vw, 40px);
   }
 }
