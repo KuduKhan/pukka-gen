@@ -1491,32 +1491,6 @@
             }
         });
 
-        // --- 8. Magnetic Buttons ---
-        document.querySelectorAll('.magnetic-btn').forEach(btn => {
-            btn.addEventListener('mousemove', (e) => {
-                const rect = btn.getBoundingClientRect();
-                const x = e.clientX - rect.left - rect.width / 2;
-                const y = e.clientY - rect.top - rect.height / 2;
-                btn.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px)`;
-            });
-            btn.addEventListener('mouseleave', () => {
-                btn.style.transform = 'translate(0px, 0px)';
-            });
-        });
-
-        // --- 9. Parallax ---
-        document.addEventListener('mousemove', (e) => {
-            const orbs = document.querySelectorAll('.bg-gradient-orb');
-            const x = e.clientX / window.innerWidth;
-            const y = e.clientY / window.innerHeight;
-            orbs.forEach(orb => {
-                const speed = orb.getAttribute('data-speed');
-                const moveX = (window.innerWidth * speed) * (0.5 - x);
-                const moveY = (window.innerHeight * speed) * (0.5 - y);
-                orb.style.transform = `translate(${moveX}px, ${moveY}px)`;
-            });
-        });
-
         // --- 10. Typewriter ---
         const text = "No Duff. Just Quality.";
         const typeWriterElement = document.getElementById('typewriter-text');
