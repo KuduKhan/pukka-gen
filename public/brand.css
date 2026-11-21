@@ -141,7 +141,14 @@ header.min-h-screen > a[href="#about"] { position: relative; inset: auto; transf
   transition: background-color 150ms, color 150ms;
 }
 #nav-links .nav-link { display: inline-flex; align-items: center; min-height: 44px; padding-inline: .5rem; }
-#nav-links .nav-link:hover, #mobile-menu .mobile-link:hover { background-color: rgb(34 211 238 / .09); }
+#nav-links .nav-link { gap: .35rem; padding-inline: .25rem; white-space: nowrap; }
+#nav-links .nav-link::after { bottom: .2rem; transition-property: width; }
+#nav-links .nav-link:focus-visible::after { width: 100%; }
+#mobile-menu .mobile-link i { width: 1.3em; margin-inline-end: .35rem; text-align: center; }
+#mobile-menu .mobile-link:focus-visible { border-color: var(--neon-accent); }
+.footer-legal { padding-inline: 1rem; }
+.footer-legal a { display: inline-flex; align-items: center; min-height: 44px; text-underline-offset: .25em; }
+.footer-legal a:is(:hover,:focus-visible) { text-decoration: underline; }
 nav :is(a, button):focus-visible { outline: 2px solid #67e8f9; outline-offset: 2px; }
 #mobile-menu { gap: .25rem; overflow-y: auto; max-height: calc(100dvh - 6rem); }
 #mobile-menu .mobile-link { padding: .55rem .8rem; min-height: 44px; }
@@ -164,8 +171,8 @@ nav :is(a, button):focus-visible { outline: 2px solid #67e8f9; outline-offset: 2
 }
 
 @media (max-width: 900px) {
-  .spotlight-card:has(.stat-number) .relative > div:first-child { width: 2.5rem; height: 2.5rem; margin-bottom: .375rem; }
-  .spotlight-card:has(.stat-number) .relative > div:first-child i { font-size: 1.25rem; }
+  .spotlight-card:has(.stat-number) .relative > div:first-child { width: clamp(2.75rem, 14vw, 4rem); height: clamp(2.75rem, 14vw, 4rem); margin-bottom: .375rem; }
+  .spotlight-card:has(.stat-number) .relative > div:first-child i { font-size: clamp(1.4rem, 6.5vw, 1.875rem); }
   .spotlight-card .stat-number { font-size: clamp(1.65rem, 4vw, 2.25rem); line-height: 1.1; }
 }
 @media (max-width: 359px) {
