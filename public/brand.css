@@ -134,3 +134,31 @@ header.min-h-screen > a[href="#about"] { position: relative; inset: auto; transf
 @media (max-height: 520px) {
   header.min-h-screen > a[href="#about"] > div { display: none; }
 }
+
+#nav-links { gap: clamp(.35rem, 1vw, 1rem); }
+#nav-links .nav-link, #mobile-menu .mobile-link {
+  border-radius: .65rem;
+  transition: background-color 150ms, color 150ms;
+}
+#nav-links .nav-link { display: inline-flex; align-items: center; min-height: 44px; padding-inline: .5rem; }
+#nav-links .nav-link:hover, #mobile-menu .mobile-link:hover { background-color: rgb(34 211 238 / .09); }
+nav :is(a, button):focus-visible { outline: 2px solid #67e8f9; outline-offset: 2px; }
+#mobile-menu { gap: .25rem; overflow-y: auto; max-height: calc(100dvh - 6rem); }
+#mobile-menu .mobile-link { padding: .55rem .8rem; min-height: 44px; }
+.spotlight-card:has(.stat-number), #values .grid-cols-2 > .spotlight-card {
+  aspect-ratio: 1;
+  height: auto;
+  min-width: 0;
+  border-radius: clamp(1rem, 2vw, 1.5rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(.65rem, 2vw, 1.75rem);
+  transition-property: opacity, border-color, background-color;
+}
+#values .grid-cols-2 > .spotlight-card > p { flex: 0 1 auto; }
+@media (max-width: 380px) {
+  #values .grid-cols-2 > .spotlight-card > .flex { grid-template-columns: 2rem minmax(0,1fr); }
+  #values .spotlight-card .liquid-bubble { width: 2rem; height: 2rem; }
+  #values .grid-cols-2 > .spotlight-card p { line-height: 1.35; }
+}
