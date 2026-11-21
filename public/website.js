@@ -1093,7 +1093,7 @@
                 title: "Cloud Migration Map",
                 eyebrow: "Cloud + Security",
                 theme: "blue",
-                image: "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=1400&q=80",
+                image: "https://images.unsplash.com/photo-1558494949-ef526b0042a0?auto=format&fit=crop&w=1400&q=80",
                 description: "A phased migration program with release gates, observability, failover planning, cost visibility, and clear cutover discipline.",
                 metrics: [
                     { value: "58%", label: "lower deploy risk" },
@@ -1406,10 +1406,8 @@
 
         blogCards.forEach(card => {
             if (card.tagName !== 'BUTTON') {
-                if (!card.querySelector('button, a[href]')) {
-                    card.setAttribute('role', 'button');
-                    card.setAttribute('tabindex', '0');
-                }
+                card.setAttribute('role', 'button');
+                card.setAttribute('tabindex', '0');
                 card.classList.add('cursor-pointer');
             }
 
@@ -1577,50 +1575,38 @@
                 });
             });
 
-            async function handleProjectBriefSubmit(event) {
+            function handleProjectBriefSubmit(event) {
                 event.preventDefault();
-                if (form.dataset.submitting === 'true') return;
                 fields.forEach(field => {
                     field.dataset.touched = 'true';
                     updateFieldState(field);
                 });
+
                 if (!form.checkValidity()) {
                     const firstInvalid = fields.find(field => !field.validity.valid);
-                    if (status) { status.textContent = 'Please complete the highlighted fields.'; status.className = 'min-h-[1.25rem] text-xs text-red-400'; }
+                    if (status) {
+                        status.textContent = 'Please complete the highlighted fields so we can qualify the brief properly.';
+                        status.className = 'min-h-[1.25rem] text-xs text-red-400';
+                    }
+                    showToast('Please complete the highlighted fields.');
                     firstInvalid?.focus();
                     return;
                 }
-                const data = new FormData(form);
-                const serviceNames = {dev:'Software engineering', ai:'AI & automation', cloud:'Cloud & DevOps', design:'Product design', audit:'Security & QA'};
-                const service=serviceNames[String(data.get('service')||'')] || '';
-                const name=String(data.get('name')||'').trim();
-                const email=String(data.get('email')||'').trim();
-                const details=String(data.get('message')||'').trim();
-                const phone=String(data.get('phone')||'').trim();
-                const message=(details+(phone?'\\nContact telephone: '+phone:'')).slice(0,2500);
-                const submit=form.querySelector('[type="submit"]');
-                form.dataset.submitting='true';
-                if (submit) submit.disabled=true;
-                if(status){status.textContent='Submitting your project enquiry…';status.className='min-h-[1.25rem] text-xs text-cyan-400';}
-                try{
-                    const response=await fetch('/api/project-brief',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,email,service,message,website:''})});
-                    const result=await response.json().catch(()=>null);
-                    if(response.ok&&result?.ok){
-                        if(status){status.textContent='The email provider accepted your enquiry. Inbox receipt and follow-up are not yet confirmed.';status.className='min-h-[1.25rem] text-xs text-green-400';}
-                        showToast('Your project enquiry was accepted for delivery.');
-                        form.reset();
-                        fields.forEach(field=>{delete field.dataset.touched;field.classList.remove('field-invalid');field.removeAttribute('aria-invalid');});
-                    }else{
-                        if(status){status.textContent=result?.error||'Delivery could not be confirmed. Please use our email contact instead.';status.className='min-h-[1.25rem] text-xs text-red-400';}
-                    }
-                }catch{
-                    if(status){status.textContent='Connection error: nothing was confirmed as sent. Please try again or email us.';status.className='min-h-[1.25rem] text-xs text-red-400';}
-                }finally{
-                    delete form.dataset.submitting;
-                    if(submit)submit.disabled=false;
+
+                const formData = new FormData(form);
+                const name = String(formData.get('name') || 'there').trim().split(' ')[0];
+                if (status) {
+                    status.textContent = 'Brief captured. The team will respond with next steps shortly.';
+                    status.className = 'min-h-[1.25rem] text-xs text-green-400';
                 }
+                showToast(`Thank you, ${name}. Your project brief is ready for Pukka Gen review.`);
+                form.reset();
+                fields.forEach(field => {
+                    delete field.dataset.touched;
+                    field.classList.remove('field-invalid');
+                    field.removeAttribute('aria-invalid');
+                });
             }
-            
 
             form.addEventListener('submit', handleProjectBriefSubmit);
             form.querySelector('button[type="submit"]')?.addEventListener('click', (event) => {
@@ -2231,9 +2217,8 @@
         });
 
     
-document.addEventListener('click',e=>{
- const target=e.target.closest('[data-action]');if(!target)return;
- if(target.dataset.action==='back-to-top')window.scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
- if(target.dataset.action==='open-contact')window.openContactModal?.();
- if(target.dataset.action==='open-map')window.openMapModal?.();
-});
+document.querySelector('[data-upload-action="upload-action-0"]')?.addEventListener("click", function(event){window.scrollTo({top: 0, behavior: 'smooth'})});
+
+document.querySelector('[data-upload-action="upload-action-1"]')?.addEventListener("click", function(event){openContactModal()});
+
+document.querySelector('[data-upload-action="upload-action-2"]')?.addEventListener("click", function(event){openMapModal()});

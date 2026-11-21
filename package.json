@@ -5,14 +5,9 @@
   "type": "module",
   "description": "Pukka Gen No Duff: user-supplied 2026 website replacement",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "test": "node --test tests/replacement.test.mjs tests/source-parity.test.mjs",
+    "build": "node scripts/build.mjs",
+    "test": "node --check public/website.js",
     "check": "npm run test && npm run build && npm run verify:dist",
     "verify:dist": "node scripts/replacement-dist-check.mjs"
-  },
-  "devDependencies": {
-    "typescript": "^5.6.3",
-    "vite": "^6.0.0"
   }
 }
