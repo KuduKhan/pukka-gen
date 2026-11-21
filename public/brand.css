@@ -152,7 +152,7 @@ header.min-h-screen > a[href="#about"] { position: relative; inset: auto; transf
 nav :is(a, button):focus-visible { outline: 2px solid #67e8f9; outline-offset: 2px; }
 #mobile-menu { gap: .25rem; overflow-y: auto; max-height: calc(100dvh - 6rem); }
 #mobile-menu .mobile-link { padding: .55rem .8rem; min-height: 44px; }
-.spotlight-card:has(.stat-number), #values .grid-cols-2 > .spotlight-card {
+.spotlight-card:has(.stat-number) {
   aspect-ratio: 1;
   height: auto;
   min-width: 0;
@@ -163,34 +163,16 @@ nav :is(a, button):focus-visible { outline: 2px solid #67e8f9; outline-offset: 2
   padding: clamp(.65rem, 2vw, 1.75rem);
   transition-property: opacity, border-color, background-color;
 }
-#values .grid-cols-2 > .spotlight-card > p { flex: 0 1 auto; }
-@media (max-width: 380px) {
-  #values .grid-cols-2 > .spotlight-card > .flex { grid-template-columns: 2rem minmax(0,1fr); }
-  #values .spotlight-card .liquid-bubble { width: 2rem; height: 2rem; }
-  #values .grid-cols-2 > .spotlight-card p { line-height: 1.35; }
-}
-
 @media (max-width: 900px) {
   .spotlight-card:has(.stat-number) .relative > div:first-child { width: clamp(2.75rem, 14vw, 4rem); height: clamp(2.75rem, 14vw, 4rem); margin-bottom: .375rem; }
   .spotlight-card:has(.stat-number) .relative > div:first-child i { font-size: clamp(1.4rem, 6.5vw, 1.875rem); }
   .spotlight-card .stat-number { font-size: clamp(1.65rem, 4vw, 2.25rem); line-height: 1.1; }
-}
-@media (max-width: 359px) {
-  #values .grid-cols-2 { grid-template-columns: minmax(0, 14rem); justify-content: center; }
 }
 
 @media (max-width: 359px), (min-width: 768px) and (max-width: 850px) {
   .spotlight-card:has(.stat-number) { padding-block: .25rem; }
   .spotlight-card:has(.stat-number) .relative > div:first-child { width: 2.75rem; height: 2.75rem; }
 }
-
-/* Scale each pillar's contents against its own available width. */
-#values .grid-cols-2 > .spotlight-card { container-type: inline-size; padding: clamp(.65rem, 1.55vw, 1.5rem); }
-#values .grid-cols-2 > .spotlight-card > .flex { display: flex; align-items: center; gap: clamp(.4rem, 4cqi, .9rem); margin-bottom: clamp(.45rem, 5cqi, 1rem); }
-#values .grid-cols-2 > .spotlight-card h3 { font-size: clamp(.88rem, 9cqi, 1.75rem); line-height: 1.14; overflow-wrap: anywhere; }
-#values .grid-cols-2 > .spotlight-card p { font-size: clamp(.79rem, 6.8cqi, 1.22rem); line-height: 1.42; color: #bdc5d0; }
-#values .grid-cols-2 > .spotlight-card .liquid-bubble { width: clamp(2rem, 22cqi, 3.6rem); height: clamp(2rem, 22cqi, 3.6rem); }
-#values .grid-cols-2 > .spotlight-card .liquid-bubble i { font-size: clamp(1rem, 10cqi, 1.6rem); }
 
 #nav-links > :is(a,button), #mobile-menu > :is(a,button) {
   border: 1px solid rgb(255 255 255 / .12);
