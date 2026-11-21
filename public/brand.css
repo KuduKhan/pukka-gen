@@ -17,3 +17,33 @@
     width: 4rem;
   }
 }
+
+@media (max-width: 767px) {
+  html { scroll-padding-top: 5.5rem; }
+  body > nav.fixed { padding: .625rem max(.75rem, env(safe-area-inset-right)) .625rem max(.75rem, env(safe-area-inset-left)); }
+  nav .glass-pill { padding: .375rem .875rem; }
+  #mobileMenuBtn { min-width: 44px; min-height: 44px; }
+  #mobile-menu {
+    top: 100%;
+    max-height: calc(100dvh - 5rem - env(safe-area-inset-bottom));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    gap: .25rem;
+    padding: .75rem 1rem;
+  }
+  #mobile-menu a { display: flex; align-items: center; min-height: 44px; }
+  body header.min-h-screen { min-height: 100svh; padding: 6rem 1rem 5rem; }
+  header h1.reveal-text { font-size: clamp(2.15rem, 9vw, 3.5rem); }
+  body section[class*="py-"] { padding-block: clamp(2.75rem, 10vw, 4.5rem); }
+  #contact { padding-top: 3.5rem; }
+  #about > .grid { grid-template-columns: minmax(0, 1fr); gap: 2rem; }
+  :is(section, footer) .grid > * { min-width: 0; }
+  #contact .grid { overflow-wrap: anywhere; }
+  #projectBriefForm { padding: clamp(1rem, 4vw, 1.5rem); }
+  #projectBriefForm :is(input, select, textarea) { max-width: 100%; min-width: 0; font-size: 16px; }
+  .service-modal .modal-content { max-width: 100%; max-height: calc(100dvh - 2rem); overflow-y: auto; }
+}
+@media (max-width: 479px) {
+  #values .grid-cols-2, #insights .grid-cols-2 { grid-template-columns: minmax(0, 1fr); }
+  #contact .grid-cols-3 { grid-template-columns: minmax(0, 1fr); }
+}
