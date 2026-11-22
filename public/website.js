@@ -1851,77 +1851,29 @@
         ];
 
         function initAccordion(container = document) {
-            const faqItems = container.querySelectorAll('.faq-item');
-
-            faqItems.forEach(item => {
-                const button = item.querySelector('.faq-question');
-                const answer = item.querySelector('.faq-answer');
+            const items = container.querySelectorAll('.faq-item');
+            function setOpen(item, open) {
+                const color = item.dataset.color || 'text-cyan-400';
                 const icon = item.querySelector('.fa-plus');
-                const title = item.querySelector('span');
-                
-                if (!button || !answer || !icon || !title) return;
-
-                // Get colors from data attributes
-                const activeColorClass = item.dataset.color || 'text-cyan-400';
-                const activeBorderClass = item.dataset.border || 'border-cyan-500/30';
-
-                // Remove old listener to prevent duplicates if re-initialized (naive approach, but functional for this scope)
-                const newButton = button.cloneNode(true);
-                button.parentNode.replaceChild(newButton, button);
-                
-                newButton.addEventListener('click', () => {
-                    const isOpen = item.classList.contains('active');
-
-                    // Close all others in the same container
-                    faqItems.forEach(otherItem => {
-                        if (otherItem !== item) {
-                            const otherAnswer = otherItem.querySelector('.faq-answer');
-                            const otherIcon = otherItem.querySelector('.fa-plus');
-                            const otherTitle = otherItem.querySelector('span');
-                            const otherColor = otherItem.dataset.color || 'text-cyan-400';
-                            const otherBorder = otherItem.dataset.border || 'border-cyan-500/30';
-                            if (!otherAnswer || !otherIcon || !otherTitle) return;
-                            
-                            otherItem.classList.remove('active', otherBorder);
-                            
-                            otherAnswer.style.maxHeight = '0';
-                            otherIcon.style.transform = 'rotate(0deg)';
-                            otherIcon.classList.remove(otherColor);
-                            otherIcon.classList.add('text-gray-400');
-                            
-                            otherTitle.classList.remove(otherColor);
-                        }
-                    });
-
-                    // Toggle current
-                    if (!isOpen) {
-                        item.classList.add('active', activeBorderClass);
-                        
-                        // Select element inside item because we cloned the button
-                        const currentAnswer = item.querySelector('.faq-answer');
-                        const currentIcon = item.querySelector('.fa-plus');
-                        const currentTitle = item.querySelector('span');
-
-                        currentAnswer.style.maxHeight = currentAnswer.scrollHeight + 'px';
-                        currentIcon.style.transform = 'rotate(45deg)'; // Rotate to X
-                        currentIcon.classList.remove('text-gray-400');
-                        currentIcon.classList.add(activeColorClass);
-                        
-                        currentTitle.classList.add(activeColorClass);
-                    } else {
-                        item.classList.remove('active', activeBorderClass);
-                        
-                        const currentAnswer = item.querySelector('.faq-answer');
-                        const currentIcon = item.querySelector('.fa-plus');
-                        const currentTitle = item.querySelector('span');
-
-                        currentAnswer.style.maxHeight = '0';
-                        currentIcon.style.transform = 'rotate(0deg)';
-                        currentIcon.classList.add('text-gray-400');
-                        currentIcon.classList.remove(activeColorClass);
-                        
-                        currentTitle.classList.remove(activeColorClass);
-                    }
+                item.classList.toggle('active', open);
+                item.classList.toggle(item.dataset.border || 'border-cyan-500/30', open);
+                item.querySelector('.faq-question').setAttribute('aria-expanded', String(open));
+                item.querySelector('.faq-answer').inert = !open;
+                item.querySelector('span').classList.toggle(color, open);
+                icon.classList.toggle(color, open);
+                icon.classList.toggle('text-gray-400', !open);
+                icon.style.transform = open ? 'rotate(45deg)' : '';
+            }
+            items.forEach(item => {
+                const button = item.querySelector('.faq-question');
+                if (button.hasAttribute('data-accordion-ready')) return;
+                button.setAttribute('data-accordion-ready', '');
+                setOpen(item, item.classList.contains('active'));
+                button.addEventListener('click', () => {
+                    const open = !item.classList.contains('active');
+                    const previous = Array.from(items).find(other => other !== item && other.classList.contains('active'));
+                    if (previous) setOpen(previous, false);
+                    setOpen(item, open);
                 });
             });
         }
