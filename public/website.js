@@ -1006,7 +1006,7 @@
                             <p class="text-xs md:text-base mb-6 md:mb-8 text-gray-300 max-w-lg mx-auto relative z-10 leading-relaxed">
                                 That is okay. It just means you are in the <strong>Discovery Phase</strong>, not the Build Phase. Don't burn your budget on code yet. Book a "No Duff" Consultation with Pukka Gen. We will help you answer these questions, build a roadmap, and ensure that when we <em>do</em> start coding, it’s built to last.
                             </p>
-                            <a href="#contact" onclick="document.getElementById('serviceModal').classList.remove('active'); document.body.style.overflow = 'auto'" class="inline-flex items-center px-6 py-3 md:px-8 md:py-4 bg-cyan-500 text-black font-bold rounded-full hover:bg-cyan-400 transition-all shadow-[0_0_20px_rgba(6,182,212,0.3)] hover:shadow-[0_0_30px_rgba(6,182,212,0.5)] hover:scale-105 relative z-10 text-xs md:text-base">
+                            <a href="#contact" data-dismiss-service class="inline-flex items-center px-6 py-3 md:px-8 md:py-4 bg-cyan-500 text-black font-bold rounded-full hover:bg-cyan-400 transition-all shadow-[0_0_20px_rgba(6,182,212,0.3)] hover:shadow-[0_0_30px_rgba(6,182,212,0.5)] hover:scale-105 relative z-10 text-xs md:text-base">
                                 Book Your Consultation Now <i class="fas fa-arrow-right ml-2"></i>
                             </a>
                             <div class="mt-6 md:mt-8 border-t border-white/10 pt-4 md:pt-6">
@@ -1249,7 +1249,7 @@
 
                         <!-- Footer -->
                         <div class="p-6 border-t border-white/5 text-center bg-white/[0.02]">
-                            <a href="#contact" class="magnetic-btn inline-flex items-center px-6 py-3 md:px-8 md:py-3 rounded-full bg-white text-black font-bold hover:bg-${theme}-400 hover:text-white transition-all shadow-lg hover:shadow-${theme}-500/50 text-sm" onclick="document.getElementById('serviceModal').classList.remove('active'); document.body.style.overflow = 'auto'">
+                            <a href="#contact" class="magnetic-btn inline-flex items-center px-6 py-3 md:px-8 md:py-3 rounded-full bg-white text-black font-bold hover:bg-${theme}-400 hover:text-white transition-all shadow-lg hover:shadow-${theme}-500/50 text-sm" data-dismiss-service>
                                 Start This Project <i class="fas fa-arrow-right ml-2"></i>
                             </a>
                         </div>
@@ -1349,7 +1349,7 @@
 
                             <div class="pt-5 border-t border-white/10 flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
                                 <p class="text-xs text-gray-500 leading-relaxed max-w-sm">Need a similar product system? Start with a focused brief and we will shape the delivery path.</p>
-                                <a href="#contact" class="magnetic-btn inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full ${c.button} text-sm font-bold transition-colors" onclick="document.getElementById('serviceModal').classList.remove('active'); document.body.style.overflow = 'auto'">
+                                <a href="#contact" class="magnetic-btn inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full ${c.button} text-sm font-bold transition-colors" data-dismiss-service>
                                     Discuss a Build <i class="fas fa-arrow-right"></i>
                                 </a>
                             </div>
@@ -1426,8 +1426,8 @@
 
                         <!-- Footer -->
                         <div class="p-6 border-t border-white/5 text-center bg-white/[0.02] relative z-10">
-                            <button type="button" class="magnetic-btn inline-flex items-center px-6 py-3 md:px-8 md:py-3 rounded-full bg-white text-black font-bold hover:bg-cyan-400 hover:text-black transition-all shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_25px_rgba(6,182,212,0.4)] text-xs md:text-sm uppercase tracking-wide" onclick="document.getElementById('serviceModal').classList.remove('active'); document.body.style.overflow = 'auto'">
-                                Close Overview
+                            <button type="button" class="magnetic-btn inline-flex items-center px-6 py-3 md:px-8 md:py-3 rounded-full bg-white text-black font-bold hover:bg-cyan-400 hover:text-black transition-all shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_25px_rgba(6,182,212,0.4)] text-xs md:text-sm uppercase tracking-wide" data-dismiss-service>
+                                Close Preview
                             </button>
                         </div>
                     </div>
@@ -1511,7 +1511,7 @@
 
                     <!-- Footer -->
                     <div class="p-6 border-t border-white/5 text-center bg-white/[0.02] relative z-10">
-                        <button type="button" class="magnetic-btn inline-flex items-center px-6 py-3 md:px-8 md:py-3 rounded-full bg-white text-black font-bold hover:bg-${theme}-400 hover:text-black transition-all shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_25px_rgba(6,182,212,0.4)] text-xs md:text-sm uppercase tracking-wide" onclick="document.getElementById('serviceModal').classList.remove('active'); document.body.style.overflow = 'auto'">
+                        <button type="button" class="magnetic-btn inline-flex items-center px-6 py-3 md:px-8 md:py-3 rounded-full bg-white text-black font-bold hover:bg-${theme}-400 hover:text-black transition-all shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_25px_rgba(6,182,212,0.4)] text-xs md:text-sm uppercase tracking-wide" data-dismiss-service>
                             Close Resource
                         </button>
                     </div>
@@ -1527,7 +1527,7 @@
         });
 
         serviceModal.addEventListener('click', (e) => {
-            if(e.target === serviceModal) {
+            if (e.target === serviceModal || e.target.closest('[data-dismiss-service]')) {
                 serviceModal.classList.remove('active');
                 document.body.style.overflow = 'auto';
             }
