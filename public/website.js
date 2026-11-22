@@ -1018,8 +1018,78 @@
                     </div>
                 `
             },
+            budget: {
+                title: "Stop Buying Features You Don't Need",
+                icon: "fas fa-coins",
+                theme: "cyan",
+                description: "Give every feature a job before you give it a budget.",
+                content: `<div class="space-y-6 text-left text-gray-300">
+                    <section><h4 class="font-bold text-white mb-2">Price the problem</h4><p>If staff spend ten minutes retyping each order, count the orders in a typical week. Compare that cost with building and maintaining an integration. A dashboard may look impressive while leaving every minute of retyping in place.</p></section>
+                    <section><h4 class="font-bold text-white mb-2">Buy evidence in stages</h4><p>Try a CSV import with one customer first. Agree on a success measure such as time saved per order. Fund the full integration when the trial shows that people use it and the saving justifies its upkeep.</p></section>
+                </div>`
+            },
+            tech_debt: {
+                title: "The Real Cost of Cheap Code",
+                icon: "fas fa-code",
+                theme: "cyan",
+                description: "The invoice covers delivery. The next change reveals the maintenance cost.",
+                content: `<div class="space-y-6 text-left text-gray-300">
+                    <section><h4 class="font-bold text-white mb-2">Follow one change</h4><p>Ask what happens when a tax rate changes. If the same rate is hard-coded in checkout, receipts and reports, a small request becomes three edits and three opportunities for disagreement.</p></section>
+                    <section><h4 class="font-bold text-white mb-2">Pay down debt where it recurs</h4><p>Track repeat fixes and the time spent retesting them. Put a test around the current calculation, move the rule to one place, then compare the effort on the next change. Prioritize code the business changes often.</p></section>
+                </div>`
+            },
+            hiring: {
+                title: "5 Signs Your Developer is 'Bluffing'",
+                icon: "fas fa-users",
+                theme: "cyan",
+                description: "Five signals to investigate when interviewing a development team.",
+                content: `<div class="space-y-6 text-left text-gray-300">
+                    <section><h4 class="font-bold text-white mb-2">Listen for three gaps</h4><p>First, they promise a fixed delivery date before asking what the product must do. Second, they describe past work but cannot explain their own contribution. Third, every technology choice is “the best” and they cannot name a trade-off.</p></section>
+                    <section><h4 class="font-bold text-white mb-2">Ask for two demonstrations</h4><p>Fourth, progress is always a percentage and they cannot show a working user journey. Fifth, nobody can explain how a failed release is rolled back. Ask for a short walkthrough with sample data. Give the team room to explain constraints before drawing conclusions.</p></section>
+                </div>`
+            },
+            business_ai: {
+                title: "AI for Business: Beyond the Hype",
+                icon: "fas fa-brain",
+                theme: "purple",
+                description: "Start with a repetitive decision whose output someone can check.",
+                content: `<div class="space-y-6 text-left text-gray-300">
+                    <section><h4 class="font-bold text-white mb-2">Pilot a bounded task</h4><p>For a support inbox, let AI suggest a category and draft a reply. Keep a staff member responsible for sending it. Compare drafts with real resolutions using examples the system has permission to process.</p></section>
+                    <section><h4 class="font-bold text-white mb-2">Measure the whole task</h4><p>Count review time, corrections and escalations alongside model cost. If editing drafts takes as long as writing replies, narrow the task to routing tickets. Expand only where the pilot improves speed without lowering answer quality.</p></section>
+                </div>`
+            },
+            pwa: {
+                title: "Why Your Next App Should Be a PWA",
+                icon: "fas fa-mobile-alt",
+                theme: "purple",
+                description: "A progressive web app can suit users who arrive through a link and return often.",
+                content: `<div class="space-y-6 text-left text-gray-300">
+                    <section><h4 class="font-bold text-white mb-2">Design for a broken connection</h4><p>A field worker can open a cached form, save a draft locally and sync it when connectivity returns. Show whether each record is pending or confirmed, and prevent a retry from submitting the same entry twice.</p></section>
+                    <section><h4 class="font-bold text-white mb-2">Test the device requirements</h4><p>Try installation, storage and offline recovery on the phones your audience uses. If the core task depends on continuous background tracking or specialized hardware, test that capability before committing to a web-only build.</p></section>
+                </div>`
+            },
+            cloud_security: {
+                title: "Cloud Security in 2025: Are You Safe?",
+                icon: "fas fa-shield-alt",
+                theme: "purple",
+                description: "Judge cloud readiness by what your team can demonstrate about access and recovery.",
+                content: `<div class="space-y-6 text-left text-gray-300">
+                    <section><h4 class="font-bold text-white mb-2">Trace access to one record</h4><p>Pick a customer document. Identify which people and services can read it, who can change those permissions and where that change is recorded. Review unused accounts and check that privileged access requires more than a password.</p></section>
+                    <section><h4 class="font-bold text-white mb-2">Prove recovery works</h4><p>Restore a backup into an isolated environment. Verify that the application can read the recovered data, record how long restoration took and assign an owner to resolve gaps. A successful backup notification answers only part of the question.</p></section>
+                </div>`
+            },
+            serverless: {
+                title: "Serverless Architecture: Scale to Infinity",
+                icon: "fas fa-cloud",
+                theme: "purple",
+                description: "Functions can absorb bursts, but every downstream service still has limits.",
+                content: `<div class="space-y-6 text-left text-gray-300">
+                    <section><h4 class="font-bold text-white mb-2">Buffer the spike</h4><p>For an image-upload service, acknowledge the upload and queue resizing jobs. Let workers consume jobs at a rate the image store can sustain. Give each job a stable identifier so retries do not create duplicate outputs.</p></section>
+                    <section><h4 class="font-bold text-white mb-2">Account for the whole bill</h4><p>Compare compute time, requests, storage and data transfer at both ordinary and peak traffic. Set concurrency limits and monitor queue age. If jobs arrive faster than workers can finish them, the growing backlog tells you where to investigate.</p></section>
+                </div>`
+            },
             mvp_trap: {
-                title: "The MVP Trap",
+                title: "The MVP Trap: Why 'Minimum' Shouldn't Mean 'Broken'",
                 icon: "fas fa-exclamation-triangle",
                 theme: "red",
                 description: "Minimum viable should still mean stable, testable, and usable. Cutting scope is smart; cutting quality is expensive.",
