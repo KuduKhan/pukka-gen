@@ -14,12 +14,16 @@
         // --- 1.5 Hero Slideshow Logic ---
         function initHeroSlideshow() {
             const slides = document.querySelectorAll('#hero-slideshow > div');
-            if(slides.length === 0) return;
+            if (!slides.length || prefersReducedMotion) return;
+            let heroVisible = true;
+            new IntersectionObserver(([entry]) => { heroVisible = entry.isIntersecting; })
+                .observe(slides[0].parentElement);
             
             let currentSlide = 0;
             const intervalTime = 8000; // 8 seconds
 
             setInterval(() => {
+                if (document.hidden || !heroVisible) return;
                 // Fade out current
                 slides[currentSlide].classList.remove('opacity-100');
                 slides[currentSlide].classList.add('opacity-0');
@@ -136,7 +140,7 @@
         function initParticles() {
             if (!canvas) return;
             particlesArray = [];
-            let numberOfParticles = (canvas.height * canvas.width) / 10000;
+            const numberOfParticles = Math.min(100, Math.ceil(canvas.height * canvas.width / 12000));
             for (let i = 0; i < numberOfParticles; i++) {
                 particlesArray.push(new Particle());
             }
@@ -216,7 +220,10 @@
             .map(link => document.querySelector(link.getAttribute('href')))
             .filter(Boolean);
 
+        let activeNavSection;
         function setActiveNav(sectionId) {
+            if (activeNavSection === sectionId) return;
+            activeNavSection = sectionId;
             sectionNavLinks.forEach(link => {
                 const isActive = link.getAttribute('href') === `#${sectionId}`;
                 link.classList.toggle('active', isActive);
@@ -285,6 +292,10 @@
             if (el.innerText.includes('+')) suffix = '+';
 
             const target = parseInt(rawCount);
+            if (prefersReducedMotion) {
+                el.textContent = target + suffix;
+                return;
+            }
             const duration = 2000;
             const step = Math.ceil(target / (duration / 16));
             let current = 0;
@@ -301,12 +312,22 @@
 
         // --- 5. Spotlight Card Effect ---
         document.querySelectorAll('.spotlight-card').forEach(card => {
-            card.addEventListener('mousemove', e => {
+            if (prefersReducedMotion) return;
+            let pending = false;
+            let pointer;
+            card.addEventListener('pointermove', e => {
+                if (e.pointerType === 'touch') return;
+                pointer = e;
+                if (pending) return;
+                pending = true;
+                requestAnimationFrame(() => {
+                pending = false;
                 const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
+                const x = pointer.clientX - rect.left;
+                const y = pointer.clientY - rect.top;
                 card.style.setProperty('--mouse-x', `${x}px`);
                 card.style.setProperty('--mouse-y', `${y}px`);
+                });
             });
         });
 
@@ -398,8 +419,13 @@
                     </span>
                 `;
                 button.addEventListener('mouseenter', () => {
+                    if (commandActiveIndex === index) return;
+                    const previous = commandPaletteResults.children[commandActiveIndex];
+                    previous?.classList.remove('active');
+                    previous?.setAttribute('aria-selected', 'false');
                     commandActiveIndex = index;
-                    renderCommandResults();
+                    button.classList.add('active');
+                    button.setAttribute('aria-selected', 'true');
                 });
                 button.addEventListener('click', () => runCommand(index));
                 commandPaletteResults.appendChild(button);
@@ -2126,7 +2152,11 @@
                 if (container.dataset.scrollInterval) clearInterval(Number(container.dataset.scrollInterval));
                 clearRestartTimer();
                 
+                if (prefersReducedMotion) return;
                 const id = setInterval(() => {
+                    if (document.hidden) return;
+                    const bounds = container.getBoundingClientRect();
+                    if (bounds.bottom <= 0 || bounds.top >= window.innerHeight) return;
                     const track = container.querySelector('.marquee-track');
                     const allCards = container.querySelectorAll('.spotlight-card');
                     // We need allCards to measure total width properly for loop logic
