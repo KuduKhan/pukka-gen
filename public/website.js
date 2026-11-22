@@ -406,6 +406,13 @@
             });
         }
 
+        function fitQuickActions() {
+            const viewport = window.visualViewport;
+            if (!viewport) return;
+            commandPalette.style.setProperty('--quick-height', viewport.height + 'px');
+            commandPalette.style.setProperty('--quick-top', viewport.offsetTop + 'px');
+        }
+
         function openCommandPalette() {
             if (!commandPalette) return;
             commandPalette.classList.add('active');
@@ -418,12 +425,21 @@
                 commandPaletteInput?.focus({ preventScroll: true });
                 commandPaletteInput?.select();
             };
+            fitQuickActions();
+            window.visualViewport?.addEventListener('resize', fitQuickActions);
+            window.visualViewport?.addEventListener('scroll', fitQuickActions);
+            if (window.matchMedia('(pointer: coarse)').matches) {
+                commandPaletteClose?.focus({ preventScroll: true });
+                return;
+            }
             focusSearch();
             requestAnimationFrame(focusSearch);
             setTimeout(focusSearch, 120);
         }
 
         function closeCommandPalette() {
+            window.visualViewport?.removeEventListener('resize', fitQuickActions);
+            window.visualViewport?.removeEventListener('scroll', fitQuickActions);
             commandPalette?.classList.remove('active');
             document.body.style.overflow = 'auto';
         }
