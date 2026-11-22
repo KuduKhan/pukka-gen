@@ -181,3 +181,24 @@ nav :is(a, button):focus-visible { outline: 2px solid #67e8f9; outline-offset: 2
 }
 #mobile-menu > :is(a,button) { display: flex; align-items: center; justify-content: flex-start; gap: .5rem; margin: 0; }
 #mobile-menu > :is(a,button) i { width: 1.3em; margin: 0; text-align: center; }
+
+@media (max-width: 767px), (max-height: 520px) and (pointer: coarse) {
+  #commandPalette {
+    height: var(--quick-height, 100dvh);
+    top: var(--quick-top, 0px);
+    padding: max(.6rem, env(safe-area-inset-top)) max(.75rem, env(safe-area-inset-right)) max(.6rem, env(safe-area-inset-bottom)) max(.75rem, env(safe-area-inset-left));
+    transition-property: opacity, visibility;
+  }
+  #commandPalette .modal-content { display: flex; flex-direction: column; width: min(100%, 32rem); max-height: 100%; padding: 0; overflow: hidden; border-radius: 1.15rem; }
+  #commandPalette .modal-content > div { padding: .75rem .875rem; }
+  #commandPalette .modal-content > div:first-child { flex: none; gap: .75rem; }
+  #commandPaletteTitle { font-size: clamp(1.1rem, 5vw, 1.4rem); line-height: 1.2; }
+  #commandPaletteClose { min-width: 44px; min-height: 44px; flex-shrink: 0; }
+  #commandPalette .modal-content > div:last-child { display: flex; flex-direction: column; min-height: 0; }
+  #commandPalette .relative { margin-bottom: .6rem; }
+  #commandPaletteInput { font-size: 16px; min-height: 44px; padding-block: .6rem; }
+  #commandPalette .relative > span { display: none; }
+  #commandPaletteResults { min-height: 0; max-height: none; overscroll-behavior: contain; padding-right: 0; gap: .375rem; }
+  #commandPalette .command-result { padding: .55rem .65rem; gap: .65rem; }
+  #commandPalette .command-result .truncate { white-space: normal; color: #a1a1aa; }
+}
