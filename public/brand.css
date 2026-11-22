@@ -202,3 +202,16 @@ nav :is(a, button):focus-visible { outline: 2px solid #67e8f9; outline-offset: 2
   #commandPalette .command-result { padding: .55rem .65rem; gap: .65rem; }
   #commandPalette .command-result .truncate { white-space: normal; color: #a1a1aa; }
 }
+
+.service-modal[id] { transition: opacity 150ms ease-out, visibility 0s linear 150ms; }
+.service-modal[id].active { transition-delay: 0s; }
+.service-modal[id] .modal-content { transform: translateY(6px); transition: transform 160ms ease-out; overscroll-behavior: contain; }
+.service-modal[id].active .modal-content { transform: translateY(0); }
+.service-modal .modal-close { min-width: 44px; min-height: 44px; }
+.faq-item .faq-answer { display: grid; grid-template-rows: 0fr; max-height: none; transition: grid-template-rows 170ms ease-out; }
+.faq-item.active .faq-answer { grid-template-rows: 1fr; }
+.faq-item .faq-answer > div { min-height: 0; overflow: hidden; padding-bottom: 0; }
+.faq-item .faq-answer > div::after { content: ''; display: block; height: 1.25rem; }
+@media (prefers-reduced-motion: reduce) {
+  .service-modal[id], .service-modal[id] .modal-content, .faq-item .faq-answer, .faq-question i { transition: none; }
+}
