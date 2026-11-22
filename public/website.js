@@ -847,6 +847,26 @@
         };
 
         // --- 7.6 Blog Content Data (New) ---
+        function renderInsightCards(theme, heading, introduction, cards) {
+            const accents = {
+                cyan: 'bg-cyan-500/10 border-cyan-500/20',
+                purple: 'bg-purple-500/10 border-purple-500/20',
+                red: 'bg-red-500/10 border-red-500/20'
+            };
+            return `<div class="space-y-6 text-left text-gray-300">
+                <div class="p-5 md:p-6 rounded-2xl border ${accents[theme]}">
+                    <h4 class="text-lg md:text-xl font-bold text-white mb-3">${heading}</h4>
+                    <p class="text-sm md:text-base leading-relaxed text-gray-300">${introduction}</p>
+                </div>
+                <div class="grid md:grid-cols-3 gap-3">
+                    ${cards.map(([label, detail]) => `<div class="p-4 rounded-xl bg-white/[0.04] border border-white/10">
+                        <strong class="block text-white text-sm mb-2">${label}</strong>
+                        <p class="text-xs text-gray-400 leading-relaxed">${detail}</p>
+                    </div>`).join('')}
+                </div>
+            </div>`;
+        }
+
         const blogDetails = {
             checklist: {
                 title: 'The "No-Duff" Checklist',
@@ -1023,100 +1043,88 @@
                 icon: "fas fa-coins",
                 theme: "cyan",
                 description: "Give every feature a job before you give it a budget.",
-                content: `<div class="space-y-6 text-left text-gray-300">
-                    <section><h4 class="font-bold text-white mb-2">Price the problem</h4><p>If staff spend ten minutes retyping each order, count the orders in a typical week. Compare that cost with building and maintaining an integration. A dashboard may look impressive while leaving every minute of retyping in place.</p></section>
-                    <section><h4 class="font-bold text-white mb-2">Buy evidence in stages</h4><p>Try a CSV import with one customer first. Agree on a success measure such as time saved per order. Fund the full integration when the trial shows that people use it and the saving justifies its upkeep.</p></section>
-                </div>`
+                content: renderInsightCards("cyan", "Price the problem", "If staff spend ten minutes retyping each order, count the orders in a typical week. Compare that cost with building and maintaining an integration. A dashboard may look impressive while leaving every minute of retyping in place.", [
+                    ["Pilot the import","Try a CSV import with one customer before building a full integration."],
+                    ["Choose a measure","Measure time saved per order against the manual process."],
+                    ["Fund the integration","Expand when customers use the pilot and the savings justify ongoing maintenance."]
+                ])
             },
             tech_debt: {
                 title: "The Real Cost of Cheap Code",
                 icon: "fas fa-code",
                 theme: "cyan",
                 description: "The invoice covers delivery. The next change reveals the maintenance cost.",
-                content: `<div class="space-y-6 text-left text-gray-300">
-                    <section><h4 class="font-bold text-white mb-2">Follow one change</h4><p>Ask what happens when a tax rate changes. If the same rate is hard-coded in checkout, receipts and reports, a small request becomes three edits and three opportunities for disagreement.</p></section>
-                    <section><h4 class="font-bold text-white mb-2">Pay down debt where it recurs</h4><p>Track repeat fixes and the time spent retesting them. Put a test around the current calculation, move the rule to one place, then compare the effort on the next change. Prioritize code the business changes often.</p></section>
-                </div>`
+                content: renderInsightCards("cyan", "Follow one change", "Ask what happens when a tax rate changes. If the same rate is hard-coded in checkout, receipts and reports, a small request becomes three edits and three opportunities for disagreement.", [
+                    ["Track repeat fixes","Record how often the same defect returns and how much retesting it takes."],
+                    ["Protect the calculation","Add a test around the current tax calculation before moving the rule into one place."],
+                    ["Prioritize frequent changes","Compare the effort on the next change. Start with code the business changes often."]
+                ])
             },
             hiring: {
                 title: "5 Signs Your Developer is 'Bluffing'",
                 icon: "fas fa-users",
                 theme: "cyan",
                 description: "Five signals to investigate when interviewing a development team.",
-                content: `<div class="space-y-6 text-left text-gray-300">
-                    <section><h4 class="font-bold text-white mb-2">Listen for three gaps</h4><p>First, they promise a fixed delivery date before asking what the product must do. Second, they describe past work but cannot explain their own contribution. Third, every technology choice is “the best” and they cannot name a trade-off.</p></section>
-                    <section><h4 class="font-bold text-white mb-2">Ask for two demonstrations</h4><p>Fourth, progress is always a percentage and they cannot show a working user journey. Fifth, nobody can explain how a failed release is rolled back. Ask for a short walkthrough with sample data. Give the team room to explain constraints before drawing conclusions.</p></section>
-                </div>`
+                content: renderInsightCards("cyan", "Listen for three gaps", "First, they promise a fixed delivery date before asking what the product must do. Second, they describe past work but cannot explain their own contribution. Third, every technology choice is “the best” and they cannot name a trade-off.", [
+                    ["Ask for a working demo","A fourth warning sign is progress reported only as a percentage. Ask to see one complete user journey."],
+                    ["Walk through a rollback","A fifth is an unclear recovery plan. Ask who handles a failed release and how they restore service."],
+                    ["Hear the explanation","Use sample data for the walkthrough and let the team explain any constraints."]
+                ])
             },
             business_ai: {
                 title: "AI for Business: Beyond the Hype",
                 icon: "fas fa-brain",
                 theme: "purple",
                 description: "Start with a repetitive decision whose output someone can check.",
-                content: `<div class="space-y-6 text-left text-gray-300">
-                    <section><h4 class="font-bold text-white mb-2">Pilot a bounded task</h4><p>For a support inbox, let AI suggest a category and draft a reply. Keep a staff member responsible for sending it. Compare drafts with real resolutions using examples the system has permission to process.</p></section>
-                    <section><h4 class="font-bold text-white mb-2">Measure the whole task</h4><p>Count review time, corrections and escalations alongside model cost. If editing drafts takes as long as writing replies, narrow the task to routing tickets. Expand only where the pilot improves speed without lowering answer quality.</p></section>
-                </div>`
+                content: renderInsightCards("purple", "Pilot a bounded task", "For a support inbox, let AI suggest a category and draft a reply. Keep a staff member responsible for sending it. Compare drafts with real resolutions using examples the system has permission to process.", [
+                    ["Count review time","Include corrections, escalations and staff review time when comparing the pilot with the existing process."],
+                    ["Narrow the task","If editing takes as long as writing, try routing tickets before generating replies."],
+                    ["Expand the pilot","Add more cases once the pilot saves time while maintaining answer quality."]
+                ])
             },
             pwa: {
                 title: "Why Your Next App Should Be a PWA",
                 icon: "fas fa-mobile-alt",
                 theme: "purple",
                 description: "A progressive web app can suit users who arrive through a link and return often.",
-                content: `<div class="space-y-6 text-left text-gray-300">
-                    <section><h4 class="font-bold text-white mb-2">Design for a broken connection</h4><p>A field worker can open a cached form, save a draft locally and sync it when connectivity returns. Show whether each record is pending or confirmed, and prevent a retry from submitting the same entry twice.</p></section>
-                    <section><h4 class="font-bold text-white mb-2">Test the device requirements</h4><p>Try installation, storage and offline recovery on the phones your audience uses. If the core task depends on continuous background tracking or specialized hardware, test that capability before committing to a web-only build.</p></section>
-                </div>`
+                content: renderInsightCards("purple", "Design for a broken connection", "A field worker can open a cached form, save a draft locally and sync it when connectivity returns. Show whether each record is pending or confirmed, and prevent a retry from submitting the same entry twice.", [
+                    ["Try the install","Open and install the app on the phones your audience uses."],
+                    ["Check offline recovery","Save a draft offline, reconnect and confirm it arrives once with its contents intact."],
+                    ["Test hardware access","Prototype any required background tracking or hardware integration before choosing a web-only build."]
+                ])
             },
             cloud_security: {
                 title: "Cloud Security in 2025: Are You Safe?",
                 icon: "fas fa-shield-alt",
                 theme: "purple",
                 description: "Judge cloud readiness by what your team can demonstrate about access and recovery.",
-                content: `<div class="space-y-6 text-left text-gray-300">
-                    <section><h4 class="font-bold text-white mb-2">Trace access to one record</h4><p>Pick a customer document. Identify which people and services can read it, who can change those permissions and where that change is recorded. Review unused accounts and check that privileged access requires more than a password.</p></section>
-                    <section><h4 class="font-bold text-white mb-2">Prove recovery works</h4><p>Restore a backup into an isolated environment. Verify that the application can read the recovered data, record how long restoration took and assign an owner to resolve gaps. A successful backup notification answers only part of the question.</p></section>
-                </div>`
+                content: renderInsightCards("purple", "Trace access to one record", "Pick a customer document. Identify which people and services can read it, who can change those permissions and where that change is recorded. Review unused accounts and check that privileged access requires more than a password.", [
+                    ["Restore a backup","Recover a recent backup in an isolated environment."],
+                    ["Time the recovery","Check that the application can read the recovered records and record the elapsed time."],
+                    ["Assign an owner","Give each recovery gap to someone who can fix it and repeat the exercise."]
+                ])
             },
             serverless: {
                 title: "Serverless Architecture: Scale to Infinity",
                 icon: "fas fa-cloud",
                 theme: "purple",
                 description: "Functions can absorb bursts, but every downstream service still has limits.",
-                content: `<div class="space-y-6 text-left text-gray-300">
-                    <section><h4 class="font-bold text-white mb-2">Buffer the spike</h4><p>For an image-upload service, acknowledge the upload and queue resizing jobs. Let workers consume jobs at a rate the image store can sustain. Give each job a stable identifier so retries do not create duplicate outputs.</p></section>
-                    <section><h4 class="font-bold text-white mb-2">Account for the whole bill</h4><p>Compare compute time, requests, storage and data transfer at both ordinary and peak traffic. Set concurrency limits and monitor queue age. If jobs arrive faster than workers can finish them, the growing backlog tells you where to investigate.</p></section>
-                </div>`
+                content: renderInsightCards("purple", "Buffer the spike", "For an image-upload service, acknowledge the upload and queue resizing jobs. Let workers consume jobs at a rate the image store can sustain. Give each job a stable identifier so retries do not create duplicate outputs.", [
+                    ["Compare total costs","Include requests, compute, storage and data transfer under ordinary and peak loads."],
+                    ["Limit concurrency","Set a worker limit that the image store can sustain."],
+                    ["Watch queue age","Monitor the oldest pending job. A growing backlog shows when processing has fallen behind arrivals."]
+                ])
             },
             mvp_trap: {
                 title: "The MVP Trap: Why 'Minimum' Shouldn't Mean 'Broken'",
                 icon: "fas fa-exclamation-triangle",
                 theme: "red",
                 description: "Minimum viable should still mean stable, testable, and usable. Cutting scope is smart; cutting quality is expensive.",
-                content: `
-                    <div class="space-y-6 text-left text-gray-300">
-                        <div class="p-5 md:p-6 rounded-2xl bg-red-500/10 border border-red-500/20">
-                            <h4 class="text-lg md:text-xl font-bold text-white mb-3">The trap</h4>
-                            <p class="text-sm md:text-base leading-relaxed text-gray-300">
-                                Teams often treat MVP as permission to ship brittle code, missing flows, weak security, and unclear ownership. That creates rework before the product has a fair chance to prove itself.
-                            </p>
-                        </div>
-                        <div class="grid md:grid-cols-3 gap-3">
-                            <div class="p-4 rounded-xl bg-white/[0.04] border border-white/10">
-                                <strong class="block text-white text-sm mb-2">Cut scope</strong>
-                                <p class="text-xs text-gray-400 leading-relaxed">Keep the first release small, but make the chosen workflow complete from end to end.</p>
-                            </div>
-                            <div class="p-4 rounded-xl bg-white/[0.04] border border-white/10">
-                                <strong class="block text-white text-sm mb-2">Keep quality</strong>
-                                <p class="text-xs text-gray-400 leading-relaxed">Use basic testing, error handling, responsive layouts, and secure defaults from day one.</p>
-                            </div>
-                            <div class="p-4 rounded-xl bg-white/[0.04] border border-white/10">
-                                <strong class="block text-white text-sm mb-2">Measure value</strong>
-                                <p class="text-xs text-gray-400 leading-relaxed">Define the signal that proves the release worked before adding the next feature.</p>
-                            </div>
-                        </div>
-                    </div>
-                `
+                content: renderInsightCards("red", "The trap", "Teams often treat MVP as permission to ship brittle code, missing flows, weak security, and unclear ownership. That creates rework before the product has a fair chance to prove itself.", [
+                    ["Cut scope","Keep the first release small, but make the chosen workflow complete from end to end."],
+                    ["Keep quality","Use basic testing, error handling, responsive layouts, and secure defaults from day one."],
+                    ["Measure value","Define the signal that proves the release worked before adding the next feature."]
+                ])
             }
         };
 
