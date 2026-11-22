@@ -215,3 +215,8 @@ nav :is(a, button):focus-visible { outline: 2px solid #67e8f9; outline-offset: 2
 @media (prefers-reduced-motion: reduce) {
   .service-modal[id], .service-modal[id] .modal-content, .faq-item .faq-answer, .faq-question i { transition: none; }
 }
+
+#projectBriefForm button[type="submit"] { align-self: center; width: fit-content; max-width: 100%; min-height: 44px; padding: .55rem 1.35rem; margin-top: .35rem; font-size: .875rem; }
+#contact .border-t:has(> .footer-legal) { padding-block: 1rem; }
+.footer-legal { gap: .2rem .8rem; margin-bottom: .35rem; font-size: .75rem; line-height: 1.4; }
+.footer-legal a { min-height: 32px; }
