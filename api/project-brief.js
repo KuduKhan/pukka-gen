@@ -1,5 +1,6 @@
 /* Server-side email gateway. Client claims success only after a provider accepts. */
 const mailPattern=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const formServices = {dev:"Custom Software Development",ai:"AI & Intelligent Automation",cloud:"Cloud Strategy & DevOps",design:"Product Design (UI/UX)",audit:"Code Audit / Consultation"};
 const serviceSet=new Set(["Software engineering","AI & automation","Cloud & DevOps","Security & QA","Product design","Technical strategy"]);
 function escapeHtml(value){
  return value.replace(/[&<>"']/g,character=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[character]||character));
@@ -23,17 +24,17 @@ export default async function handler(req,res){
  const text=key=>typeof input[key]==="string"?input[key].trim():"";
  const name=text("name"),email=text("email"),service=text("service"),message=text("message"),website=text("website");
  if(website)return res.status(200).json({ok:true});
- if(name.length<2||name.length>100||!mailPattern.test(email)||email.length>254||!serviceSet.has(service)||message.length<20||message.length>2500){
+ if(name.length<2||name.length>100||!mailPattern.test(email)||email.length>254||(!serviceSet.has(service)&&!Object.hasOwn(formServices,service))||message.length<20||message.length>2500){
   return res.status(422).json({ok:false,error:"Please check your name, email, service and project details."});
  }
  const key=process.env.RESEND_API_KEY,from=process.env.RESEND_FROM,to=process.env.PROJECT_BRIEF_TO;
  if(!key||!from||!to)return res.status(503).json({ok:false,error:"Online delivery is not configured for this preview."});
- const content="<h2>New Pukka Gen project brief</h2><p><strong>Name:</strong> "+escapeHtml(name)+"</p><p><strong>Email:</strong> "+escapeHtml(email)+"</p><p><strong>Service:</strong> "+escapeHtml(service)+"</p><h3>Project details</h3><p>"+escapeHtml(message).replace(/\n/g,"<br>")+"</p>";
+ const content="<h2>New Pukka Gen project brief</h2><p><strong>Name:</strong> "+escapeHtml(name)+"</p><p><strong>Email:</strong> "+escapeHtml(email)+"</p><p><strong>Service:</strong> "+escapeHtml(formServices[service] || service)+"</p>"+(text("phone")?"<p><strong>Phone:</strong> "+escapeHtml(text("phone").slice(0,80))+"</p>":"")+"<h3>Project details</h3><p>"+escapeHtml(message).replace(/\n/g,"<br>")+"</p>";
  try{
   const response=await fetch("https://api.resend.com/emails",{
    method:"POST",
    headers:{"Authorization":"Bearer "+key,"Content-Type":"application/json"},
-   body:JSON.stringify({from,to:[to],reply_to:email,subject:"Pukka Gen project enquiry: "+service,html:content})
+   body:JSON.stringify({from,to:[to],reply_to:email,subject:"Pukka Gen project enquiry: "+(formServices[service] || service),html:content})
   });
   if(!response.ok){console.error("Mail gateway HTTP status:",response.status);return res.status(502).json({ok:false,error:"Online delivery is temporarily unavailable."});}
   const payload=await response.json().catch(()=>null);
