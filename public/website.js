@@ -1599,6 +1599,10 @@
             document.body.style.overflow = 'hidden';
         }
 
+        document.addEventListener('keydown', event => {
+            if (event.key === 'Escape' && serviceModal.classList.contains('active')) modalClose.click();
+        });
+
         modalClose.addEventListener('click', () => {
             serviceModal.classList.remove('active');
             document.body.style.overflow = 'auto';
@@ -1645,6 +1649,9 @@
             const status = document.getElementById('projectFormStatus');
             if (!form) return;
 
+            form.elements.message.minLength = 20;
+            form.elements.name.maxLength = 100;
+            form.elements.email.maxLength = 254;
             const fields = Array.from(form.querySelectorAll('input, select, textarea'));
 
             function updateFieldState(field) {
@@ -1669,7 +1676,7 @@
                 });
             });
 
-            function handleProjectBriefSubmit(event) {
+            async function handleProjectBriefSubmit(event) {
                 event.preventDefault();
                 fields.forEach(field => {
                     field.dataset.touched = 'true';
@@ -1688,6 +1695,27 @@
                 }
 
                 const formData = new FormData(form);
+                const submit = form.querySelector('button[type="submit"]');
+                if (submit.disabled) return;
+                submit.disabled = true;
+                if (status) status.textContent = 'Sending your brief…';
+                try {
+                    const response = await fetch('/api/project-brief', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(Object.fromEntries(formData))
+                    });
+                    const result = await response.json();
+                    if (!response.ok || result.ok !== true) throw new Error('Delivery unconfirmed');
+                } catch {
+                    if (status) {
+                        status.className = 'min-h-[1.25rem] text-xs text-red-400';
+                        status.textContent = 'Delivery could not be confirmed. Your brief is still here. Please try again or contact us by email.';
+                    }
+                    return;
+                } finally {
+                    submit.disabled = false;
+                }
                 const name = String(formData.get('name') || 'there').trim().split(' ')[0];
                 if (status) {
                     status.textContent = 'Brief captured. The team will respond with next steps shortly.';
